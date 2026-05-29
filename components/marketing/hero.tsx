@@ -1,6 +1,7 @@
-import { useTranslations } from 'next-intl'
+'use client'
+
+import { useTranslations, useLocale } from 'next-intl'
 import Link from 'next/link'
-import { useLocale } from 'next-intl'
 
 export function Hero() {
   const t = useTranslations('hero')

@@ -1,5 +1,3 @@
-import { useTranslations } from 'next-intl'
-
 const steps = [
   {
     n: '01',
@@ -66,8 +64,6 @@ const steps = [
 ]
 
 export function HowItWorks() {
-  const t = useTranslations()
-
   return (
     <section
       id="hoe-het-werkt"
