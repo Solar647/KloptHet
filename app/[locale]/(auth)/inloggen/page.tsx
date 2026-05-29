@@ -1,23 +1,41 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
+import { createClient } from '@/lib/supabase/client'
 import { AuthCard } from '@/components/auth/auth-card'
 import { AuthField } from '@/components/auth/auth-field'
 
 export default function InloggenPage() {
   const locale = useLocale()
+  const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
     setLoading(true)
-    // TODO: Supabase auth
-    await new Promise((r) => setTimeout(r, 800))
-    setLoading(false)
+    const supabase = createClient()
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) {
+      setError('E-mailadres of wachtwoord klopt niet.')
+      setLoading(false)
+      return
+    }
+    router.push(`/${locale}/dashboard`)
+  }
+
+  const handleGoogle = async () => {
+    const supabase = createClient()
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/${locale}/dashboard` },
+    })
   }
 
   return (
@@ -56,11 +74,28 @@ export default function InloggenPage() {
           </Link>
         </div>
 
+        {error && (
+          <div
+            style={{
+              background: 'rgba(229,83,42,.12)',
+              border: '1px solid rgba(229,83,42,.3)',
+              borderRadius: 10,
+              padding: '.75rem 1rem',
+              marginBottom: '1rem',
+              fontSize: '.88rem',
+              color: '#FF8585',
+              fontFamily: 'var(--font-sans)',
+            }}
+          >
+            {error}
+          </div>
+        )}
+
         <SubmitButton loading={loading}>Inloggen</SubmitButton>
 
         <Divider />
 
-        <GoogleButton>Inloggen met Google</GoogleButton>
+        <GoogleButton onClick={handleGoogle}>Inloggen met Google</GoogleButton>
 
         <p
           style={{
@@ -139,10 +174,11 @@ function Divider() {
   )
 }
 
-function GoogleButton({ children }: { children: string }) {
+function GoogleButton({ children, onClick }: { children: string; onClick?: () => void }) {
   return (
     <button
       type="button"
+      onClick={onClick}
       style={{
         width: '100%',
         padding: '.9rem',

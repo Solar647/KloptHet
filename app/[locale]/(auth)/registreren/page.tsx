@@ -1,26 +1,71 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
+import { createClient } from '@/lib/supabase/client'
 import { AuthCard } from '@/components/auth/auth-card'
 import { AuthField } from '@/components/auth/auth-field'
 
 export default function RegistrerenPage() {
   const locale = useLocale()
+  const router = useRouter()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [agreed, setAgreed] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!agreed) return
+    setError('')
     setLoading(true)
-    // TODO: Supabase auth
-    await new Promise((r) => setTimeout(r, 800))
+    const supabase = createClient()
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: name } },
+    })
+    if (error) {
+      setError(error.message)
+      setLoading(false)
+      return
+    }
+    setSuccess(true)
     setLoading(false)
+  }
+
+  const handleGoogle = async () => {
+    const supabase = createClient()
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/${locale}/dashboard` },
+    })
+  }
+
+  if (success) {
+    return (
+      <AuthCard title="Controleer uw e-mail." subtitle="We hebben u een bevestigingslink gestuurd.">
+        <div
+          style={{
+            background: 'rgba(58,172,110,.1)',
+            border: '1px solid rgba(58,172,110,.25)',
+            borderRadius: 12,
+            padding: '1rem 1.25rem',
+            fontSize: '.9rem',
+            color: 'rgba(244,236,219,.8)',
+            lineHeight: 1.6,
+            fontFamily: 'var(--font-sans)',
+          }}
+        >
+          ✓ Klik op de link in uw e-mail om uw account te activeren. Controleer ook uw spammap.
+        </div>
+      </AuthCard>
+    )
   }
 
   return (
@@ -95,13 +140,30 @@ export default function RegistrerenPage() {
           </span>
         </label>
 
+        {error && (
+          <div
+            style={{
+              background: 'rgba(229,83,42,.12)',
+              border: '1px solid rgba(229,83,42,.3)',
+              borderRadius: 10,
+              padding: '.75rem 1rem',
+              marginBottom: '1rem',
+              fontSize: '.88rem',
+              color: '#FF8585',
+              fontFamily: 'var(--font-sans)',
+            }}
+          >
+            {error}
+          </div>
+        )}
+
         <SubmitButton loading={loading} disabled={!agreed}>
           Account aanmaken
         </SubmitButton>
 
         <Divider />
 
-        <GoogleButton>Registreren met Google</GoogleButton>
+        <GoogleButton onClick={handleGoogle}>Registreren met Google</GoogleButton>
 
         <p
           style={{
@@ -188,10 +250,11 @@ function Divider() {
   )
 }
 
-function GoogleButton({ children }: { children: string }) {
+function GoogleButton({ children, onClick }: { children: string; onClick?: () => void }) {
   return (
     <button
       type="button"
+      onClick={onClick}
       style={{
         width: '100%',
         padding: '.9rem',
