@@ -7,7 +7,7 @@ const intlMiddleware = createIntlMiddleware(routing)
 
 const PROTECTED_PATHS = ['/dashboard', '/scan', '/geschiedenis', '/instellingen', '/abonnement']
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Controleer of het een beschermde route is (strip de locale prefix)
@@ -49,7 +49,7 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  return intlMiddleware(request)
+  return intlMiddleware(request as Parameters<typeof intlMiddleware>[0])
 }
 
 export const config = {

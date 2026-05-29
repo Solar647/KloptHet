@@ -32,10 +32,11 @@ export default function InloggenPage() {
 
   const handleGoogle = async () => {
     const supabase = createClient()
-    await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${window.location.origin}/${locale}/auth/callback` },
     })
+    if (error) setError(error.message)
   }
 
   return (
