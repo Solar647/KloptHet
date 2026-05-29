@@ -50,7 +50,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             letterSpacing: '-.025em',
           }}
         >
-          Klopt Het
+          KloptHet
         </span>
       </Link>
 

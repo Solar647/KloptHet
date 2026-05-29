@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "Klopt Het",
+    "appName": "KloptHet",
     "tagline": "The fraud checker for WhatsApp and SMS",
     "loading": "Loading...",
     "error": "Something went wrong",

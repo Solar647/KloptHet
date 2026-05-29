@@ -29,7 +29,7 @@ export function AuthCard({ title, subtitle, children }: Props) {
             letterSpacing: '-.01em',
           }}
         >
-          Klopt Het
+          KloptHet
         </span>
       </div>
 

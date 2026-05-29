@@ -76,7 +76,7 @@ export function Footer() {
                   letterSpacing: '-.025em',
                 }}
               >
-                Klopt Het
+                KloptHet
               </span>
             </div>
             <p
@@ -172,7 +172,7 @@ export function Footer() {
             fontFamily: 'var(--font-sans)',
           }}
         >
-          <div>© 2026 Klopt Het. Gemaakt in Nederland.</div>
+          <div>© 2026 KloptHet. Gemaakt in Nederland.</div>
           <div>KvK-nummer · BTW-nummer</div>
         </div>
       </div>

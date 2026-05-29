@@ -19,7 +19,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Klopt Het — Fraudechecker voor WhatsApp en sms',
+  title: 'KloptHet — Fraudechecker voor WhatsApp en sms',
   description:
     'Twijfelt u over een verdacht WhatsApp- of sms-bericht? Upload een screenshot en wij vertellen u in gewone taal of het te vertrouwen is.',
 }

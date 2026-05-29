@@ -9,7 +9,7 @@ const items = [
   },
   {
     q: 'Heb ik technische kennis nodig?',
-    a: 'Nee. Als u een foto kunt maken op uw telefoon, kunt u Klopt Het gebruiken. Lukt het niet? Bel ons — een echte medewerker helpt u.',
+    a: 'Nee. Als u een foto kunt maken op uw telefoon, kunt u KloptHet gebruiken. Lukt het niet? Bel ons — een echte medewerker helpt u.',
   },
   {
     q: 'Bewaren jullie mijn berichten?',

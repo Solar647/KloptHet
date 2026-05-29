@@ -62,7 +62,7 @@ export function Hero() {
               letterSpacing: '-.025em',
             }}
           >
-            Klopt Het
+            KloptHet
           </div>
           <div
             style={{
@@ -254,7 +254,7 @@ export function Hero() {
           borderTop: '1px solid rgba(244,236,219,.18)',
         }}
       >
-        <span>© 2026 Klopt Het</span>
+        <span>© 2026 KloptHet</span>
         <span>klopthet.nl</span>
         <span>Gemaakt in Nederland</span>
       </div>

@@ -108,7 +108,7 @@ export function Nav() {
               letterSpacing: '-.025em',
             }}
           >
-            Klopt Het
+            KloptHet
           </span>
         </Link>
 

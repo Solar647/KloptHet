@@ -76,7 +76,7 @@ export function Sidebar() {
               color: '#F4ECDB',
             }}
           >
-            Klopt Het
+            KloptHet
           </span>
         </Link>
       </div>
