@@ -1,0 +1,77 @@
+{
+  "common": {
+    "appName": "Klopt Het",
+    "tagline": "De fraudechecker voor WhatsApp en sms",
+    "loading": "Laden...",
+    "error": "Er is iets misgegaan",
+    "tryAgain": "Probeer opnieuw",
+    "close": "Sluiten",
+    "back": "Terug",
+    "next": "Volgende",
+    "save": "Opslaan",
+    "cancel": "Annuleren",
+    "yes": "Ja",
+    "no": "Nee"
+  },
+  "nav": {
+    "home": "Home",
+    "howItWorks": "Hoe het werkt",
+    "forWho": "Voor wie",
+    "pricing": "Prijzen",
+    "examples": "Voorbeelden",
+    "blog": "Blog",
+    "about": "Over ons",
+    "contact": "Contact",
+    "login": "Inloggen",
+    "register": "Gratis proberen",
+    "dashboard": "Dashboard"
+  },
+  "hero": {
+    "heading": "Verdacht appje ontvangen?",
+    "subheading": "Stuur ons een screenshot. We kijken even mee en vertellen je in gewone taal of het te vertrouwen is.",
+    "cta": "Upload een screenshot",
+    "ctaSecondary": "Hoe werkt het?",
+    "trustBadge": "Europese AI · Geen data bewaard · Gratis proberen"
+  },
+  "scanner": {
+    "title": "Check een bericht",
+    "uploadLabel": "Sleep je screenshot hiernaartoe",
+    "uploadButton": "Kies een foto",
+    "orText": "of",
+    "pasteText": "Plak de tekst van het bericht",
+    "pasteButton": "Tekst plakken",
+    "analyzing": "We kijken even mee...",
+    "maxSize": "Maximaal 10 MB · PNG, JPG, HEIC",
+    "privacy": "Je screenshot wordt direct na analyse verwijderd"
+  },
+  "verdict": {
+    "safe": "Veilig",
+    "doubt": "Twijfelachtig",
+    "phishing": "Oplichting",
+    "score": "Verdachtheid",
+    "explanation": "Wat zien wij?",
+    "warnings": "Waarschuwingssignalen",
+    "learnMore": "Leer hier meer over →",
+    "scanAgain": "Scan nog een bericht",
+    "report": "Meld bij Fraudehelpdesk",
+    "block": "Hoe blokkeer ik dit nummer?"
+  },
+  "auth": {
+    "login": "Inloggen",
+    "register": "Account aanmaken",
+    "email": "E-mailadres",
+    "password": "Wachtwoord",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "noAccount": "Nog geen account?",
+    "hasAccount": "Al een account?",
+    "agreeTerms": "Ik ga akkoord met de <terms>Algemene Voorwaarden</terms> en <privacy>Privacyverklaring</privacy>",
+    "googleLogin": "Inloggen met Google"
+  },
+  "footer": {
+    "privacy": "Privacyverklaring",
+    "cookies": "Cookies",
+    "terms": "Algemene Voorwaarden",
+    "impressum": "Impressum",
+    "tagline": "Twijfel is slim. Wij helpen je zeker te weten."
+  }
+}

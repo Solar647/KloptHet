@@ -1,0 +1,77 @@
+{
+  "common": {
+    "appName": "Klopt Het",
+    "tagline": "The fraud checker for WhatsApp and SMS",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "tryAgain": "Try again",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "save": "Save",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "nav": {
+    "home": "Home",
+    "howItWorks": "How it works",
+    "forWho": "For who",
+    "pricing": "Pricing",
+    "examples": "Examples",
+    "blog": "Blog",
+    "about": "About us",
+    "contact": "Contact",
+    "login": "Log in",
+    "register": "Try for free",
+    "dashboard": "Dashboard"
+  },
+  "hero": {
+    "heading": "Received a suspicious message?",
+    "subheading": "Send us a screenshot. We'll take a look and tell you in plain language whether you can trust it.",
+    "cta": "Upload a screenshot",
+    "ctaSecondary": "How does it work?",
+    "trustBadge": "European AI · No data stored · Free to try"
+  },
+  "scanner": {
+    "title": "Check a message",
+    "uploadLabel": "Drag your screenshot here",
+    "uploadButton": "Choose a photo",
+    "orText": "or",
+    "pasteText": "Paste the text of the message",
+    "pasteButton": "Paste text",
+    "analyzing": "Taking a look...",
+    "maxSize": "Maximum 10 MB · PNG, JPG, HEIC",
+    "privacy": "Your screenshot is deleted immediately after analysis"
+  },
+  "verdict": {
+    "safe": "Safe",
+    "doubt": "Suspicious",
+    "phishing": "Scam",
+    "score": "Suspicion level",
+    "explanation": "What do we see?",
+    "warnings": "Warning signs",
+    "learnMore": "Learn more about this →",
+    "scanAgain": "Scan another message",
+    "report": "Report to Fraud Helpdesk",
+    "block": "How do I block this number?"
+  },
+  "auth": {
+    "login": "Log in",
+    "register": "Create account",
+    "email": "Email address",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "noAccount": "No account yet?",
+    "hasAccount": "Already have an account?",
+    "agreeTerms": "I agree to the <terms>Terms of Service</terms> and <privacy>Privacy Policy</privacy>",
+    "googleLogin": "Log in with Google"
+  },
+  "footer": {
+    "privacy": "Privacy Policy",
+    "cookies": "Cookies",
+    "terms": "Terms of Service",
+    "impressum": "Impressum",
+    "tagline": "When in doubt, find out."
+  }
+}
