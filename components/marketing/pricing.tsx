@@ -4,19 +4,6 @@ import { useState } from 'react'
 
 const tiers = [
   {
-    name: 'Gratis',
-    tagline: 'Voor af en toe controleren',
-    monthly: 0,
-    features: [
-      '3 controles per maand',
-      'Screenshot of tekst plakken',
-      'Basisuitleg per bericht',
-      'Geen creditcard nodig',
-    ],
-    cta: 'Gratis beginnen',
-    highlight: false,
-  },
-  {
     name: 'Standaard',
     tagline: 'Voor regelmatig gebruik',
     monthly: 3.99,
@@ -205,7 +192,7 @@ export function Pricing() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '1rem',
             alignItems: 'stretch',
           }}
@@ -402,7 +389,7 @@ export function Pricing() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '1rem',
             marginTop: '2.5rem',
             padding: '1.25rem 1.5rem',
