@@ -37,8 +37,9 @@ export function Hero() {
         }}
       />
 
-      {/* Top strip */}
+      {/* Top strip — verborgen op mobiel */}
       <div
+        className="hero-top-strip-extras"
         style={{
           position: 'relative',
           zIndex: 3,
@@ -140,11 +141,12 @@ export function Hero() {
 
         {/* Bottom row */}
         <div
+          className="grid-responsive"
           style={{
-            marginTop: 'clamp(2.5rem, 5vw, 4rem)',
+            marginTop: 'clamp(2rem, 5vw, 4rem)',
             display: 'grid',
             gridTemplateColumns: 'minmax(260px, 1.1fr) minmax(260px, 1fr) auto',
-            gap: 'clamp(1.5rem, 3vw, 3rem)',
+            gap: 'clamp(1rem, 3vw, 3rem)',
             alignItems: 'end',
             paddingTop: '1.5rem',
             borderTop: '1px solid rgba(244,236,219,.18)',
@@ -235,8 +237,9 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Bottom editorial strip */}
+      {/* Bottom editorial strip — verborgen op mobiel */}
       <div
+        className="hero-bottom-strip-extras"
         style={{
           position: 'relative',
           zIndex: 3,

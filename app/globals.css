@@ -201,12 +201,28 @@ h6 {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 
-  /* Hero: hide editorial top strip decorations */
+  /* Hero: hide editorial strips on mobile */
   .hero-top-strip-extras {
     display: none !important;
   }
   .hero-bottom-strip-extras {
     display: none !important;
+  }
+  .hero-trust-badge {
+    display: none !important;
+  }
+
+  /* Hero: reduce min-height on mobile */
+  .hero-section {
+    min-height: 85vh !important;
+  }
+
+  /* Prevent text overflow */
+  h1,
+  h2,
+  h3 {
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 }
 
