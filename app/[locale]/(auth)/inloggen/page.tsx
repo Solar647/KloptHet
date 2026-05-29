@@ -34,7 +34,7 @@ export default function InloggenPage() {
     const supabase = createClient()
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/${locale}/dashboard` },
+      options: { redirectTo: `${window.location.origin}/${locale}/auth/callback` },
     })
   }
 
