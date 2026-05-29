@@ -160,6 +160,7 @@ export function DemoScanner() {
         </div>
 
         <div
+          className="grid-responsive-2"
           style={{
             display: 'grid',
             gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.2fr)',

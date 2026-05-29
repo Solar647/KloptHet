@@ -154,3 +154,70 @@ h6 {
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+/* ============================================================
+   RESPONSIVE UTILITIES
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Stack grids to single column */
+  .grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+  .grid-responsive-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Hide desktop nav, show mobile */
+  .nav-desktop {
+    display: none !important;
+  }
+  .nav-mobile {
+    display: flex !important;
+  }
+
+  /* Dashboard: hide sidebar, show bottom nav */
+  .dashboard-sidebar {
+    display: none !important;
+  }
+  .dashboard-bottom-nav {
+    display: flex !important;
+  }
+
+  /* Dashboard main content: pad for bottom nav */
+  .dashboard-sidebar + main {
+    padding-bottom: 80px;
+  }
+
+  /* Pricing: stack cards */
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .pricing-card-featured {
+    transform: none !important;
+  }
+
+  /* Trust row: 2 cols on mobile */
+  .trust-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Hero: hide editorial top strip decorations */
+  .hero-top-strip-extras {
+    display: none !important;
+  }
+  .hero-bottom-strip-extras {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .nav-mobile {
+    display: none !important;
+  }
+  .dashboard-bottom-nav {
+    display: none !important;
+  }
+  .dashboard-sidebar {
+    display: flex !important;
+  }
+}

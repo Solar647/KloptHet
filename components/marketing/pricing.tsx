@@ -190,6 +190,7 @@ export function Pricing() {
 
         {/* Tier cards */}
         <div
+          className="pricing-grid"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
@@ -387,6 +388,7 @@ export function Pricing() {
 
         {/* Trust row */}
         <div
+          className="trust-grid"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',

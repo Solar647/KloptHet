@@ -102,6 +102,7 @@ export function HowItWorks() {
 
         {/* Heading + intro */}
         <div
+          className="grid-responsive-2"
           style={{
             display: 'grid',
             gridTemplateColumns: 'minmax(0, 1fr) minmax(280px, .9fr)',
@@ -144,6 +145,7 @@ export function HowItWorks() {
 
         {/* Steps */}
         <div
+          className="grid-responsive"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',

@@ -13,6 +13,7 @@ export function Nav() {
   const locale = useLocale()
   const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -112,8 +113,9 @@ export function Nav() {
           </span>
         </Link>
 
-        {/* Links */}
+        {/* Links — desktop only */}
         <ul
+          className="nav-desktop"
           style={{
             listStyle: 'none',
             display: 'flex',
@@ -154,8 +156,61 @@ export function Nav() {
           ))}
         </ul>
 
+        {/* Hamburger — mobile only */}
+        <button
+          className="nav-mobile"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu openen"
+          style={{
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            color: '#F4ECDB',
+            padding: '.5rem',
+            display: 'none',
+            flexDirection: 'column',
+            gap: 5,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <span
+            style={{
+              width: 22,
+              height: 2,
+              background: '#F4ECDB',
+              borderRadius: 2,
+              transition: 'all .2s',
+              transform: menuOpen ? 'rotate(45deg) translateY(7px)' : 'none',
+            }}
+          />
+          <span
+            style={{
+              width: 22,
+              height: 2,
+              background: '#F4ECDB',
+              borderRadius: 2,
+              opacity: menuOpen ? 0 : 1,
+              transition: 'all .2s',
+            }}
+          />
+          <span
+            style={{
+              width: 22,
+              height: 2,
+              background: '#F4ECDB',
+              borderRadius: 2,
+              transition: 'all .2s',
+              transform: menuOpen ? 'rotate(-45deg) translateY(-7px)' : 'none',
+            }}
+          />
+        </button>
+
         {/* Auth */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
+        <div
+          className="nav-desktop"
+          style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}
+        >
           {user ? (
             <div ref={dropdownRef} style={{ position: 'relative' }}>
               <button
@@ -332,6 +387,129 @@ export function Nav() {
           )}
         </div>
       </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div
+          style={{
+            background: 'rgba(7,25,15,.97)',
+            backdropFilter: 'blur(20px)',
+            borderTop: '1px solid rgba(244,236,219,.1)',
+            padding: '1rem 1.5rem 1.5rem',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '.25rem',
+              marginBottom: '1rem',
+            }}
+          >
+            {links.map(({ label, href }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  color: 'rgba(244,236,219,.8)',
+                  textDecoration: 'none',
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  padding: '.8rem 0',
+                  borderBottom: '1px solid rgba(244,236,219,.06)',
+                  fontFamily: 'var(--font-sans)',
+                }}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+          {user ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
+              <Link
+                href={`/${locale}/dashboard`}
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: '#F4ECDB',
+                  color: '#07190F',
+                  padding: '.9rem',
+                  borderRadius: 12,
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.95rem',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                }}
+              >
+                Dashboard →
+              </Link>
+              <button
+                onClick={() => {
+                  handleLogout()
+                  setMenuOpen(false)
+                }}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid rgba(244,236,219,.2)',
+                  color: 'rgba(244,236,219,.6)',
+                  padding: '.9rem',
+                  borderRadius: 12,
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.95rem',
+                  cursor: 'pointer',
+                }}
+              >
+                Uitloggen
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
+              <Link
+                href={`/${locale}/registreren`}
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: '#F4ECDB',
+                  color: '#07190F',
+                  padding: '.9rem',
+                  borderRadius: 12,
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.95rem',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                }}
+              >
+                {t('register')}
+              </Link>
+              <Link
+                href={`/${locale}/inloggen`}
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'transparent',
+                  border: '1px solid rgba(244,236,219,.2)',
+                  color: 'rgba(244,236,219,.8)',
+                  padding: '.9rem',
+                  borderRadius: 12,
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.95rem',
+                  fontWeight: 600,
+                  textDecoration: 'none',
+                }}
+              >
+                {t('login')}
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
     </nav>
   )
 }

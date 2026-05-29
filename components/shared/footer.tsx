@@ -49,6 +49,7 @@ export function Footer() {
     >
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         <div
+          className="grid-responsive"
           style={{
             display: 'grid',
             gridTemplateColumns: '1.6fr 1fr 1fr 1fr',

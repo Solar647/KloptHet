@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Sidebar } from '@/components/dashboard/sidebar'
+import { MobileBottomNav } from '@/components/dashboard/mobile-bottom-nav'
 
 export default async function DashboardLayout({
   children,
@@ -18,23 +19,20 @@ export default async function DashboardLayout({
   if (!user) redirect(`/${locale}/inloggen`)
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        minHeight: '100vh',
-        fontFamily: 'var(--font-sans)',
-      }}
-    >
-      <Sidebar />
-      <main
-        style={{
-          flex: 1,
-          overflow: 'auto',
-          background: 'transparent',
-        }}
-      >
+    <div style={{ display: 'flex', minHeight: '100vh', fontFamily: 'var(--font-sans)' }}>
+      {/* Sidebar — verborgen op mobiel via CSS */}
+      <div className="dashboard-sidebar" style={{ display: 'flex' }}>
+        <Sidebar />
+      </div>
+
+      <main style={{ flex: 1, overflow: 'auto', paddingBottom: 'env(safe-area-inset-bottom)' }}>
         {children}
       </main>
+
+      {/* Bottom nav — alleen zichtbaar op mobiel via CSS */}
+      <div className="dashboard-bottom-nav" style={{ display: 'none' }}>
+        <MobileBottomNav />
+      </div>
     </div>
   )
 }
