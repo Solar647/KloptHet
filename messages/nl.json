@@ -17,61 +17,137 @@
     "home": "Home",
     "howItWorks": "Hoe het werkt",
     "forWho": "Voor wie",
-    "pricing": "Prijzen",
+    "pricing": "Abonnementen",
     "examples": "Voorbeelden",
     "blog": "Blog",
     "about": "Over ons",
     "contact": "Contact",
-    "login": "Inloggen",
+    "login": "Aanmelden",
     "register": "Gratis proberen",
     "dashboard": "Dashboard"
   },
   "hero": {
-    "heading": "Verdacht appje ontvangen?",
-    "subheading": "Stuur ons een screenshot. We kijken even mee en vertellen je in gewone taal of het te vertrouwen is.",
-    "cta": "Upload een screenshot",
+    "heading": "Twijfelt u over een bericht?",
+    "headingAccent": "Wij kijken mee.",
+    "subheading": "Upload een screenshot van een verdachte WhatsApp of sms. Binnen 5 seconden weet u of het te vertrouwen is — in gewone taal, zonder gedoe.",
+    "cta": "Bericht controleren",
     "ctaSecondary": "Hoe werkt het?",
     "trustBadge": "Europese AI · Geen data bewaard · Gratis proberen"
   },
   "scanner": {
-    "title": "Check een bericht",
-    "uploadLabel": "Sleep je screenshot hiernaartoe",
-    "uploadButton": "Kies een foto",
+    "title": "Controleer een bericht",
+    "uploadLabel": "Sleep uw screenshot hiernaartoe",
+    "uploadButton": "Foto kiezen",
     "orText": "of",
-    "pasteText": "Plak de tekst van het bericht",
+    "pasteLabel": "Plak de tekst van het bericht",
     "pasteButton": "Tekst plakken",
-    "analyzing": "We kijken even mee...",
-    "maxSize": "Maximaal 10 MB · PNG, JPG, HEIC",
-    "privacy": "Je screenshot wordt direct na analyse verwijderd"
+    "pasteToggle": "Liever tekst plakken?",
+    "uploadToggle": "Liever een screenshot uploaden?",
+    "analyzing": "Wij kijken even mee...",
+    "maxSize": "Maximaal 10 MB · PNG, JPG, HEIC, WebP",
+    "privacy": "Uw screenshot wordt direct na analyse verwijderd"
   },
   "verdict": {
     "safe": "Veilig",
     "doubt": "Twijfelachtig",
     "phishing": "Oplichting",
-    "score": "Verdachtheid",
-    "explanation": "Wat zien wij?",
-    "warnings": "Waarschuwingssignalen",
-    "learnMore": "Leer hier meer over →",
-    "scanAgain": "Scan nog een bericht",
-    "report": "Meld bij Fraudehelpdesk",
-    "block": "Hoe blokkeer ik dit nummer?"
+    "scoreLabel": "Verdachtheid",
+    "explanationLabel": "Wat zien wij?",
+    "warningsLabel": "Waarschuwingssignalen",
+    "learnMore": "Lees meer over dit type fraude →",
+    "scanAgain": "Controleer nog een bericht",
+    "reportLink": "Meld bij Fraudehelpdesk",
+    "blockLink": "Hoe blokkeert u dit nummer?"
+  },
+  "pricing": {
+    "title": "Minder dan een kop koffie.",
+    "titleAccent": "Voor altijd gemoedsrust.",
+    "subtitle": "Geen verborgen kosten. Op elk moment opzeggen.",
+    "monthly": "Per maand",
+    "yearly": "Per jaar",
+    "yearlyBadge": "2 maanden gratis",
+    "freeTier": {
+      "name": "Gratis",
+      "tagline": "Voor af en toe controleren",
+      "price": "0",
+      "features": [
+        "3 controles per maand",
+        "Screenshot of tekst",
+        "Basisuitleg per bericht",
+        "Geen creditcard nodig"
+      ],
+      "cta": "Gratis beginnen"
+    },
+    "standardTier": {
+      "name": "Standaard",
+      "tagline": "Voor regelmatig gebruik",
+      "price": "3,99",
+      "features": [
+        "Onbeperkt controles",
+        "Volledige uitleg + leermodule",
+        "Scangeschiedenis (1 jaar)",
+        "Wekelijkse fraude-nieuwsbrief"
+      ],
+      "cta": "14 dagen gratis proberen",
+      "badge": "Meest gekozen"
+    },
+    "familyTier": {
+      "name": "Familie",
+      "tagline": "Bescherm uw hele gezin",
+      "price": "5,99",
+      "features": [
+        "Onbeperkt controles",
+        "Tot 5 familieleden",
+        "Mantelzorger-dashboard",
+        "Meldingen bij verdacht bericht",
+        "Wekelijkse fraude-nieuwsbrief"
+      ],
+      "cta": "Familie beschermen"
+    },
+    "premiumTier": {
+      "name": "Premium",
+      "tagline": "Maximale bescherming",
+      "price": "9,99",
+      "features": [
+        "Alles uit Familie",
+        "Telefonische hulplijn (24/7)",
+        "Persoonlijke installatie-hulp",
+        "Prioriteit-support",
+        "Cadeau-abonnement instellen"
+      ],
+      "cta": "Premium kiezen"
+    },
+    "trustItems": [
+      "Geen verbintenis",
+      "Opzeggen wanneer u wilt",
+      "30 dagen geld-terug-garantie",
+      "Nederlands team"
+    ]
   },
   "auth": {
-    "login": "Inloggen",
+    "login": "Aanmelden",
+    "loginWelcome": "Welkom terug.",
+    "loginSub": "Log in om uw dashboard te openen.",
     "register": "Account aanmaken",
+    "registerWelcome": "Maak een account aan.",
+    "registerSub": "Eerste maand gratis — geen creditcard nodig.",
+    "name": "Naam",
     "email": "E-mailadres",
     "password": "Wachtwoord",
     "forgotPassword": "Wachtwoord vergeten?",
     "noAccount": "Nog geen account?",
+    "createAccount": "Maak er één aan",
     "hasAccount": "Al een account?",
     "agreeTerms": "Ik ga akkoord met de <terms>Algemene Voorwaarden</terms> en <privacy>Privacyverklaring</privacy>",
-    "googleLogin": "Inloggen met Google"
+    "googleLogin": "Inloggen met Google",
+    "loading": "Bezig…"
   },
   "footer": {
     "privacy": "Privacyverklaring",
     "cookies": "Cookies",
     "terms": "Algemene Voorwaarden",
     "impressum": "Impressum",
-    "tagline": "Twijfel is slim. Wij helpen je zeker te weten."
+    "tagline": "Twijfelen is slim. Wij helpen u zeker te weten.",
+    "madeIn": "Gemaakt in Nederland"
   }
 }

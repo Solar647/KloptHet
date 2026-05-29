@@ -1,20 +1,27 @@
 import type { Metadata } from 'next'
-import { Geist } from 'next/font/google'
+import { Fraunces, Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
 
-const geist = Geist({
-  variable: '--font-geist',
+const fraunces = Fraunces({
+  variable: '--font-fraunces',
   subsets: ['latin'],
+  display: 'swap',
+})
+
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin'],
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
   title: 'Klopt Het — Fraudechecker voor WhatsApp en sms',
   description:
-    'Twijfel je over een verdacht WhatsApp- of sms-bericht? Upload een screenshot en wij vertellen je in gewone taal of het te vertrouwen is.',
+    'Twijfelt u over een verdacht WhatsApp- of sms-bericht? Upload een screenshot en wij vertellen u in gewone taal of het te vertrouwen is.',
 }
 
 type Props = {
@@ -32,8 +39,11 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className={`${geist.variable} h-full antialiased`}>
+    <html lang={locale} className={`${fraunces.variable} ${inter.variable} h-full`}>
       <body className="flex min-h-full flex-col">
+        <a href="#main" className="skip-link">
+          Naar hoofdinhoud
+        </a>
         <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
       </body>
     </html>

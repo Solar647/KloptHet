@@ -1,26 +1,156 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ============================================================
+   DESIGN TOKENS — Klopt Het
+   Donker groen / cream palet
+   ============================================================ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors */
+  --color-bg: #0e2418;
+  --color-bg-2: #143a26;
+  --color-deeper: #07190f;
+  --color-green: #1b4731;
+  --color-green-2: #2a6541;
+  --color-cream: #f4ecdb;
+  --color-cream-2: #efe4cc;
+  --color-warn: #e5532a;
+  --color-safe: #3aac6e;
+  --color-doubt: #d97b2a;
+
+  /* Semantic aliases */
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-cream);
+  --color-muted: rgba(244, 236, 219, 0.6);
+  --color-subtle: rgba(244, 236, 219, 0.35);
+  --color-border: rgba(244, 236, 219, 0.16);
+  --color-surface: rgba(244, 236, 219, 0.06);
+  --color-surface-2: rgba(244, 236, 219, 0.1);
+
+  /* Fonts */
+  --font-serif: var(--font-fraunces), 'Georgia', serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-card: 0 30px 60px -20px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 32px -8px rgba(168, 203, 160, 0.25);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================================
+   BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-cream);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Ambient background gradient — fixed, full site */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 50% at 80% 25%, rgba(58, 180, 120, 0.28) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 15% 70%, rgba(28, 120, 75, 0.35) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 60% 90%, rgba(40, 160, 100, 0.18) 0%, transparent 55%),
+    linear-gradient(180deg, #07190f 0%, #0e2418 40%, #102f1f 100%);
+}
+
+/* Paper grain texture */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='280' height='280'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch' seed='7'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 280px 280px;
+}
+
+h1,
+h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+}
+
+::selection {
+  background: var(--color-green);
+  color: var(--color-cream);
+}
+
+/* ============================================================
+   REVEAL ANIMATION
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   SKIP LINK (accessibility)
+   ============================================================ */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: var(--color-cream);
+  color: var(--color-deeper);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* ============================================================
+   FOCUS STYLES
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--color-safe);
+  outline-offset: 3px;
+  border-radius: 4px;
 }
