@@ -39,10 +39,16 @@ export function InstellingenClient({ email, fullName, tier, status, periodEnd }:
     e.preventDefault()
     setSaving(true)
     const supabase = createClient()
-    await supabase
-      .from('profiles')
-      .update({ full_name: name })
-      .eq('id', (await supabase.auth.getUser()).data.user?.id ?? '')
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    await Promise.all([
+      supabase
+        .from('profiles')
+        .update({ full_name: name })
+        .eq('id', user?.id ?? ''),
+      supabase.auth.updateUser({ data: { full_name: name } }),
+    ])
     setSaving(false)
     setSaved(true)
     setTimeout(() => setSaved(false), 2500)
