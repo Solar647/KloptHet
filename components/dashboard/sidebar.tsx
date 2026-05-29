@@ -6,14 +6,23 @@ import { useLocale } from 'next-intl'
 import { Logo } from '@/components/shared/logo'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import {
+  GridIcon,
+  SearchIcon,
+  HistoryIcon,
+  TrainingIcon,
+  FamilyNavIcon,
+  SettingsNavIcon,
+  LogoutNavIcon,
+} from '@/components/shared/icons'
 
 const navItems = [
-  { id: 'dashboard', label: 'Overzicht', icon: '◉', path: '/dashboard' },
-  { id: 'scan', label: 'Bericht controleren', icon: '🔍', path: '/scan' },
-  { id: 'geschiedenis', label: 'Geschiedenis', icon: '◇', path: '/geschiedenis' },
-  { id: 'training', label: 'Training', icon: '◐', path: '/training' },
-  { id: 'familie', label: 'Familie', icon: '◑', path: '/familie' },
-  { id: 'instellingen', label: 'Instellingen', icon: '◎', path: '/instellingen' },
+  { id: 'dashboard', label: 'Overzicht', Icon: GridIcon, path: '/dashboard' },
+  { id: 'scan', label: 'Bericht controleren', Icon: SearchIcon, path: '/scan' },
+  { id: 'geschiedenis', label: 'Geschiedenis', Icon: HistoryIcon, path: '/geschiedenis' },
+  { id: 'training', label: 'Training', Icon: TrainingIcon, path: '/training' },
+  { id: 'familie', label: 'Familie', Icon: FamilyNavIcon, path: '/familie' },
+  { id: 'instellingen', label: 'Instellingen', Icon: SettingsNavIcon, path: '/instellingen' },
 ]
 
 export function Sidebar() {
@@ -106,7 +115,7 @@ export function Sidebar() {
                 transition: 'all .15s',
               }}
             >
-              <span style={{ fontSize: '.9rem', width: 18, textAlign: 'center' }}>{item.icon}</span>
+              <item.Icon size={16} strokeWidth={1.8} />
               {item.label}
             </Link>
           )
@@ -145,7 +154,8 @@ export function Sidebar() {
             e.currentTarget.style.color = 'rgba(244,236,219,.4)'
           }}
         >
-          ← Uitloggen
+          <LogoutNavIcon size={15} strokeWidth={1.8} />
+          Uitloggen
         </button>
       </div>
     </aside>
