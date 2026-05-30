@@ -12,12 +12,47 @@ export function Hero() {
         position: 'relative',
         minHeight: '100vh',
         overflow: 'hidden',
-        background: '#06130C',
+        background: '#05110A',
         isolation: 'isolate',
         display: 'flex',
         flexDirection: 'column',
       }}
     >
+      {/* ── ACHTERGROND LAAG ── */}
+      {/* Grote cirkel glow */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '-20%',
+          right: '-10%',
+          width: '70vw',
+          height: '70vw',
+          maxWidth: 900,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27,71,49,.55) 0%, transparent 70%)',
+          filter: 'blur(80px)',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
+      {/* Tweede glow links */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '-10%',
+          left: '-5%',
+          width: '50vw',
+          height: '50vw',
+          maxWidth: 600,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(58,172,110,.12) 0%, transparent 65%)',
+          filter: 'blur(60px)',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
       {/* Grain */}
       <div
         aria-hidden="true"
@@ -26,27 +61,26 @@ export function Hero() {
           inset: 0,
           zIndex: 0,
           pointerEvents: 'none',
-          opacity: 0.055,
-          mixBlendMode: 'overlay',
+          opacity: 0.04,
+          mixBlendMode: 'screen',
           backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
           backgroundSize: '200px 200px',
         }}
       />
 
-      {/* Glow spots */}
+      {/* ── GROTE DECORATIEVE RING ── */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: '-5%',
-          left: '30%',
-          width: '55%',
-          height: '55%',
-          background:
-            'radial-gradient(ellipse at center, rgba(58,172,110,.18) 0%, transparent 65%)',
-          filter: 'blur(80px)',
-          zIndex: 0,
+          top: '8%',
+          right: '-8%',
+          width: 'clamp(300px, 55vw, 650px)',
+          height: 'clamp(300px, 55vw, 650px)',
+          borderRadius: '50%',
+          border: '1px solid rgba(58,172,110,.12)',
+          zIndex: 1,
           pointerEvents: 'none',
         }}
       />
@@ -54,23 +88,141 @@ export function Hero() {
         aria-hidden="true"
         style={{
           position: 'absolute',
-          bottom: '10%',
+          top: '12%',
           right: '-5%',
-          width: '40%',
-          height: '50%',
-          background: 'radial-gradient(ellipse at center, rgba(27,71,49,.35) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-          zIndex: 0,
+          width: 'clamp(220px, 42vw, 500px)',
+          height: 'clamp(220px, 42vw, 500px)',
+          borderRadius: '50%',
+          border: '1px solid rgba(244,236,219,.05)',
+          zIndex: 1,
           pointerEvents: 'none',
         }}
       />
 
-      {/* ── NAV AREA ── */}
+      {/* ── PHONE MOCKUP — rechts zweeft ── */}
+      <div
+        className="hero-top-strip-extras"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          right: 'clamp(2rem, 8vw, 8rem)',
+          transform: 'translateY(-48%) rotate(5deg)',
+          zIndex: 4,
+          pointerEvents: 'none',
+        }}
+      >
+        <PhoneMockup />
+      </div>
+
+      {/* ── STICKERS — organic, niet rechthoekig ── */}
+
+      {/* Sticker 1 — groene pill, links */}
+      <div
+        className="hero-top-strip-extras"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '22%',
+          left: 'clamp(1rem, 4vw, 5rem)',
+          background: '#3AAC6E',
+          borderRadius: 9999,
+          padding: '.5rem 1rem',
+          fontFamily: 'var(--font-serif)',
+          fontWeight: 700,
+          fontSize: 'clamp(.6rem, .8vw, .75rem)',
+          letterSpacing: '.08em',
+          textTransform: 'uppercase',
+          color: '#05110A',
+          transform: 'rotate(-8deg)',
+          zIndex: 4,
+          boxShadow: '0 4px 16px rgba(58,172,110,.3)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        Kleinkind-truc
+      </div>
+
+      {/* Sticker 2 — outline badge rechts */}
+      <div
+        className="hero-top-strip-extras"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '15%',
+          right: 'clamp(2rem, 18vw, 22rem)',
+          border: '2px solid rgba(244,236,219,.3)',
+          borderRadius: 8,
+          padding: '.4rem .75rem',
+          fontFamily: 'var(--font-serif)',
+          fontWeight: 700,
+          fontSize: 'clamp(.55rem, .7vw, .68rem)',
+          letterSpacing: '.08em',
+          textTransform: 'uppercase',
+          color: 'rgba(244,236,219,.55)',
+          transform: 'rotate(6deg)',
+          zIndex: 4,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        Bank-imitatie
+      </div>
+
+      {/* Sticker 3 — oranje/rood outline onderin links */}
+      <div
+        className="hero-top-strip-extras"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '22%',
+          left: 'clamp(1rem, 5vw, 6rem)',
+          border: '2px solid rgba(229,83,42,.4)',
+          borderRadius: 9999,
+          padding: '.4rem .9rem',
+          fontFamily: 'ui-monospace, monospace',
+          fontWeight: 700,
+          fontSize: 'clamp(.55rem, .65vw, .62rem)',
+          letterSpacing: '.1em',
+          textTransform: 'uppercase',
+          color: 'rgba(229,83,42,.8)',
+          transform: 'rotate(4deg)',
+          zIndex: 4,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        ⚠ Bezorg-fraude
+      </div>
+
+      {/* Sticker 4 — tiny pill rechtsonder */}
+      <div
+        className="hero-top-strip-extras"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '30%',
+          right: 'clamp(2rem, 20vw, 25rem)',
+          background: 'rgba(58,172,110,.15)',
+          border: '1px solid rgba(58,172,110,.3)',
+          borderRadius: 9999,
+          padding: '.35rem .75rem',
+          fontFamily: 'ui-monospace, monospace',
+          fontSize: 'clamp(.5rem, .6vw, .58rem)',
+          letterSpacing: '.12em',
+          textTransform: 'uppercase',
+          color: '#3AAC6E',
+          transform: 'rotate(-5deg)',
+          zIndex: 4,
+          whiteSpace: 'nowrap',
+        }}
+      >
+        5 sec · EU AI
+      </div>
+
+      {/* ── NAV ── */}
       <div
         style={{
           position: 'relative',
           zIndex: 10,
-          padding: 'clamp(1.5rem, 3vw, 2rem) clamp(1.5rem, 4vw, 4rem)',
+          padding: 'clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.5rem, 4vw, 4rem)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -80,7 +232,7 @@ export function Hero() {
           style={{
             fontFamily: 'var(--font-serif)',
             fontWeight: 700,
-            fontSize: '1.1rem',
+            fontSize: '1.05rem',
             color: '#F4ECDB',
             letterSpacing: '-.02em',
           }}
@@ -89,256 +241,173 @@ export function Hero() {
         </div>
         <div
           style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 7,
             fontFamily: 'ui-monospace, monospace',
-            fontSize: '.65rem',
-            color: 'rgba(244,236,219,.35)',
-            letterSpacing: '.18em',
+            fontSize: '.6rem',
+            color: 'rgba(244,236,219,.3)',
+            letterSpacing: '.16em',
             textTransform: 'uppercase',
           }}
         >
-          fraude-checker · NL · 2026
+          <span
+            style={{
+              width: 5,
+              height: 5,
+              borderRadius: '50%',
+              background: '#3AAC6E',
+              boxShadow: '0 0 6px #3AAC6E',
+            }}
+          />
+          Live · NL · 2026
         </div>
       </div>
 
-      {/* ── HERO BODY — vrije compositie ── */}
+      {/* ── HOOFD CONTENT ── */}
       <div
         style={{
           position: 'relative',
-          zIndex: 3,
+          zIndex: 5,
           flex: 1,
-          padding: '0 clamp(1.5rem, 4vw, 4rem) clamp(3rem, 5vw, 5rem)',
+          padding: '0 clamp(1.5rem, 4vw, 4rem) clamp(3rem, 6vw, 5rem)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
+          maxWidth: 1400,
+          width: '100%',
         }}
       >
-        {/* Eyebrow — licht gekanteld */}
+        {/* Label */}
         <div
           style={{
             display: 'inline-flex',
             alignItems: 'center',
             gap: 8,
-            marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
-            transform: 'rotate(-1.5deg)',
+            marginBottom: 'clamp(.75rem, 1.5vw, 1.25rem)',
+            transform: 'rotate(-1.2deg)',
             transformOrigin: 'left center',
             alignSelf: 'flex-start',
           }}
         >
           <span
             style={{
-              width: 6,
-              height: 6,
-              borderRadius: '50%',
-              background: '#3AAC6E',
-              boxShadow: '0 0 8px #3AAC6E',
-            }}
-          />
-          <span
-            style={{
               fontFamily: 'ui-monospace, monospace',
-              fontSize: '.7rem',
-              color: 'rgba(244,236,219,.4)',
-              letterSpacing: '.18em',
+              fontSize: '.65rem',
+              color: 'rgba(244,236,219,.35)',
+              letterSpacing: '.2em',
               textTransform: 'uppercase',
             }}
           >
-            De fraude-checker voor WhatsApp en sms
+            Fraude-checker voor WhatsApp en sms
           </span>
         </div>
 
-        {/* ── TYPOGRAFIE BLOK — het hart ── */}
-        <div style={{ position: 'relative' }}>
-          {/* Lijn 1 — klein, gedraaid */}
+        {/* TYPOGRAFIE */}
+        <div style={{ position: 'relative', lineHeight: 1 }}>
+          {/* "TWIJFELT U" — klein, licht transparant, gedraaid */}
           <div
             style={{
-              display: 'flex',
-              alignItems: 'baseline',
-              gap: '0.3em',
-              transform: 'rotate(-2deg)',
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 700,
+              fontSize: 'clamp(1.6rem, 4.5vw, 4.5rem)',
+              letterSpacing: '-.03em',
+              color: 'rgba(244,236,219,.5)',
+              transform: 'rotate(-1.8deg)',
               transformOrigin: 'left bottom',
-              marginBottom: '-0.12em',
-              marginLeft: '0.5rem',
+              display: 'inline-block',
+              marginBottom: '-0.06em',
+              marginLeft: '0.6rem',
             }}
           >
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 700,
-                fontSize: 'clamp(1.8rem, 5vw, 5rem)',
-                lineHeight: 1,
-                letterSpacing: '-.03em',
-                color: 'rgba(244,236,219,.6)',
-              }}
-            >
-              TWIJFELT U
-            </span>
-            {/* Floating sticker naast lijn 1 */}
-            <div
-              className="hero-top-strip-extras"
-              style={{
-                background: 'rgba(244,236,219,.08)',
-                border: '1.5px solid rgba(244,236,219,.2)',
-                borderRadius: 6,
-                padding: '.3rem .6rem',
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 700,
-                fontSize: '.6rem',
-                letterSpacing: '.08em',
-                textTransform: 'uppercase',
-                color: 'rgba(244,236,219,.5)',
-                transform: 'rotate(4deg)',
-                marginLeft: '1rem',
-                flexShrink: 0,
-                alignSelf: 'center',
-              }}
-            >
-              KLEINKIND-TRUC
-            </div>
+            TWIJFELT U
           </div>
 
-          {/* Lijn 2 — mega groot, cream */}
-          <div style={{ lineHeight: 0.85, marginLeft: '-0.03em' }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 700,
-                fontSize: 'clamp(5rem, 18vw, 18rem)',
-                letterSpacing: '-.05em',
-                color: '#F4ECDB',
-                display: 'block',
-              }}
-            >
-              OVER
-            </span>
-          </div>
-
-          {/* Lijn 3 — mega groot, groen, offset rechts */}
+          {/* "OVER" — enorm */}
           <div
             style={{
-              lineHeight: 0.85,
-              marginLeft: 'clamp(1rem, 8vw, 10rem)',
-              marginTop: '-0.05em',
-              display: 'flex',
-              alignItems: 'flex-end',
-              gap: '0.4em',
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 700,
+              fontSize: 'clamp(5.5rem, 20vw, 20rem)',
+              letterSpacing: '-.05em',
+              color: '#F4ECDB',
+              lineHeight: 0.82,
+              display: 'block',
+              marginLeft: '-0.04em',
+            }}
+          >
+            OVER
+          </div>
+
+          {/* "EEN" — enorm, groen, offset + schuin lijntje erdoor */}
+          <div
+            style={{
+              position: 'relative',
+              display: 'inline-block',
+              marginLeft: 'clamp(.5rem, 5vw, 6rem)',
             }}
           >
             <span
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontWeight: 700,
-                fontSize: 'clamp(5rem, 18vw, 18rem)',
+                fontSize: 'clamp(5.5rem, 20vw, 20rem)',
                 letterSpacing: '-.05em',
                 color: '#3AAC6E',
+                lineHeight: 0.82,
+                display: 'block',
               }}
             >
               EEN
             </span>
-
-            {/* Floating mock bericht — naast EEN */}
-            <div
-              className="hero-top-strip-extras"
+            {/* Decoratieve schuine streep */}
+            <svg
               style={{
-                background: 'rgba(20,58,38,.9)',
-                border: '1px solid rgba(58,172,110,.3)',
-                borderRadius: 14,
-                padding: '1rem 1.1rem',
-                marginBottom: '1.5rem',
-                flexShrink: 0,
-                maxWidth: 220,
-                transform: 'rotate(3deg)',
-                boxShadow: '0 20px 40px rgba(0,0,0,.4)',
+                position: 'absolute',
+                bottom: '10%',
+                left: '-4%',
+                width: '108%',
+                height: '18%',
+                overflow: 'visible',
+                pointerEvents: 'none',
               }}
+              aria-hidden="true"
             >
-              <div
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.7rem',
-                  color: 'rgba(244,236,219,.4)',
-                  marginBottom: '.4rem',
-                }}
-              >
-                +31 6 82 49 17 53 · Onbekend
-              </div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.82rem',
-                  color: 'rgba(244,236,219,.85)',
-                  lineHeight: 1.5,
-                }}
-              >
-                &ldquo;Hoi mama, dit is mijn nieuwe nummer. Kun je me €450 sturen?&rdquo;
-              </div>
-              <div
-                style={{
-                  marginTop: '.6rem',
-                  padding: '.3rem .6rem',
-                  background: 'rgba(229,83,42,.15)',
-                  border: '1px solid rgba(229,83,42,.3)',
-                  borderRadius: 6,
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.65rem',
-                  fontWeight: 700,
-                  color: '#E5532A',
-                  letterSpacing: '.06em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                ⚠ Meerdere waarschuwingen
-              </div>
-            </div>
+              <line
+                x1="0%"
+                y1="70%"
+                x2="100%"
+                y2="30%"
+                stroke="#3AAC6E"
+                strokeWidth="3"
+                strokeLinecap="round"
+                opacity="0.4"
+                strokeDasharray="8 6"
+              />
+            </svg>
           </div>
 
-          {/* Lijn 4 — medium, gedraaid rechts uitgelijnd */}
+          {/* "BERICHT?" — medium, rechts, gedraaid */}
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              transform: 'rotate(1.5deg)',
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 700,
+              fontSize: 'clamp(2.2rem, 7vw, 7.5rem)',
+              letterSpacing: '-.04em',
+              color: '#F4ECDB',
+              lineHeight: 0.9,
+              display: 'block',
+              textAlign: 'right',
+              transform: 'rotate(1.2deg)',
               transformOrigin: 'right bottom',
-              marginTop: '-0.08em',
+              marginTop: '-0.04em',
             }}
           >
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 700,
-                fontSize: 'clamp(2.5rem, 8vw, 8rem)',
-                lineHeight: 0.9,
-                letterSpacing: '-.04em',
-                color: '#F4ECDB',
-              }}
-            >
-              BERICHT?
-            </span>
+            BERICHT?
           </div>
-
-          {/* SVG squiggle decoratie */}
-          <svg
-            className="hero-bottom-strip-extras"
-            width="180"
-            height="30"
-            viewBox="0 0 180 30"
-            style={{
-              position: 'absolute',
-              bottom: '-1rem',
-              left: '5%',
-              opacity: 0.25,
-            }}
-            aria-hidden="true"
-          >
-            <path
-              d="M0 15 C30 5, 60 25, 90 15 S150 5, 180 15"
-              stroke="#3AAC6E"
-              strokeWidth="2.5"
-              fill="none"
-              strokeLinecap="round"
-            />
-          </svg>
         </div>
 
-        {/* ── BOTTOM ROW ── */}
+        {/* ── BOTTOM BAR ── */}
         <div
           style={{
             display: 'flex',
@@ -346,23 +415,23 @@ export function Hero() {
             alignItems: 'flex-end',
             justifyContent: 'space-between',
             gap: '1.5rem',
-            marginTop: 'clamp(2rem, 4vw, 3.5rem)',
-            paddingTop: '1.25rem',
-            borderTop: '1px solid rgba(244,236,219,.1)',
+            marginTop: 'clamp(1.5rem, 3vw, 2.5rem)',
+            paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)',
+            borderTop: '1px solid rgba(244,236,219,.08)',
           }}
         >
           <p
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: 'clamp(.9rem, 1.1vw, 1.05rem)',
-              lineHeight: 1.7,
-              color: 'rgba(244,236,219,.55)',
+              fontSize: 'clamp(.88rem, 1.1vw, 1rem)',
+              lineHeight: 1.75,
+              color: 'rgba(244,236,219,.5)',
               margin: 0,
               maxWidth: 380,
             }}
           >
-            Upload een screenshot. Wij analyseren en vertellen u in gewone taal of het te vertrouwen
-            is.
+            Upload een screenshot. Binnen 5 seconden weet u of het te vertrouwen is — in gewone
+            taal, zonder gedoe.
           </p>
 
           <div style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -372,32 +441,35 @@ export function Hero() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '.6rem',
-                padding: '1rem 1.75rem',
-                borderRadius: 10,
+                padding: '.95rem 1.7rem',
+                borderRadius: 12,
                 fontFamily: 'var(--font-serif)',
                 fontWeight: 700,
-                fontSize: '1rem',
+                fontSize: '.95rem',
+                letterSpacing: '.01em',
                 textDecoration: 'none',
                 background: '#3AAC6E',
-                color: '#06130C',
-                boxShadow: '0 8px 30px -8px rgba(58,172,110,.55)',
-                transition: 'transform .15s',
+                color: '#05110A',
+                boxShadow: '0 8px 32px -8px rgba(58,172,110,.6)',
+                transition: 'transform .2s cubic-bezier(.16,1,.3,1), box-shadow .2s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px) rotate(-1deg)'
+                e.currentTarget.style.transform = 'translateY(-3px) rotate(-1deg)'
+                e.currentTarget.style.boxShadow = '0 16px 40px -8px rgba(58,172,110,.7)'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0) rotate(0)'
+                e.currentTarget.style.boxShadow = '0 8px 32px -8px rgba(58,172,110,.6)'
               }}
             >
-              Bericht controleren
+              Controleer een bericht
               <svg
-                width="16"
-                height="16"
+                width="15"
+                height="15"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2.4"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 aria-hidden="true"
@@ -409,51 +481,233 @@ export function Hero() {
             <Link
               href={`/${locale}/#hoe-het-werkt`}
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '.5rem',
-                padding: '1rem 1.3rem',
-                borderRadius: 10,
+                padding: '.95rem 1.3rem',
+                borderRadius: 12,
                 fontFamily: 'var(--font-sans)',
                 fontWeight: 600,
-                fontSize: '.9rem',
-                border: '1.5px solid rgba(244,236,219,.18)',
+                fontSize: '.88rem',
+                border: '1.5px solid rgba(244,236,219,.15)',
                 background: 'rgba(244,236,219,.04)',
-                color: 'rgba(244,236,219,.7)',
+                color: 'rgba(244,236,219,.65)',
                 textDecoration: 'none',
-                transition: 'border-color .15s',
+                transition: 'border-color .15s, color .15s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(244,236,219,.35)'
+                e.currentTarget.style.borderColor = 'rgba(244,236,219,.3)'
+                e.currentTarget.style.color = '#F4ECDB'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(244,236,219,.18)'
+                e.currentTarget.style.borderColor = 'rgba(244,236,219,.15)'
+                e.currentTarget.style.color = 'rgba(244,236,219,.65)'
               }}
             >
               Hoe werkt het?
             </Link>
-
-            {/* Mini badge — ook gedraaid */}
-            <div
-              className="hero-top-strip-extras"
-              style={{
-                background: 'rgba(58,172,110,.12)',
-                border: '1px solid rgba(58,172,110,.25)',
-                borderRadius: 9999,
-                padding: '.5rem .9rem',
-                fontFamily: 'ui-monospace, monospace',
-                fontSize: '.62rem',
-                color: '#3AAC6E',
-                letterSpacing: '.1em',
-                textTransform: 'uppercase',
-                transform: 'rotate(-2deg)',
-              }}
-            >
-              Gratis proberen
-            </div>
           </div>
         </div>
       </div>
     </section>
+  )
+}
+
+function PhoneMockup() {
+  return (
+    <div
+      style={{
+        width: 'clamp(180px, 20vw, 260px)',
+        background: '#0C2416',
+        border: '2px solid rgba(58,172,110,.2)',
+        borderRadius: 32,
+        padding: '1.5rem 1rem 1rem',
+        boxShadow: '0 40px 80px -20px rgba(0,0,0,.7), 0 0 0 1px rgba(58,172,110,.1)',
+        position: 'relative',
+      }}
+    >
+      {/* Notch */}
+      <div
+        style={{
+          width: 60,
+          height: 6,
+          borderRadius: 9999,
+          background: 'rgba(244,236,219,.1)',
+          margin: '0 auto 1.25rem',
+        }}
+      />
+
+      {/* Status bar */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '.75rem',
+          fontFamily: 'var(--font-sans)',
+          fontSize: '.55rem',
+          color: 'rgba(244,236,219,.4)',
+        }}
+      >
+        <span>9:41</span>
+        <span>●●●</span>
+      </div>
+
+      {/* WhatsApp header */}
+      <div
+        style={{
+          background: 'rgba(244,236,219,.06)',
+          borderRadius: 10,
+          padding: '.6rem .75rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '.5rem',
+          marginBottom: '.75rem',
+          border: '1px solid rgba(244,236,219,.08)',
+        }}
+      >
+        <div
+          style={{
+            width: 28,
+            height: 28,
+            borderRadius: '50%',
+            background: 'rgba(244,236,219,.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: 'var(--font-serif)',
+            fontWeight: 700,
+            fontSize: '.7rem',
+            color: 'rgba(244,236,219,.5)',
+            flexShrink: 0,
+          }}
+        >
+          ?
+        </div>
+        <div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 600,
+              fontSize: '.65rem',
+              color: '#F4ECDB',
+            }}
+          >
+            +31 6 82 49 17 53
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.52rem',
+              color: 'rgba(244,236,219,.35)',
+            }}
+          >
+            Onbekend nummer
+          </div>
+        </div>
+      </div>
+
+      {/* Bericht bubble */}
+      <div
+        style={{
+          background: 'rgba(244,236,219,.08)',
+          border: '1px solid rgba(244,236,219,.1)',
+          borderRadius: '4px 12px 12px 12px',
+          padding: '.65rem .75rem',
+          marginBottom: '.5rem',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.62rem',
+            color: 'rgba(244,236,219,.8)',
+            lineHeight: 1.55,
+          }}
+        >
+          Hoi mama, dit is mijn nieuwe nummer. Kun je me €450 sturen?
+        </div>
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.5rem',
+            color: 'rgba(244,236,219,.3)',
+            textAlign: 'right',
+            marginTop: '.3rem',
+          }}
+        >
+          14:23 ✓✓
+        </div>
+      </div>
+
+      {/* Verdict badge */}
+      <div
+        style={{
+          background: 'rgba(229,83,42,.15)',
+          border: '1px solid rgba(229,83,42,.35)',
+          borderRadius: 8,
+          padding: '.45rem .6rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 5,
+        }}
+      >
+        <div
+          style={{
+            width: 5,
+            height: 5,
+            borderRadius: '50%',
+            background: '#E5532A',
+            flexShrink: 0,
+            boxShadow: '0 0 5px #E5532A',
+          }}
+        />
+        <div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 700,
+              fontSize: '.55rem',
+              color: '#E5532A',
+              letterSpacing: '.04em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Meerdere waarschuwingen
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.5rem',
+              color: 'rgba(244,236,219,.45)',
+              marginTop: 1,
+            }}
+          >
+            Score 8/10 · Kleinkind-truc
+          </div>
+        </div>
+      </div>
+
+      {/* Onderste balk */}
+      <div
+        style={{
+          marginTop: '.85rem',
+          paddingTop: '.65rem',
+          borderTop: '1px solid rgba(244,236,219,.06)',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontWeight: 700,
+            fontSize: '.55rem',
+            color: '#3AAC6E',
+            letterSpacing: '.06em',
+            textTransform: 'uppercase',
+          }}
+        >
+          KloptHet — Analyseren →
+        </div>
+      </div>
+    </div>
   )
 }
