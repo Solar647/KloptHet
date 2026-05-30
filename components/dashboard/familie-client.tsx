@@ -130,7 +130,7 @@ export function FamilieClient({ tier, userEmail }: Props) {
               ))}
             </div>
             <Link
-              href={`/${locale}/abonnement`}
+              href={`/${locale}/abonnement/checkout?tier=family`}
               style={{
                 background: '#3AAC6E',
                 color: '#07190F',
@@ -142,7 +142,7 @@ export function FamilieClient({ tier, userEmail }: Props) {
                 textDecoration: 'none',
               }}
             >
-              Upgrade naar Familie — €5,99/mnd <ArrowRightIcon size={14} strokeWidth={2.2} />
+              Upgraden naar Familie — €5,99/mnd <ArrowRightIcon size={14} strokeWidth={2.2} />
             </Link>
           </div>
         </div>

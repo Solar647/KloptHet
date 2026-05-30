@@ -14,6 +14,7 @@ import {
   FamilyNavIcon,
   SettingsNavIcon,
   LogoutNavIcon,
+  BadgeIcon,
 } from '@/components/shared/icons'
 
 const navItems = [
@@ -22,6 +23,7 @@ const navItems = [
   { id: 'geschiedenis', label: 'Geschiedenis', Icon: HistoryIcon, path: '/geschiedenis' },
   { id: 'training', label: 'Training', Icon: TrainingIcon, path: '/training' },
   { id: 'familie', label: 'Familie', Icon: FamilyNavIcon, path: '/familie' },
+  { id: 'abonnement', label: 'Abonnement', Icon: BadgeIcon, path: '/abonnement' },
   { id: 'instellingen', label: 'Instellingen', Icon: SettingsNavIcon, path: '/instellingen' },
 ]
 
