@@ -6,6 +6,7 @@ import { useLocale } from 'next-intl'
 import { Logo } from '@/components/shared/logo'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import {
   GridIcon,
   SearchIcon,
@@ -27,10 +28,20 @@ const navItems = [
   { id: 'instellingen', label: 'Instellingen', Icon: SettingsNavIcon, path: '/instellingen' },
 ]
 
+const ADMIN_EMAIL = 'oscar1056gm@gmail.com'
+
 export function Sidebar() {
   const locale = useLocale()
   const pathname = usePathname()
   const router = useRouter()
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => {
+      setIsAdmin(data.user?.email === ADMIN_EMAIL)
+    })
+  }, [])
 
   const handleLogout = async () => {
     const supabase = createClient()
@@ -124,13 +135,36 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Uitloggen */}
+      {/* Uitloggen + Admin */}
       <div
         style={{
           padding: '1rem .75rem 1.5rem',
           borderTop: '1px solid rgba(244,236,219,.06)',
         }}
       >
+        {isAdmin && (
+          <Link
+            href={`/${locale}/admin`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+              padding: '.6rem .85rem',
+              borderRadius: 8,
+              marginBottom: 4,
+              background: pathname.includes('/admin') ? 'rgba(229,83,42,.1)' : 'transparent',
+              color: 'rgba(229,83,42,.7)',
+              textDecoration: 'none',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.82rem',
+              fontWeight: 600,
+              transition: 'all .15s',
+            }}
+          >
+            <span style={{ fontSize: '.7rem' }}>⚙</span>
+            Admin
+          </Link>
+        )}
         <button
           onClick={handleLogout}
           style={{
