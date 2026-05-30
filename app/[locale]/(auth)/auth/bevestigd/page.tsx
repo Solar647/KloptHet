@@ -1,27 +1,13 @@
-'use client'
-
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useLocale } from 'next-intl'
 import Link from 'next/link'
 import { AuthCard } from '@/components/auth/auth-card'
 
-export default function BevestigdPage() {
-  const locale = useLocale()
-  const router = useRouter()
-
-  // Na 3 seconden automatisch doorsturen
-  useEffect(() => {
-    const t = setTimeout(() => {
-      router.push(`/${locale}/dashboard`)
-    }, 3000)
-    return () => clearTimeout(t)
-  }, [locale, router])
+export default async function BevestigdPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
 
   return (
     <AuthCard
       title="E-mail bevestigd!"
-      subtitle="Uw account is actief. U wordt zo doorgestuurd naar uw dashboard."
+      subtitle="Uw account is actief. U kunt nu inloggen op elk apparaat."
     >
       <div
         style={{
@@ -43,12 +29,12 @@ export default function BevestigdPage() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto .75rem',
+            margin: '0 auto 1rem',
           }}
         >
           <svg
-            width="22"
-            height="22"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="none"
             stroke="#3AAC6E"
@@ -63,28 +49,29 @@ export default function BevestigdPage() {
         <p
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '.9rem',
-            color: 'rgba(244,236,219,.75)',
-            margin: '0 0 .5rem',
-            lineHeight: 1.6,
+            fontSize: '.95rem',
+            color: 'rgba(244,236,219,.85)',
+            margin: '0 0 .4rem',
+            fontWeight: 600,
           }}
         >
-          U bent nu ingelogd op dit apparaat.
+          Uw e-mailadres is bevestigd.
         </p>
         <p
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '.78rem',
-            color: 'rgba(244,236,219,.4)',
+            fontSize: '.85rem',
+            color: 'rgba(244,236,219,.5)',
             margin: 0,
+            lineHeight: 1.6,
           }}
         >
-          Doorsturen over enkele seconden…
+          Ga terug naar het apparaat waarop u wilt inloggen en klik op de knop hieronder.
         </p>
       </div>
 
       <Link
-        href={`/${locale}/dashboard`}
+        href={`/${locale}/inloggen`}
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -94,7 +81,6 @@ export default function BevestigdPage() {
           padding: '1rem',
           background: '#3AAC6E',
           color: '#07190F',
-          border: 'none',
           borderRadius: 12,
           fontSize: '1rem',
           fontWeight: 700,
@@ -103,8 +89,21 @@ export default function BevestigdPage() {
           boxShadow: '0 8px 24px rgba(58,172,110,.25)',
         }}
       >
-        Naar mijn dashboard →
+        Inloggen →
       </Link>
+
+      <p
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '.75rem',
+          color: 'rgba(244,236,219,.3)',
+          textAlign: 'center',
+          marginTop: '.75rem',
+          lineHeight: 1.5,
+        }}
+      >
+        U kunt inloggen op elk apparaat — pc, telefoon of tablet.
+      </p>
     </AuthCard>
   )
 }

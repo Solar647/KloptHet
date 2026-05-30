@@ -65,21 +65,30 @@ export default function RegistrerenPage() {
             fontFamily: 'var(--font-sans)',
           }}
         >
-          ✓ Klik op de link in uw e-mail om uw account te activeren. De link werkt op elk apparaat —
-          ook als u de e-mail op uw telefoon opent. Controleer ook uw spammap.
+          ✓ Klik op de link in uw e-mail om uw e-mailadres te bevestigen. De link werkt op elk
+          apparaat. Controleer ook uw spammap.
         </div>
-        <p
+        <Link
+          href={`/${locale}/inloggen`}
           style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            marginTop: '1rem',
+            padding: '1rem',
+            background: 'rgba(58,172,110,.12)',
+            border: '1px solid rgba(58,172,110,.3)',
+            borderRadius: 12,
+            color: '#3AAC6E',
             fontFamily: 'var(--font-sans)',
-            fontSize: '.78rem',
-            color: 'rgba(244,236,219,.35)',
-            margin: '.75rem 0 0',
-            textAlign: 'center',
-            lineHeight: 1.5,
+            fontSize: '.92rem',
+            fontWeight: 700,
+            textDecoration: 'none',
           }}
         >
-          Na het klikken op de link bent u direct ingelogd op dat apparaat.
-        </p>
+          E-mail bevestigd? Klik hier om in te loggen →
+        </Link>
       </AuthCard>
     )
   }
