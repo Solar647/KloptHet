@@ -167,10 +167,9 @@ export default async function AbonnementPage({ params }: { params: Promise<{ loc
         className="pricing-grid"
       >
         {tiers.map((tier) => {
+          const tierOrder = ['free', 'standard', 'family', 'premium']
           const isCurrent = tier.id === currentTier
-          const isUpgrade =
-            ['free', 'standard', 'family'].indexOf(currentTier) <
-            ['standard', 'family', 'premium'].indexOf(tier.id)
+          const isUpgrade = tierOrder.indexOf(tier.id) > tierOrder.indexOf(currentTier)
 
           return (
             <div
@@ -342,7 +341,7 @@ export default async function AbonnementPage({ params }: { params: Promise<{ loc
                     transition: 'opacity .15s',
                   }}
                 >
-                  {isUpgrade ? `Upgraden naar ${tier.name}` : `Downgraden`}
+                  {isUpgrade ? `Upgraden naar ${tier.name}` : `Wijzigen naar ${tier.name}`}
                 </Link>
               )}
             </div>
