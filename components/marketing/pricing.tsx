@@ -15,8 +15,7 @@ const tiers = [
       'Wekelijkse fraude-nieuwsbrief',
     ],
     cta: '14 dagen gratis proberen',
-    highlight: true,
-    badge: 'Meest gekozen',
+    highlight: false,
   },
   {
     name: 'Familie',
@@ -46,7 +45,8 @@ const tiers = [
       'Cadeau-abonnement instellen',
     ],
     cta: 'Premium kiezen',
-    highlight: false,
+    highlight: true,
+    badge: 'Meest gekozen',
   },
 ]
 
@@ -54,7 +54,6 @@ const trustItems = [
   { icon: '✓', label: 'Geen verbintenis' },
   { icon: '↺', label: 'Opzeggen wanneer u wilt' },
   { icon: '€', label: '30 dagen geld-terug-garantie' },
-  { icon: '🇳🇱', label: 'Nederlands team' },
 ]
 
 export function Pricing() {
