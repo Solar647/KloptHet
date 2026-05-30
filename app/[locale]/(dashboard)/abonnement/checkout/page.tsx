@@ -55,16 +55,17 @@ function CheckoutContent() {
       data: { user },
     } = await supabase.auth.getUser()
     if (user) {
-      await supabase
-        .from('subscriptions')
-        .update({
+      await supabase.from('subscriptions').upsert(
+        {
+          user_id: user.id,
           tier: tierParam,
           status: 'active',
           current_period_end: new Date(
             Date.now() + (billing === 'yearly' ? 365 : 30) * 24 * 60 * 60 * 1000
           ).toISOString(),
-        })
-        .eq('user_id', user.id)
+        },
+        { onConflict: 'user_id' }
+      )
     }
 
     setLoading(false)

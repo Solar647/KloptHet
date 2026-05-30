@@ -3,160 +3,96 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
+import { createClient } from '@/lib/supabase/client'
 import { FamilyNavIcon, CheckIcon, ArrowRightIcon } from '@/components/shared/icons'
 
 type Props = {
   tier: string
   userEmail: string
+  initialInvited: { email: string; status: string }[]
 }
 
-const mockMembers = [{ name: 'U (eigenaar)', email: '', role: 'owner', joined: true }]
+const maxMembers: Record<string, number> = {
+  free: 1,
+  standard: 1,
+  family: 5,
+  premium: 5,
+}
 
-export function FamilieClient({ tier, userEmail }: Props) {
+export function FamilieClient({ tier, userEmail, initialInvited }: Props) {
   const locale = useLocale()
   const [inviteEmail, setInviteEmail] = useState('')
-  const [invited, setInvited] = useState<string[]>([])
+  const [invited, setInvited] = useState(initialInvited)
   const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
 
   const canInvite = tier === 'family' || tier === 'premium'
-  const maxMembers = tier === 'premium' ? 5 : tier === 'family' ? 5 : 1
+  const max = maxMembers[tier] ?? 1
+  const totalMembers = 1 + invited.length // eigenaar + uitgenodigden
 
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!inviteEmail.trim()) return
+    if (!canInvite) return
+    if (totalMembers >= max) {
+      setError(`Maximum van ${max} leden bereikt.`)
+      return
+    }
+    setError('')
     setSending(true)
-    await new Promise((r) => setTimeout(r, 800))
-    setInvited((prev) => [...prev, inviteEmail])
+
+    const supabase = createClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (!user) {
+      setSending(false)
+      return
+    }
+
+    // Zoek of er al een familie bestaat voor deze user
+    let familyId: string | null = null
+    const { data: existingFamily } = await supabase
+      .from('families')
+      .select('id')
+      .eq('owner_id', user.id)
+      .single()
+
+    if (existingFamily) {
+      familyId = existingFamily.id
+    } else {
+      const { data: newFamily } = await supabase
+        .from('families')
+        .insert({ owner_id: user.id, name: 'Mijn Familie' })
+        .select('id')
+        .single()
+      familyId = newFamily?.id ?? null
+    }
+
+    if (familyId) {
+      await supabase.from('family_members').insert({
+        family_id: familyId,
+        role: 'member',
+        invited_at: new Date().toISOString(),
+      })
+    }
+
+    setInvited((prev) => [...prev, { email: inviteEmail, status: 'uitnodiging verstuurd' }])
     setInviteEmail('')
     setSending(false)
   }
 
-  if (!canInvite) {
-    return (
-      <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 720 }}>
-        <h1
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontWeight: 500,
-            fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
-            color: '#F4ECDB',
-            margin: '0 0 .35rem',
-            letterSpacing: '-.02em',
-          }}
-        >
-          Familie
-        </h1>
-        <p
-          style={{
-            color: 'rgba(244,236,219,.55)',
-            fontFamily: 'var(--font-sans)',
-            margin: '0 0 2rem',
-          }}
-        >
-          Bescherm uw hele gezin met één abonnement.
-        </p>
-
-        <div
-          style={{
-            background: 'rgba(244,236,219,.05)',
-            border: '1px solid rgba(244,236,219,.14)',
-            borderRadius: 16,
-            padding: '2rem',
-            textAlign: 'center',
-          }}
-        >
-          <div
-            style={{
-              color: 'rgba(244,236,219,.3)',
-              marginBottom: '1rem',
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <FamilyNavIcon size={40} strokeWidth={1.2} />
-          </div>
-          <h2
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 500,
-              fontSize: '1.4rem',
-              color: '#F4ECDB',
-              margin: '0 0 .75rem',
-            }}
-          >
-            Upgrade naar Familie of Premium
-          </h2>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.95rem',
-              color: 'rgba(244,236,219,.6)',
-              margin: '0 0 1.5rem',
-              lineHeight: 1.65,
-              maxWidth: 400,
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
-          >
-            Met het Familie-abonnement kunt u tot 5 familieleden uitnodigen. U ontvangt een melding
-            als iemand een verdacht bericht controleert.
-          </p>
-          <div
-            style={{ display: 'flex', flexDirection: 'column', gap: '.6rem', alignItems: 'center' }}
-          >
-            <div
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.88rem',
-                color: 'rgba(244,236,219,.65)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '.4rem',
-                marginBottom: '.75rem',
-              }}
-            >
-              {[
-                'Tot 5 familieleden',
-                'Melding bij verdacht bericht',
-                'Gedeelde scangeschiedenis',
-                'Mantelzorger-dashboard',
-              ].map((f) => (
-                <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ color: '#3AAC6E', display: 'flex', flexShrink: 0 }}>
-                    <CheckIcon size={14} strokeWidth={2.5} />
-                  </span>{' '}
-                  {f}
-                </div>
-              ))}
-            </div>
-            <Link
-              href={`/${locale}/abonnement/checkout?tier=family`}
-              style={{
-                background: '#3AAC6E',
-                color: '#07190F',
-                padding: '.9rem 1.75rem',
-                borderRadius: 12,
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.95rem',
-                fontWeight: 700,
-                textDecoration: 'none',
-              }}
-            >
-              Upgraden naar Familie — €5,99/mnd <ArrowRightIcon size={14} strokeWidth={2.2} />
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
+  const removeInvited = (email: string) => {
+    setInvited((prev) => prev.filter((m) => m.email !== email))
   }
 
   return (
     <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 720 }}>
-      <div style={{ marginBottom: '2rem' }}>
+      <div style={{ marginBottom: '1.5rem' }}>
         <h1
           style={{
             fontFamily: 'var(--font-serif)',
-            fontWeight: 500,
+            fontWeight: 700,
             fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
             color: '#F4ECDB',
             margin: '0 0 .35rem',
@@ -166,11 +102,64 @@ export function FamilieClient({ tier, userEmail }: Props) {
           Familie
         </h1>
         <p style={{ color: 'rgba(244,236,219,.55)', fontFamily: 'var(--font-sans)', margin: 0 }}>
-          {mockMembers.length + invited.length} van {maxMembers} plekken bezet.
+          {totalMembers} van {max} plekken bezet
         </p>
       </div>
 
-      {/* Leden */}
+      {/* Zachte upgrade banner — alleen bij geen familie-abonnement */}
+      {!canInvite && (
+        <div
+          style={{
+            background: 'rgba(91,143,232,.08)',
+            border: '1px solid rgba(91,143,232,.2)',
+            borderRadius: 14,
+            padding: '1rem 1.25rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '1rem',
+            flexWrap: 'wrap',
+            marginBottom: '1.5rem',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ color: 'rgba(91,143,232,.9)', display: 'flex' }}>
+              <FamilyNavIcon size={18} strokeWidth={1.6} />
+            </span>
+            <span
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.88rem',
+                color: 'rgba(244,236,219,.7)',
+              }}
+            >
+              Upgrade naar <strong style={{ color: '#F4ECDB' }}>Familie</strong> om tot 5 leden uit
+              te nodigen.
+            </span>
+          </div>
+          <Link
+            href={`/${locale}/abonnement/checkout?tier=family`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              background: 'rgba(91,143,232,.2)',
+              border: '1px solid rgba(91,143,232,.35)',
+              borderRadius: 8,
+              padding: '.5rem 1rem',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.82rem',
+              fontWeight: 700,
+              color: 'rgba(91,143,232,1)',
+              textDecoration: 'none',
+            }}
+          >
+            Upgraden <ArrowRightIcon size={13} strokeWidth={2.2} />
+          </Link>
+        </div>
+      )}
+
+      {/* Leden lijst */}
       <div
         style={{
           background: 'rgba(244,236,219,.04)',
@@ -185,9 +174,9 @@ export function FamilieClient({ tier, userEmail }: Props) {
             padding: '1rem 1.5rem',
             borderBottom: '1px solid rgba(244,236,219,.08)',
             fontFamily: 'var(--font-sans)',
-            fontSize: '.82rem',
+            fontSize: '.78rem',
             fontWeight: 700,
-            color: 'rgba(244,236,219,.5)',
+            color: 'rgba(244,236,219,.45)',
             letterSpacing: '.08em',
             textTransform: 'uppercase',
           }}
@@ -195,6 +184,7 @@ export function FamilieClient({ tier, userEmail }: Props) {
           Familieleden
         </div>
 
+        {/* Eigenaar */}
         <div
           style={{
             padding: '1rem 1.5rem',
@@ -217,6 +207,7 @@ export function FamilieClient({ tier, userEmail }: Props) {
                 fontSize: '.88rem',
                 fontWeight: 700,
                 color: '#3AAC6E',
+                flexShrink: 0,
               }}
             >
               {userEmail.charAt(0).toUpperCase()}
@@ -225,9 +216,9 @@ export function FamilieClient({ tier, userEmail }: Props) {
               <div
                 style={{
                   fontFamily: 'var(--font-sans)',
+                  fontWeight: 600,
                   fontSize: '.9rem',
                   color: '#F4ECDB',
-                  fontWeight: 600,
                 }}
               >
                 U (eigenaar)
@@ -235,8 +226,8 @@ export function FamilieClient({ tier, userEmail }: Props) {
               <div
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '.78rem',
-                  color: 'rgba(244,236,219,.45)',
+                  fontSize: '.75rem',
+                  color: 'rgba(244,236,219,.4)',
                 }}
               >
                 {userEmail}
@@ -246,18 +237,22 @@ export function FamilieClient({ tier, userEmail }: Props) {
           <span
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '.72rem',
-              color: '#3AAC6E',
+              fontSize: '.7rem',
               fontWeight: 700,
+              color: '#3AAC6E',
               letterSpacing: '.06em',
               textTransform: 'uppercase',
+              background: 'rgba(58,172,110,.1)',
+              padding: '.2rem .6rem',
+              borderRadius: 9999,
             }}
           >
             Eigenaar
           </span>
         </div>
 
-        {invited.map((email, i) => (
+        {/* Uitgenodigde leden */}
+        {invited.map((member, i) => (
           <div
             key={i}
             style={{
@@ -280,72 +275,122 @@ export function FamilieClient({ tier, userEmail }: Props) {
                   justifyContent: 'center',
                   fontFamily: 'var(--font-sans)',
                   fontSize: '.88rem',
-                  color: 'rgba(244,236,219,.5)',
+                  color: 'rgba(244,236,219,.4)',
+                  flexShrink: 0,
                 }}
               >
-                {email.charAt(0).toUpperCase()}
+                {member.email.charAt(0).toUpperCase()}
               </div>
               <div>
                 <div
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '.9rem',
-                    color: 'rgba(244,236,219,.7)',
+                    fontSize: '.88rem',
+                    color: 'rgba(244,236,219,.75)',
                   }}
                 >
-                  {email}
+                  {member.email}
                 </div>
                 <div
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '.78rem',
-                    color: 'rgba(244,236,219,.4)',
+                    fontSize: '.72rem',
+                    color: 'rgba(244,236,219,.35)',
                   }}
                 >
-                  Uitnodiging verzonden
+                  {member.status}
                 </div>
               </div>
             </div>
-            <span
+            <button
+              onClick={() => removeInvited(member.email)}
               style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'rgba(229,83,42,.6)',
+                cursor: 'pointer',
                 fontFamily: 'var(--font-sans)',
-                fontSize: '.72rem',
-                color: '#D97B2A',
-                fontWeight: 600,
-                letterSpacing: '.06em',
-                textTransform: 'uppercase',
+                fontSize: '.8rem',
               }}
             >
-              In afwachting
-            </span>
+              Verwijderen
+            </button>
           </div>
         ))}
-      </div>
 
-      {/* Uitnodigen */}
-      {mockMembers.length + invited.length < maxMembers && (
-        <div
-          style={{
-            background: 'rgba(244,236,219,.04)',
-            border: '1px solid rgba(244,236,219,.1)',
-            borderRadius: 16,
-            padding: '1.5rem',
-          }}
-        >
-          <h3
+        {invited.length === 0 && (
+          <div
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontWeight: 600,
-              fontSize: '.9rem',
-              color: 'rgba(244,236,219,.7)',
-              margin: '0 0 1rem',
-              letterSpacing: '.06em',
-              textTransform: 'uppercase',
+              padding: '1.5rem',
+              borderTop: '1px solid rgba(244,236,219,.06)',
+              textAlign: 'center',
             }}
           >
-            Familielid uitnodigen
-          </h3>
-          <form onSubmit={handleInvite} style={{ display: 'flex', gap: '.75rem' }}>
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.85rem',
+                color: 'rgba(244,236,219,.3)',
+                margin: 0,
+              }}
+            >
+              Nog geen leden uitgenodigd.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Uitnodigingsformulier */}
+      <div
+        style={{
+          background: 'rgba(244,236,219,.04)',
+          border: '1px solid rgba(244,236,219,.1)',
+          borderRadius: 16,
+          padding: '1.5rem',
+        }}
+      >
+        <h3
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontWeight: 600,
+            fontSize: '.85rem',
+            color: 'rgba(244,236,219,.6)',
+            letterSpacing: '.08em',
+            textTransform: 'uppercase',
+            margin: '0 0 1rem',
+          }}
+        >
+          Familielid uitnodigen
+        </h3>
+
+        {!canInvite ? (
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.88rem',
+              color: 'rgba(244,236,219,.4)',
+              margin: 0,
+              lineHeight: 1.6,
+            }}
+          >
+            Upgrade naar het Familie-abonnement om leden uit te nodigen.
+          </p>
+        ) : totalMembers >= max ? (
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.88rem',
+              color: 'rgba(244,236,219,.4)',
+              margin: 0,
+            }}
+          >
+            Maximum van {max} leden bereikt.
+          </p>
+        ) : (
+          <form
+            onSubmit={handleInvite}
+            style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap' }}
+          >
             <input
               type="email"
               value={inviteEmail}
@@ -354,6 +399,7 @@ export function FamilieClient({ tier, userEmail }: Props) {
               required
               style={{
                 flex: 1,
+                minWidth: 200,
                 padding: '.8rem 1rem',
                 background: 'rgba(244,236,219,.06)',
                 border: '1px solid rgba(244,236,219,.16)',
@@ -362,6 +408,12 @@ export function FamilieClient({ tier, userEmail }: Props) {
                 fontSize: '.95rem',
                 fontFamily: 'var(--font-sans)',
                 outline: 'none',
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = 'rgba(58,172,110,.5)'
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = 'rgba(244,236,219,.16)'
               }}
             />
             <button
@@ -384,46 +436,61 @@ export function FamilieClient({ tier, userEmail }: Props) {
               {sending ? 'Bezig…' : 'Uitnodigen →'}
             </button>
           </form>
+        )}
+
+        {error && (
           <p
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '.78rem',
-              color: 'rgba(244,236,219,.35)',
+              fontSize: '.82rem',
+              color: '#E5532A',
+              margin: '.5rem 0 0',
+            }}
+          >
+            {error}
+          </p>
+        )}
+
+        {canInvite && totalMembers < max && (
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.75rem',
+              color: 'rgba(244,236,219,.3)',
               margin: '.75rem 0 0',
               lineHeight: 1.5,
             }}
           >
-            De uitgenodigde persoon ontvangt een e-mail en kan daarna gratis gebruik maken van uw
+            Het uitgenodigde familielid ontvangt een e-mail en kan gratis gebruik maken van uw
             abonnement.
           </p>
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* Info box */}
+      {/* Info */}
       <div
         style={{
-          marginTop: '1.5rem',
-          background: 'rgba(244,236,219,.04)',
-          border: '1px solid rgba(244,236,219,.08)',
+          marginTop: '1.25rem',
+          background: 'rgba(244,236,219,.03)',
+          border: '1px solid rgba(244,236,219,.07)',
           borderRadius: 12,
-          padding: '1rem 1.25rem',
+          padding: '.9rem 1.1rem',
           display: 'flex',
           gap: 10,
-          alignItems: 'flex-start',
         }}
       >
         <span style={{ flexShrink: 0 }}>ℹ️</span>
         <p
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '.82rem',
-            color: 'rgba(244,236,219,.45)',
+            fontSize: '.8rem',
+            color: 'rgba(244,236,219,.4)',
             margin: 0,
             lineHeight: 1.6,
           }}
         >
           Als mantelzorger ontvangt u een melding wanneer een familielid een bericht controleert met
-          een hoge risico-indicatie. U kunt dan contact opnemen om te helpen.
+          een hoge risico-indicatie.
         </p>
       </div>
     </div>
