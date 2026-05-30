@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 const tierInfo: Record<
   string,
@@ -47,8 +48,28 @@ function CheckoutContent() {
   const handleCheckout = async () => {
     setLoading(true)
     await new Promise((r) => setTimeout(r, 1200))
+
+    // Update subscription tier in database
+    const supabase = createClient()
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (user) {
+      await supabase
+        .from('subscriptions')
+        .update({
+          tier: tierParam,
+          status: 'active',
+          current_period_end: new Date(
+            Date.now() + (billing === 'yearly' ? 365 : 30) * 24 * 60 * 60 * 1000
+          ).toISOString(),
+        })
+        .eq('user_id', user.id)
+    }
+
     setLoading(false)
-    router.push(`/${locale}/dashboard?upgrade=success`)
+    router.push(`/${locale}/familie`)
+    router.refresh()
   }
 
   return (
