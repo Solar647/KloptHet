@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
 
 const tierInfo: Record<
   string,
@@ -29,32 +30,22 @@ const tierInfo: Record<
   },
 }
 
-const paymentMethods = [
-  { id: 'ideal', label: 'iDEAL', icon: '🏦', popular: true },
-  { id: 'creditcard', label: 'Creditcard', icon: '💳', popular: false },
-  { id: 'paypal', label: 'PayPal', icon: '🅿️', popular: false },
-]
-
-export default function CheckoutPage() {
+function CheckoutContent() {
   const locale = useLocale()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const tierParam = searchParams.get('tier') ?? 'standard'
+  const tier = tierInfo[tierParam] ?? tierInfo.standard
+
   const [billing, setBilling] = useState<'monthly' | 'yearly'>('monthly')
   const [paymentMethod, setPaymentMethod] = useState('ideal')
   const [loading, setLoading] = useState(false)
-
-  // Get tier from URL
-  const tierParam =
-    typeof window !== 'undefined'
-      ? (new URLSearchParams(window.location.search).get('tier') ?? 'standard')
-      : 'standard'
-  const tier = tierInfo[tierParam] ?? tierInfo.standard
 
   const price = billing === 'monthly' ? tier.monthly : tier.yearly / 12
   const total = billing === 'yearly' ? tier.yearly : tier.monthly
 
   const handleCheckout = async () => {
     setLoading(true)
-    // TODO: Mollie checkout koppelen
     await new Promise((r) => setTimeout(r, 1200))
     setLoading(false)
     router.push(`/${locale}/dashboard?upgrade=success`)
@@ -70,9 +61,6 @@ export default function CheckoutPage() {
             fontSize: '.85rem',
             color: 'rgba(244,236,219,.45)',
             textDecoration: 'none',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
           }}
         >
           ← Terug naar abonnementen
@@ -96,9 +84,9 @@ export default function CheckoutPage() {
         style={{ display: 'grid', gridTemplateColumns: '1.1fr .9fr', gap: '1.5rem' }}
         className="grid-responsive-2"
       >
-        {/* Links: betaalinformatie */}
+        {/* Links */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-          {/* Facturering toggle */}
+          {/* Facturering */}
           <div
             style={{
               background: 'rgba(244,236,219,.04)',
@@ -133,10 +121,9 @@ export default function CheckoutPage() {
                       flex: 1,
                       padding: '.75rem',
                       borderRadius: 10,
-                      border: 'none',
                       cursor: 'pointer',
                       background: billing === id ? 'rgba(58,172,110,.15)' : 'rgba(244,236,219,.06)',
-                      borderColor: billing === id ? 'rgba(58,172,110,.35)' : 'rgba(244,236,219,.1)',
+                      border: `1.5px solid ${billing === id ? 'rgba(58,172,110,.4)' : 'rgba(244,236,219,.1)'}`,
                       fontFamily: 'var(--font-sans)',
                       fontSize: '.85rem',
                       fontWeight: 600,
@@ -151,7 +138,7 @@ export default function CheckoutPage() {
                 >
                   {label}
                   {badge && (
-                    <span style={{ fontSize: '.65rem', color: '#3AAC6E', fontWeight: 700 }}>
+                    <span style={{ fontSize: '.62rem', color: '#3AAC6E', fontWeight: 700 }}>
                       {badge}
                     </span>
                   )}
@@ -183,7 +170,11 @@ export default function CheckoutPage() {
               Betaalmethode
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '.5rem' }}>
-              {paymentMethods.map((m) => (
+              {[
+                { id: 'ideal', label: 'iDEAL', icon: <IDealLogo />, popular: true },
+                { id: 'creditcard', label: 'Creditcard', icon: <CreditcardLogo />, popular: false },
+                { id: 'paypal', label: 'PayPal', icon: <PayPalLogo />, popular: false },
+              ].map((m) => (
                 <button
                   key={m.id}
                   onClick={() => setPaymentMethod(m.id)}
@@ -194,19 +185,27 @@ export default function CheckoutPage() {
                       gap: '1rem',
                       padding: '.9rem 1rem',
                       borderRadius: 10,
-                      border: 'none',
                       cursor: 'pointer',
                       background:
-                        paymentMethod === m.id ? 'rgba(58,172,110,.1)' : 'rgba(244,236,219,.04)',
-                      borderColor:
-                        paymentMethod === m.id ? 'rgba(58,172,110,.3)' : 'rgba(244,236,219,.1)',
+                        paymentMethod === m.id ? 'rgba(58,172,110,.08)' : 'rgba(244,236,219,.04)',
+                      border: `1.5px solid ${paymentMethod === m.id ? 'rgba(58,172,110,.35)' : 'rgba(244,236,219,.1)'}`,
                       fontFamily: 'var(--font-sans)',
                       transition: 'all .15s',
                       textAlign: 'left',
                     } as React.CSSProperties
                   }
                 >
-                  <span style={{ fontSize: '1.2rem' }}>{m.icon}</span>
+                  <span
+                    style={{
+                      width: 36,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {m.icon}
+                  </span>
                   <span
                     style={{
                       flex: 1,
@@ -220,7 +219,7 @@ export default function CheckoutPage() {
                   {m.popular && (
                     <span
                       style={{
-                        fontSize: '.65rem',
+                        fontSize: '.62rem',
                         fontWeight: 700,
                         color: '#3AAC6E',
                         background: 'rgba(58,172,110,.12)',
@@ -253,22 +252,21 @@ export default function CheckoutPage() {
                 </button>
               ))}
             </div>
-
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '.75rem',
-                color: 'rgba(244,236,219,.35)',
+                fontSize: '.72rem',
+                color: 'rgba(244,236,219,.3)',
                 margin: '.75rem 0 0',
                 lineHeight: 1.5,
               }}
             >
-              🔒 Betalingen worden veilig verwerkt door Mollie. Wij slaan geen betaalgegevens op.
+              🔒 Veilig verwerkt door Mollie. Wij slaan geen betaalgegevens op.
             </p>
           </div>
         </div>
 
-        {/* Rechts: order summary */}
+        {/* Rechts: samenvatting */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <div
             style={{
@@ -291,8 +289,6 @@ export default function CheckoutPage() {
             >
               Samenvatting
             </div>
-
-            {/* Plan */}
             <div
               style={{
                 display: 'flex',
@@ -315,16 +311,16 @@ export default function CheckoutPage() {
                 <div
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '.75rem',
+                    fontSize: '.72rem',
                     color: 'rgba(244,236,219,.4)',
                     marginTop: 2,
                   }}
                 >
-                  {billing === 'yearly' ? 'Jaarlijks gefactureerd' : 'Maandelijks gefactureerd'}
+                  {billing === 'yearly' ? 'Jaarlijks' : 'Maandelijks'} gefactureerd
                 </div>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div
+                <span
                   style={{
                     fontFamily: 'var(--font-serif)',
                     fontWeight: 700,
@@ -333,19 +329,25 @@ export default function CheckoutPage() {
                   }}
                 >
                   €{price.toFixed(2).replace('.', ',')}
-                  <span style={{ fontSize: '.75rem', color: 'rgba(244,236,219,.4)' }}>/mnd</span>
-                </div>
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.72rem',
+                    color: 'rgba(244,236,219,.4)',
+                  }}
+                >
+                  /mnd
+                </span>
               </div>
             </div>
-
-            {/* Features */}
             <div
               style={{
                 paddingTop: '.75rem',
                 borderTop: '1px solid rgba(244,236,219,.08)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '.4rem',
+                gap: '.35rem',
                 marginBottom: '1rem',
               }}
             >
@@ -361,55 +363,56 @@ export default function CheckoutPage() {
                     color: 'rgba(244,236,219,.65)',
                   }}
                 >
-                  <span style={{ color: '#3AAC6E', flexShrink: 0 }}>✓</span>
+                  <span style={{ color: '#3AAC6E' }}>✓</span>
                   {f}
                 </div>
               ))}
             </div>
-
-            {/* Totaal */}
-            <div style={{ paddingTop: '.75rem', borderTop: '1px solid rgba(244,236,219,.08)' }}>
-              <div
-                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+            <div
+              style={{
+                paddingTop: '.75rem',
+                borderTop: '1px solid rgba(244,236,219,.08)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontWeight: 700,
+                  fontSize: '.9rem',
+                  color: '#F4ECDB',
+                }}
               >
-                <span
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontWeight: 700,
-                    fontSize: '.9rem',
-                    color: '#F4ECDB',
-                  }}
-                >
-                  Totaal vandaag
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontWeight: 700,
-                    fontSize: '1.4rem',
-                    color: '#3AAC6E',
-                  }}
-                >
-                  €{total.toFixed(2).replace('.', ',')}
-                </span>
-              </div>
-              {billing === 'yearly' && (
-                <div
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.72rem',
-                    color: 'rgba(244,236,219,.35)',
-                    marginTop: 4,
-                    textAlign: 'right',
-                  }}
-                >
-                  Bespaar €{(tier.monthly * 12 - tier.yearly).toFixed(2).replace('.', ',')} per jaar
-                </div>
-              )}
+                Totaal vandaag
+              </span>
+              <span
+                style={{
+                  fontFamily: 'var(--font-serif)',
+                  fontWeight: 700,
+                  fontSize: '1.4rem',
+                  color: '#3AAC6E',
+                }}
+              >
+                €{total.toFixed(2).replace('.', ',')}
+              </span>
             </div>
+            {billing === 'yearly' && (
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.7rem',
+                  color: 'rgba(244,236,219,.3)',
+                  marginTop: 4,
+                  textAlign: 'right',
+                }}
+              >
+                Bespaar €{(tier.monthly * 12 - tier.yearly).toFixed(2).replace('.', ',')} per jaar
+              </div>
+            )}
           </div>
 
-          {/* Betaal knop */}
           <button
             onClick={handleCheckout}
             disabled={loading}
@@ -424,7 +427,7 @@ export default function CheckoutPage() {
               fontSize: '1rem',
               fontWeight: 700,
               cursor: loading ? 'wait' : 'pointer',
-              boxShadow: '0 8px 32px -8px rgba(58,172,110,.6)',
+              boxShadow: '0 8px 32px -8px rgba(58,172,110,.55)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -434,26 +437,98 @@ export default function CheckoutPage() {
             }}
           >
             {loading
-              ? 'Doorsturen naar betaling…'
-              : `Betalen met ${paymentMethods.find((m) => m.id === paymentMethod)?.label}`}
+              ? 'Doorsturen…'
+              : `Betalen met ${paymentMethod === 'ideal' ? 'iDEAL' : paymentMethod === 'creditcard' ? 'Creditcard' : 'PayPal'}`}
             {!loading && <span>→</span>}
           </button>
 
           <p
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '.72rem',
+              fontSize: '.7rem',
               color: 'rgba(244,236,219,.3)',
               textAlign: 'center',
               margin: 0,
               lineHeight: 1.5,
             }}
           >
-            Door te betalen gaat u akkoord met onze Algemene Voorwaarden. Opzeggen kan altijd,
-            zonder kosten.
+            Door te betalen gaat u akkoord met onze Algemene Voorwaarden. Opzeggen wanneer u wilt.
           </p>
         </div>
       </div>
     </div>
+  )
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          style={{ padding: '2rem', color: 'rgba(244,236,219,.5)', fontFamily: 'var(--font-sans)' }}
+        >
+          Laden…
+        </div>
+      }
+    >
+      <CheckoutContent />
+    </Suspense>
+  )
+}
+
+function IDealLogo() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 50 50" fill="none" aria-label="iDEAL">
+      <rect width="50" height="50" rx="8" fill="#CC0066" />
+      <text
+        x="25"
+        y="33"
+        textAnchor="middle"
+        fontFamily="Arial, sans-serif"
+        fontSize="16"
+        fontWeight="900"
+        fill="white"
+      >
+        iD
+      </text>
+    </svg>
+  )
+}
+
+function PayPalLogo() {
+  return (
+    <svg width="56" height="24" viewBox="0 0 100 32" fill="none" aria-label="PayPal">
+      <text
+        x="0"
+        y="24"
+        fontFamily="Arial, sans-serif"
+        fontSize="22"
+        fontWeight="900"
+        fill="#003087"
+      >
+        Pay
+      </text>
+      <text
+        x="42"
+        y="24"
+        fontFamily="Arial, sans-serif"
+        fontSize="22"
+        fontWeight="900"
+        fill="#009CDE"
+      >
+        Pal
+      </text>
+    </svg>
+  )
+}
+
+function CreditcardLogo() {
+  return (
+    <svg width="36" height="24" viewBox="0 0 36 24" fill="none" aria-label="Creditcard">
+      <rect width="36" height="24" rx="4" fill="#252525" />
+      <rect x="2" y="8" width="32" height="4" fill="#FFB74D" opacity=".8" />
+      <circle cx="26" cy="16" r="5" fill="#E53935" opacity=".9" />
+      <circle cx="31" cy="16" r="5" fill="#FB8C00" opacity=".7" />
+    </svg>
   )
 }
