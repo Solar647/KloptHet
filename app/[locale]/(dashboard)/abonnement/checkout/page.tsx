@@ -68,8 +68,8 @@ function CheckoutContent() {
     }
 
     setLoading(false)
-    router.push(`/${locale}/familie`)
-    router.refresh()
+    // Volledige page refresh zodat server components opnieuw laden vanuit database
+    window.location.href = `/${locale}/abonnement`
   }
 
   return (
