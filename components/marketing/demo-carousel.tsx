@@ -183,7 +183,7 @@ export function DemoCarousel() {
               margin: '0 0 .5rem',
             }}
           >
-            Herken u de truc?
+            Zo ziet fraude eruit.
           </h2>
           <p
             style={{
