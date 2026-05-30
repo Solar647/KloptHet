@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
@@ -46,6 +46,21 @@ export default function RegistrerenPage() {
       options: { redirectTo: `${window.location.origin}/${locale}/auth/callback` },
     })
   }
+
+  // Poll voor bevestiging — zodra bevestigd op mobiel, login automatisch op pc
+  useEffect(() => {
+    if (!success) return
+    const supabase = createClient()
+    const interval = setInterval(async () => {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+      if (!error && data.session) {
+        clearInterval(interval)
+        router.push(`/${locale}/dashboard`)
+        router.refresh()
+      }
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [success, email, password, locale, router])
 
   if (success) {
     return (
