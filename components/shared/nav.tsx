@@ -64,7 +64,7 @@ export function Nav() {
 
   const links = [
     { label: t('howItWorks'), href: `/${locale}/#hoe-het-werkt` },
-    { label: t('forWho'), href: `/${locale}/#voor-wie` },
+    { label: t('forWho'), href: `/${locale}/voor-wie` },
     { label: t('pricing'), href: `/${locale}/#abonnementen` },
   ]
 
