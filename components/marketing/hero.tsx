@@ -12,13 +12,14 @@ export function Hero() {
       style={{
         position: 'relative',
         color: '#F4ECDB',
-        padding: 'clamp(3.5rem, 5vw, 5rem) clamp(1.5rem, 3vw, 3rem) 0',
+        padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem) clamp(4rem, 8vw, 7rem)',
         overflow: 'hidden',
-        minHeight: '92vh',
+        minHeight: '90vh',
+        display: 'flex',
+        alignItems: 'center',
         isolation: 'isolate',
       }}
     >
-      {/* Fluted glass background */}
       <FlutedGlassBG />
 
       {/* Paper grain */}
@@ -29,7 +30,7 @@ export function Hero() {
           inset: 0,
           zIndex: 1,
           pointerEvents: 'none',
-          opacity: 0.1,
+          opacity: 0.08,
           mixBlendMode: 'overlay',
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
@@ -37,264 +38,197 @@ export function Hero() {
         }}
       />
 
-      {/* Top strip — verborgen op mobiel */}
       <div
-        className="hero-top-strip-extras"
         style={{
           position: 'relative',
           zIndex: 3,
-          maxWidth: 1320,
+          maxWidth: 1100,
           margin: '0 auto',
-          display: 'grid',
-          gridTemplateColumns: 'auto 1fr auto auto',
-          gap: 'clamp(1rem, 3vw, 3rem)',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
           alignItems: 'flex-start',
-          paddingBottom: '1rem',
-          borderBottom: '1px solid rgba(244,236,219,.18)',
+          gap: 'clamp(1.5rem, 3vw, 2.5rem)',
         }}
       >
-        <div>
-          <div
+        {/* Eyebrow */}
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 10,
+            background: 'rgba(58,172,110,.12)',
+            border: '1px solid rgba(58,172,110,.25)',
+            borderRadius: 9999,
+            padding: '.4rem 1rem',
+          }}
+        >
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: '#3AAC6E',
+              flexShrink: 0,
+              boxShadow: '0 0 8px #3AAC6E',
+            }}
+          />
+          <span
             style={{
               fontFamily: 'var(--font-sans)',
-              fontWeight: 700,
-              fontSize: '1.05rem',
-              color: '#F4ECDB',
-              letterSpacing: '-.025em',
-            }}
-          >
-            KloptHet
-          </div>
-          <div
-            style={{
-              fontFamily: 'ui-monospace, monospace',
-              fontSize: '.6rem',
-              letterSpacing: '.18em',
-              color: 'rgba(244,236,219,.5)',
-              marginTop: 5,
+              fontSize: '.78rem',
+              fontWeight: 600,
+              color: '#3AAC6E',
+              letterSpacing: '.06em',
               textTransform: 'uppercase',
             }}
           >
-            fraude-checker · NL
-          </div>
+            Europese AI · Geen data bewaard
+          </span>
         </div>
-        <div
+
+        {/* Headline */}
+        <div>
+          <h1
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 700,
+              fontSize: 'clamp(2.8rem, 7vw, 7rem)',
+              lineHeight: 1.0,
+              letterSpacing: '-.03em',
+              color: '#F4ECDB',
+              margin: 0,
+            }}
+          >
+            {t('heading')}
+          </h1>
+          <h2
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 700,
+              fontSize: 'clamp(2.8rem, 7vw, 7rem)',
+              lineHeight: 1.0,
+              letterSpacing: '-.03em',
+              color: 'rgba(58,172,110,.9)',
+              margin: '.15em 0 0',
+            }}
+          >
+            {t('headingAccent')}
+          </h2>
+        </div>
+
+        {/* Subtext */}
+        <p
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '.8rem',
-            lineHeight: 1.5,
-            color: 'rgba(244,236,219,.65)',
-            maxWidth: 280,
-            alignSelf: 'flex-start',
-          }}
-        >
-          Oplichting is slim. Beslissen of een bericht echt is, hoeft dat ook te zijn.
-        </div>
-        <HeaderTag label="2026" sub={['Editie', 'Vol. 01']} />
-        <HeaderTag label="Live" sub={['Gratis', 'controle']} />
-      </div>
-
-      {/* Main headline */}
-      <div
-        style={{
-          position: 'relative',
-          zIndex: 3,
-          maxWidth: 1320,
-          margin: '0 auto',
-          paddingTop: 'clamp(2rem, 4vw, 3rem)',
-          paddingBottom: 'clamp(2.5rem, 4vw, 4rem)',
-        }}
-      >
-        <h1
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontWeight: 800,
-            fontSize: 'clamp(3rem, 11vw, 10rem)',
-            lineHeight: 0.9,
-            letterSpacing: '-.04em',
-            color: '#F4ECDB',
+            fontSize: 'clamp(1rem, 1.4vw, 1.2rem)',
+            lineHeight: 1.7,
+            color: 'rgba(244,236,219,.7)',
             margin: 0,
-            maxWidth: '14ch',
+            maxWidth: 520,
           }}
         >
-          {t('heading')}
-        </h1>
+          {t('subheading')}
+        </p>
 
-        <div style={{ height: 'clamp(1.5rem, 4vw, 3rem)' }} />
-
-        <h2
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontWeight: 800,
-            fontSize: 'clamp(2.6rem, 9.5vw, 9rem)',
-            lineHeight: 0.9,
-            letterSpacing: '-.04em',
-            color: '#F4ECDB',
-            margin: 0,
-            textAlign: 'right',
-            maxWidth: '16ch',
-            marginLeft: 'auto',
-          }}
-        >
-          {t('headingAccent')}
-        </h2>
-
-        {/* Bottom row */}
-        <div
-          className="grid-responsive"
-          style={{
-            marginTop: 'clamp(2rem, 5vw, 4rem)',
-            display: 'grid',
-            gridTemplateColumns: 'minmax(260px, 1.1fr) minmax(260px, 1fr) auto',
-            gap: 'clamp(1rem, 3vw, 3rem)',
-            alignItems: 'end',
-            paddingTop: '1.5rem',
-            borderTop: '1px solid rgba(244,236,219,.18)',
-          }}
-        >
-          <p
+        {/* CTA buttons */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem', alignItems: 'center' }}>
+          <Link
+            href={`/${locale}/#demo`}
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 'clamp(1rem, 1.1vw, 1.1rem)',
-              lineHeight: 1.6,
-              color: 'rgba(244,236,219,.82)',
-              margin: 0,
-              maxWidth: 400,
-            }}
-          >
-            {t('subheading')}
-          </p>
-
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '.75rem',
+              display: 'inline-flex',
               alignItems: 'center',
+              gap: '.6rem',
+              padding: '1rem 1.75rem',
+              borderRadius: 12,
+              fontSize: '1rem',
+              fontWeight: 700,
+              textDecoration: 'none',
+              fontFamily: 'var(--font-sans)',
+              background: '#F4ECDB',
+              color: '#07190F',
+              boxShadow: '0 8px 24px -8px rgba(0,0,0,.4)',
+              transition: 'transform .15s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)'
             }}
           >
-            <Link
-              href={`/${locale}/#scanner`}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '.6rem',
-                padding: '1rem 1.7rem',
-                borderRadius: 9999,
-                fontSize: '1rem',
-                fontWeight: 700,
-                cursor: 'pointer',
-                textDecoration: 'none',
-                fontFamily: 'var(--font-sans)',
-                background: '#F4ECDB',
-                color: '#07190F',
-                border: '2px solid #F4ECDB',
-                boxShadow: '0 8px 22px -8px rgba(0,0,0,.4)',
-              }}
-            >
-              {t('cta')}
-              <ArrowIcon />
-            </Link>
-            <Link
-              href={`/${locale}/#hoe-het-werkt`}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '.55rem',
-                padding: '1rem 1.4rem',
-                borderRadius: 9999,
-                fontSize: '.95rem',
-                fontWeight: 600,
-                border: '1.5px solid rgba(244,236,219,.45)',
-                background: 'transparent',
-                color: '#F4ECDB',
-                textDecoration: 'none',
-                fontFamily: 'var(--font-sans)',
-              }}
-            >
-              {t('ctaSecondary')}
-            </Link>
-          </div>
-
-          <div style={{ textAlign: 'right' }}>
-            <div
-              style={{
-                fontFamily: 'ui-monospace, monospace',
-                fontSize: '.6rem',
-                letterSpacing: '.2em',
-                color: 'rgba(244,236,219,.5)',
-                textTransform: 'uppercase',
-                marginBottom: 4,
-              }}
-            >
-              {t('trustBadge')
-                .split(' · ')
-                .map((item, i) => (
-                  <div key={i}>{item}</div>
-                ))}
-            </div>
-          </div>
+            {t('cta')}
+            <ArrowIcon />
+          </Link>
+          <Link
+            href={`/${locale}/#hoe-het-werkt`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '.55rem',
+              padding: '1rem 1.4rem',
+              borderRadius: 12,
+              fontSize: '.95rem',
+              fontWeight: 600,
+              border: '1.5px solid rgba(244,236,219,.3)',
+              background: 'rgba(244,236,219,.06)',
+              color: 'rgba(244,236,219,.85)',
+              textDecoration: 'none',
+              fontFamily: 'var(--font-sans)',
+              transition: 'border-color .15s, background .15s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(244,236,219,.5)'
+              e.currentTarget.style.background = 'rgba(244,236,219,.1)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(244,236,219,.3)'
+              e.currentTarget.style.background = 'rgba(244,236,219,.06)'
+            }}
+          >
+            {t('ctaSecondary')}
+          </Link>
         </div>
-      </div>
 
-      {/* Bottom editorial strip — verborgen op mobiel */}
-      <div
-        className="hero-bottom-strip-extras"
-        style={{
-          position: 'relative',
-          zIndex: 3,
-          maxWidth: 1320,
-          margin: '0 auto',
-          padding: '1.1rem 0',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontFamily: 'ui-monospace, monospace',
-          fontSize: '.6rem',
-          letterSpacing: '.2em',
-          color: 'rgba(244,236,219,.45)',
-          textTransform: 'uppercase',
-          borderTop: '1px solid rgba(244,236,219,.18)',
-        }}
-      >
-        <span>© 2026 KloptHet</span>
-        <span>klopthet.nl</span>
-        <span>Gemaakt in Nederland</span>
+        {/* Social proof strip */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.5rem',
+            paddingTop: '1.5rem',
+            borderTop: '1px solid rgba(244,236,219,.1)',
+            width: '100%',
+            flexWrap: 'wrap',
+          }}
+        >
+          {['Gemaakt in Nederland', 'Geen data bewaard', 'AI-analyse in 5 sec'].map((item) => (
+            <div
+              key={item}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.82rem',
+                color: 'rgba(244,236,219,.45)',
+              }}
+            >
+              <span
+                style={{
+                  width: 4,
+                  height: 4,
+                  borderRadius: '50%',
+                  background: '#3AAC6E',
+                  flexShrink: 0,
+                }}
+              />
+              {item}
+            </div>
+          ))}
+        </div>
       </div>
     </section>
-  )
-}
-
-function HeaderTag({ label, sub }: { label: string; sub: string[] }) {
-  return (
-    <div style={{ color: '#F4ECDB', textAlign: 'left' }}>
-      <div
-        style={{
-          fontFamily: 'var(--font-serif)',
-          fontWeight: 600,
-          fontSize: '1.05rem',
-          lineHeight: 1,
-          letterSpacing: '-.01em',
-        }}
-      >
-        {label}
-      </div>
-      {sub.map((s, i) => (
-        <div
-          key={i}
-          style={{
-            fontFamily: 'ui-monospace, monospace',
-            fontSize: '.6rem',
-            letterSpacing: '.18em',
-            color: 'rgba(244,236,219,.55)',
-            marginTop: i === 0 ? 4 : 1,
-            textTransform: 'uppercase',
-          }}
-        >
-          {s}
-        </div>
-      ))}
-    </div>
   )
 }
 
@@ -307,7 +241,7 @@ function FlutedGlassBG() {
           position: 'absolute',
           inset: 0,
           zIndex: 0,
-          background: 'linear-gradient(180deg, #0E2A1B 0%, #143A26 50%, #1A4D31 100%)',
+          background: 'linear-gradient(135deg, #0E2A1B 0%, #143A26 50%, #1A4D31 100%)',
         }}
       />
       <div
@@ -317,16 +251,16 @@ function FlutedGlassBG() {
           inset: 0,
           zIndex: 0,
           backgroundImage: `repeating-linear-gradient(
-            90deg,
-            rgba(255,255,255,.00) 0px,
-            rgba(80,200,140,.05) 8px,
-            rgba(0,0,0,.07) 16px,
-            rgba(0,0,0,.10) 22px,
-            rgba(80,200,140,.03) 30px,
-            rgba(255,255,255,.02) 38px
-          )`,
-          filter: 'blur(.6px)',
-          opacity: 0.85,
+          90deg,
+          rgba(255,255,255,.00) 0px,
+          rgba(80,200,140,.04) 8px,
+          rgba(0,0,0,.06) 16px,
+          rgba(0,0,0,.08) 22px,
+          rgba(80,200,140,.02) 30px,
+          rgba(255,255,255,.01) 38px
+        )`,
+          filter: 'blur(.5px)',
+          opacity: 0.7,
         }}
       />
       <div
@@ -336,19 +270,8 @@ function FlutedGlassBG() {
           inset: 0,
           zIndex: 0,
           background:
-            'radial-gradient(ellipse 35% 90% at 50% 55%, rgba(80,220,150,.10) 0%, transparent 75%)',
-          filter: 'blur(20px)',
-          mixBlendMode: 'screen',
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0,
-          background:
-            'radial-gradient(ellipse 90% 80% at 50% 50%, transparent 50%, rgba(0,0,0,.35) 100%)',
+            'radial-gradient(ellipse 60% 80% at 80% 50%, rgba(58,172,110,.12) 0%, transparent 70%)',
+          filter: 'blur(30px)',
         }}
       />
     </>
