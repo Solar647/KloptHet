@@ -1,79 +1,87 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
+const PRICES: Record<string, number> = {
+  standard: 3.99,
+  family: 5.99,
+  premium: 9.99,
+  free: 0,
+}
+
 export default async function AdminPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   const supabase = await createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
-
   if (!user) redirect(`/${locale}/inloggen`)
+  if (user.email !== process.env.ADMIN_EMAIL) redirect(`/${locale}/dashboard`)
 
-  // Alleen admin
-  if (user.email !== process.env.ADMIN_EMAIL) {
-    redirect(`/${locale}/dashboard`)
-  }
+  const now = new Date()
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
+  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString()
 
-  // ── Stats ophalen ──
   const [
     { count: totalUsers },
+    { count: newUsersThisMonth },
+    { count: newUsersLastMonth },
     { count: totalScans },
-    { data: recentUsers },
-    { data: recentScans },
-    { data: subStats },
+    { count: scansThisMonth },
+    { data: subs },
+    { data: scanStats },
+    { data: allUsers },
   ] = await Promise.all([
     supabase.from('profiles').select('id', { count: 'exact', head: true }),
+    supabase
+      .from('profiles')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', startOfMonth),
+    supabase
+      .from('profiles')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', startOfLastMonth)
+      .lt('created_at', startOfMonth),
     supabase.from('scans').select('id', { count: 'exact', head: true }),
+    supabase
+      .from('scans')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', startOfMonth),
+    supabase.from('subscriptions').select('tier, status, user_id'),
+    supabase
+      .from('scans')
+      .select('verdict_category, input_kind, created_at')
+      .gte('created_at', startOfMonth),
     supabase
       .from('profiles')
       .select('id, email, full_name, created_at')
       .order('created_at', { ascending: false })
-      .limit(10),
-    supabase
-      .from('scans')
-      .select('verdict_category, verdict_score, created_at, input_kind')
-      .order('created_at', { ascending: false })
-      .limit(20),
-    supabase.from('subscriptions').select('tier, status'),
+      .limit(50),
   ])
 
-  // Subscription verdeling
+  // Abonnement stats
   const tierCount: Record<string, number> = { free: 0, standard: 0, family: 0, premium: 0 }
-  subStats?.forEach((s) => {
+  const activeSubs = subs?.filter((s) => s.status === 'active') ?? []
+  subs?.forEach((s) => {
     tierCount[s.tier] = (tierCount[s.tier] ?? 0) + 1
   })
 
+  // MRR berekening
+  const mrr = activeSubs.reduce((sum, s) => sum + (PRICES[s.tier] ?? 0), 0)
+  const arr = mrr * 12
+
   // Scan verdeling
   const verdictCount = { safe: 0, doubt: 0, phishing: 0 }
-  recentScans?.forEach((s) => {
+  const inputCount = { image: 0, text: 0 }
+  scanStats?.forEach((s) => {
     if (s.verdict_category in verdictCount)
       verdictCount[s.verdict_category as keyof typeof verdictCount]++
+    if (s.input_kind in inputCount) inputCount[s.input_kind as keyof typeof inputCount]++
   })
+  const warningScans = verdictCount.phishing + verdictCount.doubt
 
-  const statCards = [
-    { label: 'Totaal gebruikers', value: totalUsers ?? 0, color: '#3AAC6E' },
-    { label: 'Totaal scans', value: totalScans ?? 0, color: '#5B8FE8' },
-    {
-      label: 'Betaalde abonnees',
-      value: tierCount.standard + tierCount.family + tierCount.premium,
-      color: '#D97B2A',
-    },
-    { label: 'Familie/Premium', value: tierCount.family + tierCount.premium, color: '#C94A7E' },
-  ]
-
-  const tierLabel: Record<string, { name: string; color: string }> = {
-    free: { name: 'Gratis', color: 'rgba(244,236,219,.4)' },
-    standard: { name: 'Standaard', color: '#3AAC6E' },
-    family: { name: 'Familie', color: '#5B8FE8' },
-    premium: { name: 'Premium', color: '#D97B2A' },
-  }
-
-  const verdictLabel: Record<string, { name: string; color: string }> = {
-    safe: { name: 'Geen alarmsignalen', color: '#3AAC6E' },
-    doubt: { name: 'Let op', color: '#D97B2A' },
-    phishing: { name: 'Meerdere waarschuwingen', color: '#E5532A' },
-  }
+  const userGrowth = newUsersLastMonth
+    ? Math.round((((newUsersThisMonth ?? 0) - newUsersLastMonth) / newUsersLastMonth) * 100)
+    : 0
 
   return (
     <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 1100 }}>
@@ -91,9 +99,9 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
             style={{
               fontFamily: 'var(--font-serif)',
               fontWeight: 700,
-              fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
+              fontSize: '2rem',
               color: '#F4ECDB',
-              margin: '0 0 .25rem',
+              margin: '0 0 .2rem',
               letterSpacing: '-.02em',
             }}
           >
@@ -101,13 +109,13 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
           </h1>
           <p
             style={{
-              color: 'rgba(244,236,219,.45)',
+              color: 'rgba(244,236,219,.4)',
               fontFamily: 'var(--font-sans)',
               margin: 0,
-              fontSize: '.85rem',
+              fontSize: '.8rem',
             }}
           >
-            Alleen zichtbaar voor {process.env.ADMIN_EMAIL}
+            {now.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })}
           </p>
         </div>
         <div
@@ -117,75 +125,97 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
             borderRadius: 8,
             padding: '.4rem .8rem',
             fontFamily: 'var(--font-sans)',
-            fontSize: '.72rem',
+            fontSize: '.7rem',
             fontWeight: 700,
             color: '#E5532A',
-            letterSpacing: '.06em',
+            letterSpacing: '.08em',
             textTransform: 'uppercase',
           }}
         >
-          Admin
+          Admin only
         </div>
       </div>
 
-      {/* Stat cards */}
+      {/* ── RIJ 1: Geld & Groei ── */}
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '1rem',
-          marginBottom: '1.5rem',
+          marginBottom: '1rem',
         }}
-        className="pricing-grid"
+        className="grid-responsive"
       >
-        {statCards.map((s) => (
-          <div
-            key={s.label}
-            style={{
-              background: 'rgba(244,236,219,.04)',
-              border: '1px solid rgba(244,236,219,.1)',
-              borderRadius: 14,
-              padding: '1.25rem',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.72rem',
-                fontWeight: 700,
-                color: 'rgba(244,236,219,.4)',
-                letterSpacing: '.06em',
-                textTransform: 'uppercase',
-                marginBottom: '.5rem',
-              }}
-            >
-              {s.label}
-            </div>
-            <div
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 700,
-                fontSize: '2rem',
-                color: s.color,
-                lineHeight: 1,
-              }}
-            >
-              {s.value}
-            </div>
-          </div>
-        ))}
+        <BigStatCard
+          label="MRR"
+          value={`€${mrr.toFixed(2).replace('.', ',')}`}
+          sub="Maandelijkse inkomsten"
+          color="#3AAC6E"
+          note={`ARR: €${arr.toFixed(0)}/jaar`}
+        />
+        <BigStatCard
+          label="Betaalde abonnees"
+          value={activeSubs.length.toString()}
+          sub="Actieve betalende gebruikers"
+          color="#5B8FE8"
+          note={`Van ${totalUsers ?? 0} totaal`}
+        />
+        <BigStatCard
+          label="Nieuwe accounts"
+          value={(newUsersThisMonth ?? 0).toString()}
+          sub="Deze maand"
+          color="#D97B2A"
+          note={
+            userGrowth >= 0 ? `+${userGrowth}% vs vorige maand` : `${userGrowth}% vs vorige maand`
+          }
+          noteColor={userGrowth >= 0 ? '#3AAC6E' : '#E5532A'}
+        />
       </div>
 
+      {/* ── RIJ 2: Scans ── */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '1rem',
+          marginBottom: '1rem',
+        }}
+        className="grid-responsive"
+      >
+        <BigStatCard
+          label="Totaal scans"
+          value={(totalScans ?? 0).toString()}
+          sub="Alle tijd"
+          color="#F4ECDB"
+          note={`${scansThisMonth ?? 0} deze maand`}
+        />
+        <BigStatCard
+          label="Waarschuwingen"
+          value={warningScans.toString()}
+          sub="Let op + Meerdere waarschuwingen"
+          color="#E5532A"
+          note={`Van ${scanStats?.length ?? 0} scans deze maand`}
+        />
+        <BigStatCard
+          label="Totaal gebruikers"
+          value={(totalUsers ?? 0).toString()}
+          sub="Geregistreerde accounts"
+          color="#C94A7E"
+          note={`${newUsersThisMonth ?? 0} nieuw deze maand`}
+        />
+      </div>
+
+      {/* ── RIJ 3: Abonnementen + Scans detail ── */}
       <div
         style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
           gap: '1rem',
-          marginBottom: '1.5rem',
+          marginBottom: '1rem',
         }}
         className="grid-responsive-2"
       >
-        {/* Abonnementen verdeling */}
+        {/* Abonnement verdeling */}
         <div
           style={{
             background: 'rgba(244,236,219,.04)',
@@ -194,23 +224,17 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
             padding: '1.25rem',
           }}
         >
-          <div
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.75rem',
-              fontWeight: 700,
-              color: 'rgba(244,236,219,.45)',
-              letterSpacing: '.08em',
-              textTransform: 'uppercase',
-              marginBottom: '1rem',
-            }}
-          >
-            Abonnementen
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '.6rem' }}>
-            {Object.entries(tierCount).map(([tier, count]) => {
-              const cfg = tierLabel[tier]
+          <SectionLabel>Abonnementen</SectionLabel>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '.75rem' }}>
+            {[
+              { tier: 'premium', label: 'Premium', color: '#D97B2A' },
+              { tier: 'family', label: 'Familie', color: '#5B8FE8' },
+              { tier: 'standard', label: 'Standaard', color: '#3AAC6E' },
+              { tier: 'free', label: 'Gratis', color: 'rgba(244,236,219,.3)' },
+            ].map(({ tier, label, color }) => {
+              const count = tierCount[tier] ?? 0
               const pct = totalUsers ? Math.round((count / totalUsers) * 100) : 0
+              const rev = count * (PRICES[tier] ?? 0)
               return (
                 <div key={tier}>
                   <div
@@ -223,32 +247,41 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
                     <span
                       style={{
                         fontFamily: 'var(--font-sans)',
-                        fontSize: '.82rem',
-                        color: cfg.color,
+                        fontSize: '.85rem',
+                        color,
                         fontWeight: 600,
                       }}
                     >
-                      {cfg.name}
+                      {label}
                     </span>
                     <span
                       style={{
                         fontFamily: 'var(--font-sans)',
                         fontSize: '.82rem',
                         color: 'rgba(244,236,219,.5)',
+                        display: 'flex',
+                        gap: '1rem',
                       }}
                     >
-                      {count} ({pct}%)
+                      <span>
+                        {count} gebruikers ({pct}%)
+                      </span>
+                      {rev > 0 && (
+                        <span style={{ color: '#3AAC6E' }}>
+                          €{rev.toFixed(2).replace('.', ',')}/mnd
+                        </span>
+                      )}
                     </span>
                   </div>
                   <div
-                    style={{ height: 4, borderRadius: 9999, background: 'rgba(244,236,219,.08)' }}
+                    style={{ height: 5, borderRadius: 9999, background: 'rgba(244,236,219,.07)' }}
                   >
                     <div
                       style={{
                         height: '100%',
                         borderRadius: 9999,
                         width: `${pct}%`,
-                        background: cfg.color,
+                        background: color,
                         transition: 'width .5s',
                       }}
                     />
@@ -259,7 +292,7 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
           </div>
         </div>
 
-        {/* Scan verdeling */}
+        {/* Scan detail */}
         <div
           style={{
             background: 'rgba(244,236,219,.04)',
@@ -268,25 +301,25 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
             padding: '1.25rem',
           }}
         >
+          <SectionLabel>Scans deze maand</SectionLabel>
           <div
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.75rem',
-              fontWeight: 700,
-              color: 'rgba(244,236,219,.45)',
-              letterSpacing: '.08em',
-              textTransform: 'uppercase',
-              marginBottom: '1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '.75rem',
+              marginBottom: '1.25rem',
             }}
           >
-            Laatste 20 scans
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '.6rem' }}>
-            {Object.entries(verdictCount).map(([verdict, count]) => {
-              const cfg = verdictLabel[verdict]
-              const pct = recentScans?.length ? Math.round((count / recentScans.length) * 100) : 0
+            {[
+              { key: 'phishing', label: 'Meerdere waarschuwingen', color: '#E5532A' },
+              { key: 'doubt', label: 'Let op', color: '#D97B2A' },
+              { key: 'safe', label: 'Geen alarmsignalen', color: '#3AAC6E' },
+            ].map(({ key, label, color }) => {
+              const count = verdictCount[key as keyof typeof verdictCount]
+              const total = scanStats?.length ?? 1
+              const pct = Math.round((count / total) * 100)
               return (
-                <div key={verdict}>
+                <div key={key}>
                   <div
                     style={{
                       display: 'flex',
@@ -298,11 +331,11 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
                       style={{
                         fontFamily: 'var(--font-sans)',
                         fontSize: '.82rem',
-                        color: cfg.color,
+                        color,
                         fontWeight: 600,
                       }}
                     >
-                      {cfg.name}
+                      {label}
                     </span>
                     <span
                       style={{
@@ -315,14 +348,14 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
                     </span>
                   </div>
                   <div
-                    style={{ height: 4, borderRadius: 9999, background: 'rgba(244,236,219,.08)' }}
+                    style={{ height: 5, borderRadius: 9999, background: 'rgba(244,236,219,.07)' }}
                   >
                     <div
                       style={{
                         height: '100%',
                         borderRadius: 9999,
                         width: `${pct}%`,
-                        background: cfg.color,
+                        background: color,
                       }}
                     />
                   </div>
@@ -330,105 +363,47 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
               )
             })}
           </div>
-        </div>
-      </div>
-
-      {/* Recente gebruikers */}
-      <div
-        style={{
-          background: 'rgba(244,236,219,.04)',
-          border: '1px solid rgba(244,236,219,.1)',
-          borderRadius: 14,
-          overflow: 'hidden',
-          marginBottom: '1.5rem',
-        }}
-      >
-        <div
-          style={{
-            padding: '1rem 1.5rem',
-            borderBottom: '1px solid rgba(244,236,219,.08)',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '.75rem',
-            fontWeight: 700,
-            color: 'rgba(244,236,219,.45)',
-            letterSpacing: '.08em',
-            textTransform: 'uppercase',
-          }}
-        >
-          Recente gebruikers
-        </div>
-        {recentUsers?.map((u, i) => (
           <div
-            key={u.id}
             style={{
-              padding: '.85rem 1.5rem',
-              borderBottom: i < recentUsers.length - 1 ? '1px solid rgba(244,236,219,.06)' : 'none',
+              paddingTop: '1rem',
+              borderTop: '1px solid rgba(244,236,219,.08)',
               display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
+              gap: '2rem',
             }}
           >
-            <div
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: '50%',
-                background: 'rgba(58,172,110,.15)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontFamily: 'var(--font-sans)',
-                fontWeight: 700,
-                fontSize: '.8rem',
-                color: '#3AAC6E',
-                flexShrink: 0,
-              }}
-            >
-              {u.email.charAt(0).toUpperCase()}
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.88rem',
-                  color: '#F4ECDB',
-                  fontWeight: 500,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {u.full_name || u.email}
+            {[
+              { label: 'Screenshot', count: inputCount.image },
+              { label: 'Tekst', count: inputCount.text },
+            ].map(({ label, count }) => (
+              <div key={label}>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: 700,
+                    fontSize: '1.3rem',
+                    color: '#F4ECDB',
+                    lineHeight: 1,
+                  }}
+                >
+                  {count}
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.72rem',
+                    color: 'rgba(244,236,219,.4)',
+                    marginTop: 2,
+                  }}
+                >
+                  {label}
+                </div>
               </div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.75rem',
-                  color: 'rgba(244,236,219,.4)',
-                }}
-              >
-                {u.email}
-              </div>
-            </div>
-            <div
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.72rem',
-                color: 'rgba(244,236,219,.3)',
-                flexShrink: 0,
-              }}
-            >
-              {new Date(u.created_at).toLocaleDateString('nl-NL', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
-              })}
-            </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
 
-      {/* Recente scans */}
+      {/* ── Gebruikerslijst ── */}
       <div
         style={{
           background: 'rgba(244,236,219,.04)',
@@ -441,81 +416,233 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
           style={{
             padding: '1rem 1.5rem',
             borderBottom: '1px solid rgba(244,236,219,.08)',
-            fontFamily: 'var(--font-sans)',
-            fontSize: '.75rem',
-            fontWeight: 700,
-            color: 'rgba(244,236,219,.45)',
-            letterSpacing: '.08em',
-            textTransform: 'uppercase',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}
         >
-          Recente scans
+          <SectionLabel noMargin>Gebruikers ({totalUsers ?? 0})</SectionLabel>
+          <span
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.72rem',
+              color: 'rgba(244,236,219,.35)',
+            }}
+          >
+            Meest recent eerst
+          </span>
         </div>
-        {recentScans?.map((s, i) => {
-          const cfg = verdictLabel[s.verdict_category] ?? {
-            name: s.verdict_category,
-            color: 'rgba(244,236,219,.5)',
-          }
-          return (
-            <div
-              key={i}
-              style={{
-                padding: '.75rem 1.5rem',
-                borderBottom:
-                  i < recentScans.length - 1 ? '1px solid rgba(244,236,219,.06)' : 'none',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1rem',
-              }}
-            >
+        <div style={{ maxHeight: 480, overflowY: 'auto' }}>
+          {allUsers?.map((u, i) => {
+            const sub = subs?.find((s) => s.user_id === u.id)
+            const tierCfg = sub
+              ? {
+                  label: sub.tier,
+                  color:
+                    sub.tier === 'free'
+                      ? 'rgba(244,236,219,.35)'
+                      : sub.tier === 'standard'
+                        ? '#3AAC6E'
+                        : sub.tier === 'family'
+                          ? '#5B8FE8'
+                          : '#D97B2A',
+                }
+              : { label: 'free', color: 'rgba(244,236,219,.25)' }
+            return (
               <div
+                key={u.id}
                 style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: '50%',
-                  background: cfg.color,
-                  flexShrink: 0,
-                }}
-              />
-              <div style={{ flex: 1 }}>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.82rem',
-                    color: cfg.color,
-                    fontWeight: 600,
-                  }}
-                >
-                  {cfg.name}
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.75rem',
-                    color: 'rgba(244,236,219,.35)',
-                    marginLeft: 8,
-                  }}
-                >
-                  {s.verdict_score}/10 · {s.input_kind === 'image' ? 'Screenshot' : 'Tekst'}
-                </span>
-              </div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.72rem',
-                  color: 'rgba(244,236,219,.3)',
-                  flexShrink: 0,
+                  padding: '.8rem 1.5rem',
+                  borderBottom:
+                    i < allUsers.length - 1 ? '1px solid rgba(244,236,219,.05)' : 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
                 }}
               >
-                {new Date(s.created_at).toLocaleDateString('nl-NL', {
-                  day: 'numeric',
-                  month: 'short',
-                })}
+                <div
+                  style={{
+                    width: 30,
+                    height: 30,
+                    borderRadius: '50%',
+                    background: 'rgba(58,172,110,.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: 700,
+                    fontSize: '.8rem',
+                    color: '#3AAC6E',
+                    flexShrink: 0,
+                  }}
+                >
+                  {u.email.charAt(0).toUpperCase()}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.88rem',
+                      color: '#F4ECDB',
+                      fontWeight: 500,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {u.email}
+                  </div>
+                  {u.full_name && (
+                    <div
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.72rem',
+                        color: 'rgba(244,236,219,.35)',
+                      }}
+                    >
+                      {u.full_name}
+                    </div>
+                  )}
+                </div>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.7rem',
+                    fontWeight: 700,
+                    color: tierCfg.color,
+                    textTransform: 'uppercase',
+                    letterSpacing: '.04em',
+                    flexShrink: 0,
+                  }}
+                >
+                  {tierCfg.label}
+                </span>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.72rem',
+                    color: 'rgba(244,236,219,.3)',
+                    flexShrink: 0,
+                    minWidth: 90,
+                    textAlign: 'right',
+                  }}
+                >
+                  {new Date(u.created_at).toLocaleDateString('nl-NL', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: '2-digit',
+                  })}
+                </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
+
+      <p
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '.72rem',
+          color: 'rgba(244,236,219,.2)',
+          textAlign: 'center',
+          marginTop: '1.5rem',
+        }}
+      >
+        Paginabezoeken en landdata: zie Vercel Analytics dashboard
+      </p>
+    </div>
+  )
+}
+
+function BigStatCard({
+  label,
+  value,
+  sub,
+  color,
+  note,
+  noteColor,
+}: {
+  label: string
+  value: string
+  sub: string
+  color: string
+  note?: string
+  noteColor?: string
+}) {
+  return (
+    <div
+      style={{
+        background: 'rgba(244,236,219,.04)',
+        border: '1px solid rgba(244,236,219,.1)',
+        borderRadius: 14,
+        padding: '1.25rem',
+      }}
+    >
+      <div
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '.72rem',
+          fontWeight: 700,
+          color: 'rgba(244,236,219,.4)',
+          letterSpacing: '.06em',
+          textTransform: 'uppercase',
+          marginBottom: '.5rem',
+        }}
+      >
+        {label}
+      </div>
+      <div
+        style={{
+          fontFamily: 'var(--font-serif)',
+          fontWeight: 700,
+          fontSize: '2.2rem',
+          color,
+          lineHeight: 1,
+          marginBottom: '.3rem',
+        }}
+      >
+        {value}
+      </div>
+      <div
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '.75rem',
+          color: 'rgba(244,236,219,.4)',
+          marginBottom: note ? '.3rem' : 0,
+        }}
+      >
+        {sub}
+      </div>
+      {note && (
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.72rem',
+            color: noteColor ?? 'rgba(244,236,219,.35)',
+            fontWeight: 500,
+          }}
+        >
+          {note}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function SectionLabel({ children, noMargin }: { children: React.ReactNode; noMargin?: boolean }) {
+  return (
+    <div
+      style={{
+        fontFamily: 'var(--font-sans)',
+        fontSize: '.75rem',
+        fontWeight: 700,
+        color: 'rgba(244,236,219,.45)',
+        letterSpacing: '.08em',
+        textTransform: 'uppercase',
+        marginBottom: noMargin ? 0 : '1rem',
+      }}
+    >
+      {children}
     </div>
   )
 }
