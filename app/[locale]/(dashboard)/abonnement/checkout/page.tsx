@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
-import { createClient } from '@/lib/supabase/client'
 
 const tierInfo: Record<
   string,
@@ -47,30 +46,25 @@ function CheckoutContent() {
 
   const handleCheckout = async () => {
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 1200))
+    await new Promise((r) => setTimeout(r, 800))
 
-    // Update subscription tier in database
-    const supabase = createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (user) {
-      await supabase.from('subscriptions').upsert(
-        {
-          user_id: user.id,
-          tier: tierParam,
-          status: 'active',
-          current_period_end: new Date(
-            Date.now() + (billing === 'yearly' ? 365 : 30) * 24 * 60 * 60 * 1000
-          ).toISOString(),
-        },
-        { onConflict: 'user_id' }
-      )
+    // Update via server-side API (betrouwbaarder dan client-side)
+    const res = await fetch('/api/subscriptions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tier: tierParam, billing }),
+    })
+
+    if (!res.ok) {
+      const err = await res.json()
+      alert(`Fout: ${err.error}`)
+      setLoading(false)
+      return
     }
 
     setLoading(false)
-    // Volledige page refresh zodat server components opnieuw laden vanuit database
-    window.location.href = `/${locale}/abonnement`
+    // Volledige page refresh zodat server components opnieuw laden
+    window.location.href = `/${locale}/familie`
   }
 
   return (
