@@ -1,26 +1,27 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, Suspense } from 'react'
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { HeroScene } from './hero-scene'
+
+// Video URL uit de Neuralyn prompt
+const HERO_VIDEO =
+  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4'
 
 export function Hero() {
   const locale = useLocale()
   const sectionRef = useRef<HTMLElement>(null)
-  const dashboardRef = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
   })
 
-  // Tekst fades en beweegt omhoog bij scrollen
   const textY = useTransform(scrollYProgress, [0, 0.5], [0, -150])
-  const textOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0])
-
-  // Dashboard drifts licht omhoog (parallax)
-  const dashY = useTransform(scrollYProgress, [0, 1], [0, -200])
+  const textOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0])
+  const dashY = useTransform(scrollYProgress, [0, 1], [0, -250])
 
   return (
     <section
@@ -29,266 +30,265 @@ export function Hero() {
         position: 'relative',
         minHeight: '100vh',
         overflow: 'hidden',
-        background: '#040E07',
+        background: '#000',
         isolation: 'isolate',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
-      {/* Gradient glows */}
+      {/* 3D Three.js scene — organische planten */}
+      <Suspense fallback={null}>
+        <HeroScene />
+      </Suspense>
+
+      {/* Video achtergrond (speelt achter het dashboard) */}
       <div
-        aria-hidden="true"
         style={{
           position: 'absolute',
-          top: '0%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '80vw',
-          height: '50vh',
-          background: 'radial-gradient(ellipse at center, rgba(27,71,49,.7) 0%, transparent 65%)',
-          filter: 'blur(80px)',
-          zIndex: 0,
+          inset: 0,
+          zIndex: 1,
           pointerEvents: 'none',
+          opacity: 0.35,
         }}
-      />
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        >
+          <source src={HERO_VIDEO} type="video/mp4" />
+        </video>
+      </div>
 
-      {/* Grid achtergrond */}
+      {/* Donkere overlay zodat tekst leesbaar blijft */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           inset: 0,
-          zIndex: 0,
+          zIndex: 2,
+          pointerEvents: 'none',
+          background:
+            'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,0,0,.3) 0%, rgba(0,0,0,.7) 100%)',
+        }}
+      />
+
+      {/* Grid */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 2,
           pointerEvents: 'none',
           backgroundImage: [
-            'linear-gradient(rgba(58,172,110,.055) 1px, transparent 1px)',
-            'linear-gradient(90deg, rgba(58,172,110,.055) 1px, transparent 1px)',
+            'linear-gradient(rgba(58,172,110,.05) 1px, transparent 1px)',
+            'linear-gradient(90deg, rgba(58,172,110,.05) 1px, transparent 1px)',
           ].join(','),
           backgroundSize: '50px 50px',
           WebkitMaskImage:
-            'radial-gradient(ellipse 100% 100% at 50% 40%, black 20%, transparent 80%)',
-          maskImage: 'radial-gradient(ellipse 100% 100% at 50% 40%, black 20%, transparent 80%)',
+            'radial-gradient(ellipse 100% 100% at 50% 40%, black 10%, transparent 80%)',
+          maskImage: 'radial-gradient(ellipse 100% 100% at 50% 40%, black 10%, transparent 80%)',
         }}
       />
 
-      {/* Grain */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0,
-          pointerEvents: 'none',
-          opacity: 0.04,
-          mixBlendMode: 'screen',
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
-          backgroundSize: '200px 200px',
-        }}
-      />
-
-      {/* Content */}
+      {/* ── HERO CONTENT ── */}
       <div
         style={{
           position: 'relative',
           zIndex: 5,
+          width: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          padding: 'clamp(4rem, 8vw, 6rem) clamp(1.5rem, 3vw, 3rem) 0',
-          textAlign: 'center',
         }}
       >
+        {/* Tekst blok met parallax */}
         <motion.div
           style={{ y: textY, opacity: textOpacity }}
           initial="hidden"
           animate="show"
           variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
         >
-          {/* Liquid glass pill */}
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 10 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+          <div
+            style={{
+              textAlign: 'center',
+              padding: 'clamp(5rem, 9vw, 7rem) clamp(1.5rem, 3vw, 3rem) 0',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
-            style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}
           >
-            <div
-              className="liquid-glass"
+            {/* Liquid glass pill */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 10 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+              }}
+              style={{ marginBottom: '1.5rem' }}
+            >
+              <div
+                className="liquid-glass"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  borderRadius: 10,
+                  padding: '.45rem 1rem',
+                }}
+              >
+                <span
+                  style={{
+                    background: '#3AAC6E',
+                    color: '#000',
+                    borderRadius: 6,
+                    padding: '.15rem .55rem',
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: 700,
+                    fontSize: '.72rem',
+                    letterSpacing: '.04em',
+                  }}
+                >
+                  Nieuw
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.82rem',
+                    fontWeight: 500,
+                    color: 'rgba(255,255,255,.55)',
+                  }}
+                >
+                  Europese AI · Gemaakt in Nederland
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Heading */}
+            <motion.h1
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.1 } },
+              }}
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                borderRadius: 10,
-                padding: '.4rem .9rem',
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 700,
+                fontSize: 'clamp(3rem, 7vw, 7.5rem)',
+                lineHeight: 1.0,
+                letterSpacing: '-.04em',
+                color: '#fff',
+                margin: 0,
+                textAlign: 'center',
+                maxWidth: '14ch',
               }}
             >
-              <span
+              Twijfelt u over
+              <br />
+              een bericht?{' '}
+              <em
                 style={{
-                  background: '#3AAC6E',
-                  color: '#040E07',
-                  borderRadius: 6,
-                  padding: '.15rem .55rem',
-                  fontFamily: 'var(--font-sans)',
-                  fontWeight: 700,
-                  fontSize: '.7rem',
-                  letterSpacing: '.04em',
+                  fontStyle: 'italic',
+                  WebkitTextStroke: '1.5px #3AAC6E',
+                  color: 'transparent',
                 }}
               >
-                Nieuw
-              </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.78rem',
-                  fontWeight: 500,
-                  color: 'rgba(244,236,219,.5)',
-                }}
-              >
-                Europese AI · Gemaakt in Nederland
-              </span>
-            </div>
-          </motion.div>
+                Wij kijken mee.
+              </em>
+            </motion.h1>
 
-          {/* Heading */}
-          <motion.h1
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.65, delay: 0.1 } },
-            }}
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 700,
-              fontSize: 'clamp(2.8rem, 6.5vw, 7rem)',
-              lineHeight: 1.0,
-              letterSpacing: '-.04em',
-              color: '#F4ECDB',
-              margin: '0 0 .1em',
-              maxWidth: '14ch',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-            }}
-          >
-            Twijfelt u over een bericht?{' '}
-            <span style={{ WebkitTextStroke: '2px #3AAC6E', color: 'transparent' }}>
-              Wij kijken mee.
-            </span>
-          </motion.h1>
+            {/* Subtitle */}
+            <motion.p
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } },
+              }}
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: 'clamp(.95rem, 1.2vw, 1.1rem)',
+                lineHeight: 1.7,
+                color: 'rgba(255,255,255,.55)',
+                maxWidth: 480,
+                margin: '1.25rem auto 0',
+                textAlign: 'center',
+              }}
+            >
+              Upload een screenshot van een verdacht bericht.
+              <br />
+              Binnen 5 seconden weet u of het te vertrouwen is.
+            </motion.p>
 
-          {/* Subtitle */}
-          <motion.p
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } },
-            }}
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 'clamp(.95rem, 1.2vw, 1.15rem)',
-              lineHeight: 1.7,
-              color: 'rgba(244,236,219,.55)',
-              maxWidth: 480,
-              margin: '1.25rem auto 0',
-            }}
-          >
-            Upload een screenshot van een verdacht WhatsApp- of sms-bericht. Binnen 5 seconden weet
-            u of het te vertrouwen is — in gewone taal.
-          </motion.p>
-
-          {/* CTA */}
-          <motion.div
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3 } },
-            }}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '.75rem',
-              flexWrap: 'wrap',
-              marginTop: '2rem',
-            }}
-          >
-            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
-              <Link
-                href={`/${locale}/#demo`}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '.6rem',
-                  padding: '1rem 1.75rem',
-                  borderRadius: 9999,
-                  fontFamily: 'var(--font-sans)',
-                  fontWeight: 700,
-                  fontSize: '1rem',
-                  textDecoration: 'none',
-                  background: '#F4ECDB',
-                  color: '#040E07',
-                  boxShadow: '0 8px 32px -8px rgba(244,236,219,.25)',
-                }}
-              >
-                Gratis beginnen
-                <svg
-                  width="15"
-                  height="15"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
+            {/* CTA — gradient glow knop */}
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3 } },
+              }}
+              style={{ marginTop: '2rem' }}
+            >
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  href={`/${locale}/#demo`}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '.6rem',
+                    padding: '1rem 2rem',
+                    borderRadius: 9999,
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: 700,
+                    fontSize: '1rem',
+                    textDecoration: 'none',
+                    background: 'linear-gradient(135deg, #fff 0%, #d4f0e0 100%)',
+                    color: '#000',
+                    boxShadow: '0 0 30px rgba(58,172,110,.4), 0 8px 32px -8px rgba(0,0,0,.4)',
+                  }}
                 >
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </Link>
+                  Gratis beginnen
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </motion.div>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Link
-                href={`/${locale}/#hoe-het-werkt`}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '.5rem',
-                  padding: '1rem 1.4rem',
-                  borderRadius: 9999,
-                  fontFamily: 'var(--font-sans)',
-                  fontWeight: 600,
-                  fontSize: '.92rem',
-                  border: '1.5px solid rgba(244,236,219,.18)',
-                  background: 'rgba(244,236,219,.05)',
-                  color: 'rgba(244,236,219,.7)',
-                  textDecoration: 'none',
-                }}
-              >
-                Hoe werkt het?
-              </Link>
-            </motion.div>
-          </motion.div>
+          </div>
         </motion.div>
 
-        {/* ── DASHBOARD AREA — brede product preview ── */}
+        {/* ── DASHBOARD — breed, met parallax ── */}
         <motion.div
-          ref={dashboardRef}
-          style={{ y: dashY }}
+          style={{ y: dashY, width: '100%' }}
           initial={{ opacity: 0, y: 60 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.45, ease: 'easeOut' }}
         >
           <div
             style={{
-              position: 'relative',
               width: '100vw',
               marginLeft: 'calc(-50vw + 50%)',
               marginTop: 'clamp(3rem, 5vw, 4.5rem)',
+              position: 'relative',
             }}
           >
-            {/* Dashboard mockup */}
-            <div
-              style={{
-                margin: '0 auto',
-                maxWidth: 1100,
-                padding: '0 clamp(1rem, 3vw, 3rem)',
-              }}
-            >
-              <DashboardPreview />
+            <div style={{ padding: '0 clamp(1rem, 4vw, 4rem)', maxWidth: 1200, margin: '0 auto' }}>
+              <DashboardMockup />
             </div>
 
             {/* Bottom fade */}
@@ -299,8 +299,8 @@ export function Hero() {
                 bottom: 0,
                 left: 0,
                 right: 0,
-                height: 180,
-                background: 'linear-gradient(to top, #040E07 0%, transparent 100%)',
+                height: 200,
+                background: 'linear-gradient(to top, #000 0%, transparent 100%)',
                 zIndex: 10,
                 pointerEvents: 'none',
               }}
@@ -312,22 +312,25 @@ export function Hero() {
   )
 }
 
-function DashboardPreview() {
+function DashboardMockup() {
   return (
     <div
       style={{
-        background: 'linear-gradient(160deg, #0A1E10 0%, #071509 100%)',
+        background: 'rgba(10, 20, 14, 0.85)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
         border: '1px solid rgba(58,172,110,.2)',
         borderRadius: 20,
         overflow: 'hidden',
-        boxShadow: '0 40px 100px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(58,172,110,.1)',
+        boxShadow: '0 50px 120px -20px rgba(0,0,0,.9), 0 0 0 1px rgba(58,172,110,.1)',
+        mixBlendMode: 'luminosity' as const,
       }}
     >
       {/* Titelbalk */}
       <div
         style={{
-          padding: '.75rem 1.25rem',
-          borderBottom: '1px solid rgba(244,236,219,.06)',
+          padding: '.7rem 1.25rem',
+          borderBottom: '1px solid rgba(255,255,255,.06)',
           display: 'flex',
           alignItems: 'center',
           gap: '.6rem',
@@ -341,48 +344,46 @@ function DashboardPreview() {
             flex: 1,
             textAlign: 'center',
             fontFamily: 'ui-monospace, monospace',
-            fontSize: '.65rem',
-            color: 'rgba(244,236,219,.3)',
+            fontSize: '.62rem',
+            color: 'rgba(255,255,255,.25)',
             letterSpacing: '.08em',
           }}
         >
-          klopt-het.vercel.app/nl/scan
+          klopthet.vercel.app — Bericht controleren
         </div>
       </div>
 
-      {/* Dashboard inhoud */}
+      {/* Content */}
       <div
         style={{
           padding: '1.5rem',
           display: 'grid',
           gridTemplateColumns: '1fr 1.6fr',
           gap: '1.25rem',
-          alignItems: 'start',
         }}
       >
-        {/* Links: scanner input */}
+        {/* Links */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {/* Upload zone */}
           <div
             style={{
-              background: 'rgba(244,236,219,.03)',
-              border: '1.5px dashed rgba(58,172,110,.25)',
-              borderRadius: 14,
-              padding: '1.75rem 1rem',
+              background: 'rgba(255,255,255,.03)',
+              border: '1.5px dashed rgba(58,172,110,.2)',
+              borderRadius: 12,
+              padding: '1.5rem',
               textAlign: 'center',
             }}
           >
             <div
               style={{
                 color: 'rgba(58,172,110,.5)',
-                marginBottom: '.6rem',
+                marginBottom: '.5rem',
                 display: 'flex',
                 justifyContent: 'center',
               }}
             >
               <svg
-                width="32"
-                height="32"
+                width="28"
+                height="28"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -398,54 +399,52 @@ function DashboardPreview() {
             <div
               style={{
                 fontFamily: 'var(--font-sans)',
+                fontSize: '.78rem',
+                color: '#fff',
                 fontWeight: 600,
-                fontSize: '.82rem',
-                color: '#F4ECDB',
-                marginBottom: '.3rem',
+                marginBottom: '.25rem',
               }}
             >
-              Kies uw screenshot
+              Screenshot uploaden
             </div>
             <div
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '.7rem',
-                color: 'rgba(244,236,219,.35)',
+                fontSize: '.65rem',
+                color: 'rgba(255,255,255,.3)',
               }}
             >
-              PNG, JPG, HEIC · max 10 MB
+              PNG, JPG, HEIC
             </div>
           </div>
-
-          {/* Voorbeeld bericht */}
           <div
             style={{
-              background: 'rgba(244,236,219,.04)',
-              border: '1px solid rgba(244,236,219,.08)',
-              borderRadius: 12,
+              background: 'rgba(255,255,255,.04)',
+              border: '1px solid rgba(255,255,255,.08)',
+              borderRadius: 10,
               overflow: 'hidden',
             }}
           >
             <div
               style={{
-                padding: '.6rem .85rem',
-                borderBottom: '1px solid rgba(244,236,219,.06)',
+                padding: '.55rem .8rem',
+                borderBottom: '1px solid rgba(255,255,255,.06)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 8,
+                gap: 7,
               }}
             >
               <div
                 style={{
-                  width: 22,
-                  height: 22,
+                  width: 20,
+                  height: 20,
                   borderRadius: '50%',
-                  background: 'rgba(244,236,219,.1)',
+                  background: 'rgba(255,255,255,.1)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '.6rem',
-                  color: 'rgba(244,236,219,.4)',
+                  fontSize: '.55rem',
+                  color: 'rgba(255,255,255,.4)',
                 }}
               >
                 ?
@@ -453,8 +452,8 @@ function DashboardPreview() {
               <div
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '.7rem',
-                  color: '#F4ECDB',
+                  fontSize: '.65rem',
+                  color: '#fff',
                   fontWeight: 600,
                 }}
               >
@@ -464,7 +463,7 @@ function DashboardPreview() {
                 style={{
                   marginLeft: 'auto',
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '.58rem',
+                  fontSize: '.55rem',
                   color: 'rgba(229,83,42,.7)',
                   fontWeight: 700,
                 }}
@@ -474,72 +473,58 @@ function DashboardPreview() {
             </div>
             <div
               style={{
-                padding: '.75rem .85rem',
+                padding: '.65rem .8rem',
                 fontFamily: 'var(--font-sans)',
-                fontSize: '.72rem',
-                color: 'rgba(244,236,219,.75)',
+                fontSize: '.68rem',
+                color: 'rgba(255,255,255,.7)',
                 lineHeight: 1.5,
               }}
             >
-              &ldquo;Hoi mama, kun je me €450 sturen? Nieuw nummer, dringend.&rdquo;
+              &ldquo;Hoi mama, kun je me €450 sturen?&rdquo;
             </div>
           </div>
-
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 8,
-              padding: '.75rem',
+              gap: 7,
+              padding: '.7rem',
               background: '#3AAC6E',
-              borderRadius: 10,
+              borderRadius: 9,
               fontFamily: 'var(--font-sans)',
               fontWeight: 700,
-              fontSize: '.82rem',
-              color: '#040E07',
+              fontSize: '.78rem',
+              color: '#000',
             }}
           >
-            Controleer bericht
-            <svg
-              width="13"
-              height="13"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14M12 5l7 7-7 7" />
-            </svg>
+            Controleer bericht →
           </div>
         </div>
 
-        {/* Rechts: analyse resultaat */}
+        {/* Rechts — resultaat */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {/* Verdict */}
           <div
             style={{
-              background: 'rgba(229,83,42,.08)',
-              border: '1px solid rgba(229,83,42,.25)',
-              borderRadius: 14,
-              padding: '1.25rem',
+              background: 'rgba(229,83,42,.07)',
+              border: '1px solid rgba(229,83,42,.2)',
+              borderRadius: 12,
+              padding: '1.1rem',
             }}
           >
             <div
               style={{
                 display: 'flex',
-                alignItems: 'center',
                 justifyContent: 'space-between',
-                marginBottom: '1rem',
+                alignItems: 'center',
+                marginBottom: '.85rem',
               }}
             >
               <div>
                 <div
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '.68rem',
+                    fontSize: '.62rem',
                     fontWeight: 700,
                     color: '#E5532A',
                     letterSpacing: '.08em',
@@ -553,9 +538,8 @@ function DashboardPreview() {
                   style={{
                     fontFamily: 'var(--font-serif)',
                     fontWeight: 700,
-                    fontSize: '1.3rem',
-                    color: '#F4ECDB',
-                    letterSpacing: '-.02em',
+                    fontSize: '1.15rem',
+                    color: '#fff',
                   }}
                 >
                   Meerdere waarschuwingen
@@ -563,18 +547,18 @@ function DashboardPreview() {
               </div>
               <div
                 style={{
-                  textAlign: 'center',
                   background: 'rgba(229,83,42,.15)',
-                  border: '1px solid rgba(229,83,42,.3)',
-                  borderRadius: 10,
-                  padding: '.6rem .9rem',
+                  border: '1px solid rgba(229,83,42,.25)',
+                  borderRadius: 8,
+                  padding: '.5rem .75rem',
+                  textAlign: 'center',
                 }}
               >
                 <div
                   style={{
                     fontFamily: 'var(--font-serif)',
                     fontWeight: 700,
-                    fontSize: '1.6rem',
+                    fontSize: '1.4rem',
                     color: '#E5532A',
                     lineHeight: 1,
                   }}
@@ -584,24 +568,21 @@ function DashboardPreview() {
                 <div
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '.55rem',
-                    color: 'rgba(244,236,219,.35)',
+                    fontSize: '.5rem',
+                    color: 'rgba(255,255,255,.3)',
                     letterSpacing: '.06em',
-                    textTransform: 'uppercase',
-                    marginTop: 2,
                   }}
                 >
                   /10
                 </div>
               </div>
             </div>
-            {/* Score balk */}
             <div
               style={{
-                height: 5,
+                height: 4,
                 borderRadius: 9999,
-                background: 'rgba(244,236,219,.07)',
-                marginBottom: '1rem',
+                background: 'rgba(255,255,255,.06)',
+                marginBottom: '.85rem',
               }}
             >
               <div
@@ -616,52 +597,50 @@ function DashboardPreview() {
             <p
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '.82rem',
-                color: 'rgba(244,236,219,.75)',
-                lineHeight: 1.65,
+                fontSize: '.75rem',
+                color: 'rgba(255,255,255,.7)',
+                lineHeight: 1.6,
                 margin: 0,
               }}
             >
-              Wij zien een patroon van de kleinkind-truc. Geldverzoek via onbekend nummer met
-              tijdsdruk.
+              Wij zien een patroon van de kleinkind-truc. Geldverzoek via onbekend nummer
+              gecombineerd met tijdsdruk.
             </p>
           </div>
-
-          {/* Signalen */}
           <div
             style={{
-              background: 'rgba(244,236,219,.04)',
-              border: '1px solid rgba(244,236,219,.1)',
-              borderRadius: 14,
-              padding: '1rem 1.1rem',
+              background: 'rgba(255,255,255,.04)',
+              border: '1px solid rgba(255,255,255,.08)',
+              borderRadius: 12,
+              padding: '.9rem 1rem',
             }}
           >
             <div
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '.68rem',
+                fontSize: '.62rem',
                 fontWeight: 700,
-                color: 'rgba(244,236,219,.4)',
+                color: 'rgba(255,255,255,.35)',
                 letterSpacing: '.08em',
                 textTransform: 'uppercase',
-                marginBottom: '.75rem',
+                marginBottom: '.65rem',
               }}
             >
               Gevonden signalen
             </div>
             {[
               { t: 'Geldverzoek via nieuw nummer', c: '#E5532A' },
-              { t: 'Tijdsdruk: "dringend"', c: '#D97B2A' },
+              { t: 'Tijdsdruk aanwezig', c: '#D97B2A' },
               { t: 'Geen identiteitsverificatie', c: '#D97B2A' },
             ].map((s) => (
               <div
                 key={s.t}
-                style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: '.5rem' }}
+                style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: '.45rem' }}
               >
                 <div
                   style={{
-                    width: 5,
-                    height: 5,
+                    width: 4,
+                    height: 4,
                     borderRadius: '50%',
                     background: s.c,
                     flexShrink: 0,
@@ -670,27 +649,14 @@ function DashboardPreview() {
                 <span
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '.78rem',
-                    color: 'rgba(244,236,219,.7)',
+                    fontSize: '.72rem',
+                    color: 'rgba(255,255,255,.65)',
                   }}
                 >
                   {s.t}
                 </span>
               </div>
             ))}
-          </div>
-
-          {/* Disclaimer */}
-          <div
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.68rem',
-              color: 'rgba(244,236,219,.3)',
-              textAlign: 'center',
-              lineHeight: 1.5,
-            }}
-          >
-            Dit is een indicatie. Twijfelt u nog? Bel 088 – 786 87 78
           </div>
         </div>
       </div>
