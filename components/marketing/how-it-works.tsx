@@ -155,7 +155,7 @@ export function HowItWorks() {
           {steps.map((step) => (
             <div
               key={step.n}
-              className="how-card"
+              className="how-card card-hover"
               style={{
                 background: 'rgba(244,236,219,.05)',
                 border: '1px solid rgba(244,236,219,.14)',

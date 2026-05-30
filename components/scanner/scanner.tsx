@@ -4,6 +4,13 @@ import { useState, useRef, useCallback } from 'react'
 import { useLocale } from 'next-intl'
 import type { Verdict } from '@/lib/ai/provider'
 import { VerdictCard } from './verdict-card'
+import {
+  CameraIcon,
+  TextIcon,
+  UploadIcon,
+  AlertIcon,
+  ArrowRightIcon,
+} from '@/components/shared/icons'
 
 type State = 'idle' | 'analyzing' | 'done' | 'error'
 
@@ -158,9 +165,9 @@ export function Scanner() {
             }}
           >
             {[
-              { id: 'upload' as const, label: '📷 Screenshot uploaden' },
-              { id: 'text' as const, label: '✏️ Tekst plakken' },
-            ].map(({ id, label }) => (
+              { id: 'upload' as const, label: 'Screenshot uploaden', Icon: CameraIcon },
+              { id: 'text' as const, label: 'Tekst plakken', Icon: TextIcon },
+            ].map(({ id, label, Icon }) => (
               <button
                 key={id}
                 onClick={() => setMode(id)}
@@ -175,8 +182,12 @@ export function Scanner() {
                   fontSize: '.88rem',
                   fontWeight: 600,
                   transition: 'all .2s',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
                 }}
               >
+                <Icon size={15} strokeWidth={1.8} />
                 {label}
               </button>
             ))}
@@ -245,7 +256,9 @@ export function Scanner() {
               </div>
             ) : (
               <>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📱</div>
+                <div style={{ color: 'rgba(244,236,219,.35)', marginBottom: '1rem' }}>
+                  <UploadIcon size={48} strokeWidth={1.2} />
+                </div>
                 <p
                   style={{
                     fontFamily: 'var(--font-serif)',
@@ -381,7 +394,7 @@ export function Scanner() {
                 }}
               >
                 {state === 'analyzing' ? 'Bezig…' : 'Controleer bericht'}
-                {state !== 'analyzing' && <span>→</span>}
+                {state !== 'analyzing' && <ArrowRightIcon size={16} strokeWidth={2.2} />}
               </button>
             </div>
           </div>
@@ -401,7 +414,9 @@ export function Scanner() {
               gap: 10,
             }}
           >
-            <span style={{ color: '#E5532A', flexShrink: 0 }}>⚠</span>
+            <span style={{ color: '#E5532A', flexShrink: 0, display: 'flex' }}>
+              <AlertIcon size={18} strokeWidth={1.8} />
+            </span>
             <div>
               <p
                 style={{
@@ -425,7 +440,7 @@ export function Scanner() {
                   padding: 0,
                 }}
               >
-                ← Probeer opnieuw
+                Probeer opnieuw
               </button>
             </div>
           </div>

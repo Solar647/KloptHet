@@ -5,6 +5,7 @@ import { HowItWorks } from '@/components/marketing/how-it-works'
 import { DemoScanner } from '@/components/marketing/demo-scanner'
 import { Pricing } from '@/components/marketing/pricing'
 import { FAQ } from '@/components/marketing/faq'
+import { Reveal } from '@/components/shared/reveal'
 
 export default function HomePage() {
   return (
@@ -12,10 +13,18 @@ export default function HomePage() {
       <Nav />
       <main id="main">
         <Hero />
-        <HowItWorks />
-        <DemoScanner />
-        <Pricing />
-        <FAQ />
+        <Reveal>
+          <HowItWorks />
+        </Reveal>
+        <Reveal delay={50}>
+          <DemoScanner />
+        </Reveal>
+        <Reveal delay={50}>
+          <Pricing />
+        </Reveal>
+        <Reveal delay={50}>
+          <FAQ />
+        </Reveal>
       </main>
       <Footer />
     </>
