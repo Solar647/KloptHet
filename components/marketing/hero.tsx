@@ -17,7 +17,6 @@ export function Hero() {
 
   const textY = useTransform(scrollYProgress, [0, 0.5], [0, -150])
   const textOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0])
-  const dashY = useTransform(scrollYProgress, [0, 1], [0, -250])
 
   return (
     <section
@@ -238,42 +237,6 @@ export function Hero() {
                 </Link>
               </motion.div>
             </motion.div>
-          </div>
-        </motion.div>
-
-        {/* ── DASHBOARD — breed, met parallax ── */}
-        <motion.div
-          style={{ y: dashY, width: '100%' }}
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.45, ease: 'easeOut' }}
-        >
-          <div
-            style={{
-              width: '100vw',
-              marginLeft: 'calc(-50vw + 50%)',
-              marginTop: 'clamp(3rem, 5vw, 4.5rem)',
-              position: 'relative',
-            }}
-          >
-            <div style={{ padding: '0 clamp(1rem, 4vw, 4rem)', maxWidth: 1200, margin: '0 auto' }}>
-              <DashboardMockup />
-            </div>
-
-            {/* Bottom fade */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                bottom: 0,
-                left: 0,
-                right: 0,
-                height: 200,
-                background: 'linear-gradient(to top, #000 0%, transparent 100%)',
-                zIndex: 10,
-                pointerEvents: 'none',
-              }}
-            />
           </div>
         </motion.div>
       </div>
