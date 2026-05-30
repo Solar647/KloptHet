@@ -1,36 +1,41 @@
 'use client'
 
-import { useTranslations, useLocale } from 'next-intl'
+import { useLocale } from 'next-intl'
 import Link from 'next/link'
 
+const stickers = [
+  { text: 'KLEINKIND-\nTRUC', top: '28%', left: '3%', rotate: -6, accent: true },
+  { text: 'BANK-\nIMITATIE', top: '18%', right: '4%', rotate: 5, accent: false },
+  { text: 'BEZORG-\nFRAUDE', bottom: '28%', left: '5%', rotate: 4, accent: false },
+  { text: 'ROMANTIEK-\nSCAM', bottom: '22%', right: '3%', rotate: -4, accent: true },
+  { text: '5 SEC\nANALYSE →', top: '52%', right: '7%', rotate: 8, accent: true, small: true },
+]
+
 export function Hero() {
-  const t = useTranslations('hero')
   const locale = useLocale()
 
   return (
     <section
       style={{
         position: 'relative',
-        color: '#F4ECDB',
-        padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem) clamp(4rem, 8vw, 7rem)',
-        overflow: 'hidden',
-        minHeight: '90vh',
+        minHeight: '95vh',
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        background: '#07180E',
         isolation: 'isolate',
       }}
     >
-      <FlutedGlassBG />
-
-      {/* Paper grain */}
+      {/* Subtle grain */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           inset: 0,
-          zIndex: 1,
+          zIndex: 0,
           pointerEvents: 'none',
-          opacity: 0.08,
+          opacity: 0.06,
           mixBlendMode: 'overlay',
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
@@ -38,17 +43,66 @@ export function Hero() {
         }}
       />
 
+      {/* Groene glow links */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '20%',
+          left: '-10%',
+          width: '50%',
+          height: '60%',
+          background: 'radial-gradient(ellipse at center, rgba(27,71,49,.6) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          filter: 'blur(60px)',
+          zIndex: 0,
+        }}
+      />
+
+      {/* Floating stickers — verborgen op mobiel */}
+      <div className="hero-top-strip-extras">
+        {stickers.map((s, i) => (
+          <div
+            key={i}
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              top: s.top,
+              bottom: s.bottom,
+              left: s.left,
+              right: s.right,
+              transform: `rotate(${s.rotate}deg)`,
+              zIndex: 2,
+              background: s.accent ? '#3AAC6E' : 'transparent',
+              border: s.accent ? 'none' : '2px solid rgba(244,236,219,.25)',
+              borderRadius: s.small ? 9999 : 8,
+              padding: s.small ? '.4rem .9rem' : '.6rem .9rem',
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 700,
+              fontSize: s.small ? '.65rem' : '.75rem',
+              letterSpacing: '.06em',
+              textTransform: 'uppercase' as const,
+              color: s.accent ? '#07180E' : 'rgba(244,236,219,.7)',
+              lineHeight: 1.3,
+              whiteSpace: 'pre-line' as const,
+              pointerEvents: 'none',
+              userSelect: 'none' as const,
+            }}
+          >
+            {s.text}
+          </div>
+        ))}
+      </div>
+
+      {/* Main content */}
       <div
         style={{
           position: 'relative',
           zIndex: 3,
-          maxWidth: 1100,
+          padding: 'clamp(5rem, 8vw, 8rem) clamp(1.5rem, 5vw, 6rem)',
+          maxWidth: 1300,
           margin: '0 auto',
           width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          gap: 'clamp(1.5rem, 3vw, 2.5rem)',
         }}
       >
         {/* Eyebrow */}
@@ -57,241 +111,198 @@ export function Hero() {
             display: 'inline-flex',
             alignItems: 'center',
             gap: 10,
-            background: 'rgba(58,172,110,.12)',
-            border: '1px solid rgba(58,172,110,.25)',
-            borderRadius: 9999,
-            padding: '.4rem 1rem',
+            marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
+            fontFamily: 'ui-monospace, monospace',
+            fontSize: '.72rem',
+            fontWeight: 700,
+            color: 'rgba(244,236,219,.45)',
+            letterSpacing: '.2em',
+            textTransform: 'uppercase',
           }}
         >
           <span
             style={{
-              width: 6,
-              height: 6,
+              width: 5,
+              height: 5,
               borderRadius: '50%',
               background: '#3AAC6E',
-              flexShrink: 0,
-              boxShadow: '0 0 8px #3AAC6E',
+              boxShadow: '0 0 6px #3AAC6E',
             }}
           />
+          De fraude-checker voor WhatsApp en sms
+        </div>
+
+        {/* Big headline */}
+        <h1 style={{ margin: 0 }}>
           <span
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.78rem',
-              fontWeight: 600,
-              color: '#3AAC6E',
-              letterSpacing: '.06em',
-              textTransform: 'uppercase',
-            }}
-          >
-            Europese AI · Geen data bewaard
-          </span>
-        </div>
-
-        {/* Headline */}
-        <div>
-          <h1
-            style={{
+              display: 'block',
               fontFamily: 'var(--font-serif)',
               fontWeight: 700,
-              fontSize: 'clamp(2.8rem, 7vw, 7rem)',
-              lineHeight: 1.0,
-              letterSpacing: '-.03em',
+              fontSize: 'clamp(3.2rem, 10vw, 10rem)',
+              lineHeight: 0.9,
+              letterSpacing: '-.04em',
               color: '#F4ECDB',
-              margin: 0,
             }}
           >
-            {t('heading')}
-          </h1>
-          <h2
+            TWIJFELT U
+          </span>
+          <span
             style={{
+              display: 'block',
               fontFamily: 'var(--font-serif)',
               fontWeight: 700,
-              fontSize: 'clamp(2.8rem, 7vw, 7rem)',
-              lineHeight: 1.0,
-              letterSpacing: '-.03em',
-              color: 'rgba(58,172,110,.9)',
-              margin: '.15em 0 0',
+              fontSize: 'clamp(3.2rem, 10vw, 10rem)',
+              lineHeight: 0.9,
+              letterSpacing: '-.04em',
+              color: '#3AAC6E',
+              marginTop: '0.08em',
             }}
           >
-            {t('headingAccent')}
-          </h2>
-        </div>
-
-        {/* Subtext */}
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: 'clamp(1rem, 1.4vw, 1.2rem)',
-            lineHeight: 1.7,
-            color: 'rgba(244,236,219,.7)',
-            margin: 0,
-            maxWidth: 520,
-          }}
-        >
-          {t('subheading')}
-        </p>
-
-        {/* CTA buttons */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem', alignItems: 'center' }}>
-          <Link
-            href={`/${locale}/#demo`}
+            OVER EEN
+          </span>
+          <span
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '.6rem',
-              padding: '1rem 1.75rem',
-              borderRadius: 12,
-              fontSize: '1rem',
+              display: 'block',
+              fontFamily: 'var(--font-serif)',
               fontWeight: 700,
-              textDecoration: 'none',
-              fontFamily: 'var(--font-sans)',
-              background: '#F4ECDB',
-              color: '#07190F',
-              boxShadow: '0 8px 24px -8px rgba(0,0,0,.4)',
-              transition: 'transform .15s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-2px)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)'
+              fontSize: 'clamp(3.2rem, 10vw, 10rem)',
+              lineHeight: 0.9,
+              letterSpacing: '-.04em',
+              color: '#F4ECDB',
+              marginTop: '0.08em',
             }}
           >
-            {t('cta')}
-            <ArrowIcon />
-          </Link>
-          <Link
-            href={`/${locale}/#hoe-het-werkt`}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '.55rem',
-              padding: '1rem 1.4rem',
-              borderRadius: 12,
-              fontSize: '.95rem',
-              fontWeight: 600,
-              border: '1.5px solid rgba(244,236,219,.3)',
-              background: 'rgba(244,236,219,.06)',
-              color: 'rgba(244,236,219,.85)',
-              textDecoration: 'none',
-              fontFamily: 'var(--font-sans)',
-              transition: 'border-color .15s, background .15s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(244,236,219,.5)'
-              e.currentTarget.style.background = 'rgba(244,236,219,.1)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(244,236,219,.3)'
-              e.currentTarget.style.background = 'rgba(244,236,219,.06)'
-            }}
-          >
-            {t('ctaSecondary')}
-          </Link>
-        </div>
+            BERICHT?
+          </span>
+        </h1>
 
-        {/* Social proof strip */}
+        {/* Subtext + CTA */}
         <div
           style={{
             display: 'flex',
-            alignItems: 'center',
-            gap: '1.5rem',
-            paddingTop: '1.5rem',
-            borderTop: '1px solid rgba(244,236,219,.1)',
-            width: '100%',
             flexWrap: 'wrap',
+            alignItems: 'flex-end',
+            justifyContent: 'space-between',
+            gap: '2rem',
+            marginTop: 'clamp(2rem, 4vw, 3.5rem)',
+            paddingTop: 'clamp(1.5rem, 3vw, 2rem)',
+            borderTop: '1px solid rgba(244,236,219,.12)',
           }}
         >
-          {['Gemaakt in Nederland', 'Geen data bewaard', 'AI-analyse in 5 sec'].map((item) => (
-            <div
-              key={item}
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: 'clamp(.95rem, 1.2vw, 1.1rem)',
+              lineHeight: 1.7,
+              color: 'rgba(244,236,219,.6)',
+              margin: 0,
+              maxWidth: 420,
+            }}
+          >
+            Upload een screenshot van een verdacht WhatsApp- of sms-bericht. Binnen 5 seconden weet
+            u of het te vertrouwen is — in gewone taal.
+          </p>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem', alignItems: 'center' }}>
+            <Link
+              href={`/${locale}/#demo`}
               style={{
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
-                gap: 8,
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.82rem',
-                color: 'rgba(244,236,219,.45)',
+                gap: '.6rem',
+                padding: '1rem 1.75rem',
+                borderRadius: 10,
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 700,
+                fontSize: '1rem',
+                letterSpacing: '.02em',
+                textDecoration: 'none',
+                background: '#3AAC6E',
+                color: '#07180E',
+                boxShadow: '0 8px 30px -8px rgba(58,172,110,.5)',
+                transition: 'transform .15s, box-shadow .15s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = '0 12px 36px -8px rgba(58,172,110,.6)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = '0 8px 30px -8px rgba(58,172,110,.5)'
               }}
             >
-              <span
-                style={{
-                  width: 4,
-                  height: 4,
-                  borderRadius: '50%',
-                  background: '#3AAC6E',
-                  flexShrink: 0,
-                }}
-              />
-              {item}
-            </div>
-          ))}
+              Bericht controleren
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </Link>
+
+            <Link
+              href={`/${locale}/#hoe-het-werkt`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '.5rem',
+                padding: '1rem 1.4rem',
+                borderRadius: 10,
+                fontFamily: 'var(--font-sans)',
+                fontWeight: 600,
+                fontSize: '.92rem',
+                border: '1.5px solid rgba(244,236,219,.2)',
+                background: 'transparent',
+                color: 'rgba(244,236,219,.75)',
+                textDecoration: 'none',
+                transition: 'border-color .15s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(244,236,219,.4)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(244,236,219,.2)'
+              }}
+            >
+              Hoe het werkt
+            </Link>
+          </div>
         </div>
       </div>
+
+      {/* Onderste decoratieve balk */}
+      <div
+        className="hero-bottom-strip-extras"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          borderTop: '1px solid rgba(244,236,219,.08)',
+          padding: '.75rem clamp(1.5rem, 5vw, 6rem)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          fontFamily: 'ui-monospace, monospace',
+          fontSize: '.6rem',
+          letterSpacing: '.18em',
+          textTransform: 'uppercase',
+          color: 'rgba(244,236,219,.25)',
+          zIndex: 3,
+        }}
+      >
+        <span>© 2026 KloptHet</span>
+        <span>Gemaakt in Nederland · EU-data</span>
+        <span>klopthet.nl</span>
+      </div>
     </section>
-  )
-}
-
-function FlutedGlassBG() {
-  return (
-    <>
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0,
-          background: 'linear-gradient(135deg, #0E2A1B 0%, #143A26 50%, #1A4D31 100%)',
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0,
-          backgroundImage: `repeating-linear-gradient(
-          90deg,
-          rgba(255,255,255,.00) 0px,
-          rgba(80,200,140,.04) 8px,
-          rgba(0,0,0,.06) 16px,
-          rgba(0,0,0,.08) 22px,
-          rgba(80,200,140,.02) 30px,
-          rgba(255,255,255,.01) 38px
-        )`,
-          filter: 'blur(.5px)',
-          opacity: 0.7,
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0,
-          background:
-            'radial-gradient(ellipse 60% 80% at 80% 50%, rgba(58,172,110,.12) 0%, transparent 70%)',
-          filter: 'blur(30px)',
-        }}
-      />
-    </>
-  )
-}
-
-function ArrowIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M5 12h14M12 5l7 7-7 7" />
-    </svg>
   )
 }
