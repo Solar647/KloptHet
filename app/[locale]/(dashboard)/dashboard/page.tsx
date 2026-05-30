@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { SearchIcon, ArrowRightIcon } from '@/components/shared/icons'
 
 export default async function DashboardPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
@@ -95,7 +96,9 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
             Controleer een bericht
           </div>
         </div>
-        <span style={{ fontSize: '1.5rem', color: 'rgba(244,236,219,.5)' }}>→</span>
+        <span style={{ color: 'rgba(244,236,219,.5)', display: 'flex' }}>
+          <ArrowRightIcon size={20} strokeWidth={1.8} />
+        </span>
       </Link>
 
       {/* Recente scans */}
@@ -146,7 +149,16 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
 
         {!recentScans?.length ? (
           <div style={{ padding: '2.5rem', textAlign: 'center' }}>
-            <div style={{ fontSize: '2rem', marginBottom: '.75rem' }}>🔍</div>
+            <div
+              style={{
+                color: 'rgba(244,236,219,.3)',
+                marginBottom: '.75rem',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <SearchIcon size={32} strokeWidth={1.4} />
+            </div>
             <p
               style={{
                 color: 'rgba(244,236,219,.4)',

@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { HistoryIcon } from '@/components/shared/icons'
 
 const categoryLabel = {
   safe: { label: 'Geen alarmsignalen', color: '#3AAC6E' },
@@ -58,7 +59,16 @@ export default async function GeschiedenisPage({
             textAlign: 'center',
           }}
         >
-          <div style={{ fontSize: '2rem', marginBottom: '.75rem' }}>🔍</div>
+          <div
+            style={{
+              color: 'rgba(244,236,219,.3)',
+              marginBottom: '.75rem',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <HistoryIcon size={32} strokeWidth={1.4} />
+          </div>
           <p style={{ color: 'rgba(244,236,219,.4)', fontFamily: 'var(--font-sans)', margin: 0 }}>
             Nog geen controles uitgevoerd.
           </p>

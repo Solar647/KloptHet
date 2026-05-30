@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
+import { FamilyNavIcon, CheckIcon, ArrowRightIcon } from '@/components/shared/icons'
 
 type Props = {
   tier: string
@@ -64,7 +65,16 @@ export function FamilieClient({ tier, userEmail }: Props) {
             textAlign: 'center',
           }}
         >
-          <div style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>◑</div>
+          <div
+            style={{
+              color: 'rgba(244,236,219,.3)',
+              marginBottom: '1rem',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <FamilyNavIcon size={40} strokeWidth={1.2} />
+          </div>
           <h2
             style={{
               fontFamily: 'var(--font-serif)',
@@ -112,7 +122,10 @@ export function FamilieClient({ tier, userEmail }: Props) {
                 'Mantelzorger-dashboard',
               ].map((f) => (
                 <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{ color: '#3AAC6E' }}>✓</span> {f}
+                  <span style={{ color: '#3AAC6E', display: 'flex', flexShrink: 0 }}>
+                    <CheckIcon size={14} strokeWidth={2.5} />
+                  </span>{' '}
+                  {f}
                 </div>
               ))}
             </div>
@@ -129,7 +142,7 @@ export function FamilieClient({ tier, userEmail }: Props) {
                 textDecoration: 'none',
               }}
             >
-              Upgrade naar Familie — €5,99/mnd →
+              Upgrade naar Familie — €5,99/mnd <ArrowRightIcon size={14} strokeWidth={2.2} />
             </Link>
           </div>
         </div>
