@@ -4,11 +4,7 @@ import { useRef, Suspense } from 'react'
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { HeroScene } from './hero-scene'
-
-// Video URL uit de Neuralyn prompt
-const HERO_VIDEO =
-  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260307_083826_e938b29f-a43a-41ec-a153-3d4730578ab8.mp4'
+import { HeroSpline } from './hero-spline'
 
 export function Hero() {
   const locale = useLocale()
@@ -39,35 +35,8 @@ export function Hero() {
     >
       {/* 3D Three.js scene — organische planten */}
       <Suspense fallback={null}>
-        <HeroScene />
+        <HeroSpline />
       </Suspense>
-
-      {/* Video achtergrond (speelt achter het dashboard) */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 1,
-          pointerEvents: 'none',
-          opacity: 0.35,
-        }}
-      >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-          }}
-        >
-          <source src={HERO_VIDEO} type="video/mp4" />
-        </video>
-      </div>
 
       {/* Donkere overlay zodat tekst leesbaar blijft */}
       <div
