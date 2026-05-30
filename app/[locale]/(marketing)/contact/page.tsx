@@ -1,0 +1,477 @@
+'use client'
+
+import { useState } from 'react'
+import { Nav } from '@/components/shared/nav'
+import { Footer } from '@/components/shared/footer'
+
+export default function ContactPage() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [subject, setSubject] = useState('')
+  const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    // TODO: Brevo koppelen
+    await new Promise((r) => setTimeout(r, 1000))
+    setLoading(false)
+    setSent(true)
+  }
+
+  return (
+    <>
+      <Nav />
+      <main id="main" style={{ flex: 1 }}>
+        <div
+          style={{
+            maxWidth: 1000,
+            margin: '0 auto',
+            padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 3vw, 3rem)',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1.4fr',
+            gap: 'clamp(2rem, 5vw, 5rem)',
+            alignItems: 'start',
+          }}
+          className="grid-responsive-2"
+        >
+          {/* Links: info */}
+          <div>
+            <div
+              style={{
+                fontFamily: 'ui-monospace, monospace',
+                fontSize: '.72rem',
+                fontWeight: 700,
+                color: 'rgba(244,236,219,.5)',
+                letterSpacing: '.22em',
+                textTransform: 'uppercase',
+                marginBottom: '1rem',
+              }}
+            >
+              Contact
+            </div>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 700,
+                fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+                lineHeight: 1.05,
+                letterSpacing: '-.03em',
+                color: '#F4ECDB',
+                margin: '0 0 1rem',
+              }}
+            >
+              Wij helpen u graag.
+            </h1>
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '1rem',
+                color: 'rgba(244,236,219,.6)',
+                lineHeight: 1.75,
+                margin: '0 0 2.5rem',
+              }}
+            >
+              Heeft u een vraag, opmerking of wilt u een verdacht bericht melden? Stuur ons een
+              bericht en wij reageren binnen één werkdag.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+              {[
+                {
+                  label: 'E-mail hulp',
+                  value: 'hulp@klopthet.nl',
+                  desc: 'Voor vragen over de dienst',
+                  href: 'mailto:hulp@klopthet.nl',
+                },
+                {
+                  label: 'E-mail privacy',
+                  value: 'privacy@klopthet.nl',
+                  desc: 'Voor AVG-verzoeken en privacyvragen',
+                  href: 'mailto:privacy@klopthet.nl',
+                },
+                {
+                  label: 'Reactietijd',
+                  value: '< 1 werkdag',
+                  desc: 'Maandag t/m vrijdag',
+                  href: null,
+                },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}
+                >
+                  <div
+                    style={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: 10,
+                      background: 'rgba(58,172,110,.1)',
+                      border: '1px solid rgba(58,172,110,.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <div
+                      style={{ width: 8, height: 8, borderRadius: '50%', background: '#3AAC6E' }}
+                    />
+                  </div>
+                  <div>
+                    <div
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.72rem',
+                        fontWeight: 700,
+                        color: 'rgba(244,236,219,.4)',
+                        letterSpacing: '.06em',
+                        textTransform: 'uppercase',
+                        marginBottom: '.2rem',
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                    {item.href ? (
+                      <a
+                        href={item.href}
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontWeight: 600,
+                          fontSize: '.95rem',
+                          color: '#3AAC6E',
+                          textDecoration: 'none',
+                        }}
+                      >
+                        {item.value}
+                      </a>
+                    ) : (
+                      <div
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontWeight: 600,
+                          fontSize: '.95rem',
+                          color: '#F4ECDB',
+                        }}
+                      >
+                        {item.value}
+                      </div>
+                    )}
+                    <div
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.78rem',
+                        color: 'rgba(244,236,219,.4)',
+                        marginTop: 2,
+                      }}
+                    >
+                      {item.desc}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div
+              style={{
+                marginTop: '2.5rem',
+                padding: '1rem 1.25rem',
+                background: 'rgba(244,236,219,.04)',
+                border: '1px solid rgba(244,236,219,.1)',
+                borderRadius: 12,
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontWeight: 600,
+                  fontSize: '.85rem',
+                  color: '#F4ECDB',
+                  marginBottom: '.35rem',
+                }}
+              >
+                Fraudehelpdesk
+              </div>
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.82rem',
+                  color: 'rgba(244,236,219,.5)',
+                  margin: '0 0 .5rem',
+                  lineHeight: 1.6,
+                }}
+              >
+                Voor het melden van fraude of hulp na oplichting kunt u ook contact opnemen met de
+                Fraudehelpdesk.
+              </p>
+              <a
+                href="https://www.fraudehelpdesk.nl"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.82rem',
+                  color: '#3AAC6E',
+                  fontWeight: 600,
+                }}
+              >
+                fraudehelpdesk.nl →
+              </a>
+            </div>
+          </div>
+
+          {/* Rechts: formulier */}
+          <div
+            style={{
+              background: 'rgba(244,236,219,.04)',
+              border: '1px solid rgba(244,236,219,.1)',
+              borderRadius: 18,
+              padding: '2rem',
+            }}
+          >
+            {sent ? (
+              <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+                <div
+                  style={{
+                    width: 52,
+                    height: 52,
+                    borderRadius: '50%',
+                    background: 'rgba(58,172,110,.15)',
+                    border: '1px solid rgba(58,172,110,.3)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 1.25rem',
+                  }}
+                >
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#3AAC6E"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </div>
+                <h2
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontWeight: 700,
+                    fontSize: '1.5rem',
+                    color: '#F4ECDB',
+                    margin: '0 0 .5rem',
+                  }}
+                >
+                  Bericht verstuurd!
+                </h2>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.95rem',
+                    color: 'rgba(244,236,219,.6)',
+                    lineHeight: 1.7,
+                    margin: 0,
+                  }}
+                >
+                  Wij reageren binnen één werkdag op uw bericht.
+                </p>
+              </div>
+            ) : (
+              <form
+                onSubmit={handleSubmit}
+                style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}
+              >
+                <h2
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontWeight: 700,
+                    fontSize: '1.3rem',
+                    color: '#F4ECDB',
+                    margin: '0 0 .25rem',
+                  }}
+                >
+                  Stuur ons een bericht
+                </h2>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                  <Field label="Naam" required>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Uw naam"
+                      required
+                      style={inputStyle}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = 'rgba(58,172,110,.5)'
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = 'rgba(244,236,219,.14)'
+                      }}
+                    />
+                  </Field>
+                  <Field label="E-mailadres" required>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="uw@email.nl"
+                      required
+                      style={inputStyle}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = 'rgba(58,172,110,.5)'
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = 'rgba(244,236,219,.14)'
+                      }}
+                    />
+                  </Field>
+                </div>
+
+                <Field label="Onderwerp">
+                  <select
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    style={{ ...inputStyle, cursor: 'pointer' }}
+                  >
+                    <option value="">Kies een onderwerp</option>
+                    <option value="vraag">Vraag over de dienst</option>
+                    <option value="technisch">Technisch probleem</option>
+                    <option value="abonnement">Vraag over abonnement</option>
+                    <option value="privacy">Privacyvraag (AVG)</option>
+                    <option value="fraude">Fraude melden</option>
+                    <option value="overig">Overig</option>
+                  </select>
+                </Field>
+
+                <Field label="Bericht" required>
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Stel uw vraag of beschrijf uw situatie..."
+                    required
+                    rows={5}
+                    style={{ ...inputStyle, resize: 'vertical', minHeight: 120 }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = 'rgba(58,172,110,.5)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = 'rgba(244,236,219,.14)'
+                    }}
+                  />
+                </Field>
+
+                {error && (
+                  <div
+                    style={{
+                      background: 'rgba(229,83,42,.1)',
+                      border: '1px solid rgba(229,83,42,.25)',
+                      borderRadius: 8,
+                      padding: '.65rem .9rem',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.85rem',
+                      color: '#E5532A',
+                    }}
+                  >
+                    {error}
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  style={{
+                    padding: '1rem',
+                    borderRadius: 12,
+                    border: 'none',
+                    background: '#3AAC6E',
+                    color: '#07190F',
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: '.95rem',
+                    fontWeight: 700,
+                    cursor: loading ? 'wait' : 'pointer',
+                    opacity: loading ? 0.7 : 1,
+                    transition: 'opacity .2s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                  }}
+                >
+                  {loading ? 'Bezig met verzenden…' : 'Verstuur bericht →'}
+                </button>
+
+                <p
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.72rem',
+                    color: 'rgba(244,236,219,.3)',
+                    textAlign: 'center',
+                    margin: 0,
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Wij reageren binnen één werkdag · hulp@klopthet.nl
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
+  )
+}
+
+function Field({
+  label,
+  required,
+  children,
+}: {
+  label: string
+  required?: boolean
+  children: React.ReactNode
+}) {
+  return (
+    <div>
+      <label
+        style={{
+          display: 'block',
+          fontFamily: 'var(--font-sans)',
+          fontSize: '.75rem',
+          fontWeight: 600,
+          color: 'rgba(244,236,219,.55)',
+          marginBottom: 6,
+          letterSpacing: '.02em',
+        }}
+      >
+        {label}
+        {required && <span style={{ color: '#E5532A', marginLeft: 3 }}>*</span>}
+      </label>
+      {children}
+    </div>
+  )
+}
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '.8rem 1rem',
+  background: 'rgba(244,236,219,.06)',
+  border: '1px solid rgba(244,236,219,.14)',
+  borderRadius: 10,
+  color: '#F4ECDB',
+  fontSize: '.95rem',
+  fontFamily: 'var(--font-sans)',
+  outline: 'none',
+  transition: 'border-color .15s',
+  boxSizing: 'border-box',
+}
