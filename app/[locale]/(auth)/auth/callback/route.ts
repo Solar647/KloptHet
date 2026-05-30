@@ -27,8 +27,23 @@ export async function GET(request: Request, { params }: { params: Promise<{ loca
       }
     )
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+    if (!error && data.user) {
+      // Zorg dat profiel bestaat (trigger faalt soms bij Google OAuth)
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', data.user.id)
+        .single()
+
+      if (!profile) {
+        await supabase.from('profiles').insert({
+          id: data.user.id,
+          email: data.user.email ?? '',
+          full_name: data.user.user_metadata?.full_name ?? null,
+        })
+      }
+
       return NextResponse.redirect(`${origin}${next}`)
     }
   }
