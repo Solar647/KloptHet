@@ -1,15 +1,16 @@
 import type { Metadata } from 'next'
-import { Fraunces, Inter } from 'next/font/google'
+import { Syne, Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
 
-const fraunces = Fraunces({
-  variable: '--font-fraunces',
+const syne = Syne({
+  variable: '--font-syne',
   subsets: ['latin'],
   display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
 })
 
 const inter = Inter({
@@ -39,7 +40,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className={`${fraunces.variable} ${inter.variable} h-full`}>
+    <html lang={locale} className={`${syne.variable} ${inter.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <a href="#main" className="skip-link">
           Naar hoofdinhoud
