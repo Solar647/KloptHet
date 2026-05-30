@@ -1,37 +1,80 @@
 'use client'
 
+import { useRef } from 'react'
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
+import { motion, useScroll, useTransform } from 'framer-motion'
 
 export function Hero() {
   const locale = useLocale()
+  const sectionRef = useRef<HTMLElement>(null)
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+
+  // Parallax: tekst beweegt omhoog en fades
+  const textY = useTransform(scrollYProgress, [0, 0.5], [0, -180])
+  const textOpacity = useTransform(scrollYProgress, [0, 0.45], [1, 0])
+
+  // Parallax: SVG illustratie beweegt langzamer
+  const illustrationY = useTransform(scrollYProgress, [0, 1], [0, -220])
+
+  const stagger = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.1 } },
+  }
+
+  const fadeUp = (delay = 0) => ({
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, delay, ease: 'easeOut' as const } },
+  })
 
   return (
     <section
+      ref={sectionRef}
       style={{
         position: 'relative',
         minHeight: '100vh',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #061710 0%, #0A2018 40%, #0D2B1E 70%, #071610 100%)',
+        background: 'linear-gradient(160deg, #040E07 0%, #071510 40%, #0A1E0E 70%, #050E07 100%)',
         isolation: 'isolate',
       }}
     >
-      {/* ── MESH GRADIENT ACHTERGROND ── */}
+      {/* Gradient glows */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          inset: 0,
+          top: '-10%',
+          right: '-5%',
+          width: '60vw',
+          height: '60vw',
+          maxWidth: 800,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(27,71,49,.65) 0%, transparent 68%)',
+          filter: 'blur(90px)',
           zIndex: 0,
           pointerEvents: 'none',
-          background: `
-          radial-gradient(ellipse 55% 60% at 75% 40%, rgba(34,139,78,.22) 0%, transparent 60%),
-          radial-gradient(ellipse 40% 50% at 20% 70%, rgba(16,80,46,.35) 0%, transparent 55%),
-          radial-gradient(ellipse 30% 40% at 60% 10%, rgba(58,172,110,.08) 0%, transparent 50%)
-        `,
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '-5%',
+          left: '-8%',
+          width: '45vw',
+          height: '45vw',
+          maxWidth: 550,
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(58,172,110,.12) 0%, transparent 65%)',
+          filter: 'blur(70px)',
+          zIndex: 0,
+          pointerEvents: 'none',
         }}
       />
 
@@ -41,16 +84,32 @@ export function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          zIndex: 1,
+          zIndex: 0,
           pointerEvents: 'none',
           backgroundImage: [
-            'linear-gradient(rgba(58,172,110,.05) 1px, transparent 1px)',
-            'linear-gradient(90deg, rgba(58,172,110,.05) 1px, transparent 1px)',
+            'linear-gradient(rgba(58,172,110,.06) 1px, transparent 1px)',
+            'linear-gradient(90deg, rgba(58,172,110,.06) 1px, transparent 1px)',
           ].join(','),
           backgroundSize: '50px 50px',
           WebkitMaskImage:
-            'radial-gradient(ellipse 100% 100% at 50% 50%, black 0%, transparent 75%)',
-          maskImage: 'radial-gradient(ellipse 100% 100% at 50% 50%, black 0%, transparent 75%)',
+            'radial-gradient(ellipse 100% 100% at 50% 50%, black 0%, transparent 80%)',
+          maskImage: 'radial-gradient(ellipse 100% 100% at 50% 50%, black 0%, transparent 80%)',
+        }}
+      />
+
+      {/* Decoratieve ringen */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '5%',
+          right: '-12%',
+          width: 'clamp(280px, 52vw, 620px)',
+          height: 'clamp(280px, 52vw, 620px)',
+          borderRadius: '50%',
+          border: '1px solid rgba(58,172,110,.1)',
+          zIndex: 1,
+          pointerEvents: 'none',
         }}
       />
 
@@ -60,586 +119,589 @@ export function Hero() {
         style={{
           position: 'absolute',
           inset: 0,
-          zIndex: 1,
+          zIndex: 0,
           pointerEvents: 'none',
-          opacity: 0.035,
+          opacity: 0.04,
           mixBlendMode: 'screen',
           backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
           backgroundSize: '200px 200px',
         }}
       />
 
-      {/* ── HOOFD LAYOUT ── */}
+      {/* Stickers (desktop) */}
+      <div
+        className="hero-top-strip-extras hero-sticker-1"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '20%',
+          left: 'clamp(1.5rem, 5vw, 6rem)',
+          background: '#3AAC6E',
+          borderRadius: 9999,
+          padding: '.55rem 1.1rem',
+          fontFamily: 'var(--font-serif)',
+          fontWeight: 700,
+          fontSize: 'clamp(.65rem, .85vw, .8rem)',
+          letterSpacing: '.08em',
+          textTransform: 'uppercase',
+          color: '#05110A',
+          zIndex: 5,
+          boxShadow: '0 6px 20px rgba(58,172,110,.35)',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        Kleinkind-truc
+      </div>
+      <div
+        className="hero-top-strip-extras hero-sticker-2"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '14%',
+          right: 'clamp(2rem, 17vw, 21rem)',
+          border: '2px solid rgba(244,236,219,.35)',
+          borderRadius: 8,
+          padding: '.45rem .85rem',
+          fontFamily: 'var(--font-serif)',
+          fontWeight: 700,
+          fontSize: 'clamp(.6rem, .75vw, .72rem)',
+          letterSpacing: '.08em',
+          textTransform: 'uppercase',
+          color: 'rgba(244,236,219,.6)',
+          zIndex: 5,
+          whiteSpace: 'nowrap',
+          background: 'rgba(244,236,219,.04)',
+        }}
+      >
+        Bank-imitatie
+      </div>
+      <div
+        className="hero-top-strip-extras hero-sticker-3"
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '24%',
+          left: 'clamp(1.5rem, 5vw, 6rem)',
+          border: '2px solid rgba(229,83,42,.45)',
+          borderRadius: 9999,
+          padding: '.45rem 1rem',
+          fontFamily: 'ui-monospace, monospace',
+          fontWeight: 700,
+          fontSize: 'clamp(.58rem, .7vw, .65rem)',
+          letterSpacing: '.1em',
+          textTransform: 'uppercase',
+          color: 'rgba(229,83,42,.85)',
+          zIndex: 5,
+          whiteSpace: 'nowrap',
+          background: 'rgba(229,83,42,.06)',
+        }}
+      >
+        ⚠ Bezorg-fraude
+      </div>
+
+      {/* Phone mockup (desktop) */}
+      <div
+        className="hero-top-strip-extras hero-phone"
+        style={{
+          position: 'absolute',
+          top: '50%',
+          right: 'clamp(2rem, 7vw, 7rem)',
+          zIndex: 6,
+          pointerEvents: 'none',
+        }}
+      >
+        <PhoneMockup />
+      </div>
+
+      {/* NAV */}
       <div
         style={{
           position: 'relative',
-          zIndex: 5,
-          maxWidth: 1320,
-          margin: '0 auto',
-          width: '100%',
-          padding: 'clamp(5rem, 8vw, 7rem) clamp(1.5rem, 4vw, 4rem)',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 'clamp(2rem, 5vw, 6rem)',
+          zIndex: 10,
+          padding: 'clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.5rem, 4vw, 4rem)',
+          display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
         }}
-        className="grid-responsive"
       >
-        {/* ── LINKS: Tekst ── */}
         <div
-          style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(1.25rem, 2.5vw, 2rem)' }}
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontWeight: 700,
+            fontSize: '1.05rem',
+            color: '#F4ECDB',
+            letterSpacing: '-.02em',
+          }}
         >
-          {/* Eyebrow pill */}
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-              background: 'rgba(58,172,110,.12)',
-              border: '1px solid rgba(58,172,110,.3)',
-              borderRadius: 9999,
-              padding: '.4rem 1rem',
-              alignSelf: 'flex-start',
-            }}
+          KloptHet
+        </div>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 7,
+            fontFamily: 'ui-monospace, monospace',
+            fontSize: '.6rem',
+            color: 'rgba(244,236,219,.3)',
+            letterSpacing: '.16em',
+            textTransform: 'uppercase',
+          }}
+        >
+          <span
+            className="hero-live-dot"
+            style={{ width: 5, height: 5, borderRadius: '50%', background: '#3AAC6E' }}
+          />
+          Live · NL · 2026
+        </div>
+      </div>
+
+      {/* HOOFD CONTENT — parallax */}
+      <motion.div
+        style={{
+          y: textY,
+          opacity: textOpacity,
+          position: 'relative',
+          zIndex: 5,
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <div
+          style={{
+            padding: '0 clamp(1.5rem, 4vw, 4rem) clamp(3rem, 6vw, 5rem)',
+            position: 'relative',
+            zIndex: 5,
+          }}
+        >
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            animate="show"
+            style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(1rem, 2vw, 1.5rem)' }}
           >
-            <span
-              className="hero-live-dot"
-              style={{ width: 6, height: 6, borderRadius: '50%', background: '#3AAC6E' }}
-            />
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.75rem',
-                fontWeight: 600,
-                color: '#3AAC6E',
-                letterSpacing: '.06em',
-                textTransform: 'uppercase',
-              }}
-            >
-              Europese AI · Gemaakt in Nederland
-            </span>
-          </div>
-
-          {/* Headline */}
-          <h1 style={{ margin: 0, display: 'flex', flexDirection: 'column', gap: '0.05em' }}>
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 700,
-                fontSize: 'clamp(3rem, 6.5vw, 7rem)',
-                lineHeight: 0.92,
-                letterSpacing: '-.04em',
-                color: '#F4ECDB',
-                display: 'block',
-              }}
-            >
-              TWIJFELT U
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 700,
-                fontSize: 'clamp(3rem, 6.5vw, 7rem)',
-                lineHeight: 0.92,
-                letterSpacing: '-.04em',
-                display: 'block',
-                WebkitTextStroke: '2px #3AAC6E',
-                color: 'transparent',
-              }}
-            >
-              OVER EEN
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 700,
-                fontSize: 'clamp(3rem, 6.5vw, 7rem)',
-                lineHeight: 0.92,
-                letterSpacing: '-.04em',
-                color: '#F4ECDB',
-                display: 'block',
-              }}
-            >
-              BERICHT?
-            </span>
-          </h1>
-
-          {/* Divider */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div
-              style={{
-                flex: 1,
-                height: 1,
-                background: 'linear-gradient(90deg, rgba(58,172,110,.4), transparent)',
-              }}
-            />
-          </div>
-
-          {/* Subtext */}
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 'clamp(.95rem, 1.1vw, 1.1rem)',
-              lineHeight: 1.75,
-              color: 'rgba(244,236,219,.6)',
-              margin: 0,
-              maxWidth: 400,
-            }}
-          >
-            Upload een screenshot van een verdacht bericht. Binnen 5 seconden weet u of het te
-            vertrouwen is — in gewone taal.
-          </p>
-
-          {/* Stats */}
-          <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-            {[
-              { value: '< 5 sec', label: 'Analyse tijd' },
-              { value: 'EU', label: 'Data blijft in Europa' },
-              { value: '24/7', label: 'Beschikbaar' },
-            ].map((s) => (
-              <div key={s.label}>
-                <div
+            {/* Liquid glass pill */}
+            <motion.div variants={fadeUp(0)} style={{ alignSelf: 'flex-start' }}>
+              <div
+                className="liquid-glass"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  borderRadius: 10,
+                  padding: '.4rem .9rem',
+                }}
+              >
+                <span
                   style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontWeight: 700,
-                    fontSize: '1.3rem',
-                    color: '#3AAC6E',
-                    lineHeight: 1,
-                  }}
-                >
-                  {s.value}
-                </div>
-                <div
-                  style={{
+                    background: '#3AAC6E',
+                    color: '#05110A',
+                    borderRadius: 6,
+                    padding: '.15rem .5rem',
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '.72rem',
-                    color: 'rgba(244,236,219,.4)',
-                    marginTop: 3,
+                    fontWeight: 700,
+                    fontSize: '.7rem',
                     letterSpacing: '.04em',
                   }}
                 >
-                  {s.label}
-                </div>
+                  Nieuw
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.78rem',
+                    fontWeight: 500,
+                    color: 'rgba(244,236,219,.55)',
+                  }}
+                >
+                  Europese AI · Geen data bewaard
+                </span>
               </div>
-            ))}
-          </div>
+            </motion.div>
 
-          {/* CTA */}
-          <div style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
-            <Link
-              href={`/${locale}/#demo`}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '.6rem',
-                padding: '1rem 1.75rem',
-                borderRadius: 12,
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 700,
-                fontSize: '1rem',
-                textDecoration: 'none',
-                background: '#3AAC6E',
-                color: '#061710',
-                boxShadow: '0 8px 32px -8px rgba(58,172,110,.65)',
-                transition: 'transform .2s, box-shadow .2s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)'
-                e.currentTarget.style.boxShadow = '0 16px 40px -8px rgba(58,172,110,.75)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = '0 8px 32px -8px rgba(58,172,110,.65)'
-              }}
-            >
-              Controleer een bericht
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
+            {/* Headline */}
+            <motion.h1 variants={fadeUp(0.1)} style={{ margin: 0 }}>
+              <span
+                style={{
+                  display: 'block',
+                  fontFamily: 'var(--font-serif)',
+                  fontWeight: 700,
+                  fontSize: 'clamp(3rem, 6.5vw, 7rem)',
+                  lineHeight: 0.92,
+                  letterSpacing: '-.04em',
+                  color: '#F4ECDB',
+                }}
               >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </Link>
-            <Link
-              href={`/${locale}/#hoe-het-werkt`}
+                TWIJFELT U
+              </span>
+              <span
+                style={{
+                  display: 'block',
+                  fontFamily: 'var(--font-serif)',
+                  fontWeight: 700,
+                  fontSize: 'clamp(3rem, 6.5vw, 7rem)',
+                  lineHeight: 0.92,
+                  letterSpacing: '-.04em',
+                  WebkitTextStroke: '2px #3AAC6E',
+                  color: 'transparent',
+                }}
+              >
+                OVER EEN
+              </span>
+              <span
+                style={{
+                  display: 'block',
+                  fontFamily: 'var(--font-serif)',
+                  fontWeight: 700,
+                  fontSize: 'clamp(3rem, 6.5vw, 7rem)',
+                  lineHeight: 0.92,
+                  letterSpacing: '-.04em',
+                  color: '#F4ECDB',
+                }}
+              >
+                BERICHT?
+              </span>
+            </motion.h1>
+
+            {/* Divider */}
+            <motion.div variants={fadeUp(0.2)} style={{ display: 'flex', alignItems: 'center' }}>
+              <div
+                style={{
+                  flex: 1,
+                  maxWidth: 420,
+                  height: 1,
+                  background: 'linear-gradient(90deg, rgba(58,172,110,.4), transparent)',
+                }}
+              />
+            </motion.div>
+
+            {/* Subtext */}
+            <motion.p
+              variants={fadeUp(0.25)}
               style={{
-                padding: '1rem 1.3rem',
-                borderRadius: 12,
                 fontFamily: 'var(--font-sans)',
-                fontWeight: 600,
-                fontSize: '.9rem',
-                border: '1.5px solid rgba(244,236,219,.15)',
-                color: 'rgba(244,236,219,.65)',
-                textDecoration: 'none',
-                transition: 'all .15s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(244,236,219,.3)'
-                e.currentTarget.style.color = '#F4ECDB'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(244,236,219,.15)'
-                e.currentTarget.style.color = 'rgba(244,236,219,.65)'
+                fontSize: 'clamp(.9rem, 1vw, 1rem)',
+                lineHeight: 1.75,
+                color: 'rgba(244,236,219,.5)',
+                margin: 0,
+                maxWidth: 380,
               }}
             >
-              Hoe werkt het?
-            </Link>
-          </div>
-        </div>
+              Upload een screenshot. Binnen 5 seconden weet u of het te vertrouwen is — in gewone
+              taal.
+            </motion.p>
 
-        {/* ── RECHTS: SVG Illustratie ── */}
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <HeroIllustration />
+            {/* Stats */}
+            <motion.div
+              variants={fadeUp(0.3)}
+              style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}
+            >
+              {[
+                { value: '< 5 sec', label: 'Analyse' },
+                { value: 'EU', label: 'Data' },
+                { value: '24/7', label: 'Beschikbaar' },
+              ].map((s) => (
+                <div key={s.label}>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontWeight: 700,
+                      fontSize: '1.2rem',
+                      color: '#3AAC6E',
+                      lineHeight: 1,
+                    }}
+                  >
+                    {s.value}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.68rem',
+                      color: 'rgba(244,236,219,.35)',
+                      marginTop: 3,
+                      letterSpacing: '.04em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    {s.label}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* CTAs */}
+            <motion.div
+              variants={fadeUp(0.35)}
+              style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap', alignItems: 'center' }}
+            >
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Link
+                  href={`/${locale}/#demo`}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '.6rem',
+                    padding: '.95rem 1.7rem',
+                    borderRadius: 12,
+                    fontFamily: 'var(--font-serif)',
+                    fontWeight: 700,
+                    fontSize: '.95rem',
+                    textDecoration: 'none',
+                    background: '#3AAC6E',
+                    color: '#05110A',
+                    boxShadow: '0 8px 32px -8px rgba(58,172,110,.65)',
+                  }}
+                >
+                  Controleer een bericht
+                  <ArrowSvg />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Link
+                  href={`/${locale}/#hoe-het-werkt`}
+                  style={{
+                    padding: '.95rem 1.3rem',
+                    borderRadius: 12,
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: 600,
+                    fontSize: '.88rem',
+                    border: '1.5px solid rgba(244,236,219,.13)',
+                    background: 'rgba(244,236,219,.04)',
+                    color: 'rgba(244,236,219,.6)',
+                    textDecoration: 'none',
+                  }}
+                >
+                  Hoe werkt het?
+                </Link>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Bottom gradient fade naar volgende sectie */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 120,
+          background: 'linear-gradient(to top, #040E07 0%, transparent 100%)',
+          zIndex: 8,
+          pointerEvents: 'none',
+        }}
+      />
     </section>
   )
 }
 
-function HeroIllustration() {
+function PhoneMockup() {
   return (
-    <svg
-      viewBox="0 0 480 520"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ width: '100%', maxWidth: 480, height: 'auto' }}
-      aria-hidden="true"
+    <div
+      style={{
+        width: 'clamp(220px, 22vw, 300px)',
+        background: 'linear-gradient(160deg, #0C2416 0%, #081A0E 100%)',
+        border: '1.5px solid rgba(58,172,110,.18)',
+        borderRadius: 28,
+        padding: '1.25rem .9rem .9rem',
+        boxShadow: '0 40px 80px -20px rgba(0,0,0,.75), 0 0 0 1px rgba(58,172,110,.08)',
+      }}
     >
-      {/* ── Achtergrond blob ── */}
-      <ellipse cx="240" cy="260" rx="200" ry="200" fill="rgba(27,71,49,.25)" />
-      <ellipse cx="240" cy="260" rx="160" ry="160" fill="rgba(27,71,49,.15)" />
-
-      {/* ── Decoratieve ring ── */}
-      <circle
-        cx="240"
-        cy="260"
-        r="195"
-        stroke="rgba(58,172,110,.12)"
-        strokeWidth="1"
-        strokeDasharray="8 12"
+      <div
+        style={{
+          width: 50,
+          height: 5,
+          borderRadius: 9999,
+          background: 'rgba(244,236,219,.08)',
+          margin: '0 auto .9rem',
+        }}
       />
-      <circle cx="240" cy="260" r="155" stroke="rgba(58,172,110,.08)" strokeWidth="1" />
-
-      {/* ════ KAART 1: Kleinkind-truc (rood, links) ════ */}
-      <g transform="translate(20, 80) rotate(-6, 160, 140)">
-        <rect
-          x="0"
-          y="0"
-          width="220"
-          height="165"
-          rx="16"
-          fill="#0C2416"
-          stroke="rgba(229,83,42,.35)"
-          strokeWidth="1.5"
-        />
-        {/* Header */}
-        <circle cx="24" cy="28" r="14" fill="rgba(229,83,42,.15)" />
-        <text
-          x="24"
-          y="33"
-          textAnchor="middle"
-          fontFamily="system-ui"
-          fontSize="11"
-          fill="rgba(229,83,42,.8)"
-          fontWeight="700"
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginBottom: '.6rem',
+          fontFamily: 'var(--font-sans)',
+          fontSize: '.5rem',
+          color: 'rgba(244,236,219,.35)',
+        }}
+      >
+        <span>9:41</span>
+        <span>●●●</span>
+      </div>
+      <div
+        style={{
+          background: 'rgba(244,236,219,.05)',
+          borderRadius: 9,
+          padding: '.5rem .65rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '.4rem',
+          marginBottom: '.6rem',
+          border: '1px solid rgba(244,236,219,.07)',
+        }}
+      >
+        <div
+          style={{
+            width: 24,
+            height: 24,
+            borderRadius: '50%',
+            background: 'rgba(244,236,219,.12)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: 'var(--font-serif)',
+            fontWeight: 700,
+            fontSize: '.6rem',
+            color: 'rgba(244,236,219,.4)',
+            flexShrink: 0,
+          }}
         >
           ?
-        </text>
-        <text
-          x="46"
-          y="24"
-          fontFamily="system-ui"
-          fontSize="10"
-          fill="rgba(244,236,219,.85)"
-          fontWeight="600"
+        </div>
+        <div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 600,
+              fontSize: '.58rem',
+              color: '#F4ECDB',
+            }}
+          >
+            +31 6 82 49 17 53
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.48rem',
+              color: 'rgba(244,236,219,.3)',
+            }}
+          >
+            Onbekend nummer
+          </div>
+        </div>
+      </div>
+      <div
+        style={{
+          background: 'rgba(244,236,219,.07)',
+          border: '1px solid rgba(244,236,219,.09)',
+          borderRadius: '3px 10px 10px 10px',
+          padding: '.55rem .65rem',
+          marginBottom: '.45rem',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.58rem',
+            color: 'rgba(244,236,219,.8)',
+            lineHeight: 1.5,
+          }}
         >
-          +31 6 84 29 17 53
-        </text>
-        <text x="46" y="37" fontFamily="system-ui" fontSize="8.5" fill="rgba(244,236,219,.35)">
-          Onbekend nummer
-        </text>
-        {/* Bericht bubble */}
-        <rect
-          x="12"
-          y="52"
-          width="196"
-          height="60"
-          rx="4"
-          ry="10"
-          fill="rgba(244,236,219,.07)"
-          stroke="rgba(244,236,219,.08)"
-          strokeWidth="1"
-        />
-        <text x="22" y="70" fontFamily="system-ui" fontSize="9" fill="rgba(244,236,219,.8)">
-          Hoi mama, dit is mijn nieuwe
-        </text>
-        <text x="22" y="84" fontFamily="system-ui" fontSize="9" fill="rgba(244,236,219,.8)">
-          nummer. Kun je me €450
-        </text>
-        <text x="22" y="98" fontFamily="system-ui" fontSize="9" fill="rgba(244,236,219,.8)">
-          sturen? Het is dringend.
-        </text>
-        <text
-          x="190"
-          y="104"
-          textAnchor="end"
-          fontFamily="system-ui"
-          fontSize="7.5"
-          fill="rgba(244,236,219,.25)"
+          Hoi mama, dit is mijn nieuwe nummer. Kun je me €450 sturen?
+        </div>
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.46rem',
+            color: 'rgba(244,236,219,.25)',
+            textAlign: 'right',
+            marginTop: '.25rem',
+          }}
         >
           14:23 ✓✓
-        </text>
-        {/* Verdict */}
-        <rect
-          x="12"
-          y="122"
-          width="196"
-          height="32"
-          rx="8"
-          fill="rgba(229,83,42,.15)"
-          stroke="rgba(229,83,42,.35)"
-          strokeWidth="1"
+        </div>
+      </div>
+      <div
+        style={{
+          background: 'rgba(229,83,42,.14)',
+          border: '1px solid rgba(229,83,42,.3)',
+          borderRadius: 7,
+          padding: '.38rem .55rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 5,
+          marginBottom: '.6rem',
+        }}
+      >
+        <div
+          style={{
+            width: 5,
+            height: 5,
+            borderRadius: '50%',
+            background: '#E5532A',
+            flexShrink: 0,
+            boxShadow: '0 0 5px #E5532A',
+          }}
         />
-        <circle cx="26" cy="138" r="4" fill="#E5532A" />
-        <text
-          x="36"
-          y="135"
-          fontFamily="system-ui"
-          fontSize="8.5"
-          fill="#E5532A"
-          fontWeight="700"
-          letterSpacing="0.5"
+        <div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 700,
+              fontSize: '.5rem',
+              color: '#E5532A',
+              letterSpacing: '.04em',
+              textTransform: 'uppercase',
+            }}
+          >
+            Meerdere waarschuwingen
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.46rem',
+              color: 'rgba(244,236,219,.4)',
+              marginTop: 1,
+            }}
+          >
+            Score 8/10 · Kleinkind-truc
+          </div>
+        </div>
+      </div>
+      <div
+        style={{
+          paddingTop: '.55rem',
+          borderTop: '1px solid rgba(244,236,219,.05)',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontWeight: 700,
+            fontSize: '.5rem',
+            color: '#3AAC6E',
+            letterSpacing: '.05em',
+            textTransform: 'uppercase',
+          }}
         >
-          MEERDERE WAARSCHUWINGEN
-        </text>
-        <text x="36" y="147" fontFamily="system-ui" fontSize="7.5" fill="rgba(244,236,219,.4)">
-          Score 8/10 · Kleinkind-truc
-        </text>
-      </g>
+          KloptHet — Analyseren →
+        </div>
+      </div>
+    </div>
+  )
+}
 
-      {/* ════ KAART 2: Bezorg-fraude (oranje, rechts) ════ */}
-      <g transform="translate(240, 120) rotate(5, 120, 130)">
-        <rect
-          x="0"
-          y="0"
-          width="210"
-          height="155"
-          rx="16"
-          fill="#0C2416"
-          stroke="rgba(217,123,42,.3)"
-          strokeWidth="1.5"
-        />
-        {/* Header */}
-        <rect
-          x="12"
-          y="14"
-          width="186"
-          height="32"
-          rx="8"
-          fill="rgba(244,236,219,.05)"
-          stroke="rgba(244,236,219,.06)"
-          strokeWidth="1"
-        />
-        <text
-          x="22"
-          y="26"
-          fontFamily="system-ui"
-          fontSize="9"
-          fill="rgba(244,236,219,.5)"
-          fontWeight="700"
-        >
-          PostNL
-        </text>
-        <text x="22" y="38" fontFamily="system-ui" fontSize="7.5" fill="rgba(217,123,42,.7)">
-          Vermoedelijk nep
-        </text>
-        {/* Bericht */}
-        <text x="14" y="66" fontFamily="system-ui" fontSize="8.5" fill="rgba(244,236,219,.75)">
-          Uw pakket kan niet worden
-        </text>
-        <text x="14" y="79" fontFamily="system-ui" fontSize="8.5" fill="rgba(244,236,219,.75)">
-          afgeleverd. Betaal €1,99 via:
-        </text>
-        <text x="14" y="92" fontFamily="system-ui" fontSize="8.5" fill="rgba(217,123,42,.9)">
-          post-nl-betaling.com
-        </text>
-        {/* Score balk */}
-        <rect x="14" y="108" width="182" height="4" rx="2" fill="rgba(244,236,219,.08)" />
-        <rect x="14" y="108" width="127" height="4" rx="2" fill="#D97B2A" />
-        <text
-          x="14"
-          y="127"
-          fontFamily="system-ui"
-          fontSize="8"
-          fill="rgba(217,123,42,.8)"
-          fontWeight="600"
-        >
-          Let op · Score 7/10
-        </text>
-        <text
-          x="186"
-          y="127"
-          textAnchor="end"
-          fontFamily="system-ui"
-          fontSize="7.5"
-          fill="rgba(244,236,219,.3)"
-        >
-          KloptHet
-        </text>
-        <rect
-          x="14"
-          y="133"
-          width="182"
-          height="14"
-          rx="4"
-          fill="rgba(217,123,42,.1)"
-          stroke="rgba(217,123,42,.25)"
-          strokeWidth="1"
-        />
-        <text x="23" y="143" fontFamily="system-ui" fontSize="7.5" fill="rgba(217,123,42,.85)">
-          Verdacht domein gedetecteerd
-        </text>
-      </g>
-
-      {/* ════ KAART 3: Legitiem (groen, midden-onder) ════ */}
-      <g transform="translate(100, 310) rotate(-3, 130, 90)">
-        <rect
-          x="0"
-          y="0"
-          width="240"
-          height="130"
-          rx="16"
-          fill="#0C2416"
-          stroke="rgba(58,172,110,.3)"
-          strokeWidth="1.5"
-        />
-        <text
-          x="16"
-          y="26"
-          fontFamily="system-ui"
-          fontSize="10"
-          fill="rgba(244,236,219,.85)"
-          fontWeight="600"
-        >
-          Bol.com
-        </text>
-        <rect
-          x="90"
-          y="14"
-          width="134"
-          height="16"
-          rx="4"
-          fill="rgba(58,172,110,.12)"
-          stroke="rgba(58,172,110,.25)"
-          strokeWidth="1"
-        />
-        <circle cx="100" cy="22" r="3" fill="#3AAC6E" />
-        <text x="108" y="26" fontFamily="system-ui" fontSize="7.5" fill="#3AAC6E" fontWeight="700">
-          Geen alarmsignalen
-        </text>
-        <text x="16" y="50" fontFamily="system-ui" fontSize="8.5" fill="rgba(244,236,219,.7)">
-          Uw bestelling #4821039 is onderweg.
-        </text>
-        <text x="16" y="64" fontFamily="system-ui" fontSize="8.5" fill="rgba(244,236,219,.7)">
-          Verwachte levering: morgen 9-13u.
-        </text>
-        {/* Score balk groen */}
-        <rect x="16" y="82" width="208" height="4" rx="2" fill="rgba(244,236,219,.08)" />
-        <rect x="16" y="82" width="20" height="4" rx="2" fill="#3AAC6E" />
-        <text x="16" y="101" fontFamily="system-ui" fontSize="8" fill="#3AAC6E" fontWeight="600">
-          Score 1/10 · Betrouwbaar bericht
-        </text>
-        <rect
-          x="16"
-          y="108"
-          width="60"
-          height="14"
-          rx="4"
-          fill="rgba(58,172,110,.1)"
-          stroke="rgba(58,172,110,.25)"
-          strokeWidth="1"
-        />
-        <text
-          x="46"
-          y="118"
-          textAnchor="middle"
-          fontFamily="system-ui"
-          fontSize="7.5"
-          fill="#3AAC6E"
-        >
-          ✓ Veilig
-        </text>
-      </g>
-
-      {/* ── Scan beam animatie lijn ── */}
-      <line
-        x1="40"
-        y1="200"
-        x2="440"
-        y2="200"
-        stroke="rgba(58,172,110,.15)"
-        strokeWidth="1"
-        strokeDasharray="6 10"
-      />
-
-      {/* ── Logo / badge midden ── */}
-      <g transform="translate(200, 235)">
-        <circle
-          cx="40"
-          cy="25"
-          r="24"
-          fill="rgba(58,172,110,.15)"
-          stroke="rgba(58,172,110,.3)"
-          strokeWidth="1.5"
-        />
-        <circle cx="40" cy="25" r="16" fill="rgba(58,172,110,.1)" />
-        <text
-          x="40"
-          y="30"
-          textAnchor="middle"
-          fontFamily="system-ui"
-          fontSize="14"
-          fill="#3AAC6E"
-          fontWeight="800"
-        >
-          KH
-        </text>
-      </g>
-
-      {/* ── Kleine decoratieve dots ── */}
-      <circle cx="60" cy="70" r="3" fill="rgba(58,172,110,.3)" />
-      <circle cx="420" cy="350" r="4" fill="rgba(229,83,42,.3)" />
-      <circle cx="380" cy="90" r="2.5" fill="rgba(244,236,219,.15)" />
-      <circle cx="90" cy="430" r="3.5" fill="rgba(217,123,42,.25)" />
-      <circle cx="450" cy="200" r="2" fill="rgba(58,172,110,.4)" />
-
-      {/* ── Verbindingslijnen ── */}
-      <line
-        x1="130"
-        y1="220"
-        x2="240"
-        y2="258"
-        stroke="rgba(58,172,110,.15)"
-        strokeWidth="1"
-        strokeDasharray="4 6"
-      />
-      <line
-        x1="350"
-        y1="250"
-        x2="280"
-        y2="258"
-        stroke="rgba(58,172,110,.1)"
-        strokeWidth="1"
-        strokeDasharray="4 6"
-      />
+function ArrowSvg() {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7" />
     </svg>
   )
 }
