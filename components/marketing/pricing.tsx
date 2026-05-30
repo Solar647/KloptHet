@@ -1,6 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useLocale } from 'next-intl'
+import { createClient } from '@/lib/supabase/client'
 
 const tiers = [
   {
@@ -58,6 +61,13 @@ const trustItems = [
 
 export function Pricing() {
   const [yearly, setYearly] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
+  const locale = useLocale()
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => setLoggedIn(!!data.user))
+  }, [])
 
   return (
     <section
@@ -352,7 +362,12 @@ export function Pricing() {
                   ))}
                 </ul>
 
-                <button
+                <Link
+                  href={
+                    loggedIn
+                      ? `/${locale}/abonnement/checkout?tier=${tier.name.toLowerCase() === 'standaard' ? 'standard' : tier.name.toLowerCase()}&billing=${yearly ? 'yearly' : 'monthly'}`
+                      : `/${locale}/registreren`
+                  }
                   style={{
                     background: isHi ? '#3AAC6E' : 'rgba(244,236,219,.1)',
                     color: isHi ? '#07190F' : '#F4ECDB',
@@ -361,7 +376,6 @@ export function Pricing() {
                     borderRadius: 12,
                     fontSize: '.92rem',
                     fontWeight: 700,
-                    cursor: 'pointer',
                     fontFamily: 'var(--font-sans)',
                     display: 'flex',
                     alignItems: 'center',
@@ -369,6 +383,7 @@ export function Pricing() {
                     gap: 8,
                     transition: 'transform .15s, opacity .15s',
                     width: '100%',
+                    textDecoration: 'none',
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-1px)'
@@ -379,7 +394,7 @@ export function Pricing() {
                 >
                   {tier.cta}
                   <ArrowIcon />
-                </button>
+                </Link>
               </div>
             )
           })}
