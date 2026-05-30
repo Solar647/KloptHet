@@ -102,11 +102,11 @@ export function Nav() {
           <Logo size={32} />
           <span
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontWeight: 700,
-              fontSize: '1.15rem',
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 800,
+              fontSize: '1.2rem',
               color: '#F4ECDB',
-              letterSpacing: '-.025em',
+              letterSpacing: '-.03em',
             }}
           >
             KloptHet

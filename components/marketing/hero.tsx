@@ -107,11 +107,11 @@ export function Hero() {
       >
         <h1
           style={{
-            fontFamily: 'var(--font-sans)',
-            fontWeight: 500,
+            fontFamily: 'var(--font-serif)',
+            fontWeight: 800,
             fontSize: 'clamp(3rem, 11vw, 10rem)',
-            lineHeight: 0.92,
-            letterSpacing: '-.035em',
+            lineHeight: 0.9,
+            letterSpacing: '-.04em',
             color: '#F4ECDB',
             margin: 0,
             maxWidth: '14ch',
@@ -124,11 +124,11 @@ export function Hero() {
 
         <h2
           style={{
-            fontFamily: 'var(--font-sans)',
-            fontWeight: 500,
+            fontFamily: 'var(--font-serif)',
+            fontWeight: 800,
             fontSize: 'clamp(2.6rem, 9.5vw, 9rem)',
-            lineHeight: 0.92,
-            letterSpacing: '-.035em',
+            lineHeight: 0.9,
+            letterSpacing: '-.04em',
             color: '#F4ECDB',
             margin: 0,
             textAlign: 'right',

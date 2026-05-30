@@ -70,11 +70,11 @@ export function Footer() {
               <Logo size={28} />
               <span
                 style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontWeight: 700,
-                  fontSize: '1.05rem',
+                  fontFamily: 'var(--font-serif)',
+                  fontWeight: 800,
+                  fontSize: '1.1rem',
                   color: '#F4ECDB',
-                  letterSpacing: '-.025em',
+                  letterSpacing: '-.03em',
                 }}
               >
                 KloptHet

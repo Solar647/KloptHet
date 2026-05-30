@@ -43,11 +43,11 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <Logo size={30} />
         <span
           style={{
-            fontFamily: 'var(--font-sans)',
-            fontWeight: 700,
+            fontFamily: 'var(--font-serif)',
+            fontWeight: 800,
             fontSize: '1.1rem',
             color: '#F4ECDB',
-            letterSpacing: '-.025em',
+            letterSpacing: '-.03em',
           }}
         >
           KloptHet

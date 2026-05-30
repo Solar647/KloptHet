@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
+import { SearchIcon } from '@/components/shared/icons'
 
 const examples = [
   {
@@ -276,7 +277,16 @@ export function DemoScanner() {
                   textAlign: 'center',
                 }}
               >
-                <div style={{ fontSize: '2rem', marginBottom: '1rem', opacity: 0.4 }}>🔍</div>
+                <div
+                  style={{
+                    color: 'rgba(244,236,219,.3)',
+                    marginBottom: '1rem',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <SearchIcon size={36} strokeWidth={1.3} />
+                </div>
                 <p
                   style={{
                     color: 'rgba(244,236,219,.35)',

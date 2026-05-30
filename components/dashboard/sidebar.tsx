@@ -70,8 +70,8 @@ export function Sidebar() {
           <Logo size={26} />
           <span
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontWeight: 700,
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 800,
               fontSize: '1rem',
               color: '#F4ECDB',
             }}
