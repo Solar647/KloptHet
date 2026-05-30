@@ -112,6 +112,72 @@ h6 {
 }
 
 /* ============================================================
+   HERO ANIMATIES
+   ============================================================ */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(-48%) rotate(5deg);
+  }
+  50% {
+    transform: translateY(-52%) rotate(4deg);
+  }
+}
+@keyframes float-sticker-1 {
+  0%,
+  100% {
+    transform: rotate(-8deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-9deg) translateY(-5px);
+  }
+}
+@keyframes float-sticker-2 {
+  0%,
+  100% {
+    transform: rotate(6deg) translateY(0);
+  }
+  50% {
+    transform: rotate(7deg) translateY(-4px);
+  }
+}
+@keyframes float-sticker-3 {
+  0%,
+  100% {
+    transform: rotate(4deg) translateY(0);
+  }
+  50% {
+    transform: rotate(3deg) translateY(-6px);
+  }
+}
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 6px #3aac6e;
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 12px #3aac6e;
+  }
+}
+.hero-phone {
+  animation: float 6s ease-in-out infinite;
+}
+.hero-sticker-1 {
+  animation: float-sticker-1 5s ease-in-out infinite;
+}
+.hero-sticker-2 {
+  animation: float-sticker-2 6.5s ease-in-out infinite 0.8s;
+}
+.hero-sticker-3 {
+  animation: float-sticker-3 5.5s ease-in-out infinite 1.5s;
+}
+.hero-live-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* ============================================================
    REVEAL ANIMATION
    ============================================================ */
 .reveal {
