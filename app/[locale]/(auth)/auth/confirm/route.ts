@@ -27,15 +27,38 @@ export async function GET(request: Request, { params }: { params: Promise<{ loca
       }
     )
 
-    const { error } = await supabase.auth.verifyOtp({
+    const { data, error } = await supabase.auth.verifyOtp({
       type: type as 'signup' | 'recovery' | 'email_change',
       token_hash: tokenHash,
     })
 
     if (!error) {
+      // Zorg dat profiel bestaat (trigger kan gefaald zijn)
+      if (data.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', data.user.id)
+          .single()
+
+        if (!profile) {
+          await supabase.from('profiles').insert({
+            id: data.user.id,
+            email: data.user.email ?? '',
+            full_name: data.user.user_metadata?.full_name ?? null,
+          })
+        }
+      }
+
       if (type === 'recovery') {
         return NextResponse.redirect(`${origin}/${locale}/auth/reset`)
       }
+
+      // Signup bevestigd — stuur naar succes-pagina
+      if (type === 'signup') {
+        return NextResponse.redirect(`${origin}/${locale}/auth/bevestigd`)
+      }
+
       return NextResponse.redirect(`${origin}/${locale}/dashboard`)
     }
   }

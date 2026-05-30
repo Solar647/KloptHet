@@ -49,7 +49,10 @@ export default function RegistrerenPage() {
 
   if (success) {
     return (
-      <AuthCard title="Controleer uw e-mail." subtitle="We hebben u een bevestigingslink gestuurd.">
+      <AuthCard
+        title="Controleer uw e-mail."
+        subtitle={`We hebben een bevestigingslink gestuurd naar ${email}`}
+      >
         <div
           style={{
             background: 'rgba(58,172,110,.1)',
@@ -62,8 +65,21 @@ export default function RegistrerenPage() {
             fontFamily: 'var(--font-sans)',
           }}
         >
-          ✓ Klik op de link in uw e-mail om uw account te activeren. Controleer ook uw spammap.
+          ✓ Klik op de link in uw e-mail om uw account te activeren. De link werkt op elk apparaat —
+          ook als u de e-mail op uw telefoon opent. Controleer ook uw spammap.
         </div>
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.78rem',
+            color: 'rgba(244,236,219,.35)',
+            margin: '.75rem 0 0',
+            textAlign: 'center',
+            lineHeight: 1.5,
+          }}
+        >
+          Na het klikken op de link bent u direct ingelogd op dat apparaat.
+        </p>
       </AuthCard>
     )
   }
