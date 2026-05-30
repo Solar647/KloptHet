@@ -46,7 +46,7 @@ export function Hero() {
           zIndex: 2,
           pointerEvents: 'none',
           background:
-            'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,0,0,.3) 0%, rgba(0,0,0,.7) 100%)',
+            'radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,0,0,.1) 0%, rgba(0,0,0,.55) 100%)',
         }}
       />
 
