@@ -117,10 +117,10 @@ h6 {
 @keyframes float {
   0%,
   100% {
-    transform: translateY(-48%) rotate(5deg);
+    transform: translateY(-48%) rotate(0deg);
   }
   50% {
-    transform: translateY(-52%) rotate(4deg);
+    transform: translateY(-53%) rotate(0deg);
   }
 }
 @keyframes float-sticker-1 {

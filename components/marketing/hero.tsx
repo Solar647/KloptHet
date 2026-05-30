@@ -52,6 +52,68 @@ export function Hero() {
         }}
       />
 
+      {/* Grid achtergrond */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+          backgroundImage: [
+            'linear-gradient(rgba(58,172,110,.07) 1px, transparent 1px)',
+            'linear-gradient(90deg, rgba(58,172,110,.07) 1px, transparent 1px)',
+          ].join(','),
+          backgroundSize: '55px 55px',
+          WebkitMaskImage:
+            'radial-gradient(ellipse 80% 90% at 50% 50%, black 20%, transparent 80%)',
+          maskImage: 'radial-gradient(ellipse 80% 90% at 50% 50%, black 20%, transparent 80%)',
+        }}
+      />
+
+      {/* Diagonale SVG lijnen */}
+      <svg
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 1,
+          pointerEvents: 'none',
+          overflow: 'hidden',
+        }}
+      >
+        <line
+          x1="0"
+          y1="100%"
+          x2="50%"
+          y2="0"
+          stroke="rgba(58,172,110,.09)"
+          strokeWidth="1"
+          strokeDasharray="8 14"
+        />
+        <line
+          x1="20%"
+          y1="100%"
+          x2="75%"
+          y2="0"
+          stroke="rgba(58,172,110,.05)"
+          strokeWidth="1"
+          strokeDasharray="5 18"
+        />
+        <line
+          x1="100%"
+          y1="90%"
+          x2="60%"
+          y2="0"
+          stroke="rgba(244,236,219,.04)"
+          strokeWidth="1"
+          strokeDasharray="6 12"
+        />
+      </svg>
+
       {/* Grain */}
       <div
         aria-hidden="true"
@@ -60,7 +122,7 @@ export function Hero() {
           inset: 0,
           zIndex: 0,
           pointerEvents: 'none',
-          opacity: 0.045,
+          opacity: 0.04,
           mixBlendMode: 'screen',
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
@@ -98,7 +160,7 @@ export function Hero() {
         }}
       />
 
-      {/* ── PHONE MOCKUP — geanimeerd zwevend ── */}
+      {/* ── PHONE MOCKUP — rechtop, groter ── */}
       <div
         className="hero-top-strip-extras hero-phone"
         style={{
@@ -464,7 +526,7 @@ function PhoneMockup() {
   return (
     <div
       style={{
-        width: 'clamp(170px, 18vw, 240px)',
+        width: 'clamp(220px, 22vw, 300px)',
         background: 'linear-gradient(160deg, #0C2416 0%, #081A0E 100%)',
         border: '1.5px solid rgba(58,172,110,.18)',
         borderRadius: 28,
