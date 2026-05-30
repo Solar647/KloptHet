@@ -3,14 +3,6 @@
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
 
-const stickers = [
-  { text: 'KLEINKIND-\nTRUC', top: '28%', left: '3%', rotate: -6, accent: true },
-  { text: 'BANK-\nIMITATIE', top: '18%', right: '4%', rotate: 5, accent: false },
-  { text: 'BEZORG-\nFRAUDE', bottom: '28%', left: '5%', rotate: 4, accent: false },
-  { text: 'ROMANTIEK-\nSCAM', bottom: '22%', right: '3%', rotate: -4, accent: true },
-  { text: '5 SEC\nANALYSE →', top: '52%', right: '7%', rotate: 8, accent: true, small: true },
-]
-
 export function Hero() {
   const locale = useLocale()
 
@@ -18,16 +10,15 @@ export function Hero() {
     <section
       style={{
         position: 'relative',
-        minHeight: '95vh',
+        minHeight: '100vh',
+        overflow: 'hidden',
+        background: '#06130C',
+        isolation: 'isolate',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        background: '#07180E',
-        isolation: 'isolate',
       }}
     >
-      {/* Subtle grain */}
+      {/* Grain */}
       <div
         aria-hidden="true"
         style={{
@@ -35,7 +26,7 @@ export function Hero() {
           inset: 0,
           zIndex: 0,
           pointerEvents: 'none',
-          opacity: 0.06,
+          opacity: 0.055,
           mixBlendMode: 'overlay',
           backgroundImage:
             "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
@@ -43,168 +34,338 @@ export function Hero() {
         }}
       />
 
-      {/* Groene glow links */}
+      {/* Glow spots */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: '20%',
-          left: '-10%',
-          width: '50%',
-          height: '60%',
-          background: 'radial-gradient(ellipse at center, rgba(27,71,49,.6) 0%, transparent 70%)',
+          top: '-5%',
+          left: '30%',
+          width: '55%',
+          height: '55%',
+          background:
+            'radial-gradient(ellipse at center, rgba(58,172,110,.18) 0%, transparent 65%)',
+          filter: 'blur(80px)',
+          zIndex: 0,
           pointerEvents: 'none',
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '10%',
+          right: '-5%',
+          width: '40%',
+          height: '50%',
+          background: 'radial-gradient(ellipse at center, rgba(27,71,49,.35) 0%, transparent 70%)',
           filter: 'blur(60px)',
           zIndex: 0,
+          pointerEvents: 'none',
         }}
       />
 
-      {/* Floating stickers — verborgen op mobiel */}
-      <div className="hero-top-strip-extras">
-        {stickers.map((s, i) => (
-          <div
-            key={i}
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              top: s.top,
-              bottom: s.bottom,
-              left: s.left,
-              right: s.right,
-              transform: `rotate(${s.rotate}deg)`,
-              zIndex: 2,
-              background: s.accent ? '#3AAC6E' : 'transparent',
-              border: s.accent ? 'none' : '2px solid rgba(244,236,219,.25)',
-              borderRadius: s.small ? 9999 : 8,
-              padding: s.small ? '.4rem .9rem' : '.6rem .9rem',
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 700,
-              fontSize: s.small ? '.65rem' : '.75rem',
-              letterSpacing: '.06em',
-              textTransform: 'uppercase' as const,
-              color: s.accent ? '#07180E' : 'rgba(244,236,219,.7)',
-              lineHeight: 1.3,
-              whiteSpace: 'pre-line' as const,
-              pointerEvents: 'none',
-              userSelect: 'none' as const,
-            }}
-          >
-            {s.text}
-          </div>
-        ))}
+      {/* ── NAV AREA ── */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          padding: 'clamp(1.5rem, 3vw, 2rem) clamp(1.5rem, 4vw, 4rem)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontWeight: 700,
+            fontSize: '1.1rem',
+            color: '#F4ECDB',
+            letterSpacing: '-.02em',
+          }}
+        >
+          KloptHet
+        </div>
+        <div
+          style={{
+            fontFamily: 'ui-monospace, monospace',
+            fontSize: '.65rem',
+            color: 'rgba(244,236,219,.35)',
+            letterSpacing: '.18em',
+            textTransform: 'uppercase',
+          }}
+        >
+          fraude-checker · NL · 2026
+        </div>
       </div>
 
-      {/* Main content */}
+      {/* ── HERO BODY — vrije compositie ── */}
       <div
         style={{
           position: 'relative',
           zIndex: 3,
-          padding: 'clamp(5rem, 8vw, 8rem) clamp(1.5rem, 5vw, 6rem)',
-          maxWidth: 1300,
-          margin: '0 auto',
-          width: '100%',
+          flex: 1,
+          padding: '0 clamp(1.5rem, 4vw, 4rem) clamp(3rem, 5vw, 5rem)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
         }}
       >
-        {/* Eyebrow */}
+        {/* Eyebrow — licht gekanteld */}
         <div
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 10,
-            marginBottom: 'clamp(1.5rem, 3vw, 2rem)',
-            fontFamily: 'ui-monospace, monospace',
-            fontSize: '.72rem',
-            fontWeight: 700,
-            color: 'rgba(244,236,219,.45)',
-            letterSpacing: '.2em',
-            textTransform: 'uppercase',
+            gap: 8,
+            marginBottom: 'clamp(1rem, 2vw, 1.5rem)',
+            transform: 'rotate(-1.5deg)',
+            transformOrigin: 'left center',
+            alignSelf: 'flex-start',
           }}
         >
           <span
             style={{
-              width: 5,
-              height: 5,
+              width: 6,
+              height: 6,
               borderRadius: '50%',
               background: '#3AAC6E',
-              boxShadow: '0 0 6px #3AAC6E',
+              boxShadow: '0 0 8px #3AAC6E',
             }}
           />
-          De fraude-checker voor WhatsApp en sms
+          <span
+            style={{
+              fontFamily: 'ui-monospace, monospace',
+              fontSize: '.7rem',
+              color: 'rgba(244,236,219,.4)',
+              letterSpacing: '.18em',
+              textTransform: 'uppercase',
+            }}
+          >
+            De fraude-checker voor WhatsApp en sms
+          </span>
         </div>
 
-        {/* Big headline */}
-        <h1 style={{ margin: 0 }}>
-          <span
+        {/* ── TYPOGRAFIE BLOK — het hart ── */}
+        <div style={{ position: 'relative' }}>
+          {/* Lijn 1 — klein, gedraaid */}
+          <div
             style={{
-              display: 'block',
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 700,
-              fontSize: 'clamp(3.2rem, 10vw, 10rem)',
-              lineHeight: 0.9,
-              letterSpacing: '-.04em',
-              color: '#F4ECDB',
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: '0.3em',
+              transform: 'rotate(-2deg)',
+              transformOrigin: 'left bottom',
+              marginBottom: '-0.12em',
+              marginLeft: '0.5rem',
             }}
           >
-            TWIJFELT U
-          </span>
-          <span
-            style={{
-              display: 'block',
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 700,
-              fontSize: 'clamp(3.2rem, 10vw, 10rem)',
-              lineHeight: 0.9,
-              letterSpacing: '-.04em',
-              color: '#3AAC6E',
-              marginTop: '0.08em',
-            }}
-          >
-            OVER EEN
-          </span>
-          <span
-            style={{
-              display: 'block',
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 700,
-              fontSize: 'clamp(3.2rem, 10vw, 10rem)',
-              lineHeight: 0.9,
-              letterSpacing: '-.04em',
-              color: '#F4ECDB',
-              marginTop: '0.08em',
-            }}
-          >
-            BERICHT?
-          </span>
-        </h1>
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 700,
+                fontSize: 'clamp(1.8rem, 5vw, 5rem)',
+                lineHeight: 1,
+                letterSpacing: '-.03em',
+                color: 'rgba(244,236,219,.6)',
+              }}
+            >
+              TWIJFELT U
+            </span>
+            {/* Floating sticker naast lijn 1 */}
+            <div
+              className="hero-top-strip-extras"
+              style={{
+                background: 'rgba(244,236,219,.08)',
+                border: '1.5px solid rgba(244,236,219,.2)',
+                borderRadius: 6,
+                padding: '.3rem .6rem',
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 700,
+                fontSize: '.6rem',
+                letterSpacing: '.08em',
+                textTransform: 'uppercase',
+                color: 'rgba(244,236,219,.5)',
+                transform: 'rotate(4deg)',
+                marginLeft: '1rem',
+                flexShrink: 0,
+                alignSelf: 'center',
+              }}
+            >
+              KLEINKIND-TRUC
+            </div>
+          </div>
 
-        {/* Subtext + CTA */}
+          {/* Lijn 2 — mega groot, cream */}
+          <div style={{ lineHeight: 0.85, marginLeft: '-0.03em' }}>
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 700,
+                fontSize: 'clamp(5rem, 18vw, 18rem)',
+                letterSpacing: '-.05em',
+                color: '#F4ECDB',
+                display: 'block',
+              }}
+            >
+              OVER
+            </span>
+          </div>
+
+          {/* Lijn 3 — mega groot, groen, offset rechts */}
+          <div
+            style={{
+              lineHeight: 0.85,
+              marginLeft: 'clamp(1rem, 8vw, 10rem)',
+              marginTop: '-0.05em',
+              display: 'flex',
+              alignItems: 'flex-end',
+              gap: '0.4em',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 700,
+                fontSize: 'clamp(5rem, 18vw, 18rem)',
+                letterSpacing: '-.05em',
+                color: '#3AAC6E',
+              }}
+            >
+              EEN
+            </span>
+
+            {/* Floating mock bericht — naast EEN */}
+            <div
+              className="hero-top-strip-extras"
+              style={{
+                background: 'rgba(20,58,38,.9)',
+                border: '1px solid rgba(58,172,110,.3)',
+                borderRadius: 14,
+                padding: '1rem 1.1rem',
+                marginBottom: '1.5rem',
+                flexShrink: 0,
+                maxWidth: 220,
+                transform: 'rotate(3deg)',
+                boxShadow: '0 20px 40px rgba(0,0,0,.4)',
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.7rem',
+                  color: 'rgba(244,236,219,.4)',
+                  marginBottom: '.4rem',
+                }}
+              >
+                +31 6 82 49 17 53 · Onbekend
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.82rem',
+                  color: 'rgba(244,236,219,.85)',
+                  lineHeight: 1.5,
+                }}
+              >
+                &ldquo;Hoi mama, dit is mijn nieuwe nummer. Kun je me €450 sturen?&rdquo;
+              </div>
+              <div
+                style={{
+                  marginTop: '.6rem',
+                  padding: '.3rem .6rem',
+                  background: 'rgba(229,83,42,.15)',
+                  border: '1px solid rgba(229,83,42,.3)',
+                  borderRadius: 6,
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.65rem',
+                  fontWeight: 700,
+                  color: '#E5532A',
+                  letterSpacing: '.06em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                ⚠ Meerdere waarschuwingen
+              </div>
+            </div>
+          </div>
+
+          {/* Lijn 4 — medium, gedraaid rechts uitgelijnd */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              transform: 'rotate(1.5deg)',
+              transformOrigin: 'right bottom',
+              marginTop: '-0.08em',
+            }}
+          >
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 700,
+                fontSize: 'clamp(2.5rem, 8vw, 8rem)',
+                lineHeight: 0.9,
+                letterSpacing: '-.04em',
+                color: '#F4ECDB',
+              }}
+            >
+              BERICHT?
+            </span>
+          </div>
+
+          {/* SVG squiggle decoratie */}
+          <svg
+            className="hero-bottom-strip-extras"
+            width="180"
+            height="30"
+            viewBox="0 0 180 30"
+            style={{
+              position: 'absolute',
+              bottom: '-1rem',
+              left: '5%',
+              opacity: 0.25,
+            }}
+            aria-hidden="true"
+          >
+            <path
+              d="M0 15 C30 5, 60 25, 90 15 S150 5, 180 15"
+              stroke="#3AAC6E"
+              strokeWidth="2.5"
+              fill="none"
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
+
+        {/* ── BOTTOM ROW ── */}
         <div
           style={{
             display: 'flex',
             flexWrap: 'wrap',
             alignItems: 'flex-end',
             justifyContent: 'space-between',
-            gap: '2rem',
+            gap: '1.5rem',
             marginTop: 'clamp(2rem, 4vw, 3.5rem)',
-            paddingTop: 'clamp(1.5rem, 3vw, 2rem)',
-            borderTop: '1px solid rgba(244,236,219,.12)',
+            paddingTop: '1.25rem',
+            borderTop: '1px solid rgba(244,236,219,.1)',
           }}
         >
           <p
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: 'clamp(.95rem, 1.2vw, 1.1rem)',
+              fontSize: 'clamp(.9rem, 1.1vw, 1.05rem)',
               lineHeight: 1.7,
-              color: 'rgba(244,236,219,.6)',
+              color: 'rgba(244,236,219,.55)',
               margin: 0,
-              maxWidth: 420,
+              maxWidth: 380,
             }}
           >
-            Upload een screenshot van een verdacht WhatsApp- of sms-bericht. Binnen 5 seconden weet
-            u of het te vertrouwen is — in gewone taal.
+            Upload een screenshot. Wij analyseren en vertellen u in gewone taal of het te vertrouwen
+            is.
           </p>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem', alignItems: 'center' }}>
+          <div style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
             <Link
               href={`/${locale}/#demo`}
               style={{
@@ -216,20 +377,17 @@ export function Hero() {
                 fontFamily: 'var(--font-serif)',
                 fontWeight: 700,
                 fontSize: '1rem',
-                letterSpacing: '.02em',
                 textDecoration: 'none',
                 background: '#3AAC6E',
-                color: '#07180E',
-                boxShadow: '0 8px 30px -8px rgba(58,172,110,.5)',
-                transition: 'transform .15s, box-shadow .15s',
+                color: '#06130C',
+                boxShadow: '0 8px 30px -8px rgba(58,172,110,.55)',
+                transition: 'transform .15s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)'
-                e.currentTarget.style.boxShadow = '0 12px 36px -8px rgba(58,172,110,.6)'
+                e.currentTarget.style.transform = 'translateY(-2px) rotate(-1deg)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = '0 8px 30px -8px rgba(58,172,110,.5)'
+                e.currentTarget.style.transform = 'translateY(0) rotate(0)'
               }}
             >
               Bericht controleren
@@ -254,54 +412,47 @@ export function Hero() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '.5rem',
-                padding: '1rem 1.4rem',
+                padding: '1rem 1.3rem',
                 borderRadius: 10,
                 fontFamily: 'var(--font-sans)',
                 fontWeight: 600,
-                fontSize: '.92rem',
-                border: '1.5px solid rgba(244,236,219,.2)',
-                background: 'transparent',
-                color: 'rgba(244,236,219,.75)',
+                fontSize: '.9rem',
+                border: '1.5px solid rgba(244,236,219,.18)',
+                background: 'rgba(244,236,219,.04)',
+                color: 'rgba(244,236,219,.7)',
                 textDecoration: 'none',
                 transition: 'border-color .15s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(244,236,219,.4)'
+                e.currentTarget.style.borderColor = 'rgba(244,236,219,.35)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(244,236,219,.2)'
+                e.currentTarget.style.borderColor = 'rgba(244,236,219,.18)'
               }}
             >
-              Hoe het werkt
+              Hoe werkt het?
             </Link>
+
+            {/* Mini badge — ook gedraaid */}
+            <div
+              className="hero-top-strip-extras"
+              style={{
+                background: 'rgba(58,172,110,.12)',
+                border: '1px solid rgba(58,172,110,.25)',
+                borderRadius: 9999,
+                padding: '.5rem .9rem',
+                fontFamily: 'ui-monospace, monospace',
+                fontSize: '.62rem',
+                color: '#3AAC6E',
+                letterSpacing: '.1em',
+                textTransform: 'uppercase',
+                transform: 'rotate(-2deg)',
+              }}
+            >
+              Gratis proberen
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Onderste decoratieve balk */}
-      <div
-        className="hero-bottom-strip-extras"
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          borderTop: '1px solid rgba(244,236,219,.08)',
-          padding: '.75rem clamp(1.5rem, 5vw, 6rem)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          fontFamily: 'ui-monospace, monospace',
-          fontSize: '.6rem',
-          letterSpacing: '.18em',
-          textTransform: 'uppercase',
-          color: 'rgba(244,236,219,.25)',
-          zIndex: 3,
-        }}
-      >
-        <span>© 2026 KloptHet</span>
-        <span>Gemaakt in Nederland · EU-data</span>
-        <span>klopthet.nl</span>
       </div>
     </section>
   )
