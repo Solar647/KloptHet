@@ -24,20 +24,22 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'KloptHet — Fraudechecker voor WhatsApp en sms',
+    default: 'KloptHet — Fraudechecker voor berichten en e-mails',
     template: '%s — KloptHet',
   },
   description:
-    'Twijfelt u over een verdacht WhatsApp- of sms-bericht? Upload een screenshot en wij vertellen u in gewone taal of het te vertrouwen is. Europese AI, geen data bewaard.',
+    'Twijfelt u over een verdacht bericht, e-mail of link? Upload een screenshot en wij vertellen u in gewone taal of het te vertrouwen is. Europese AI, geen data bewaard.',
   keywords: [
     'WhatsApp fraude',
     'sms fraude',
     'phishing checker',
     'fraudechecker',
+    'nep e-mail herkennen',
     'kleinkind-truc',
     'oplichting herkennen',
     'nep bericht',
     'veilig internet 55+',
+    'e-mail fraude',
   ],
   authors: [{ name: 'KloptHet', url: BASE_URL }],
   creator: 'KloptHet',
@@ -50,7 +52,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'KloptHet',
-    title: 'KloptHet — Fraudechecker voor WhatsApp en sms',
+    title: 'KloptHet — Fraudechecker voor berichten en e-mails',
     description:
       'Twijfelt u over een verdacht bericht? Upload een screenshot en wij vertellen u in 5 seconden of het te vertrouwen is.',
     url: BASE_URL,
@@ -59,7 +61,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'KloptHet — Fraudechecker voor WhatsApp en sms',
+    title: 'KloptHet — Fraudechecker voor berichten en e-mails',
     description:
       'Upload een screenshot van een verdacht bericht. Wij analyseren het in 5 seconden.',
     site: '@klopthet',

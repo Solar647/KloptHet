@@ -184,8 +184,8 @@ export function Scanner() {
               margin: '0 auto',
             }}
           >
-            Upload een screenshot of plak de tekst — wij vertellen u in 5 seconden of het te
-            vertrouwen is.
+            Upload een screenshot van een bericht, e-mail of website — of plak de tekst. Wij
+            vertellen u in 5 seconden of het te vertrouwen is.
           </p>
         </div>
 

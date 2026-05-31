@@ -90,7 +90,7 @@ export function Footer() {
                 margin: 0,
               }}
             >
-              Bescherming tegen WhatsApp- en sms-fraude, in gewone taal. Voor families en ouderen in
+              Bescherming tegen digitale fraude, in gewone taal. Voor families en ouderen in
               Nederland.
             </p>
             <p
