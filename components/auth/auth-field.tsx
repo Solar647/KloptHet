@@ -20,13 +20,13 @@ export function AuthField({
   autoComplete,
 }: Props) {
   return (
-    <div style={{ marginBottom: '1rem' }}>
+    <div style={{ marginBottom: '.65rem' }}>
       <label
         style={{
           display: 'block',
-          fontSize: '.75rem',
+          fontSize: '.72rem',
           fontWeight: 600,
-          marginBottom: 6,
+          marginBottom: 4,
           color: 'rgba(244,236,219,.65)',
           letterSpacing: '.02em',
           fontFamily: 'var(--font-sans)',
@@ -43,12 +43,12 @@ export function AuthField({
         autoComplete={autoComplete}
         style={{
           width: '100%',
-          padding: '.8rem 1rem',
+          padding: '.65rem .9rem',
           background: 'rgba(244,236,219,.05)',
           border: '1px solid rgba(244,236,219,.14)',
-          borderRadius: 10,
+          borderRadius: 9,
           color: '#F4ECDB',
-          fontSize: '1rem',
+          fontSize: '.95rem',
           fontFamily: 'var(--font-sans)',
           outline: 'none',
           transition: 'border-color .15s',

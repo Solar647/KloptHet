@@ -143,8 +143,8 @@ export default function RegistrerenPage() {
           style={{
             display: 'flex',
             alignItems: 'flex-start',
-            gap: 10,
-            marginBottom: '1.5rem',
+            gap: 8,
+            marginBottom: '1rem',
             cursor: 'pointer',
           }}
         >
@@ -157,9 +157,9 @@ export default function RegistrerenPage() {
           />
           <span
             style={{
-              fontSize: '.82rem',
+              fontSize: '.75rem',
               color: 'rgba(244,236,219,.55)',
-              lineHeight: 1.55,
+              lineHeight: 1.4,
               fontFamily: 'var(--font-sans)',
             }}
           >
@@ -274,7 +274,7 @@ function SubmitButton({
 
 function Divider() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '1.25rem 0' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', margin: '.75rem 0' }}>
       <div style={{ flex: 1, height: 1, background: 'rgba(244,236,219,.1)' }} />
       <span
         style={{
