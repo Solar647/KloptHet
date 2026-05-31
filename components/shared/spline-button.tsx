@@ -2,40 +2,51 @@
 
 import { useLocale } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import { useRef, useEffect } from 'react'
 
 export function SplineButton() {
   const locale = useLocale()
   const router = useRouter()
-  const iframeRef = useRef<HTMLIFrameElement>(null)
-
-  useEffect(() => {
-    const handleBlur = () => {
-      if (document.activeElement === iframeRef.current) {
-        router.push(`/${locale}/#demo`)
-      }
-    }
-    window.addEventListener('blur', handleBlur)
-    return () => window.removeEventListener('blur', handleBlur)
-  }, [router, locale])
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <iframe
-        ref={iframeRef}
-        src="https://my.spline.design/buttonwith3diconcopycopy-JXO2cay4wO7UHNfotpCoS0lS-nEE/"
-        frameBorder="0"
+    <div
+      style={{ position: 'relative', display: 'inline-block', width: 300, height: 80 }}
+      onClick={() => router.push(`/${locale}/#demo`)}
+    >
+      {/* Spline iframe — iets groter zodat watermark onder de container valt */}
+      <div
         style={{
-          width: 320,
-          height: 100,
-          border: 'none',
-          display: 'block',
-          background: 'transparent',
-          borderRadius: 14,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: 140,
           overflow: 'hidden',
+          borderRadius: 14,
         }}
-        title="Start nu"
-        loading="lazy"
+      >
+        <iframe
+          src="https://my.spline.design/buttonwith3diconcopycopy-JXO2cay4wO7UHNfotpCoS0lS-nEE/"
+          frameBorder="0"
+          style={{
+            width: '100%',
+            height: 140,
+            border: 'none',
+            display: 'block',
+            marginTop: -10,
+          }}
+          title="Start nu"
+        />
+      </div>
+
+      {/* Transparante klik-laag over de hele knop — onderschept alle kliks */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          cursor: 'pointer',
+          zIndex: 10,
+          borderRadius: 14,
+        }}
       />
     </div>
   )
