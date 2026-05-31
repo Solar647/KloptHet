@@ -199,10 +199,12 @@ export function Scanner() {
               background: 'rgba(244,236,219,.07)',
               border: '1px solid rgba(244,236,219,.16)',
               borderRadius: 9999,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
             }}
           >
             {[
-              { id: 'upload' as const, label: 'Screenshot uploaden', Icon: CameraIcon },
+              { id: 'upload' as const, label: 'Uploaden', Icon: CameraIcon },
               { id: 'text' as const, label: 'Tekst plakken', Icon: TextIcon },
             ].map(({ id, label, Icon }) => (
               <button
@@ -228,6 +230,50 @@ export function Scanner() {
                 {label}
               </button>
             ))}
+            {'mediaDevices' in navigator && (
+              <button
+                onClick={() => {
+                  setMode('upload')
+                  captureScreen()
+                }}
+                style={{
+                  padding: '.55rem 1.1rem',
+                  borderRadius: 9999,
+                  border: 'none',
+                  cursor: 'pointer',
+                  background: 'transparent',
+                  color: 'rgba(244,236,219,.6)',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.88rem',
+                  fontWeight: 600,
+                  transition: 'all .2s',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 6,
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#F4ECDB'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'rgba(244,236,219,.6)'
+                }}
+              >
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="2" y="3" width="20" height="14" rx="2" />
+                  <path d="M8 21h8M12 17v4M9 9l3-3 3 3M12 6v7" />
+                </svg>
+                Schermfoto maken
+              </button>
+            )}
           </div>
         </div>
 
@@ -321,91 +367,7 @@ export function Scanner() {
                   Op de computer: sleep uw screenshot hiernaartoe.
                 </p>
                 {/* Opties */}
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: '.75rem',
-                    width: '100%',
-                    maxWidth: 420,
-                    margin: '0 auto',
-                  }}
-                >
-                  {/* Bestaand bestand kiezen */}
-                  <UploadButton>Kies een foto of screenshot</UploadButton>
-
-                  {/* Scherm delen */}
-                  {'mediaDevices' in navigator && 'getDisplayMedia' in navigator.mediaDevices && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        captureScreen()
-                      }}
-                      style={{
-                        width: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                        padding: '1rem 1.25rem',
-                        borderRadius: 14,
-                        background: 'rgba(58,172,110,.08)',
-                        border: '1.5px solid rgba(58,172,110,.3)',
-                        cursor: 'pointer',
-                        textAlign: 'left',
-                        transition: 'all .2s',
-                        fontFamily: 'var(--font-sans)',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(58,172,110,.14)'
-                        e.currentTarget.style.borderColor = 'rgba(58,172,110,.5)'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(58,172,110,.08)'
-                        e.currentTarget.style.borderColor = 'rgba(58,172,110,.3)'
-                      }}
-                    >
-                      <div
-                        style={{
-                          width: 42,
-                          height: 42,
-                          borderRadius: 11,
-                          background: 'rgba(58,172,110,.18)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                          color: '#3AAC6E',
-                        }}
-                      >
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <rect x="2" y="3" width="20" height="14" rx="2" />
-                          <path d="M8 21h8M12 17v4" />
-                          <path d="m9 9 3-3 3 3M12 6v7" />
-                        </svg>
-                      </div>
-                      <div>
-                        <div style={{ fontWeight: 700, fontSize: '.95rem', color: '#F4ECDB' }}>
-                          Maak een schermfoto
-                        </div>
-                        <div
-                          style={{ fontSize: '.8rem', color: 'rgba(244,236,219,.5)', marginTop: 2 }}
-                        >
-                          Kies het venster met het verdachte bericht — wij maken één foto
-                        </div>
-                      </div>
-                    </button>
-                  )}
-                </div>
+                <UploadButton>Kies een foto of screenshot</UploadButton>
 
                 <p
                   style={{
