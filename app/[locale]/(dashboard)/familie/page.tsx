@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { redirect } from 'next/navigation'
 import { FamilieClient } from '@/components/dashboard/familie-client'
 
@@ -13,12 +12,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
   } = await supabase.auth.getUser()
   if (!user) redirect(`/${locale}/inloggen`)
 
-  const service = createServiceClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-
-  const { data: sub } = await service
+  const { data: sub } = await supabase
     .from('subscriptions')
     .select('tier')
     .eq('user_id', user.id)
@@ -27,12 +21,11 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
   const tier = sub?.tier ?? 'free'
   const max = maxByTier[tier] ?? 0
 
-  // Haal familie op
-  const { data: family } = await service
+  const { data: family } = await supabase
     .from('families')
     .select('id')
     .eq('owner_id', user.id)
-    .single()
+    .maybeSingle()
 
   type MemberRow = {
     id: string
@@ -42,12 +35,17 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
     member_can_see_owner: boolean
     joined_at: string | null
     user_id: string | null
+    recentScans: {
+      verdict_category: 'safe' | 'doubt' | 'phishing'
+      verdict_score: number
+      created_at: string
+    }[]
   }
 
   let members: MemberRow[] = []
 
   if (family) {
-    const { data: rawMembers } = await service
+    const { data: rawMembers } = await supabase
       .from('family_members')
       .select(
         'id, invited_email, status, owner_can_see_scans, member_can_see_owner, joined_at, user_id'
@@ -56,26 +54,45 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
       .neq('status', 'removed')
       .order('invited_at', { ascending: true })
 
-    members = (rawMembers ?? []) as MemberRow[]
+    if (rawMembers && rawMembers.length > 0) {
+      const activeUserIds = rawMembers
+        .filter((m) => m.status === 'active' && m.owner_can_see_scans && m.user_id)
+        .map((m) => m.user_id as string)
+
+      const scansByUser: Record<string, MemberRow['recentScans']> = {}
+
+      if (activeUserIds.length > 0) {
+        const { data: allScans } = await supabase
+          .from('scans')
+          .select('user_id, verdict_category, verdict_score, created_at')
+          .in('user_id', activeUserIds)
+          .order('created_at', { ascending: false })
+          .limit(activeUserIds.length * 5)
+
+        for (const scan of allScans ?? []) {
+          if (!scansByUser[scan.user_id]) scansByUser[scan.user_id] = []
+          if (scansByUser[scan.user_id].length < 5) {
+            scansByUser[scan.user_id].push({
+              verdict_category: scan.verdict_category as 'safe' | 'doubt' | 'phishing',
+              verdict_score: scan.verdict_score,
+              created_at: scan.created_at,
+            })
+          }
+        }
+      }
+
+      members = rawMembers.map((m) => ({
+        id: m.id,
+        invited_email: m.invited_email,
+        status: m.status as 'pending' | 'active' | 'removed',
+        owner_can_see_scans: m.owner_can_see_scans,
+        member_can_see_owner: m.member_can_see_owner,
+        joined_at: m.joined_at,
+        user_id: m.user_id,
+        recentScans: (m.user_id && scansByUser[m.user_id]) || [],
+      }))
+    }
   }
 
-  // Haal recente scans op voor actieve leden (alleen als owner_can_see_scans = true)
-  const membersWithScans = await Promise.all(
-    members.map(async (m) => {
-      if (m.status !== 'active' || !m.owner_can_see_scans || !m.user_id) {
-        return { ...m, recentScans: [] }
-      }
-      const { data: scans } = await service
-        .from('scans')
-        .select('verdict_category, verdict_score, created_at')
-        .eq('user_id', m.user_id)
-        .order('created_at', { ascending: false })
-        .limit(5)
-      return { ...m, recentScans: scans ?? [] }
-    })
-  )
-
-  return (
-    <FamilieClient tier={tier} userEmail={user.email ?? ''} members={membersWithScans} max={max} />
-  )
+  return <FamilieClient tier={tier} userEmail={user.email ?? ''} members={members} max={max} />
 }
