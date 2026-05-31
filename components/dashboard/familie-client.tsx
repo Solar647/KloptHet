@@ -51,22 +51,35 @@ export function FamilieClient({ tier, userEmail, members: initialMembers, max }:
     setInviteSuccess('')
     setInviteLink('')
 
-    const res = await fetch('/api/family/invite', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: inviteEmail, locale }),
-    })
-    const data = await res.json()
+    try {
+      const res = await fetch('/api/family/invite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: inviteEmail, locale }),
+      })
 
-    if (!res.ok) {
-      setInviteError(data.error ?? 'Er ging iets mis.')
-    } else {
-      setInviteSuccess(data.warning ? data.warning : `Uitnodiging verstuurd naar ${inviteEmail}.`)
-      setInviteLink(data.inviteUrl ?? '')
-      setMembers((prev) => [...prev, data.member])
-      setInviteEmail('')
+      let data: Record<string, unknown> = {}
+      try {
+        data = await res.json()
+      } catch {
+        /* html response */
+      }
+
+      if (!res.ok) {
+        setInviteError((data.error as string) ?? `Fout ${res.status} — probeer opnieuw.`)
+      } else {
+        setInviteSuccess(
+          data.warning ? (data.warning as string) : `Uitnodiging verstuurd naar ${inviteEmail}.`
+        )
+        setInviteLink((data.inviteUrl as string) ?? '')
+        if (data.member) setMembers((prev) => [...prev, data.member as Member])
+        setInviteEmail('')
+      }
+    } catch {
+      setInviteError('Geen verbinding. Controleer uw internet en probeer opnieuw.')
+    } finally {
+      setSending(false)
     }
-    setSending(false)
   }
 
   const updatePermission = async (
@@ -124,7 +137,7 @@ export function FamilieClient({ tier, userEmail, members: initialMembers, max }:
             margin: 0,
           }}
         >
-          {activeMembers.length} van {max} plekken bezet · U bent de mantelzorger
+          {activeMembers.length} van {max} plekken bezet
         </p>
       </div>
 
@@ -211,7 +224,7 @@ export function FamilieClient({ tier, userEmail, members: initialMembers, max }:
                 color: '#F4ECDB',
               }}
             >
-              U (mantelzorger)
+              U (eigenaar)
             </div>
             <div
               style={{
@@ -452,9 +465,9 @@ export function FamilieClient({ tier, userEmail, members: initialMembers, max }:
             lineHeight: 1.6,
           }}
         >
-          Als mantelzorger ziet u de scans van uw familieleden als u &ldquo;Ik zie hun scans&rdquo;
-          heeft aanstaan. U ontvangt automatisch een melding wanneer een familielid een bericht met
-          een hoge risicoscore controleert.
+          Zet &ldquo;Ik zie hun scans&rdquo; aan om de scan-uitslagen van een familielid te
+          bekijken. U ontvangt automatisch een melding wanneer een familielid een gevaarlijk bericht
+          controleert.
         </p>
       </div>
     </div>
@@ -569,7 +582,7 @@ function MemberRow({
           >
             <Toggle
               label="Ik zie hun scan-uitslagen"
-              description="U kunt als mantelzorger meekijken met hun gecontroleerde berichten"
+              description="U kunt de scan-uitslagen van dit familielid zien"
               value={member.owner_can_see_scans}
               onChange={(v) => onToggle(member.id, 'owner_can_see_scans', v)}
             />
