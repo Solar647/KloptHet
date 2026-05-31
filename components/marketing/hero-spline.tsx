@@ -11,7 +11,6 @@ export function HeroSpline() {
         overflow: 'hidden',
       }}
     >
-      {/* Iframe omhoog verschoven zodat de "Sunsets" tekst onderaan buiten beeld valt */}
       <iframe
         src="https://my.spline.design/retrofuturismbganimation-7xolqE33y4ARSsB9pRW7Ct3l/"
         frameBorder="0"
@@ -28,17 +27,18 @@ export function HeroSpline() {
         }}
         title="KloptHet hero achtergrond"
       />
-      {/* Vignette onderaan voor zachte overgang */}
+      {/* Dekt onderkant af waar de Spline tekst zit */}
       <div
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          height: '25%',
+          height: '50%',
           zIndex: 10,
           pointerEvents: 'none',
-          background: 'linear-gradient(to top, rgba(0,0,0,.95) 0%, transparent 100%)',
+          background:
+            'linear-gradient(to top, #000 0%, rgba(0,0,0,.98) 25%, rgba(0,0,0,.7) 55%, transparent 100%)',
         }}
       />
     </div>
