@@ -11,7 +11,6 @@ export function HeroSpline() {
         overflow: 'hidden',
       }}
     >
-      {/* Iframe sterk vergroot en gecentreerd zodat de 3D scene de volledige viewport vult */}
       <iframe
         src="https://my.spline.design/retrofuturismbganimation-7xolqE33y4ARSsB9pRW7Ct3l/"
         frameBorder="0"
@@ -27,34 +26,6 @@ export function HeroSpline() {
           transformOrigin: 'center center',
         }}
         title="KloptHet hero achtergrond"
-      />
-
-      {/* Dekt "Chasing Sunsets" tekst af (linksonder in de Spline scene) */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '45%',
-          height: '35%',
-          background: 'linear-gradient(to top right, #000 40%, transparent 100%)',
-          zIndex: 10,
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Watermerk afdekken rechtsonder */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          width: 180,
-          height: 50,
-          background: '#000',
-          zIndex: 10,
-          pointerEvents: 'none',
-        }}
       />
     </div>
   )
