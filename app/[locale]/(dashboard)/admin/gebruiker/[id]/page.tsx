@@ -63,7 +63,7 @@ export default async function AdminUserPage({
       .single(),
     supabase
       .from('scans')
-      .select('id, verdict_category, verdict_score, verdict_summary, input_kind, created_at')
+      .select('id, verdict_category, verdict_score, input_kind, created_at')
       .eq('user_id', id)
       .order('created_at', { ascending: false })
       .limit(10),
@@ -400,20 +400,6 @@ export default async function AdminUserPage({
                   >
                     {catLabel[s.verdict_category as keyof typeof catLabel]} · {s.verdict_score}/10
                   </div>
-                  {s.verdict_summary && (
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '.8rem',
-                        color: 'rgba(244,236,219,.5)',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {s.verdict_summary}
-                    </div>
-                  )}
                 </div>
                 <div
                   style={{
