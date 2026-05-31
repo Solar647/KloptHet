@@ -3,96 +3,111 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
-import { createClient } from '@/lib/supabase/client'
-import { FamilyNavIcon, CheckIcon, ArrowRightIcon } from '@/components/shared/icons'
+
+type Scan = {
+  verdict_category: 'safe' | 'doubt' | 'phishing'
+  verdict_score: number
+  created_at: string
+}
+
+type Member = {
+  id: string
+  invited_email: string
+  status: 'pending' | 'active' | 'removed'
+  owner_can_see_scans: boolean
+  member_can_see_owner: boolean
+  joined_at: string | null
+  recentScans?: Scan[]
+}
 
 type Props = {
   tier: string
   userEmail: string
-  initialInvited: { email: string; status: string }[]
+  members: Member[]
+  max: number
 }
 
-const maxMembers: Record<string, number> = {
-  free: 1,
-  standard: 1,
-  family: 5,
-  premium: 5,
-}
+const catColor = { safe: '#3AAC6E', doubt: '#D97B2A', phishing: '#E5532A' }
+const catLabel = { safe: 'Veilig', doubt: 'Let op', phishing: 'Gevaar' }
 
-export function FamilieClient({ tier, userEmail, initialInvited }: Props) {
+export function FamilieClient({ tier, userEmail, members: initialMembers, max }: Props) {
   const locale = useLocale()
+  const [members, setMembers] = useState<Member[]>(initialMembers)
   const [inviteEmail, setInviteEmail] = useState('')
-  const [invited, setInvited] = useState(initialInvited)
   const [sending, setSending] = useState(false)
-  const [error, setError] = useState('')
+  const [inviteError, setInviteError] = useState('')
+  const [inviteSuccess, setInviteSuccess] = useState('')
+  const [inviteLink, setInviteLink] = useState('')
+  const [linkCopied, setLinkCopied] = useState(false)
 
   const canInvite = tier === 'family' || tier === 'premium'
-  const max = maxMembers[tier] ?? 1
-  const totalMembers = 1 + invited.length // eigenaar + uitgenodigden
+  const activeMembers = members.filter((m) => m.status !== 'removed')
 
   const handleInvite = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!inviteEmail.trim()) return
-    if (!canInvite) return
-    if (totalMembers >= max) {
-      setError(`Maximum van ${max} leden bereikt.`)
-      return
-    }
-    setError('')
+    if (!inviteEmail.trim() || sending) return
     setSending(true)
+    setInviteError('')
+    setInviteSuccess('')
+    setInviteLink('')
 
-    const supabase = createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) {
-      setSending(false)
-      return
-    }
+    const res = await fetch('/api/family/invite', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: inviteEmail, locale }),
+    })
+    const data = await res.json()
 
-    // Zoek of er al een familie bestaat voor deze user
-    let familyId: string | null = null
-    const { data: existingFamily } = await supabase
-      .from('families')
-      .select('id')
-      .eq('owner_id', user.id)
-      .single()
-
-    if (existingFamily) {
-      familyId = existingFamily.id
+    if (!res.ok) {
+      setInviteError(data.error ?? 'Er ging iets mis.')
     } else {
-      const { data: newFamily } = await supabase
-        .from('families')
-        .insert({ owner_id: user.id, name: 'Mijn Familie' })
-        .select('id')
-        .single()
-      familyId = newFamily?.id ?? null
+      setInviteSuccess(data.warning ? data.warning : `Uitnodiging verstuurd naar ${inviteEmail}.`)
+      setInviteLink(data.inviteUrl ?? '')
+      setMembers((prev) => [...prev, data.member])
+      setInviteEmail('')
     }
-
-    if (familyId) {
-      await supabase.from('family_members').insert({
-        family_id: familyId,
-        role: 'member',
-        invited_at: new Date().toISOString(),
-      })
-    }
-
-    setInvited((prev) => [...prev, { email: inviteEmail, status: 'uitnodiging verstuurd' }])
-    setInviteEmail('')
     setSending(false)
   }
 
-  const removeInvited = (email: string) => {
-    setInvited((prev) => prev.filter((m) => m.email !== email))
+  const updatePermission = async (
+    memberId: string,
+    field: 'owner_can_see_scans' | 'member_can_see_owner',
+    value: boolean
+  ) => {
+    setMembers((prev) => prev.map((m) => (m.id === memberId ? { ...m, [field]: value } : m)))
+    await fetch('/api/family/members', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ memberId, [field]: value }),
+    })
+  }
+
+  const removeMember = async (memberId: string) => {
+    if (!confirm('Weet u zeker dat u dit lid wilt verwijderen?')) return
+    setMembers((prev) =>
+      prev.map((m) => (m.id === memberId ? { ...m, status: 'removed' as const } : m))
+    )
+    await fetch('/api/family/members', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ memberId }),
+    })
+  }
+
+  const copyLink = (link: string) => {
+    navigator.clipboard.writeText(link)
+    setLinkCopied(true)
+    setTimeout(() => setLinkCopied(false), 2000)
   }
 
   return (
     <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 720 }}>
-      <div style={{ marginBottom: '1.5rem' }}>
+      {/* Header */}
+      <div style={{ marginBottom: '1.75rem' }}>
         <h1
           style={{
             fontFamily: 'var(--font-serif)',
-            fontWeight: 700,
+            fontWeight: 500,
             fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
             color: '#F4ECDB',
             margin: '0 0 .35rem',
@@ -101,17 +116,24 @@ export function FamilieClient({ tier, userEmail, initialInvited }: Props) {
         >
           Familie
         </h1>
-        <p style={{ color: 'rgba(244,236,219,.55)', fontFamily: 'var(--font-sans)', margin: 0 }}>
-          {totalMembers} van {max} plekken bezet
+        <p
+          style={{
+            color: 'rgba(244,236,219,.5)',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.9rem',
+            margin: 0,
+          }}
+        >
+          {activeMembers.length} van {max} plekken bezet · U bent de mantelzorger
         </p>
       </div>
 
-      {/* Zachte upgrade banner — alleen bij geen familie-abonnement */}
+      {/* Upgrade banner */}
       {!canInvite && (
         <div
           style={{
-            background: 'rgba(91,143,232,.08)',
-            border: '1px solid rgba(91,143,232,.2)',
+            background: 'rgba(58,172,110,.06)',
+            border: '1px solid rgba(58,172,110,.2)',
             borderRadius: 14,
             padding: '1rem 1.25rem',
             display: 'flex',
@@ -122,62 +144,55 @@ export function FamilieClient({ tier, userEmail, initialInvited }: Props) {
             marginBottom: '1.5rem',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ color: 'rgba(91,143,232,.9)', display: 'flex' }}>
-              <FamilyNavIcon size={18} strokeWidth={1.6} />
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.88rem',
-                color: 'rgba(244,236,219,.7)',
-              }}
-            >
-              Upgrade naar <strong style={{ color: '#F4ECDB' }}>Familie</strong> om tot 5 leden uit
-              te nodigen.
-            </span>
-          </div>
+          <p
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.88rem',
+              color: 'rgba(244,236,219,.7)',
+              margin: 0,
+            }}
+          >
+            Upgrade naar <strong style={{ color: '#F4ECDB' }}>Familie</strong> om tot 5 leden uit te
+            nodigen.
+          </p>
           <Link
             href={`/${locale}/abonnement/checkout?tier=family`}
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              background: 'rgba(91,143,232,.2)',
-              border: '1px solid rgba(91,143,232,.35)',
+              background: '#3AAC6E',
+              color: '#07190F',
               borderRadius: 8,
               padding: '.5rem 1rem',
               fontFamily: 'var(--font-sans)',
               fontSize: '.82rem',
               fontWeight: 700,
-              color: 'rgba(91,143,232,1)',
               textDecoration: 'none',
+              whiteSpace: 'nowrap',
             }}
           >
-            Upgraden <ArrowRightIcon size={13} strokeWidth={2.2} />
+            Upgraden →
           </Link>
         </div>
       )}
 
-      {/* Leden lijst */}
+      {/* Eigenaar kaart */}
       <div
         style={{
           background: 'rgba(244,236,219,.04)',
           border: '1px solid rgba(244,236,219,.1)',
           borderRadius: 16,
           overflow: 'hidden',
-          marginBottom: '1.5rem',
+          marginBottom: '1rem',
         }}
       >
         <div
           style={{
-            padding: '1rem 1.5rem',
-            borderBottom: '1px solid rgba(244,236,219,.08)',
+            padding: '.85rem 1.25rem',
+            borderBottom: '1px solid rgba(244,236,219,.07)',
             fontFamily: 'var(--font-sans)',
-            fontSize: '.78rem',
+            fontSize: '.72rem',
             fontWeight: 700,
-            color: 'rgba(244,236,219,.45)',
-            letterSpacing: '.08em',
+            color: 'rgba(244,236,219,.35)',
+            letterSpacing: '.1em',
             textTransform: 'uppercase',
           }}
         >
@@ -185,145 +200,48 @@ export function FamilieClient({ tier, userEmail, initialInvited }: Props) {
         </div>
 
         {/* Eigenaar */}
-        <div
-          style={{
-            padding: '1rem 1.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Avatar letter={userEmail.charAt(0).toUpperCase()} color="#3AAC6E" />
+          <div style={{ flex: 1 }}>
             <div
               style={{
-                width: 34,
-                height: 34,
-                borderRadius: '50%',
-                background: 'rgba(58,172,110,.2)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
                 fontFamily: 'var(--font-sans)',
-                fontSize: '.88rem',
-                fontWeight: 700,
-                color: '#3AAC6E',
-                flexShrink: 0,
+                fontWeight: 600,
+                fontSize: '.9rem',
+                color: '#F4ECDB',
               }}
             >
-              {userEmail.charAt(0).toUpperCase()}
+              U (mantelzorger)
             </div>
-            <div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontWeight: 600,
-                  fontSize: '.9rem',
-                  color: '#F4ECDB',
-                }}
-              >
-                U (eigenaar)
-              </div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.75rem',
-                  color: 'rgba(244,236,219,.4)',
-                }}
-              >
-                {userEmail}
-              </div>
+            <div
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.75rem',
+                color: 'rgba(244,236,219,.4)',
+              }}
+            >
+              {userEmail}
             </div>
           </div>
-          <span
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.7rem',
-              fontWeight: 700,
-              color: '#3AAC6E',
-              letterSpacing: '.06em',
-              textTransform: 'uppercase',
-              background: 'rgba(58,172,110,.1)',
-              padding: '.2rem .6rem',
-              borderRadius: 9999,
-            }}
-          >
-            Eigenaar
-          </span>
+          <Badge label="Eigenaar" color="#3AAC6E" />
         </div>
 
-        {/* Uitgenodigde leden */}
-        {invited.map((member, i) => (
-          <div
-            key={i}
-            style={{
-              padding: '1rem 1.5rem',
-              borderTop: '1px solid rgba(244,236,219,.06)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div
-                style={{
-                  width: 34,
-                  height: 34,
-                  borderRadius: '50%',
-                  background: 'rgba(244,236,219,.08)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.88rem',
-                  color: 'rgba(244,236,219,.4)',
-                  flexShrink: 0,
-                }}
-              >
-                {member.email.charAt(0).toUpperCase()}
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.88rem',
-                    color: 'rgba(244,236,219,.75)',
-                  }}
-                >
-                  {member.email}
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.72rem',
-                    color: 'rgba(244,236,219,.35)',
-                  }}
-                >
-                  {member.status}
-                </div>
-              </div>
-            </div>
-            <button
-              onClick={() => removeInvited(member.email)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'rgba(229,83,42,.6)',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.8rem',
-              }}
-            >
-              Verwijderen
-            </button>
-          </div>
+        {/* Leden */}
+        {activeMembers.map((member) => (
+          <MemberRow
+            key={member.id}
+            member={member}
+            onToggle={updatePermission}
+            onRemove={removeMember}
+          />
         ))}
 
-        {invited.length === 0 && (
+        {activeMembers.length === 0 && (
           <div
             style={{
               padding: '1.5rem',
-              borderTop: '1px solid rgba(244,236,219,.06)',
               textAlign: 'center',
+              borderTop: '1px solid rgba(244,236,219,.06)',
             }}
           >
             <p
@@ -334,68 +252,43 @@ export function FamilieClient({ tier, userEmail, initialInvited }: Props) {
                 margin: 0,
               }}
             >
-              Nog geen leden uitgenodigd.
+              Nog geen familieleden. Nodig iemand uit hieronder.
             </p>
           </div>
         )}
       </div>
 
-      {/* Uitnodigingsformulier */}
-      <div
-        style={{
-          background: 'rgba(244,236,219,.04)',
-          border: '1px solid rgba(244,236,219,.1)',
-          borderRadius: 16,
-          padding: '1.5rem',
-        }}
-      >
-        <h3
+      {/* Uitnodigen */}
+      {canInvite && activeMembers.length < max && (
+        <div
           style={{
-            fontFamily: 'var(--font-sans)',
-            fontWeight: 600,
-            fontSize: '.85rem',
-            color: 'rgba(244,236,219,.6)',
-            letterSpacing: '.08em',
-            textTransform: 'uppercase',
-            margin: '0 0 1rem',
+            background: 'rgba(244,236,219,.04)',
+            border: '1px solid rgba(244,236,219,.1)',
+            borderRadius: 16,
+            padding: '1.25rem',
+            marginBottom: '1rem',
           }}
         >
-          Familielid uitnodigen
-        </h3>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.72rem',
+              fontWeight: 700,
+              color: 'rgba(244,236,219,.35)',
+              letterSpacing: '.1em',
+              textTransform: 'uppercase',
+              marginBottom: '.85rem',
+            }}
+          >
+            Familielid uitnodigen
+          </div>
 
-        {!canInvite ? (
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.88rem',
-              color: 'rgba(244,236,219,.4)',
-              margin: 0,
-              lineHeight: 1.6,
-            }}
-          >
-            Upgrade naar het Familie-abonnement om leden uit te nodigen.
-          </p>
-        ) : totalMembers >= max ? (
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.88rem',
-              color: 'rgba(244,236,219,.4)',
-              margin: 0,
-            }}
-          >
-            Maximum van {max} leden bereikt.
-          </p>
-        ) : (
-          <form
-            onSubmit={handleInvite}
-            style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap' }}
-          >
+          <form onSubmit={handleInvite} style={{ display: 'flex', gap: '.6rem', flexWrap: 'wrap' }}>
             <input
               type="email"
               value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)}
-              placeholder="e-mailadres familielid"
+              placeholder="E-mailadres familielid"
               required
               style={{
                 flex: 1,
@@ -405,7 +298,7 @@ export function FamilieClient({ tier, userEmail, initialInvited }: Props) {
                 border: '1px solid rgba(244,236,219,.16)',
                 borderRadius: 10,
                 color: '#F4ECDB',
-                fontSize: '.95rem',
+                fontSize: '.9rem',
                 fontFamily: 'var(--font-sans)',
                 outline: 'none',
               }}
@@ -433,25 +326,82 @@ export function FamilieClient({ tier, userEmail, initialInvited }: Props) {
                 whiteSpace: 'nowrap',
               }}
             >
-              {sending ? 'Bezig…' : 'Uitnodigen →'}
+              {sending ? 'Bezig…' : 'Uitnodiging sturen'}
             </button>
           </form>
-        )}
 
-        {error && (
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.82rem',
-              color: '#E5532A',
-              margin: '.5rem 0 0',
-            }}
-          >
-            {error}
-          </p>
-        )}
+          {inviteError && (
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.82rem',
+                color: '#E5532A',
+                margin: '.6rem 0 0',
+              }}
+            >
+              {inviteError}
+            </p>
+          )}
 
-        {canInvite && totalMembers < max && (
+          {inviteSuccess && (
+            <div style={{ marginTop: '.75rem' }}>
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.82rem',
+                  color: '#3AAC6E',
+                  margin: '0 0 .5rem',
+                }}
+              >
+                ✓ {inviteSuccess}
+              </p>
+              {inviteLink && (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '.5rem',
+                    background: 'rgba(244,236,219,.05)',
+                    border: '1px solid rgba(244,236,219,.1)',
+                    borderRadius: 8,
+                    padding: '.6rem .85rem',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: 'ui-monospace,monospace',
+                      fontSize: '.72rem',
+                      color: 'rgba(244,236,219,.5)',
+                      flex: 1,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {inviteLink}
+                  </span>
+                  <button
+                    onClick={() => copyLink(inviteLink)}
+                    style={{
+                      background: 'rgba(244,236,219,.1)',
+                      border: 'none',
+                      borderRadius: 6,
+                      padding: '.3rem .7rem',
+                      color: linkCopied ? '#3AAC6E' : 'rgba(244,236,219,.6)',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.75rem',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {linkCopied ? 'Gekopieerd!' : 'Kopieer link'}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
           <p
             style={{
               fontFamily: 'var(--font-sans)',
@@ -461,25 +411,38 @@ export function FamilieClient({ tier, userEmail, initialInvited }: Props) {
               lineHeight: 1.5,
             }}
           >
-            Het uitgenodigde familielid ontvangt een e-mail en kan gratis gebruik maken van uw
-            abonnement.
+            Het familielid ontvangt een e-mail met een persoonlijke link. Zij kunnen gratis gebruik
+            maken van uw abonnement.
           </p>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Info */}
       <div
         style={{
-          marginTop: '1.25rem',
           background: 'rgba(244,236,219,.03)',
           border: '1px solid rgba(244,236,219,.07)',
           borderRadius: 12,
           padding: '.9rem 1.1rem',
           display: 'flex',
           gap: 10,
+          alignItems: 'flex-start',
         }}
       >
-        <span style={{ flexShrink: 0 }}>ℹ️</span>
+        <svg
+          width="15"
+          height="15"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="rgba(244,236,219,.4)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ flexShrink: 0, marginTop: 1 }}
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 16v-4M12 8h.01" />
+        </svg>
         <p
           style={{
             fontFamily: 'var(--font-sans)',
@@ -489,10 +452,339 @@ export function FamilieClient({ tier, userEmail, initialInvited }: Props) {
             lineHeight: 1.6,
           }}
         >
-          Als mantelzorger ontvangt u een melding wanneer een familielid een bericht controleert met
-          een hoge risico-indicatie.
+          Als mantelzorger ziet u de scans van uw familieleden als u &ldquo;Ik zie hun scans&rdquo;
+          heeft aanstaan. U ontvangt automatisch een melding wanneer een familielid een bericht met
+          een hoge risicoscore controleert.
         </p>
       </div>
+    </div>
+  )
+}
+
+function MemberRow({
+  member,
+  onToggle,
+  onRemove,
+}: {
+  member: Member
+  onToggle: (
+    id: string,
+    field: 'owner_can_see_scans' | 'member_can_see_owner',
+    value: boolean
+  ) => void
+  onRemove: (id: string) => void
+}) {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <div style={{ borderTop: '1px solid rgba(244,236,219,.06)' }}>
+      {/* Hoofd rij */}
+      <div style={{ padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <Avatar
+          letter={member.invited_email.charAt(0).toUpperCase()}
+          color={member.status === 'active' ? 'rgba(244,236,219,.7)' : 'rgba(244,236,219,.3)'}
+        />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.88rem',
+              color: member.status === 'active' ? '#F4ECDB' : 'rgba(244,236,219,.55)',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {member.invited_email}
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.72rem',
+              color: 'rgba(244,236,219,.35)',
+              marginTop: 1,
+            }}
+          >
+            {member.status === 'active'
+              ? `Actief lid${member.joined_at ? ` · Lid sinds ${new Date(member.joined_at).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}` : ''}`
+              : 'Uitnodiging verstuurd · wacht op acceptatie'}
+          </div>
+        </div>
+
+        {/* Recente scans dots */}
+        {member.recentScans && member.recentScans.length > 0 && (
+          <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
+            {member.recentScans.slice(0, 5).map((s, i) => (
+              <div
+                key={i}
+                title={`${catLabel[s.verdict_category]} · ${s.verdict_score}/10`}
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: '50%',
+                  background: catColor[s.verdict_category],
+                }}
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Uitklap toggle */}
+        <button
+          onClick={() => setExpanded((x) => !x)}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            color: 'rgba(244,236,219,.35)',
+            padding: '4px',
+            display: 'flex',
+            flexShrink: 0,
+            transition: 'transform .2s',
+            transform: expanded ? 'rotate(180deg)' : 'rotate(0)',
+          }}
+          title="Instellingen"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Uitklapbaar: instellingen + recente activiteit */}
+      {expanded && (
+        <div style={{ padding: '0 1.25rem 1.25rem', borderTop: '1px solid rgba(244,236,219,.05)' }}>
+          {/* Toestemmingen */}
+          <div
+            style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '.75rem' }}
+          >
+            <Toggle
+              label="Ik zie hun scan-uitslagen"
+              description="U kunt als mantelzorger meekijken met hun gecontroleerde berichten"
+              value={member.owner_can_see_scans}
+              onChange={(v) => onToggle(member.id, 'owner_can_see_scans', v)}
+            />
+            <Toggle
+              label="Zij zien mijn scan-uitslagen"
+              description="Uw familielid kan uw gecontroleerde berichten ook zien"
+              value={member.member_can_see_owner}
+              onChange={(v) => onToggle(member.id, 'member_can_see_owner', v)}
+            />
+          </div>
+
+          {/* Recente activiteit */}
+          {member.owner_can_see_scans && member.recentScans && member.recentScans.length > 0 && (
+            <div style={{ marginTop: '1rem' }}>
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.68rem',
+                  fontWeight: 700,
+                  color: 'rgba(244,236,219,.3)',
+                  letterSpacing: '.1em',
+                  textTransform: 'uppercase',
+                  marginBottom: '.6rem',
+                }}
+              >
+                Recente activiteit
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '.35rem' }}>
+                {member.recentScans.map((s, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div
+                      style={{
+                        width: 7,
+                        height: 7,
+                        borderRadius: '50%',
+                        background: catColor[s.verdict_category],
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.8rem',
+                        color: catColor[s.verdict_category],
+                        fontWeight: 600,
+                        minWidth: 70,
+                      }}
+                    >
+                      {catLabel[s.verdict_category]}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.75rem',
+                        color: 'rgba(244,236,219,.3)',
+                      }}
+                    >
+                      {new Date(s.created_at).toLocaleDateString('nl-NL', {
+                        day: 'numeric',
+                        month: 'short',
+                      })}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Verwijderen */}
+          <button
+            onClick={() => onRemove(member.id)}
+            style={{
+              marginTop: '1rem',
+              background: 'transparent',
+              border: 'none',
+              color: 'rgba(229,83,42,.55)',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.8rem',
+              cursor: 'pointer',
+              padding: 0,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#E5532A'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'rgba(229,83,42,.55)'
+            }}
+          >
+            Lid verwijderen
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+function Avatar({ letter, color }: { letter: string; color: string }) {
+  return (
+    <div
+      style={{
+        width: 36,
+        height: 36,
+        borderRadius: '50%',
+        background: `${color}20`,
+        border: `1.5px solid ${color}40`,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: 'var(--font-sans)',
+        fontWeight: 700,
+        fontSize: '.9rem',
+        color,
+        flexShrink: 0,
+      }}
+    >
+      {letter}
+    </div>
+  )
+}
+
+function Badge({ label, color }: { label: string; color: string }) {
+  return (
+    <span
+      style={{
+        fontFamily: 'var(--font-sans)',
+        fontSize: '.68rem',
+        fontWeight: 700,
+        color,
+        letterSpacing: '.06em',
+        textTransform: 'uppercase',
+        background: `${color}18`,
+        padding: '.2rem .6rem',
+        borderRadius: 9999,
+        flexShrink: 0,
+      }}
+    >
+      {label}
+    </span>
+  )
+}
+
+function Toggle({
+  label,
+  description,
+  value,
+  onChange,
+}: {
+  label: string
+  description: string
+  value: boolean
+  onChange: (v: boolean) => void
+}) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        gap: '1rem',
+      }}
+    >
+      <div style={{ flex: 1 }}>
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.85rem',
+            fontWeight: 600,
+            color: '#F4ECDB',
+            marginBottom: '.15rem',
+          }}
+        >
+          {label}
+        </div>
+        <div
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.75rem',
+            color: 'rgba(244,236,219,.4)',
+            lineHeight: 1.4,
+          }}
+        >
+          {description}
+        </div>
+      </div>
+      <button
+        onClick={() => onChange(!value)}
+        role="switch"
+        aria-checked={value}
+        style={{
+          width: 42,
+          height: 24,
+          borderRadius: 9999,
+          background: value ? '#3AAC6E' : 'rgba(244,236,219,.12)',
+          border: 'none',
+          cursor: 'pointer',
+          position: 'relative',
+          transition: 'background .2s',
+          flexShrink: 0,
+          padding: 0,
+        }}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            top: 3,
+            left: value ? 21 : 3,
+            width: 18,
+            height: 18,
+            borderRadius: '50%',
+            background: '#fff',
+            transition: 'left .2s',
+            boxShadow: '0 1px 3px rgba(0,0,0,.3)',
+          }}
+        />
+      </button>
     </div>
   )
 }
