@@ -356,9 +356,10 @@ export default function ContactPage() {
                 <Field label="Bericht" required>
                   <textarea
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}
+                    onChange={(e) => setMessage(e.target.value.slice(0, 3000))}
                     placeholder="Stel uw vraag of beschrijf uw situatie..."
                     required
+                    maxLength={3000}
                     rows={5}
                     style={{ ...inputStyle, resize: 'vertical', minHeight: 120 }}
                     onFocus={(e) => {
@@ -368,6 +369,20 @@ export default function ContactPage() {
                       e.target.style.borderColor = 'rgba(244,236,219,.14)'
                     }}
                   />
+                  <div
+                    style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '.35rem' }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.75rem',
+                        color: message.length > 2800 ? '#E5532A' : 'rgba(244,236,219,.3)',
+                        transition: 'color .2s',
+                      }}
+                    >
+                      {message.length} / 3000
+                    </span>
+                  </div>
                 </Field>
 
                 {error && (
