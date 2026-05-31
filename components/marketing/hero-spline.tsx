@@ -33,7 +33,7 @@ export function HeroSpline() {
           position: 'absolute',
           bottom: 0,
           left: 0,
-          width: '32%',
+          width: '22%',
           height: '40%',
           background: '#000',
           zIndex: 10,
