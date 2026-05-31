@@ -294,7 +294,7 @@ export default async function AdminPage({
             ].map(({ tier, label, color }) => {
               const count = tierCount[tier] ?? 0
               const pct = totalUsers ? Math.round((count / totalUsers) * 100) : 0
-              const rev = count * (PRICES[tier] ?? 0)
+              const rev = count * (MONTHLY_PRICES[tier] ?? 0)
               return (
                 <div key={tier}>
                   <div
