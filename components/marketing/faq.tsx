@@ -2,6 +2,53 @@
 
 import { useState } from 'react'
 
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Hoe lang duurt een controle?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Gemiddeld 5 seconden. U uploadt een screenshot, wij analyseren het en u heeft direct een antwoord.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Heb ik technische kennis nodig?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Nee. Als u een foto kunt maken op uw telefoon, kunt u KloptHet gebruiken.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Bewaren jullie mijn berichten?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Nee. Uw screenshot wordt direct na de analyse verwijderd — binnen 5 minuten. Wij bewaren niets en delen niets met derden.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Werkt het ook voor WhatsApp-berichten?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Ja. WhatsApp, sms, e-mail — maak een screenshot en upload het. Of plak de tekst van het bericht direct in het invoervak.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Kan ik het voor mijn ouders instellen?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Ja, dat is precies waar ons Familie-abonnement voor gemaakt is. U beheert het account, uw ouders gebruiken het.',
+      },
+    },
+  ],
+}
+
 const items = [
   {
     q: 'Hoe lang duurt een controle?',
@@ -30,6 +77,18 @@ const items = [
 ]
 
 export function FAQ() {
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <FAQContent />
+    </>
+  )
+}
+
+function FAQContent() {
   const [open, setOpen] = useState<number | null>(0)
 
   return (
