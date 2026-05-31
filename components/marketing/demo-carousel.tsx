@@ -872,7 +872,7 @@ export function DemoCarousel() {
               color: 'rgba(244,236,219,.3)',
             }}
           >
-            Gratis proberen · Geen account nodig voor de eerste controle
+            Gratis account aanmaken · Eerste controle gratis
           </p>
         </div>
       </div>
