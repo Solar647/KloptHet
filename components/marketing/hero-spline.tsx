@@ -27,6 +27,19 @@ export function HeroSpline() {
         }}
         title="KloptHet hero achtergrond"
       />
+      {/* Klein blokje over de Sunsets tekst in de linker onderhoek */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: 280,
+          height: 80,
+          background: '#000',
+          zIndex: 10,
+          pointerEvents: 'none',
+        }}
+      />
     </div>
   )
 }
