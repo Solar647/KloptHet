@@ -129,7 +129,43 @@ export default function PrivacyPage() {
         </P>
       </Section>
 
-      <Section title="7. Beveiliging">
+      <Section title="7. Toegang door beheerders">
+        <P>
+          Medewerkers van KloptHet met beheerdersrechten hebben toegang tot de volgende gegevens
+          voor support- en beheerdoeleinden:
+        </P>
+        <Ul>
+          <li>Accountgegevens (naam, e-mailadres, aanmelddatum)</li>
+          <li>Abonnementsinformatie (type, status)</li>
+          <li>
+            <strong>Geanonimiseerde</strong> scanstatistieken: categorie
+            (veilig/twijfelachtig/gevaarlijk), risicoscore en type invoer (screenshot of tekst) — de
+            inhoud van berichten is nadrukkelijk <strong>niet</strong> toegankelijk voor beheerders
+          </li>
+          <li>
+            Technische sessiegegevens (apparaattype, browser, IP-adres) uitsluitend voor
+            beveiligings- en supportdoeleinden
+          </li>
+        </Ul>
+        <P>
+          Grondslag: gerechtvaardigd belang (AVG art. 6 lid 1 sub f) voor support en beveiliging, en
+          uitvoering van de overeenkomst (art. 6 lid 1 sub b). Beheerders zijn gebonden aan
+          geheimhouding.
+        </P>
+      </Section>
+
+      <Section title="8. Familie-abonnement">
+        <P>
+          Bij het Familie-abonnement kan een accounthouder (de eigenaar) familieleden uitnodigen.
+          Als het familielid instemt via de uitnodigingslink en de instelling &ldquo;Ik zie hun
+          scans&rdquo; is ingeschakeld, kan de eigenaar de scanresultaten (categorie en score) van
+          dat familielid inzien. Dit gebeurt uitsluitend op basis van expliciete toestemming van het
+          familielid. Het familielid kan deze toestemming op elk moment intrekken via de
+          familie-instellingen.
+        </P>
+      </Section>
+
+      <Section title="9. Beveiliging">
         <P>
           Wij beveiligen uw gegevens met moderne standaarden: versleutelde verbindingen (HTTPS),
           toegangscontrole op databaseniveau (Row Level Security) en minimale dataopslag. Alle
@@ -137,7 +173,7 @@ export default function PrivacyPage() {
         </P>
       </Section>
 
-      <Section title="8. Cookies">
+      <Section title="10. Cookies">
         <P>
           KloptHet gebruikt alleen functionele cookies die noodzakelijk zijn voor het functioneren
           van de dienst (sessiebeheer). Wij gebruiken geen tracking- of advertentiecookies. Zie ook
@@ -145,7 +181,7 @@ export default function PrivacyPage() {
         </P>
       </Section>
 
-      <Section title="9. Wijzigingen">
+      <Section title="11. Wijzigingen">
         <P>
           Wij kunnen deze privacyverklaring aanpassen. Bij wijzigingen informeren wij u via e-mail
           of een melding in de app. De meest recente versie staat altijd op deze pagina.
