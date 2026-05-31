@@ -38,19 +38,6 @@ export function Hero() {
         <HeroSpline />
       </Suspense>
 
-      {/* Donkere overlay */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 2,
-          pointerEvents: 'none',
-          background:
-            'radial-gradient(ellipse 70% 55% at 50% 45%, rgba(0,0,0,.0) 0%, rgba(0,0,0,.28) 100%)',
-        }}
-      />
-
       {/* Content */}
       <motion.div
         style={{ y: textY, opacity: textOpacity, position: 'relative', zIndex: 5, width: '100%' }}
