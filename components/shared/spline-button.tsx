@@ -11,7 +11,6 @@ export function SplineButton() {
 
   useEffect(() => {
     const handleBlur = () => {
-      // Als focus naar de iframe gaat = gebruiker heeft geklikt
       if (document.activeElement === iframeRef.current) {
         router.push(`/${locale}/#demo`)
       }
@@ -21,19 +20,22 @@ export function SplineButton() {
   }, [router, locale])
 
   return (
-    <div style={{ position: 'relative', display: 'inline-block', cursor: 'pointer' }}>
+    <div style={{ position: 'relative', display: 'inline-block' }}>
       <iframe
         ref={iframeRef}
         src="https://my.spline.design/buttonwith3diconcopycopy-JXO2cay4wO7UHNfotpCoS0lS-nEE/"
         frameBorder="0"
+        width="240"
+        height="80"
         style={{
-          width: 220,
-          height: 72,
           border: 'none',
           display: 'block',
           background: 'transparent',
+          cursor: 'pointer',
+          borderRadius: 12,
+          overflow: 'hidden',
         }}
-        title="Start nu knop"
+        title="Start nu"
       />
     </div>
   )
