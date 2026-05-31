@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { AdminSearch } from '@/components/dashboard/admin-search'
@@ -89,31 +88,6 @@ export default async function AdminPage({
           .order('created_at', { ascending: false })
           .limit(50),
   ])
-
-  // Haal session/device info op via service role (optioneel)
-  const sessionMap: Record<string, { user_agent: string; ip: string; created_at: string }[]> = {}
-  try {
-    const service = createServiceClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
-    )
-    const userIds = (allUsers ?? []).map((u) => u.id)
-    if (userIds.length > 0) {
-      const { data: sessions } = await service
-        .from('sessions')
-        .select('user_id, user_agent, ip, created_at')
-        .in('user_id', userIds)
-        .order('created_at', { ascending: false })
-      sessions?.forEach(
-        (s: { user_id: string; user_agent: string; ip: string; created_at: string }) => {
-          if (!sessionMap[s.user_id]) sessionMap[s.user_id] = []
-          if (sessionMap[s.user_id].length < 3) sessionMap[s.user_id].push(s)
-        }
-      )
-    }
-  } catch {
-    // Service role niet beschikbaar — skip device info
-  }
 
   // Abonnement stats
   const tierCount: Record<string, number> = { free: 0, standard: 0, family: 0, premium: 0 }
@@ -487,7 +461,7 @@ export default async function AdminPage({
           </Suspense>
         </div>
         <div style={{ maxHeight: 480, overflowY: 'auto' }}>
-          <AdminUserList users={allUsers ?? []} subs={subs ?? []} sessionMap={sessionMap} />
+          <AdminUserList users={allUsers ?? []} subs={subs ?? []} sessionMap={{}} />
         </div>
       </div>
 

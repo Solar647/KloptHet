@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
@@ -45,11 +44,6 @@ export default async function AdminUserPage({
   if (!adminUser) redirect(`/${locale}/inloggen`)
   if (adminUser.email !== process.env.ADMIN_EMAIL) redirect(`/${locale}/dashboard`)
 
-  const service = createServiceClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
   const [{ data: profile }, { data: sub }, { data: scans }, { data: family }] = await Promise.all([
     supabase
       .from('profiles')
@@ -75,20 +69,6 @@ export default async function AdminUserPage({
   ])
 
   if (!profile) redirect(`/${locale}/admin`)
-
-  // Sessions via service role
-  let sessions: { user_agent: string; ip: string; created_at: string }[] = []
-  try {
-    const { data } = await service
-      .from('sessions')
-      .select('user_agent, ip, created_at')
-      .eq('user_id', id)
-      .order('created_at', { ascending: false })
-      .limit(5)
-    sessions = data ?? []
-  } catch {
-    /* geen service role */
-  }
 
   const tierColor: Record<string, string> = {
     free: 'rgba(244,236,219,.35)',
@@ -231,116 +211,6 @@ export default async function AdminUserPage({
           <InfoRow label="Totaal scans" value={(scans?.length ?? 0).toString()} />
         </InfoCard>
       </div>
-
-      {/* Apparaten / sessies */}
-      {sessions.length > 0 && (
-        <div
-          style={{
-            background: 'rgba(244,236,219,.04)',
-            border: '1px solid rgba(244,236,219,.1)',
-            borderRadius: 14,
-            padding: '1.25rem',
-            marginBottom: '1rem',
-          }}
-        >
-          <SectionLabel>Recente sessies</SectionLabel>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '.6rem' }}>
-            {sessions.map((s, i) => {
-              const dev = parseDevice(s.user_agent)
-              return (
-                <div
-                  key={i}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '1rem',
-                    padding: '.65rem .9rem',
-                    background: 'rgba(244,236,219,.03)',
-                    borderRadius: 8,
-                    border: '1px solid rgba(244,236,219,.07)',
-                  }}
-                >
-                  <div style={{ fontSize: '1.2rem' }}>{dev.device === 'Mobiel' ? '📱' : '💻'}</div>
-                  <div style={{ flex: 1 }}>
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '.85rem',
-                        color: '#F4ECDB',
-                        fontWeight: 500,
-                      }}
-                    >
-                      {dev.device} · {dev.os} · {dev.browser}
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '.72rem',
-                        color: 'rgba(244,236,219,.35)',
-                        marginTop: 2,
-                      }}
-                    >
-                      {new Date(s.created_at).toLocaleDateString('nl-NL', {
-                        day: 'numeric',
-                        month: 'short',
-                        year: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                      {s.ip && ` · ${s.ip}`}
-                    </div>
-                  </div>
-                  {i === 0 && (
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '.65rem',
-                        fontWeight: 700,
-                        color: '#3AAC6E',
-                        background: 'rgba(58,172,110,.1)',
-                        padding: '.2rem .5rem',
-                        borderRadius: 9999,
-                      }}
-                    >
-                      Laatste
-                    </span>
-                  )}
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      )}
-
-      {sessions.length === 0 && (
-        <div
-          style={{
-            background: 'rgba(244,236,219,.04)',
-            border: '1px solid rgba(244,236,219,.1)',
-            borderRadius: 14,
-            padding: '1.25rem',
-            marginBottom: '1rem',
-          }}
-        >
-          <SectionLabel>Recente sessies</SectionLabel>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.85rem',
-              color: 'rgba(244,236,219,.35)',
-              margin: 0,
-            }}
-          >
-            Voeg{' '}
-            <code
-              style={{ background: 'rgba(244,236,219,.08)', padding: '1px 5px', borderRadius: 4 }}
-            >
-              SUPABASE_SERVICE_ROLE_KEY
-            </code>{' '}
-            toe in Vercel om sessie-info te zien.
-          </p>
-        </div>
-      )}
 
       {/* Recente scans */}
       <div
