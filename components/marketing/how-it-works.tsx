@@ -71,6 +71,7 @@ export function HowItWorks() {
         position: 'relative',
         padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
         overflow: 'hidden',
+        background: 'linear-gradient(180deg, #050D07 0%, #07120A 40%, #0A1C10 70%, #0E2418 100%)',
       }}
     >
       {/* Asterisk decorations */}
