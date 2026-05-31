@@ -1,5 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
+import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
+import { AdminSearch } from '@/components/dashboard/admin-search'
 
 const PRICES: Record<string, number> = {
   standard: 3.99,
@@ -8,8 +11,15 @@ const PRICES: Record<string, number> = {
   free: 0,
 }
 
-export default async function AdminPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function AdminPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>
+  searchParams: Promise<{ q?: string }>
+}) {
   const { locale } = await params
+  const { q = '' } = await searchParams
   const supabase = await createClient()
   const {
     data: { user },
@@ -51,12 +61,44 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
       .from('scans')
       .select('verdict_category, input_kind, created_at')
       .gte('created_at', startOfMonth),
-    supabase
-      .from('profiles')
-      .select('id, email, full_name, created_at')
-      .order('created_at', { ascending: false })
-      .limit(50),
+    q
+      ? supabase
+          .from('profiles')
+          .select('id, email, full_name, created_at')
+          .ilike('email', `%${q}%`)
+          .order('created_at', { ascending: false })
+          .limit(50)
+      : supabase
+          .from('profiles')
+          .select('id, email, full_name, created_at')
+          .order('created_at', { ascending: false })
+          .limit(50),
   ])
+
+  // Haal session/device info op via service role (optioneel)
+  const sessionMap: Record<string, { user_agent: string; ip: string; created_at: string }[]> = {}
+  try {
+    const service = createServiceClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+    const userIds = (allUsers ?? []).map((u) => u.id)
+    if (userIds.length > 0) {
+      const { data: sessions } = await service
+        .from('sessions')
+        .select('user_id, user_agent, ip, created_at')
+        .in('user_id', userIds)
+        .order('created_at', { ascending: false })
+      sessions?.forEach(
+        (s: { user_id: string; user_agent: string; ip: string; created_at: string }) => {
+          if (!sessionMap[s.user_id]) sessionMap[s.user_id] = []
+          if (sessionMap[s.user_id].length < 3) sessionMap[s.user_id].push(s)
+        }
+      )
+    }
+  } catch {
+    // Service role niet beschikbaar — skip device info
+  }
 
   // Abonnement stats
   const tierCount: Record<string, number> = { free: 0, standard: 0, family: 0, premium: 0 }
@@ -422,15 +464,9 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
           }}
         >
           <SectionLabel noMargin>Gebruikers ({totalUsers ?? 0})</SectionLabel>
-          <span
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.72rem',
-              color: 'rgba(244,236,219,.35)',
-            }}
-          >
-            Meest recent eerst
-          </span>
+          <Suspense>
+            <AdminSearch defaultValue={q} />
+          </Suspense>
         </div>
         <div style={{ maxHeight: 480, overflowY: 'auto' }}>
           {allUsers?.map((u, i) => {
@@ -498,9 +534,26 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
                         fontFamily: 'var(--font-sans)',
                         fontSize: '.72rem',
                         color: 'rgba(244,236,219,.35)',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        maxWidth: 200,
                       }}
                     >
-                      {u.full_name}
+                      {u.full_name.slice(0, 20)}
+                      {u.full_name.length > 20 ? '…' : ''}
+                    </div>
+                  )}
+                  {sessionMap[u.id]?.[0] && (
+                    <div
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.68rem',
+                        color: 'rgba(244,236,219,.25)',
+                        marginTop: 2,
+                      }}
+                    >
+                      {parseDevice(sessionMap[u.id][0].user_agent)}
                     </div>
                   )}
                 </div>
@@ -552,6 +605,31 @@ export default async function AdminPage({ params }: { params: Promise<{ locale: 
       </p>
     </div>
   )
+}
+
+function parseDevice(ua: string): string {
+  if (!ua) return 'Onbekend apparaat'
+  const mobile = /iPhone|iPad|Android/.test(ua)
+  const os = /Windows/.test(ua)
+    ? 'Windows'
+    : /Mac/.test(ua)
+      ? 'Mac'
+      : /Android/.test(ua)
+        ? 'Android'
+        : /iPhone|iPad/.test(ua)
+          ? 'iOS'
+          : 'Onbekend'
+  const browser =
+    /Chrome/.test(ua) && !/Edg/.test(ua)
+      ? 'Chrome'
+      : /Firefox/.test(ua)
+        ? 'Firefox'
+        : /Safari/.test(ua) && !/Chrome/.test(ua)
+          ? 'Safari'
+          : /Edg/.test(ua)
+            ? 'Edge'
+            : 'Browser'
+  return `${mobile ? 'Mobiel' : 'Desktop'} · ${os} · ${browser}`
 }
 
 function BigStatCard({

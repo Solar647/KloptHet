@@ -85,8 +85,9 @@ export function InstellingenClient({ email, fullName, tier, status, periodEnd }:
           <Field label="Naam">
             <input
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value.slice(0, 20))}
               placeholder="Uw naam"
+              maxLength={20}
               style={inputStyle(false)}
               onFocus={(e) => {
                 e.target.style.borderColor = 'rgba(58,172,110,.6)'
