@@ -27,6 +27,17 @@ export function HeroSpline() {
         }}
         title="KloptHet hero achtergrond"
       />
+      {/* Zachte vignette die de hoektekst vervaagt zonder harde rand */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 10,
+          pointerEvents: 'none',
+          background:
+            'radial-gradient(ellipse 55% 50% at 0% 100%, rgba(0,0,0,.92) 0%, transparent 60%)',
+        }}
+      />
     </div>
   )
 }
