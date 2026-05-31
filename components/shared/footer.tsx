@@ -22,6 +22,7 @@ export function Footer() {
       links: [
         { label: 'Over ons', href: `/${locale}/over-ons` },
         { label: 'Blog', href: `/${locale}/blog` },
+
         { label: 'Contact', href: `/${locale}/contact` },
       ],
     },
