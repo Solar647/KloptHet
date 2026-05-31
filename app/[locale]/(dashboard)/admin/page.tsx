@@ -3,12 +3,27 @@ import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { redirect } from 'next/navigation'
 import { Suspense } from 'react'
 import { AdminSearch } from '@/components/dashboard/admin-search'
+import { AdminUserList } from '@/components/dashboard/admin-user-list'
 
-const PRICES: Record<string, number> = {
+const MONTHLY_PRICES: Record<string, number> = {
   standard: 3.99,
   family: 5.99,
   premium: 9.99,
   free: 0,
+}
+
+// Yearly MRR = jaarprijs / 12 (17% korting)
+const YEARLY_MRR: Record<string, number> = {
+  standard: 39.9 / 12,
+  family: 59.9 / 12,
+  premium: 99.9 / 12,
+  free: 0,
+}
+
+function isYearly(periodEnd: string | null): boolean {
+  if (!periodEnd) return false
+  const daysLeft = (new Date(periodEnd).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+  return daysLeft > 180
 }
 
 export default async function AdminPage({
@@ -56,7 +71,7 @@ export default async function AdminPage({
       .from('scans')
       .select('id', { count: 'exact', head: true })
       .gte('created_at', startOfMonth),
-    supabase.from('subscriptions').select('tier, status, user_id'),
+    supabase.from('subscriptions').select('tier, status, user_id, current_period_end'),
     supabase
       .from('scans')
       .select('verdict_category, input_kind, created_at')
@@ -107,8 +122,11 @@ export default async function AdminPage({
     tierCount[s.tier] = (tierCount[s.tier] ?? 0) + 1
   })
 
-  // MRR berekening
-  const mrr = activeSubs.reduce((sum, s) => sum + (PRICES[s.tier] ?? 0), 0)
+  // MRR berekening — houdt rekening met maandelijks vs jaarlijks
+  const mrr = activeSubs.reduce((sum, s) => {
+    const yearly = isYearly(s.current_period_end ?? null)
+    return sum + (yearly ? (YEARLY_MRR[s.tier] ?? 0) : (MONTHLY_PRICES[s.tier] ?? 0))
+  }, 0)
   const arr = mrr * 12
 
   // Scan verdeling
@@ -469,139 +487,7 @@ export default async function AdminPage({
           </Suspense>
         </div>
         <div style={{ maxHeight: 480, overflowY: 'auto' }}>
-          {allUsers?.map((u, i) => {
-            const sub = subs?.find((s) => s.user_id === u.id)
-            const tierCfg = sub
-              ? {
-                  label: sub.tier,
-                  color:
-                    sub.tier === 'free'
-                      ? 'rgba(244,236,219,.35)'
-                      : sub.tier === 'standard'
-                        ? '#3AAC6E'
-                        : sub.tier === 'family'
-                          ? '#5B8FE8'
-                          : '#D97B2A',
-                }
-              : { label: 'free', color: 'rgba(244,236,219,.25)' }
-            return (
-              <a
-                key={u.id}
-                href={`/${locale}/admin/gebruiker/${u.id}`}
-                style={{
-                  padding: '.8rem 1.5rem',
-                  borderBottom:
-                    i < allUsers.length - 1 ? '1px solid rgba(244,236,219,.05)' : 'none',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  textDecoration: 'none',
-                  cursor: 'pointer',
-                  transition: 'background .15s',
-                }}
-                onMouseEnter={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = 'rgba(244,236,219,.04)'
-                }}
-                onMouseLeave={(e) => {
-                  ;(e.currentTarget as HTMLElement).style.background = 'transparent'
-                }}
-              >
-                <div
-                  style={{
-                    width: 30,
-                    height: 30,
-                    borderRadius: '50%',
-                    background: 'rgba(58,172,110,.12)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontFamily: 'var(--font-sans)',
-                    fontWeight: 700,
-                    fontSize: '.8rem',
-                    color: '#3AAC6E',
-                    flexShrink: 0,
-                  }}
-                >
-                  {u.email.charAt(0).toUpperCase()}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '.88rem',
-                      color: '#F4ECDB',
-                      fontWeight: 500,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {u.email}
-                  </div>
-                  {u.full_name && (
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '.72rem',
-                        color: 'rgba(244,236,219,.35)',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        maxWidth: 200,
-                      }}
-                    >
-                      {u.full_name.slice(0, 20)}
-                      {u.full_name.length > 20 ? '…' : ''}
-                    </div>
-                  )}
-                  {sessionMap[u.id]?.[0] && (
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '.68rem',
-                        color: 'rgba(244,236,219,.25)',
-                        marginTop: 2,
-                      }}
-                    >
-                      {parseDevice(sessionMap[u.id][0].user_agent)}
-                    </div>
-                  )}
-                </div>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.7rem',
-                    fontWeight: 700,
-                    color: tierCfg.color,
-                    textTransform: 'uppercase',
-                    letterSpacing: '.04em',
-                    flexShrink: 0,
-                  }}
-                >
-                  {tierCfg.label}
-                </span>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.72rem',
-                    color: 'rgba(244,236,219,.3)',
-                    flexShrink: 0,
-                    minWidth: 90,
-                    textAlign: 'right',
-                  }}
-                >
-                  {new Date(u.created_at).toLocaleDateString('nl-NL', {
-                    day: 'numeric',
-                    month: 'short',
-                    year: '2-digit',
-                  })}
-                </div>
-                <span style={{ color: 'rgba(244,236,219,.2)', flexShrink: 0, fontSize: '.8rem' }}>
-                  ›
-                </span>
-              </a>
-            )
-          })}
+          <AdminUserList users={allUsers ?? []} subs={subs ?? []} sessionMap={sessionMap} />
         </div>
       </div>
 
@@ -618,31 +504,6 @@ export default async function AdminPage({
       </p>
     </div>
   )
-}
-
-function parseDevice(ua: string): string {
-  if (!ua) return 'Onbekend apparaat'
-  const mobile = /iPhone|iPad|Android/.test(ua)
-  const os = /Windows/.test(ua)
-    ? 'Windows'
-    : /Mac/.test(ua)
-      ? 'Mac'
-      : /Android/.test(ua)
-        ? 'Android'
-        : /iPhone|iPad/.test(ua)
-          ? 'iOS'
-          : 'Onbekend'
-  const browser =
-    /Chrome/.test(ua) && !/Edg/.test(ua)
-      ? 'Chrome'
-      : /Firefox/.test(ua)
-        ? 'Firefox'
-        : /Safari/.test(ua) && !/Chrome/.test(ua)
-          ? 'Safari'
-          : /Edg/.test(ua)
-            ? 'Edge'
-            : 'Browser'
-  return `${mobile ? 'Mobiel' : 'Desktop'} · ${os} · ${browser}`
 }
 
 function BigStatCard({
