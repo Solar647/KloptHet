@@ -33,7 +33,8 @@ const tiers = [
       'Wekelijkse fraude-nieuwsbrief',
     ],
     cta: 'Familie beschermen',
-    highlight: false,
+    highlight: true,
+    badge: 'Meest gekozen',
   },
   {
     name: 'Premium',
@@ -48,8 +49,7 @@ const tiers = [
       'Cadeau-abonnement instellen',
     ],
     cta: 'Premium kiezen',
-    highlight: true,
-    badge: 'Meest gekozen',
+    highlight: false,
   },
 ]
 
@@ -156,7 +156,7 @@ export function Pricing() {
           >
             {[
               { label: 'Per maand', value: false },
-              { label: 'Per jaar', value: true, badge: '2 mnd gratis' },
+              { label: 'Per jaar', value: true, badge: '17% korting' },
             ].map(({ label, value, badge }) => (
               <button
                 key={String(value)}
