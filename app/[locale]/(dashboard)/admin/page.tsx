@@ -485,8 +485,9 @@ export default async function AdminPage({
                 }
               : { label: 'free', color: 'rgba(244,236,219,.25)' }
             return (
-              <div
+              <a
                 key={u.id}
+                href={`/${locale}/admin/gebruiker/${u.id}`}
                 style={{
                   padding: '.8rem 1.5rem',
                   borderBottom:
@@ -494,6 +495,15 @@ export default async function AdminPage({
                   display: 'flex',
                   alignItems: 'center',
                   gap: '1rem',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  transition: 'background .15s',
+                }}
+                onMouseEnter={(e) => {
+                  ;(e.currentTarget as HTMLElement).style.background = 'rgba(244,236,219,.04)'
+                }}
+                onMouseLeave={(e) => {
+                  ;(e.currentTarget as HTMLElement).style.background = 'transparent'
                 }}
               >
                 <div
@@ -586,7 +596,10 @@ export default async function AdminPage({
                     year: '2-digit',
                   })}
                 </div>
-              </div>
+                <span style={{ color: 'rgba(244,236,219,.2)', flexShrink: 0, fontSize: '.8rem' }}>
+                  ›
+                </span>
+              </a>
             )
           })}
         </div>
