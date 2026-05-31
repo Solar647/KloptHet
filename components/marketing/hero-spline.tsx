@@ -27,32 +27,6 @@ export function HeroSpline() {
         }}
         title="KloptHet hero achtergrond"
       />
-      {/* Zwart blok linksonder — matcht de donkere hoek van de scene */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '35%',
-          height: '30%',
-          background: '#000',
-          zIndex: 10,
-          pointerEvents: 'none',
-        }}
-      />
-      {/* Zachte gradient rechts van het blok zodat de overgang niet hard is */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: '20%',
-          width: '25%',
-          height: '30%',
-          background: 'linear-gradient(to right, #000 0%, transparent 100%)',
-          zIndex: 10,
-          pointerEvents: 'none',
-        }}
-      />
     </div>
   )
 }
