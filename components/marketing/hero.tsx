@@ -155,7 +155,7 @@ export function Hero() {
           >
             <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
               <Link
-                href={`/${locale}/#demo`}
+                href={`/${locale}/registreren`}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
