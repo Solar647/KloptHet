@@ -35,7 +35,7 @@ export function HeroSpline() {
           zIndex: 10,
           pointerEvents: 'none',
           background:
-            'radial-gradient(ellipse 55% 50% at 0% 100%, rgba(0,0,0,.92) 0%, transparent 60%)',
+            'radial-gradient(ellipse 70% 65% at 0% 100%, rgba(0,0,0,.98) 0%, transparent 55%)',
         }}
       />
     </div>
