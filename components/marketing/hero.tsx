@@ -27,7 +27,6 @@ export function Hero() {
         overflow: 'hidden',
         background: '#000',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         isolation: 'isolate',
@@ -37,20 +36,6 @@ export function Hero() {
         <HeroSpline />
       </Suspense>
 
-      {/* Subtiele overlay voor contrast */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 2,
-          pointerEvents: 'none',
-          background:
-            'radial-gradient(ellipse 70% 55% at 50% 45%, rgba(0,0,0,.0) 0%, rgba(0,0,0,.28) 100%)',
-        }}
-      />
-
-      {/* Content */}
       <motion.div
         style={{ y: textY, opacity: textOpacity, position: 'relative', zIndex: 5, width: '100%' }}
         initial="hidden"
@@ -62,39 +47,25 @@ export function Hero() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: '0 clamp(1rem, 3vw, 2rem)',
+            textAlign: 'center',
+            padding: '0 clamp(1.5rem, 4vw, 4rem)',
+            gap: 'clamp(1rem, 2vw, 1.5rem)',
           }}
         >
-          {/* Glazen kaart */}
+          {/* Pill */}
           <motion.div
             variants={{
-              hidden: { opacity: 0, y: 30 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-            }}
-            style={{
-              background: 'rgba(0,0,0,.5)',
-              backdropFilter: 'blur(28px)',
-              WebkitBackdropFilter: 'blur(28px)',
-              border: '1px solid rgba(255,255,255,.1)',
-              borderRadius: 28,
-              padding: 'clamp(2rem, 4vw, 3.5rem) clamp(2.5rem, 6vw, 5rem)',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '1.25rem',
-              textAlign: 'center',
-              maxWidth: 720,
-              boxShadow: '0 32px 80px rgba(0,0,0,.4)',
+              hidden: { opacity: 0, y: 8 },
+              show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
             }}
           >
-            {/* Pill */}
             <div
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 8,
-                background: 'rgba(58,172,110,.12)',
-                border: '1px solid rgba(58,172,110,.28)',
+                background: 'rgba(58,172,110,.15)',
+                border: '1px solid rgba(58,172,110,.3)',
                 borderRadius: 9999,
                 padding: '.4rem .9rem',
               }}
@@ -114,82 +85,96 @@ export function Hero() {
                   fontSize: '.78rem',
                   fontWeight: 600,
                   color: '#3AAC6E',
-                  letterSpacing: '.04em',
                 }}
               >
                 Europese AI · Gemaakt in Nederland
               </span>
             </div>
+          </motion.div>
 
-            {/* Heading */}
-            <h1
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 700,
-                fontSize: 'clamp(2.2rem, 5vw, 5rem)',
-                lineHeight: 1.05,
-                letterSpacing: '-.035em',
-                color: '#fff',
-                margin: 0,
-              }}
-            >
-              Twijfelt u over een bericht?
-            </h1>
+          {/* Heading */}
+          <motion.h1
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              show: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.1 } },
+            }}
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 700,
+              fontSize: 'clamp(3rem, 7vw, 7.5rem)',
+              lineHeight: 1.0,
+              letterSpacing: '-.04em',
+              color: '#fff',
+              margin: 0,
+              textShadow: '0 2px 20px rgba(0,0,0,.8)',
+            }}
+          >
+            Twijfelt u over een bericht?
+          </motion.h1>
 
-            {/* Subheading in groen */}
-            <p
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontWeight: 600,
-                fontSize: 'clamp(1.3rem, 2.5vw, 2.4rem)',
-                lineHeight: 1.2,
-                letterSpacing: '-.02em',
-                color: '#3AAC6E',
-                margin: 0,
-              }}
-            >
-              Wij kijken mee.
-            </p>
+          <motion.p
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.15 } },
+            }}
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 600,
+              fontSize: 'clamp(1.8rem, 4vw, 4rem)',
+              lineHeight: 1.1,
+              letterSpacing: '-.02em',
+              color: '#3AAC6E',
+              margin: 0,
+              textShadow: '0 2px 20px rgba(0,0,0,.8), 0 0 40px rgba(58,172,110,.3)',
+            }}
+          >
+            Wij kijken mee.
+          </motion.p>
 
-            {/* Lijn */}
-            <div style={{ width: 48, height: 1, background: 'rgba(255,255,255,.15)' }} />
+          {/* Subtitle */}
+          <motion.p
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.25 } },
+            }}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: 'clamp(1rem, 1.3vw, 1.15rem)',
+              lineHeight: 1.75,
+              color: 'rgba(255,255,255,.75)',
+              maxWidth: 460,
+              margin: 0,
+              textShadow: '0 1px 12px rgba(0,0,0,.9)',
+            }}
+          >
+            Upload een screenshot van een verdacht bericht. Binnen 5 seconden weet u of het te
+            vertrouwen is — in gewone taal.
+          </motion.p>
 
-            {/* Subtitle */}
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 'clamp(.9rem, 1.1vw, 1rem)',
-                lineHeight: 1.8,
-                color: 'rgba(255,255,255,.6)',
-                maxWidth: 420,
-                margin: 0,
-              }}
-            >
-              Upload een screenshot van een verdacht bericht. Binnen 5 seconden weet u of het te
-              vertrouwen is — in gewone taal.
-            </p>
-
-            {/* CTA */}
-            <motion.div
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              style={{ marginTop: '.25rem' }}
-            >
+          {/* CTA */}
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.35 } },
+            }}
+            style={{ marginTop: '.5rem' }}
+          >
+            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href={`/${locale}/#demo`}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '.6rem',
-                  padding: '.95rem 2rem',
+                  padding: '1rem 2.25rem',
                   borderRadius: 9999,
                   fontFamily: 'var(--font-sans)',
                   fontWeight: 700,
-                  fontSize: '1rem',
+                  fontSize: '1.05rem',
                   textDecoration: 'none',
                   background: '#fff',
                   color: '#000',
-                  boxShadow: '0 8px 32px rgba(0,0,0,.35)',
+                  boxShadow: '0 8px 32px rgba(0,0,0,.4)',
                 }}
               >
                 Gratis beginnen
