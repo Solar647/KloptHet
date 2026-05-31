@@ -38,22 +38,6 @@ export function Hero() {
         <HeroSpline />
       </Suspense>
 
-      {/* Gradient onderaan — vloeiende overgang naar groene site-achtergrond */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '35%',
-          zIndex: 8,
-          pointerEvents: 'none',
-          background:
-            'linear-gradient(to top, #0E2418 0%, rgba(14,36,24,.85) 40%, transparent 100%)',
-        }}
-      />
-
       {/* Donkere overlay */}
       <div
         aria-hidden="true"
