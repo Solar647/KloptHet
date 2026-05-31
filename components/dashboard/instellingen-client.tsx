@@ -202,6 +202,31 @@ export function InstellingenClient({ email, fullName, tier, status, periodEnd }:
         </button>
       </Section>
 
+      {/* Uitloggen */}
+      <Section title="Uitloggen">
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.9rem',
+            color: 'rgba(244,236,219,.55)',
+            margin: '0 0 1rem',
+            lineHeight: 1.6,
+          }}
+        >
+          U bent ingelogd als <strong style={{ color: '#F4ECDB' }}>{email}</strong>.
+        </p>
+        <button
+          onClick={async () => {
+            const supabase = createClient()
+            await supabase.auth.signOut()
+            router.push(`/${locale}`)
+          }}
+          style={secondaryBtn}
+        >
+          Uitloggen
+        </button>
+      </Section>
+
       {/* Account verwijderen */}
       <Section title="Account verwijderen" danger>
         <p
