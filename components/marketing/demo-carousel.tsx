@@ -48,29 +48,13 @@ const examples = [
     message:
       'Uw pakket kan niet worden afgeleverd. Betaal €1,99 herbezorgkosten via: post-nl-betaling.com',
     score: 7,
-    category: 'doubt' as const,
+    category: 'phishing' as const,
     verdict:
-      'Het valt op dat de link niet naar de officiële PostNL-website gaat. Herbezorging via PostNL is gratis — betaalverzoeken zijn altijd verdacht.',
+      'Typisch voorbeeld van bezorgfraude. PostNL vraagt nooit om betaling via een sms-link. Het domein is nep en lijkt op het echte PostNL.',
     flags: [
-      { text: 'Verdacht domein: niet postnl.nl', level: 'danger' as const },
-      { text: 'Herbezorging in Nederland is gratis', level: 'warn' as const },
-    ],
-  },
-  {
-    id: 'veilig',
-    type: 'Legitiem bericht',
-    from: 'Bol.com',
-    fromLabel: 'Bekende afzender',
-    message:
-      'Uw bestelling #4821039 is onderweg. Verwachte bezorging: morgen tussen 9:00-13:00. Volg via Mijn Bol.',
-    score: 1,
-    category: 'safe' as const,
-    verdict:
-      'Wij zien geen bekende oplichterstrucjes in dit bericht. Geen betaalverzoek, geen dreiging, geen verdacht domein.',
-    flags: [
-      { text: 'Geen betaalverzoek aanwezig', level: 'safe' as const },
-      { text: 'Geen verdachte links', level: 'safe' as const },
-      { text: 'Bekende afzender', level: 'safe' as const },
+      { text: 'Nep-domein: post-nl-betaling.com', level: 'danger' as const },
+      { text: 'Onverwachte betaalverzoek via sms', level: 'warn' as const },
+      { text: 'Officiële bezorgers gebruiken geen sms-links', level: 'warn' as const },
     ],
   },
 ]
@@ -78,52 +62,133 @@ const examples = [
 const categoryConfig = {
   safe: {
     color: '#3AAC6E',
-    bg: 'rgba(58,172,110,.1)',
-    border: 'rgba(58,172,110,.25)',
+    bg: 'rgba(58,172,110,.08)',
+    border: 'rgba(58,172,110,.22)',
+    glow: 'rgba(58,172,110,.15)',
     label: 'Geen alarmsignalen',
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+        <path d="m9 12 2 2 4-4" />
+      </svg>
+    ),
   },
   doubt: {
     color: '#D97B2A',
-    bg: 'rgba(217,123,42,.1)',
-    border: 'rgba(217,123,42,.25)',
+    bg: 'rgba(217,123,42,.08)',
+    border: 'rgba(217,123,42,.22)',
+    glow: 'rgba(217,123,42,.15)',
     label: 'Let op',
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+        <path d="M12 9v4M12 17h.01" />
+      </svg>
+    ),
   },
   phishing: {
     color: '#E5532A',
-    bg: 'rgba(229,83,42,.1)',
-    border: 'rgba(229,83,42,.25)',
-    label: 'Meerdere waarschuwingen',
+    bg: 'rgba(229,83,42,.08)',
+    border: 'rgba(229,83,42,.22)',
+    glow: 'rgba(229,83,42,.2)',
+    label: 'Waarschijnlijk oplichting',
+    icon: (
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="m15 9-6 6M9 9l6 6" />
+      </svg>
+    ),
   },
 }
 
-const flagColor = {
-  danger: '#E5532A',
-  warn: '#D97B2A',
-  safe: '#3AAC6E',
+const flagConfig = {
+  danger: {
+    color: '#E5532A',
+    bg: 'rgba(229,83,42,.1)',
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+      </svg>
+    ),
+  },
+  warn: {
+    color: '#D97B2A',
+    bg: 'rgba(217,123,42,.1)',
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
+      </svg>
+    ),
+  },
+  safe: {
+    color: '#3AAC6E',
+    bg: 'rgba(58,172,110,.1)',
+    icon: (
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+      </svg>
+    ),
+  },
 }
 
 export function DemoCarousel() {
   const locale = useLocale()
   const [active, setActive] = useState(0)
   const [visible, setVisible] = useState(true)
+  const [scanning, setScanning] = useState(false)
 
   const switchTo = (idx: number) => {
     if (idx === active) return
     setVisible(false)
+    setScanning(true)
     setTimeout(() => {
       setActive(idx)
-      setVisible(true)
+      setTimeout(() => {
+        setScanning(false)
+        setVisible(true)
+      }, 700)
     }, 200)
   }
 
   useEffect(() => {
     const t = setInterval(() => {
       setVisible(false)
+      setScanning(true)
       setTimeout(() => {
         setActive((a) => (a + 1) % examples.length)
-        setVisible(true)
+        setTimeout(() => {
+          setScanning(false)
+          setVisible(true)
+        }, 700)
       }, 200)
-    }, 5000)
+    }, 6000)
     return () => clearInterval(t)
   }, [])
 
@@ -137,50 +202,63 @@ export function DemoCarousel() {
         padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 3vw, 3rem)',
         position: 'relative',
         overflow: 'hidden',
+        background: '#0E2418',
       }}
     >
-      {/* Glow */}
+      {/* Ambient glow */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: '20%',
+          top: '30%',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '60%',
-          height: '50%',
-          background: `radial-gradient(ellipse at center, ${cfg.color}14 0%, transparent 70%)`,
+          width: '70%',
+          height: '60%',
+          background: `radial-gradient(ellipse at center, ${cfg.glow} 0%, transparent 65%)`,
           pointerEvents: 'none',
-          filter: 'blur(50px)',
-          transition: 'background .5s',
+          filter: 'blur(60px)',
+          transition: 'background .8s ease',
         }}
       />
 
-      <div style={{ maxWidth: 1000, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+      <div style={{ maxWidth: 1040, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
           <div
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
               fontSize: '.72rem',
               fontWeight: 700,
               color: 'rgba(244,236,219,.5)',
               letterSpacing: '.22em',
               textTransform: 'uppercase',
-              marginBottom: '.75rem',
+              marginBottom: '1rem',
               fontFamily: 'ui-monospace, monospace',
             }}
           >
-            Zo werkt het
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="rgba(58,172,110,.8)"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="10" />
+            </svg>
+            Live demo
           </div>
           <h2
             style={{
               fontFamily: 'var(--font-serif)',
-              fontWeight: 700,
-              fontSize: 'clamp(1.8rem, 4vw, 2.8rem)',
+              fontWeight: 500,
+              fontSize: 'clamp(2rem, 4.5vw, 3.2rem)',
               lineHeight: 1.05,
-              letterSpacing: '-.03em',
+              letterSpacing: '-.04em',
               color: '#F4ECDB',
-              margin: '0 0 .5rem',
+              margin: '0 0 .75rem',
             }}
           >
             Zo ziet fraude eruit.
@@ -190,70 +268,166 @@ export function DemoCarousel() {
               fontFamily: 'var(--font-sans)',
               fontSize: '1rem',
               color: 'rgba(244,236,219,.5)',
-              maxWidth: 420,
+              maxWidth: 400,
               margin: '0 auto',
+              lineHeight: 1.6,
             }}
           >
-            Blader door echte voorbeelden en zie hoe onze analyse werkt.
+            Echte voorbeelden. Zie hoe onze AI een verdacht bericht ontleedt.
           </p>
         </div>
 
-        {/* Main card */}
+        {/* Tabs */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '.45rem',
+            marginBottom: '2rem',
+            flexWrap: 'wrap',
+          }}
+        >
+          {examples.map((e, i) => {
+            const c = categoryConfig[e.category]
+            const isActive = active === i
+            return (
+              <button
+                key={e.id}
+                onClick={() => switchTo(i)}
+                style={{
+                  padding: '.4rem 1rem',
+                  borderRadius: 9999,
+                  border: `1px solid ${isActive ? c.border : 'rgba(244,236,219,.1)'}`,
+                  cursor: 'pointer',
+                  background: isActive ? c.bg : 'transparent',
+                  color: isActive ? c.color : 'rgba(244,236,219,.45)',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.8rem',
+                  fontWeight: isActive ? 600 : 400,
+                  transition: 'all .2s',
+                  outline: 'none',
+                  letterSpacing: '.01em',
+                }}
+              >
+                {e.type}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Main grid */}
         <div
           style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: '1.5rem',
+            gap: '1.25rem',
             opacity: visible ? 1 : 0,
-            transform: visible ? 'translateY(0)' : 'translateY(8px)',
-            transition: 'opacity .2s ease, transform .2s ease',
+            transform: visible ? 'translateY(0)' : 'translateY(10px)',
+            transition: 'opacity .25s ease, transform .25s ease',
           }}
           className="grid-responsive-2"
         >
-          {/* Linker panel — bericht */}
+          {/* LEFT — telefoon-mockup */}
           <div
             style={{
-              background: 'rgba(244,236,219,.04)',
-              border: '1px solid rgba(244,236,219,.12)',
-              borderRadius: 18,
+              background: 'rgba(8,20,12,0.7)',
+              border: '1px solid rgba(244,236,219,.1)',
+              borderRadius: 22,
               overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
-            {/* Header bericht */}
+            {/* Phone status bar */}
             <div
               style={{
-                padding: '1rem 1.25rem',
-                borderBottom: '1px solid rgba(244,236,219,.08)',
+                padding: '.6rem 1.1rem .5rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                borderBottom: '1px solid rgba(244,236,219,.06)',
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.7rem',
+                  color: 'rgba(244,236,219,.35)',
+                  fontWeight: 600,
+                }}
+              >
+                14:23
+              </span>
+              <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
+                {/* Signal bars */}
+                <svg
+                  width="16"
+                  height="12"
+                  viewBox="0 0 16 12"
+                  fill="rgba(244,236,219,.3)"
+                  aria-hidden="true"
+                >
+                  <rect x="0" y="8" width="3" height="4" rx="1" />
+                  <rect x="4.5" y="5" width="3" height="7" rx="1" />
+                  <rect x="9" y="2" width="3" height="10" rx="1" opacity=".5" />
+                  <rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".25" />
+                </svg>
+                {/* Battery */}
+                <svg width="22" height="12" viewBox="0 0 22 12" fill="none" aria-hidden="true">
+                  <rect
+                    x="0.5"
+                    y="0.5"
+                    width="18"
+                    height="11"
+                    rx="2.5"
+                    stroke="rgba(244,236,219,.3)"
+                  />
+                  <rect x="2" y="2" width="11" height="8" rx="1.5" fill="rgba(244,236,219,.3)" />
+                  <path d="M20 4v4a2 2 0 0 0 0-4Z" fill="rgba(244,236,219,.3)" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Chat header */}
+            <div
+              style={{
+                padding: '.85rem 1.1rem',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 10,
+                borderBottom: '1px solid rgba(244,236,219,.07)',
+                background: 'rgba(244,236,219,.02)',
               }}
             >
               <div
                 style={{
-                  width: 36,
-                  height: 36,
+                  width: 40,
+                  height: 40,
                   borderRadius: '50%',
-                  background: 'rgba(244,236,219,.1)',
+                  background: `linear-gradient(135deg, ${cfg.color}40, ${cfg.color}20)`,
+                  border: `1.5px solid ${cfg.border}`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontFamily: 'var(--font-serif)',
                   fontWeight: 700,
-                  fontSize: '.9rem',
-                  color: '#F4ECDB',
+                  fontSize: '1rem',
+                  color: cfg.color,
                   flexShrink: 0,
                 }}
               >
                 {ex.from.charAt(0)}
               </div>
-              <div>
+              <div style={{ flex: 1, minWidth: 0 }}>
                 <div
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontWeight: 600,
                     fontSize: '.9rem',
                     color: '#F4ECDB',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   {ex.from}
@@ -262,24 +436,24 @@ export function DemoCarousel() {
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: '.72rem',
-                    color: 'rgba(244,236,219,.4)',
+                    color: 'rgba(244,236,219,.38)',
                   }}
                 >
                   {ex.fromLabel}
                 </div>
               </div>
+              {/* Categorie badge */}
               <span
                 style={{
-                  marginLeft: 'auto',
                   fontFamily: 'var(--font-sans)',
                   fontSize: '.65rem',
                   fontWeight: 700,
                   color: cfg.color,
-                  letterSpacing: '.06em',
+                  letterSpacing: '.05em',
                   textTransform: 'uppercase',
                   background: cfg.bg,
                   border: `1px solid ${cfg.border}`,
-                  padding: '.2rem .6rem',
+                  padding: '.25rem .65rem',
                   borderRadius: 9999,
                   flexShrink: 0,
                 }}
@@ -288,96 +462,240 @@ export function DemoCarousel() {
               </span>
             </div>
 
-            {/* Bericht bubble */}
-            <div style={{ padding: '1.25rem' }}>
+            {/* Berichtruimte */}
+            <div style={{ padding: '1.25rem 1.1rem', flex: 1 }}>
+              {/* Bericht bubble */}
               <div
                 style={{
+                  maxWidth: '85%',
                   background: 'rgba(244,236,219,.07)',
                   border: '1px solid rgba(244,236,219,.1)',
-                  borderRadius: '4px 14px 14px 14px',
-                  padding: '1rem 1.1rem',
+                  borderRadius: '4px 16px 16px 16px',
+                  padding: '.9rem 1rem',
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '.95rem',
-                  color: 'rgba(244,236,219,.88)',
-                  lineHeight: 1.65,
+                  fontSize: '.92rem',
+                  color: 'rgba(244,236,219,.9)',
+                  lineHeight: 1.6,
                 }}
               >
                 {ex.message}
               </div>
               <div
                 style={{
-                  marginTop: '.5rem',
+                  marginTop: '.45rem',
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '.72rem',
-                  color: 'rgba(244,236,219,.3)',
-                  textAlign: 'right',
+                  fontSize: '.68rem',
+                  color: 'rgba(244,236,219,.28)',
                 }}
               >
-                Vandaag 14:23
+                Vandaag 14:23 · Gelezen
+              </div>
+
+              {/* KloptHet scan-indicator */}
+              <div
+                style={{
+                  marginTop: '1.5rem',
+                  padding: '.75rem 1rem',
+                  background: scanning ? 'rgba(58,172,110,.06)' : cfg.bg,
+                  border: `1px solid ${scanning ? 'rgba(58,172,110,.2)' : cfg.border}`,
+                  borderRadius: 12,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  transition: 'all .5s ease',
+                }}
+              >
+                {/* KH logo mark */}
+                <div
+                  style={{
+                    width: 28,
+                    height: 28,
+                    borderRadius: 8,
+                    background: scanning ? 'rgba(58,172,110,.2)' : `${cfg.color}22`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={scanning ? '#3AAC6E' : cfg.color}
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                    {!scanning && <path d="m9 12 2 2 4-4" />}
+                  </svg>
+                </div>
+                <div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.75rem',
+                      fontWeight: 600,
+                      color: scanning ? '#3AAC6E' : cfg.color,
+                    }}
+                  >
+                    {scanning ? 'KloptHet analyseert...' : 'KloptHet heeft gescand'}
+                  </div>
+                  {!scanning && (
+                    <div
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.68rem',
+                        color: 'rgba(244,236,219,.4)',
+                        marginTop: 1,
+                      }}
+                    >
+                      {cfg.label}
+                    </div>
+                  )}
+                </div>
+                {scanning && (
+                  <div style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
+                    {[0, 1, 2].map((i) => (
+                      <div
+                        key={i}
+                        style={{
+                          width: 5,
+                          height: 5,
+                          borderRadius: '50%',
+                          background: '#3AAC6E',
+                          opacity: 0.6,
+                          animation: `pulse-dot 1.2s ease-in-out ${i * 0.2}s infinite`,
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Rechter panel — analyse */}
+          {/* RIGHT — analyse panel */}
           <div
             style={{
-              background: cfg.bg,
+              background: 'rgba(8,20,12,0.7)',
               border: `1px solid ${cfg.border}`,
-              borderRadius: 18,
-              padding: '1.5rem',
+              borderRadius: 22,
+              padding: '1.75rem',
               display: 'flex',
               flexDirection: 'column',
-              gap: '1rem',
+              gap: '1.25rem',
+              position: 'relative',
+              overflow: 'hidden',
             }}
           >
-            {/* Score */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div>
+            {/* Subtle top glow */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                top: -40,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '80%',
+                height: 80,
+                background: `radial-gradient(ellipse, ${cfg.color}18 0%, transparent 70%)`,
+                pointerEvents: 'none',
+                filter: 'blur(20px)',
+              }}
+            />
+
+            {/* Score header */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                position: 'relative',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div
                   style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.72rem',
-                    fontWeight: 700,
+                    width: 38,
+                    height: 38,
+                    borderRadius: 12,
+                    background: cfg.bg,
+                    border: `1.5px solid ${cfg.border}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     color: cfg.color,
-                    letterSpacing: '.1em',
-                    textTransform: 'uppercase',
-                    marginBottom: '.2rem',
+                    flexShrink: 0,
                   }}
                 >
-                  Onze analyse
+                  {cfg.icon}
                 </div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontWeight: 700,
-                    fontSize: '1.4rem',
-                    color: '#F4ECDB',
-                    letterSpacing: '-.02em',
-                  }}
-                >
-                  {cfg.label}
+                <div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.68rem',
+                      fontWeight: 700,
+                      color: 'rgba(244,236,219,.4)',
+                      letterSpacing: '.1em',
+                      textTransform: 'uppercase',
+                    }}
+                  >
+                    Onze analyse
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-serif)',
+                      fontWeight: 500,
+                      fontSize: '1.15rem',
+                      color: '#F4ECDB',
+                      letterSpacing: '-.02em',
+                      marginTop: 1,
+                    }}
+                  >
+                    {cfg.label}
+                  </div>
                 </div>
               </div>
-              <div style={{ textAlign: 'center', flexShrink: 0 }}>
+
+              {/* Score badge */}
+              <div
+                style={{
+                  textAlign: 'center',
+                  background: cfg.bg,
+                  border: `1.5px solid ${cfg.border}`,
+                  borderRadius: 14,
+                  padding: '.5rem .9rem',
+                  flexShrink: 0,
+                }}
+              >
                 <div
                   style={{
                     fontFamily: 'var(--font-serif)',
                     fontWeight: 700,
-                    fontSize: '2rem',
+                    fontSize: '1.8rem',
                     lineHeight: 1,
                     color: cfg.color,
                   }}
                 >
                   {ex.score}
-                  <span style={{ fontSize: '.9rem', color: 'rgba(244,236,219,.3)' }}>/10</span>
+                  <span
+                    style={{ fontSize: '.8rem', color: 'rgba(244,236,219,.25)', fontWeight: 400 }}
+                  >
+                    /10
+                  </span>
                 </div>
                 <div
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: '.62rem',
-                    color: 'rgba(244,236,219,.35)',
+                    color: 'rgba(244,236,219,.3)',
                     textTransform: 'uppercase',
                     letterSpacing: '.06em',
+                    marginTop: 2,
                   }}
                 >
                   risico
@@ -386,124 +704,161 @@ export function DemoCarousel() {
             </div>
 
             {/* Score balk */}
-            <div style={{ height: 4, borderRadius: 9999, background: 'rgba(244,236,219,.08)' }}>
+            <div>
+              <div
+                style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '.4rem' }}
+              >
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.65rem',
+                    color: 'rgba(244,236,219,.3)',
+                    letterSpacing: '.06em',
+                  }}
+                >
+                  LAAG
+                </span>
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.65rem',
+                    color: 'rgba(244,236,219,.3)',
+                    letterSpacing: '.06em',
+                  }}
+                >
+                  HOOG
+                </span>
+              </div>
               <div
                 style={{
-                  height: '100%',
+                  height: 6,
                   borderRadius: 9999,
-                  width: `${ex.score * 10}%`,
-                  background: cfg.color,
-                  transition: 'width .6s cubic-bezier(.16,1,.3,1)',
+                  background: 'rgba(244,236,219,.06)',
+                  overflow: 'hidden',
                 }}
-              />
+              >
+                <div
+                  style={{
+                    height: '100%',
+                    borderRadius: 9999,
+                    width: `${ex.score * 10}%`,
+                    background: `linear-gradient(90deg, ${cfg.color}99, ${cfg.color})`,
+                    transition: 'width .8s cubic-bezier(.16,1,.3,1)',
+                    boxShadow: `0 0 8px ${cfg.color}60`,
+                  }}
+                />
+              </div>
             </div>
 
-            {/* Samenvatting */}
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.88rem',
-                color: 'rgba(244,236,219,.78)',
-                lineHeight: 1.65,
-                margin: 0,
-                flex: 1,
-              }}
-            >
-              {ex.verdict}
-            </p>
+            {/* Divider */}
+            <div style={{ height: 1, background: 'rgba(244,236,219,.07)' }} />
+
+            {/* Verdict tekst */}
+            <div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.68rem',
+                  fontWeight: 700,
+                  color: 'rgba(244,236,219,.35)',
+                  letterSpacing: '.1em',
+                  textTransform: 'uppercase',
+                  marginBottom: '.6rem',
+                }}
+              >
+                Wat wij zien
+              </div>
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.9rem',
+                  color: 'rgba(244,236,219,.78)',
+                  lineHeight: 1.7,
+                  margin: 0,
+                }}
+              >
+                {ex.verdict}
+              </p>
+            </div>
 
             {/* Flags */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '.4rem' }}>
-              {ex.flags.map((f) => (
-                <div key={f.text} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                  <span
-                    style={{
-                      width: 4,
-                      height: 4,
-                      borderRadius: '50%',
-                      background: flagColor[f.level],
-                      flexShrink: 0,
-                      marginTop: 6,
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '.82rem',
-                      color: 'rgba(244,236,219,.72)',
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {f.text}
-                  </span>
-                </div>
-              ))}
+            <div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.68rem',
+                  fontWeight: 700,
+                  color: 'rgba(244,236,219,.35)',
+                  letterSpacing: '.1em',
+                  textTransform: 'uppercase',
+                  marginBottom: '.6rem',
+                }}
+              >
+                Alarmsignalen
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '.45rem' }}>
+                {ex.flags.map((f) => {
+                  const fc = flagConfig[f.level]
+                  return (
+                    <div
+                      key={f.text}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: 8,
+                        padding: '.5rem .75rem',
+                        background: fc.bg,
+                        borderRadius: 8,
+                        border: `1px solid ${fc.color}20`,
+                      }}
+                    >
+                      <span style={{ color: fc.color, flexShrink: 0, marginTop: 1 }}>
+                        {fc.icon}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '.83rem',
+                          color: 'rgba(244,236,219,.82)',
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {f.text}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Navigatie tabs */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '.5rem',
-            marginTop: '1.75rem',
-            flexWrap: 'wrap',
-          }}
-        >
-          {examples.map((e, i) => {
-            const c = categoryConfig[e.category]
-            return (
-              <button
-                key={e.id}
-                onClick={() => switchTo(i)}
-                style={
-                  {
-                    padding: '.45rem .9rem',
-                    borderRadius: 9999,
-                    border: 'none',
-                    cursor: 'pointer',
-                    background: active === i ? c.bg : 'rgba(244,236,219,.05)',
-                    borderColor: active === i ? c.border : 'rgba(244,236,219,.1)',
-                    color: active === i ? c.color : 'rgba(244,236,219,.5)',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.78rem',
-                    fontWeight: 600,
-                    transition: 'all .2s',
-                    outline: 'none',
-                  } as React.CSSProperties
-                }
-              >
-                {e.type}
-              </button>
-            )
-          })}
-        </div>
-
         {/* CTA */}
-        <div style={{ textAlign: 'center', marginTop: '1.75rem' }}>
+        <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
           <Link
             href={`/${locale}/registreren`}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: 8,
-              padding: '.85rem 1.75rem',
-              borderRadius: 12,
+              padding: '.9rem 2rem',
+              borderRadius: 14,
               background: '#3AAC6E',
               color: '#07190F',
               fontFamily: 'var(--font-sans)',
               fontSize: '.95rem',
               fontWeight: 700,
               textDecoration: 'none',
-              transition: 'transform .15s',
+              transition: 'transform .15s, box-shadow .15s',
+              boxShadow: '0 4px 20px rgba(58,172,110,.25)',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.boxShadow = '0 6px 28px rgba(58,172,110,.35)'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(58,172,110,.25)'
             }}
           >
             Controleer uw eigen bericht
@@ -514,13 +869,20 @@ export function DemoCarousel() {
               marginTop: '.75rem',
               fontFamily: 'var(--font-sans)',
               fontSize: '.78rem',
-              color: 'rgba(244,236,219,.35)',
+              color: 'rgba(244,236,219,.3)',
             }}
           >
             Gratis proberen · Geen account nodig voor de eerste controle
           </p>
         </div>
       </div>
+
+      <style>{`
+        @keyframes pulse-dot {
+          0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+          40% { transform: scale(1.1); opacity: 1; }
+        }
+      `}</style>
     </section>
   )
 }
