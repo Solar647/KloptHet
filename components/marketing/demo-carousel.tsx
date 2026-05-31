@@ -158,7 +158,7 @@ const flagConfig = {
   },
 }
 
-const INTERVAL_MS = 7000
+const INTERVAL_MS = 12000
 
 export function DemoCarousel() {
   const locale = useLocale()
