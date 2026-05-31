@@ -52,7 +52,6 @@ export function Hero() {
             gap: 'clamp(1rem, 2vw, 1.5rem)',
           }}
         >
-          {/* Pill */}
           <motion.div
             variants={{
               hidden: { opacity: 0, y: 8 },
@@ -92,7 +91,6 @@ export function Hero() {
             </div>
           </motion.div>
 
-          {/* Heading */}
           <motion.h1
             variants={{
               hidden: { opacity: 0, y: 20 },
@@ -101,61 +99,40 @@ export function Hero() {
             style={{
               fontFamily: 'var(--font-serif)',
               fontWeight: 700,
-              fontSize: 'clamp(3rem, 7vw, 7.5rem)',
+              fontSize: 'clamp(2.8rem, 6.5vw, 7rem)',
               lineHeight: 1.0,
               letterSpacing: '-.04em',
               color: '#fff',
               margin: 0,
-              textShadow: '0 2px 20px rgba(0,0,0,.8)',
+              textShadow: '0 2px 30px rgba(0,0,0,.9)',
             }}
           >
-            Twijfelt u over een bericht?
+            Twijfelt u over een bericht? <span style={{ color: '#fff' }}>Wij kijken mee.</span>
           </motion.h1>
 
           <motion.p
             variants={{
               hidden: { opacity: 0, y: 15 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.15 } },
-            }}
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 600,
-              fontSize: 'clamp(1.8rem, 4vw, 4rem)',
-              lineHeight: 1.1,
-              letterSpacing: '-.02em',
-              color: '#3AAC6E',
-              margin: 0,
-              textShadow: '0 2px 20px rgba(0,0,0,.8), 0 0 40px rgba(58,172,110,.3)',
-            }}
-          >
-            Wij kijken mee.
-          </motion.p>
-
-          {/* Subtitle */}
-          <motion.p
-            variants={{
-              hidden: { opacity: 0, y: 15 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.25 } },
+              show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.2 } },
             }}
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: 'clamp(1rem, 1.3vw, 1.15rem)',
+              fontSize: 'clamp(1rem, 1.2vw, 1.1rem)',
               lineHeight: 1.75,
               color: 'rgba(255,255,255,.75)',
               maxWidth: 460,
               margin: 0,
-              textShadow: '0 1px 12px rgba(0,0,0,.9)',
+              textShadow: '0 1px 15px rgba(0,0,0,.9)',
             }}
           >
             Upload een screenshot van een verdacht bericht. Binnen 5 seconden weet u of het te
             vertrouwen is — in gewone taal.
           </motion.p>
 
-          {/* CTA */}
           <motion.div
             variants={{
               hidden: { opacity: 0, y: 15 },
-              show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.35 } },
+              show: { opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3 } },
             }}
             style={{ marginTop: '.5rem' }}
           >
@@ -170,7 +147,7 @@ export function Hero() {
                   borderRadius: 9999,
                   fontFamily: 'var(--font-sans)',
                   fontWeight: 700,
-                  fontSize: '1.05rem',
+                  fontSize: '1rem',
                   textDecoration: 'none',
                   background: '#fff',
                   color: '#000',
