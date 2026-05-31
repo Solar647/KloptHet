@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { useLocale } from 'next-intl'
 import type { Verdict } from '@/lib/ai/provider'
 import { VerdictCard } from './verdict-card'
@@ -86,6 +86,43 @@ export function Scanner() {
     },
     [handleFile]
   )
+
+  const captureScreen = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getDisplayMedia({ video: true })
+      const video = document.createElement('video')
+      video.srcObject = stream
+      video.muted = true
+      await new Promise<void>((resolve) => {
+        video.onloadedmetadata = () => resolve()
+      })
+      await video.play()
+      const canvas = document.createElement('canvas')
+      canvas.width = video.videoWidth
+      canvas.height = video.videoHeight
+      canvas.getContext('2d')!.drawImage(video, 0, 0)
+      stream.getTracks().forEach((t) => t.stop())
+      canvas.toBlob((blob) => {
+        if (blob) handleFile(new File([blob], 'schermafbeelding.png', { type: 'image/png' }))
+      }, 'image/png')
+    } catch {
+      // gebruiker heeft geannuleerd of browser ondersteunt het niet
+    }
+  }, [handleFile])
+
+  // Plakken via Ctrl+V
+  useEffect(() => {
+    if (mode !== 'upload' || state === 'analyzing') return
+    const onPaste = (e: ClipboardEvent) => {
+      const item = Array.from(e.clipboardData?.items ?? []).find((i) => i.type.startsWith('image/'))
+      if (item) {
+        const file = item.getAsFile()
+        if (file) handleFile(file)
+      }
+    }
+    document.addEventListener('paste', onPaste)
+    return () => document.removeEventListener('paste', onPaste)
+  }, [mode, state, handleFile])
 
   const reset = () => {
     setState('idle')
@@ -283,16 +320,113 @@ export function Scanner() {
                   <br />
                   Op de computer: sleep uw screenshot hiernaartoe.
                 </p>
-                <UploadButton>Kies een foto of screenshot</UploadButton>
+                {/* Opties */}
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '.75rem',
+                    width: '100%',
+                    maxWidth: 420,
+                    margin: '0 auto',
+                  }}
+                >
+                  {/* Bestaand bestand kiezen */}
+                  <UploadButton>Kies een foto of screenshot</UploadButton>
+
+                  {/* Scherm delen */}
+                  {'mediaDevices' in navigator && 'getDisplayMedia' in navigator.mediaDevices && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        captureScreen()
+                      }}
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '1rem',
+                        padding: '1rem 1.25rem',
+                        borderRadius: 14,
+                        background: 'rgba(58,172,110,.08)',
+                        border: '1.5px solid rgba(58,172,110,.3)',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        transition: 'all .2s',
+                        fontFamily: 'var(--font-sans)',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(58,172,110,.14)'
+                        e.currentTarget.style.borderColor = 'rgba(58,172,110,.5)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(58,172,110,.08)'
+                        e.currentTarget.style.borderColor = 'rgba(58,172,110,.3)'
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 42,
+                          height: 42,
+                          borderRadius: 11,
+                          background: 'rgba(58,172,110,.18)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                          color: '#3AAC6E',
+                        }}
+                      >
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect x="2" y="3" width="20" height="14" rx="2" />
+                          <path d="M8 21h8M12 17v4" />
+                          <path d="m9 9 3-3 3 3M12 6v7" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: 700, fontSize: '.95rem', color: '#F4ECDB' }}>
+                          Maak een schermfoto
+                        </div>
+                        <div
+                          style={{ fontSize: '.8rem', color: 'rgba(244,236,219,.5)', marginTop: 2 }}
+                        >
+                          Kies het venster met het verdachte bericht — wij maken één foto
+                        </div>
+                      </div>
+                    </button>
+                  )}
+                </div>
+
                 <p
                   style={{
                     marginTop: '1rem',
                     fontSize: '.78rem',
-                    color: 'rgba(244,236,219,.35)',
+                    color: 'rgba(244,236,219,.3)',
                     fontFamily: 'var(--font-sans)',
                   }}
                 >
-                  PNG, JPG, HEIC · maximaal 10 MB · wordt direct verwijderd na analyse
+                  PNG, JPG, HEIC · max. 10 MB · direct verwijderd na analyse · of druk{' '}
+                  <kbd
+                    style={{
+                      fontFamily: 'ui-monospace, monospace',
+                      background: 'rgba(244,236,219,.1)',
+                      padding: '1px 5px',
+                      borderRadius: 4,
+                    }}
+                  >
+                    Ctrl+V
+                  </kbd>{' '}
+                  om te plakken
                 </p>
               </>
             )}
