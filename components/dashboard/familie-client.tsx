@@ -246,6 +246,7 @@ export function FamilieClient({ tier, userEmail, members: initialMembers, max }:
             member={member}
             onToggle={updatePermission}
             onRemove={removeMember}
+            locale={locale}
           />
         ))}
 
@@ -478,6 +479,7 @@ function MemberRow({
   member,
   onToggle,
   onRemove,
+  locale,
 }: {
   member: Member
   onToggle: (
@@ -486,8 +488,27 @@ function MemberRow({
     value: boolean
   ) => void
   onRemove: (id: string) => void
+  locale: string
 }) {
   const [expanded, setExpanded] = useState(false)
+  const [resending, setResending] = useState(false)
+  const [resendDone, setResendDone] = useState(false)
+
+  const handleResend = async (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setResending(true)
+    try {
+      await fetch('/api/family/resend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ memberId: member.id, locale }),
+      })
+      setResendDone(true)
+      setTimeout(() => setResendDone(false), 3000)
+    } finally {
+      setResending(false)
+    }
+  }
 
   return (
     <div style={{ borderTop: '1px solid rgba(244,236,219,.06)' }}>
@@ -540,6 +561,61 @@ function MemberRow({
               />
             ))}
           </div>
+        )}
+
+        {/* Opnieuw sturen — alleen bij pending */}
+        {member.status === 'pending' && (
+          <button
+            onClick={handleResend}
+            disabled={resending}
+            title={resendDone ? 'Verstuurd!' : 'Opnieuw versturen'}
+            style={{
+              background: resendDone ? 'rgba(58,172,110,.15)' : 'transparent',
+              border: 'none',
+              cursor: resending ? 'wait' : 'pointer',
+              color: resendDone ? '#3AAC6E' : 'rgba(244,236,219,.35)',
+              padding: '4px',
+              display: 'flex',
+              flexShrink: 0,
+              borderRadius: 6,
+              transition: 'color .2s',
+            }}
+            onMouseEnter={(e) => {
+              if (!resendDone) e.currentTarget.style.color = 'rgba(244,236,219,.7)'
+            }}
+            onMouseLeave={(e) => {
+              if (!resendDone) e.currentTarget.style.color = 'rgba(244,236,219,.35)'
+            }}
+          >
+            {resendDone ? (
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            ) : (
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+                <path d="M21 3v5h-5" />
+              </svg>
+            )}
+          </button>
         )}
 
         {/* Uitklap toggle */}
