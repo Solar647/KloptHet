@@ -1,4 +1,3 @@
-import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { createClient } from '@/lib/supabase/server'
 import { AcceptInviteClient } from './accept-client'
 
@@ -8,50 +7,47 @@ export default async function UitnodigingPage({
   params: Promise<{ locale: string; token: string }>
 }) {
   const { locale, token } = await params
+  const supabase = await createClient()
 
-  const service = createServiceClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-
-  // Haal invite op
-  const { data: member } = await service
+  // Token opzoeken via anon key (RLS policy staat dit toe)
+  const { data: member } = await supabase
     .from('family_members')
     .select('id, invited_email, status, family_id, joined_at')
     .eq('invite_token', token)
-    .single()
+    .maybeSingle()
 
   if (!member) {
     return (
       <InviteError message="Deze uitnodigingslink is niet geldig of verlopen." locale={locale} />
     )
   }
-
   if (member.status === 'active') {
     return (
       <InviteError message="Deze uitnodiging is al geaccepteerd." locale={locale} alreadyAccepted />
     )
   }
-
   if (member.status === 'removed') {
     return <InviteError message="Deze uitnodiging is ingetrokken." locale={locale} />
   }
 
-  // Haal eigenaar op
-  const { data: family } = await service
+  // Eigenaar ophalen
+  const { data: family } = await supabase
     .from('families')
-    .select('owner_id, name')
+    .select('owner_id')
     .eq('id', member.family_id)
-    .single()
+    .maybeSingle()
 
-  const { data: ownerProfile } = family
-    ? await service.from('profiles').select('email, full_name').eq('id', family.owner_id).single()
-    : { data: null }
+  let ownerName = 'Uw familielid'
+  if (family?.owner_id) {
+    const { data: ownerProfile } = await supabase
+      .from('profiles')
+      .select('email, full_name')
+      .eq('id', family.owner_id)
+      .maybeSingle()
+    ownerName = ownerProfile?.full_name || ownerProfile?.email || 'Uw familielid'
+  }
 
-  const ownerName = ownerProfile?.full_name || ownerProfile?.email || 'Uw familielid'
-
-  // Kijk of gebruiker al ingelogd is
-  const supabase = await createClient()
+  // Is de gebruiker al ingelogd?
   const {
     data: { user },
   } = await supabase.auth.getUser()
