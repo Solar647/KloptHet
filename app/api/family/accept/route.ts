@@ -12,10 +12,10 @@ export async function POST(req: Request) {
     const { token } = await req.json()
     if (!token) return NextResponse.json({ error: 'Token vereist' }, { status: 400 })
 
-    // Token opzoeken via anon key (RLS policy staat dit toe)
+    // Controleer eerst of token bestaat
     const { data: member } = await supabase
       .from('family_members')
-      .select('id, status, family_id')
+      .select('id, status')
       .eq('invite_token', token)
       .maybeSingle()
 
@@ -24,25 +24,22 @@ export async function POST(req: Request) {
     if (member.status === 'removed')
       return NextResponse.json({ error: 'Uitnodiging is ingetrokken' }, { status: 400 })
 
-    const { data: family } = await supabase
-      .from('families')
-      .select('owner_id')
-      .eq('id', member.family_id)
-      .maybeSingle()
-
-    if (family?.owner_id === user.id) {
-      return NextResponse.json({ error: 'U kunt uw eigen familie niet joinen' }, { status: 400 })
-    }
-
-    // Update via anon client — RLS policy "Leden updaten door eigenaar of lid" staat dit toe
-    const { error } = await supabase
-      .from('family_members')
-      .update({ user_id: user.id, status: 'active', joined_at: new Date().toISOString() })
-      .eq('id', member.id)
+    // Gebruik de security definer functie om RLS te omzeilen voor de update
+    const { data: accepted, error } = await supabase.rpc('accept_family_invite', {
+      p_token: token,
+      p_user_id: user.id,
+    })
 
     if (error) {
-      console.error('Accept update fout:', error)
+      console.error('Accept fout:', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    if (!accepted) {
+      return NextResponse.json(
+        { error: 'Uitnodiging kon niet worden geaccepteerd' },
+        { status: 400 }
+      )
     }
 
     return NextResponse.json({ success: true })

@@ -7,7 +7,7 @@ import {
   GridIcon,
   SearchIcon,
   HistoryIcon,
-  TrainingIcon,
+  FamilyNavIcon,
   SettingsNavIcon,
 } from '@/components/shared/icons'
 
@@ -15,7 +15,7 @@ const navItems = [
   { id: 'dashboard', label: 'Overzicht', Icon: GridIcon, path: '/dashboard' },
   { id: 'scan', label: 'Controleer', Icon: SearchIcon, path: '/scan' },
   { id: 'geschiedenis', label: 'Geschiedenis', Icon: HistoryIcon, path: '/geschiedenis' },
-  { id: 'training', label: 'Training', Icon: TrainingIcon, path: '/training' },
+  { id: 'familie', label: 'Familie', Icon: FamilyNavIcon, path: '/familie' },
   { id: 'instellingen', label: 'Instellingen', Icon: SettingsNavIcon, path: '/instellingen' },
 ]
 
