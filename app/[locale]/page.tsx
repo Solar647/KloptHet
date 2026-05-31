@@ -8,7 +8,7 @@ import { Pricing } from '@/components/marketing/pricing'
 import { FAQ } from '@/components/marketing/faq'
 import { Reveal } from '@/components/shared/reveal'
 
-const BASE_URL = 'https://klopt-het.vercel.app'
+const BASE_URL = 'https://www.klopthet.com'
 
 export async function generateMetadata({
   params,
@@ -54,7 +54,7 @@ const organizationSchema = {
     contactType: 'customer service',
     availableLanguage: ['Dutch', 'English'],
   },
-  sameAs: ['https://klopt-het.vercel.app'],
+  sameAs: ['https://www.klopthet.com'],
 }
 
 const websiteSchema = {

@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { sendEmail, familyInviteEmail } from '@/lib/utils/send-email'
 import { NextResponse } from 'next/server'
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://klopt-het.vercel.app'
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://www.klopthet.com'
 
 export async function POST(req: Request) {
   try {

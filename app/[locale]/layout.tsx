@@ -6,7 +6,7 @@ import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
 
-const BASE_URL = 'https://klopt-het.vercel.app'
+const BASE_URL = 'https://www.klopthet.com'
 
 const spaceGrotesk = Space_Grotesk({
   variable: '--font-display',
