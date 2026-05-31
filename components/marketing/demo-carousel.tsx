@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { ArrowRightIcon } from '@/components/shared/icons'
@@ -158,18 +158,22 @@ const flagConfig = {
   },
 }
 
+const INTERVAL_MS = 7000
+
 export function DemoCarousel() {
   const locale = useLocale()
   const [active, setActive] = useState(0)
   const [visible, setVisible] = useState(true)
   const [scanning, setScanning] = useState(false)
+  const [progressKey, setProgressKey] = useState(0)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  const switchTo = (idx: number) => {
-    if (idx === active) return
+  const doSwitch = (idx: number) => {
     setVisible(false)
     setScanning(true)
     setTimeout(() => {
       setActive(idx)
+      setProgressKey((k) => k + 1)
       setTimeout(() => {
         setScanning(false)
         setVisible(true)
@@ -177,19 +181,28 @@ export function DemoCarousel() {
     }, 200)
   }
 
+  const startInterval = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current)
+    intervalRef.current = setInterval(() => {
+      setActive((a) => {
+        doSwitch((a + 1) % examples.length)
+        return a
+      })
+    }, INTERVAL_MS)
+  }
+
+  const switchTo = (idx: number) => {
+    if (idx === active) return
+    doSwitch(idx)
+    startInterval()
+  }
+
   useEffect(() => {
-    const t = setInterval(() => {
-      setVisible(false)
-      setScanning(true)
-      setTimeout(() => {
-        setActive((a) => (a + 1) % examples.length)
-        setTimeout(() => {
-          setScanning(false)
-          setVisible(true)
-        }, 700)
-      }, 200)
-    }, 6000)
-    return () => clearInterval(t)
+    startInterval()
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const ex = examples[active]
@@ -313,6 +326,28 @@ export function DemoCarousel() {
               </button>
             )
           })}
+        </div>
+
+        {/* Voortgangsbalk */}
+        <div
+          style={{
+            height: 2,
+            borderRadius: 9999,
+            background: 'rgba(244,236,219,.07)',
+            marginBottom: '1.75rem',
+            overflow: 'hidden',
+          }}
+          aria-hidden="true"
+        >
+          <div
+            key={progressKey}
+            style={{
+              height: '100%',
+              borderRadius: 9999,
+              background: `linear-gradient(90deg, ${cfg.color}80, ${cfg.color})`,
+              animation: `progress-fill ${INTERVAL_MS}ms linear forwards`,
+            }}
+          />
         </div>
 
         {/* Main grid */}
@@ -881,6 +916,10 @@ export function DemoCarousel() {
         @keyframes pulse-dot {
           0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
           40% { transform: scale(1.1); opacity: 1; }
+        }
+        @keyframes progress-fill {
+          from { width: 0%; }
+          to { width: 100%; }
         }
       `}</style>
     </section>
