@@ -30,8 +30,8 @@ export async function POST(req: Request) {
       .eq('user_id', user.id)
       .single()
 
-    const max: Record<string, number> = { family: 5, premium: 5 }
-    const limit = max[sub?.tier ?? ''] ?? 0
+    const maxTotal: Record<string, number> = { family: 3, premium: 5 }
+    const limit = maxTotal[sub?.tier ?? ''] ?? 0
     if (limit === 0) {
       return NextResponse.json(
         { error: 'Upgrade naar Familie om leden uit te nodigen' },
@@ -72,8 +72,9 @@ export async function POST(req: Request) {
       .eq('family_id', familyId)
       .neq('status', 'removed')
 
-    if ((count ?? 0) >= limit) {
-      return NextResponse.json({ error: `Maximum van ${limit} leden bereikt` }, { status: 400 })
+    // +1 voor de eigenaar zelf
+    if ((count ?? 0) + 1 >= limit) {
+      return NextResponse.json({ error: `Maximum van ${limit} personen bereikt` }, { status: 400 })
     }
 
     // Controleer duplicaat

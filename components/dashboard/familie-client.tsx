@@ -137,7 +137,7 @@ export function FamilieClient({ tier, userEmail, members: initialMembers, max }:
             margin: 0,
           }}
         >
-          {activeMembers.length} van {max} plekken bezet
+          {activeMembers.length + 1} van {max} plekken bezet
         </p>
       </div>
 
@@ -272,7 +272,7 @@ export function FamilieClient({ tier, userEmail, members: initialMembers, max }:
       </div>
 
       {/* Uitnodigen */}
-      {canInvite && activeMembers.length < max && (
+      {canInvite && activeMembers.length + 1 < max && (
         <div
           style={{
             background: 'rgba(244,236,219,.04)',

@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { FamilieClient } from '@/components/dashboard/familie-client'
 
-const maxByTier: Record<string, number> = { free: 0, standard: 0, family: 5, premium: 5 }
+const maxByTier: Record<string, number> = { free: 0, standard: 0, family: 3, premium: 5 }
 
 export default async function FamiliePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
