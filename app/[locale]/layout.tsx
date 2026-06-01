@@ -23,6 +23,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
+  icons: {
+    icon: '/favicon.png',
+    apple: '/favicon.png',
+  },
   title: {
     default: 'KloptHet — Fraudechecker voor berichten en e-mails',
     template: '%s — KloptHet',
