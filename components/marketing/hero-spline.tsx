@@ -1,5 +1,7 @@
 'use client'
 
+import Spline from '@splinetool/react-spline/next'
+
 export function HeroSpline() {
   return (
     <div
@@ -11,30 +13,11 @@ export function HeroSpline() {
         overflow: 'hidden',
       }}
     >
-      <iframe
-        src="https://my.spline.design/retrofuturismbganimation-7xolqE33y4ARSsB9pRW7Ct3l/"
-        frameBorder="0"
+      <Spline
+        scene="https://prod.spline.design/CF4X-Ifi1K34A4O8/scene.splinecode"
         style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -60%)',
-          width: '200vw',
-          height: '200vh',
-          border: 'none',
-          pointerEvents: 'none',
-        }}
-        title="KloptHet hero achtergrond"
-      />
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '22%',
-          height: '40%',
-          background: '#000',
-          zIndex: 10,
+          width: '100%',
+          height: '100%',
           pointerEvents: 'none',
         }}
       />
