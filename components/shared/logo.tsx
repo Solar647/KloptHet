@@ -1,25 +1,33 @@
 export function Logo({ size = 36 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 44 44" fill="none" aria-hidden="true">
-      {/* Achtergrond cirkel */}
-      <circle cx="22" cy="22" r="21" fill="#1B4731" />
-
-      {/* K */}
+    <svg width={size} height={size} viewBox="0 0 44 46" fill="none" aria-hidden="true">
+      {/* Schild + chat-bubble vorm */}
       <path
-        d="M10 13 L10 31 M10 22 L18 13 M10 22 L18 31"
-        stroke="#F4ECDB"
-        strokeWidth="2.8"
+        d="M22 2C22 2 6 5.5 4 14V27C4 35 12 40.5 20 43L22 46L24 43C32 40.5 40 35 40 27V14C38 5.5 22 2 22 2Z"
+        fill="#0F2D1C"
+        stroke="#3AAC6E"
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      {/* Vergrootglas cirkel */}
+      <circle cx="20" cy="21" r="8.5" stroke="#F4ECDB" strokeWidth="2.2" />
+      {/* Vinkje in cirkel */}
+      <path
+        d="M15.5 21.5L18.5 24.5L24.5 17.5"
+        stroke="#3AAC6E"
+        strokeWidth="2.2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-
-      {/* H */}
-      <path
-        d="M22 13 L22 31 M34 13 L34 31 M22 22 L34 22"
+      {/* Vergrootglas handvat */}
+      <line
+        x1="26.5"
+        y1="27.5"
+        x2="31"
+        y2="32"
         stroke="#F4ECDB"
-        strokeWidth="2.8"
+        strokeWidth="2.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
       />
     </svg>
   )
