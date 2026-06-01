@@ -4,7 +4,7 @@ export function Logo({ size = 36 }: { size?: number }) {
       {/* Schild + chat-bubble vorm */}
       <path
         d="M22 2C22 2 6 5.5 4 14V27C4 35 12 40.5 20 43L22 46L24 43C32 40.5 40 35 40 27V14C38 5.5 22 2 22 2Z"
-        fill="#0F2D1C"
+        fill="#091428"
         stroke="#3AAC6E"
         strokeWidth="2"
         strokeLinejoin="round"

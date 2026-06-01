@@ -112,7 +112,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'linear-gradient(135deg, #1B4731 0%, #2A6541 100%)',
+          background: 'linear-gradient(135deg, #102040 0%, #1b3a6e 100%)',
           border: '1px solid rgba(58,172,110,.35)',
           borderRadius: 16,
           padding: '1.25rem 1.5rem',

@@ -166,7 +166,7 @@ export function Pricing() {
                   borderRadius: 9999,
                   border: 'none',
                   cursor: 'pointer',
-                  background: yearly === value ? '#1B4731' : 'transparent',
+                  background: yearly === value ? '#102040' : 'transparent',
                   color: yearly === value ? '#F4ECDB' : 'rgba(244,236,219,.7)',
                   fontFamily: 'var(--font-sans)',
                   fontSize: '.88rem',
@@ -223,7 +223,7 @@ export function Pricing() {
                 key={tier.name}
                 style={{
                   background: isHi
-                    ? 'linear-gradient(160deg, #0F2D1C 0%, #143A26 55%, #1F5235 100%)'
+                    ? 'linear-gradient(160deg, #091428 0%, #0D1E3A 55%, #152448 100%)'
                     : 'rgba(244,236,219,.05)',
                   border: isHi
                     ? '1px solid rgba(168,203,160,.35)'

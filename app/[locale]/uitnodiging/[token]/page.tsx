@@ -78,7 +78,7 @@ function InviteError({
     <div
       style={{
         minHeight: '100vh',
-        background: '#0A1C10',
+        background: '#08101E',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -88,7 +88,7 @@ function InviteError({
       <div
         style={{
           maxWidth: 440,
-          background: '#0F2D1C',
+          background: '#091428',
           border: '1px solid rgba(244,236,219,.1)',
           borderRadius: 20,
           padding: '2.5rem 2rem',

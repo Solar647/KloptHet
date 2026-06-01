@@ -6,11 +6,11 @@
    ============================================================ */
 @theme inline {
   /* Colors */
-  --color-bg: #0e2418;
-  --color-bg-2: #143a26;
-  --color-deeper: #07190f;
-  --color-green: #1b4731;
-  --color-green-2: #2a6541;
+  --color-bg: #091020;
+  --color-bg-2: #0d1e3a;
+  --color-deeper: #060c1a;
+  --color-green: #102040;
+  --color-green-2: #1b3a6e;
   --color-cream: #f4ecdb;
   --color-cream-2: #efe4cc;
   --color-warn: #e5532a;
@@ -73,10 +73,10 @@ body::before {
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 70% 50% at 80% 25%, rgba(58, 180, 120, 0.28) 0%, transparent 60%),
-    radial-gradient(ellipse 80% 60% at 15% 70%, rgba(28, 120, 75, 0.35) 0%, transparent 65%),
-    radial-gradient(ellipse 60% 50% at 60% 90%, rgba(40, 160, 100, 0.18) 0%, transparent 55%),
-    linear-gradient(180deg, #07190f 0%, #0e2418 40%, #102f1f 100%);
+    radial-gradient(ellipse 70% 50% at 80% 25%, rgba(30, 80, 180, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 15% 70%, rgba(20, 50, 130, 0.28) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 60% 90%, rgba(58, 172, 110, 0.12) 0%, transparent 55%),
+    linear-gradient(180deg, #060c1a 0%, #091020 40%, #0d1428 100%);
 }
 
 /* Paper grain texture */

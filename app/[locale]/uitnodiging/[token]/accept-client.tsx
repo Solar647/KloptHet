@@ -228,7 +228,7 @@ function Page({ children }: { children: React.ReactNode }) {
     <div
       style={{
         minHeight: '100vh',
-        background: '#0A1C10',
+        background: '#08101E',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -239,7 +239,7 @@ function Page({ children }: { children: React.ReactNode }) {
         style={{
           maxWidth: 440,
           width: '100%',
-          background: '#0F2D1C',
+          background: '#091428',
           border: '1px solid rgba(58,172,110,.2)',
           borderRadius: 22,
           padding: '2.5rem 2rem',

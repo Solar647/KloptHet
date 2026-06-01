@@ -215,7 +215,7 @@ export function DemoCarousel() {
         padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 3vw, 3rem)',
         position: 'relative',
         overflow: 'hidden',
-        background: '#0E2418',
+        background: '#091020',
       }}
     >
       {/* Ambient glow */}
