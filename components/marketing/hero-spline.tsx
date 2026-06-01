@@ -1,30 +1,6 @@
 'use client'
 
-import { useIsMobile } from '@/lib/utils/use-mobile'
-
 export function HeroSpline() {
-  const isMobile = useIsMobile(1024)
-
-  if (isMobile) {
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 0,
-          pointerEvents: 'none',
-          background: `
-            radial-gradient(ellipse 140% 70% at 75% 35%,
-              rgba(30,80,180,.55) 0%,
-              rgba(15,40,100,.35) 40%,
-              rgba(5,15,50,.15) 70%,
-              transparent 100%)
-          `,
-        }}
-      />
-    )
-  }
-
   return (
     <div
       style={{
@@ -33,11 +9,35 @@ export function HeroSpline() {
         zIndex: 0,
         pointerEvents: 'none',
         overflow: 'hidden',
-        transform: 'translateZ(0)',
-        isolation: 'isolate',
       }}
     >
+      {/* Mobiel: gradient achtergrond via CSS */}
+      <style>{`
+        .spline-mobile-bg {
+          display: none;
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(
+            ellipse 160% 80% at 70% 40%,
+            rgba(30,80,180,.65) 0%,
+            rgba(15,40,110,.45) 35%,
+            rgba(5,15,60,.2) 65%,
+            transparent 100%
+          );
+        }
+        .spline-desktop-iframe {
+          display: block;
+        }
+        @media (max-width: 1023px) {
+          .spline-mobile-bg { display: block; }
+          .spline-desktop-iframe { display: none; }
+        }
+      `}</style>
+
+      <div className="spline-mobile-bg" />
+
       <iframe
+        className="spline-desktop-iframe"
         src="https://my.spline.design/bganimation-NotapPXDYaifuZfA2eRMLFUX/"
         frameBorder="0"
         style={{
