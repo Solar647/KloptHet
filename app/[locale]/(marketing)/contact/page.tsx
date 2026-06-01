@@ -344,7 +344,8 @@ export default function ContactPage() {
                     <input
                       type="email"
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value.slice(0, 100))}
+                      maxLength={100}
                       placeholder="uw@email.nl"
                       required
                       style={inputStyle}
