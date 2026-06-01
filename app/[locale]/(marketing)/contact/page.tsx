@@ -327,7 +327,8 @@ export default function ContactPage() {
                     <input
                       type="text"
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={(e) => setName(e.target.value.slice(0, 20))}
+                      maxLength={20}
                       placeholder="Uw naam"
                       required
                       style={inputStyle}
