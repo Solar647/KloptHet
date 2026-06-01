@@ -95,7 +95,7 @@ export function Hero() {
                     fontSize: '.7rem',
                   }}
                 >
-                  Gratis
+                  Nieuw
                 </span>
                 <span
                   style={{
