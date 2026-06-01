@@ -49,7 +49,7 @@ export function Hero() {
           <div
             style={{
               textAlign: 'center',
-              padding: 'clamp(6rem, 18vh, 12rem) clamp(1.5rem, 3vw, 3rem) clamp(4rem, 10vh, 8rem)',
+              padding: 'clamp(4rem, 12vh, 8rem) clamp(1.5rem, 3vw, 3rem) clamp(3rem, 8vh, 6rem)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -108,8 +108,8 @@ export function Hero() {
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontWeight: 700,
-                fontSize: 'clamp(2.8rem, 6.5vw, 7rem)',
-                lineHeight: 1.0,
+                fontSize: 'clamp(2.4rem, 5vw, 5.5rem)',
+                lineHeight: 1.05,
                 letterSpacing: '-.04em',
                 color: '#fff',
                 margin: 0,
