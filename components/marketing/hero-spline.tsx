@@ -18,9 +18,9 @@ export function HeroSpline() {
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '100%',
-          height: '100%',
+          transform: 'translate(-55%, -50%)',
+          width: '105%',
+          height: '105%',
           border: 'none',
           pointerEvents: 'none',
         }}
