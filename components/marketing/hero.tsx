@@ -24,7 +24,6 @@ export function Hero() {
       style={{
         position: 'relative',
         minHeight: '100svh',
-        overflowX: 'hidden',
         background: '#000',
         display: 'flex',
         flexDirection: 'column',
