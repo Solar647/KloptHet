@@ -12,17 +12,18 @@ export function HeroSpline() {
       }}
     >
       <iframe
-        src="https://my.spline.design/bganimation-xu36L1W2yyk9ipJDwZMICzKj/"
+        src="https://my.spline.design/bganimation-NotapPXDYaifuZfA2eRMLFUX/"
         frameBorder="0"
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-52.5%, -50%)',
-          width: '105%',
-          height: '105%',
+          width: 'calc(100vh * 1716 / 775)',
+          height: '105vh',
           border: 'none',
           pointerEvents: 'none',
+          minWidth: '105%',
         }}
         title="KloptHet hero achtergrond"
       />
