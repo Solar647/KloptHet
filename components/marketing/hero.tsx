@@ -29,7 +29,7 @@ export function Hero() {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         isolation: 'isolate',
       }}
     >
@@ -50,7 +50,7 @@ export function Hero() {
           <div
             style={{
               textAlign: 'center',
-              padding: 'clamp(5rem, 10vh, 9rem) clamp(1.5rem, 3vw, 3rem) clamp(3rem, 6vh, 5rem)',
+              padding: 'clamp(6rem, 18vh, 12rem) clamp(1.5rem, 3vw, 3rem) clamp(4rem, 10vh, 8rem)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
