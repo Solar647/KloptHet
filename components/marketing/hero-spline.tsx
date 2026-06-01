@@ -12,20 +12,31 @@ export function HeroSpline() {
       }}
     >
       <iframe
-        src="https://my.spline.design/retrofuturismbganimation-QBCiovlRVzesqqTOfu829dti/"
+        src="https://my.spline.design/retrofuturismbganimation-7xolqE33y4ARSsB9pRW7Ct3l/"
         frameBorder="0"
         style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -60%)',
-          width: '250vw',
-          height: '250vh',
+          width: '200vw',
+          height: '200vh',
           border: 'none',
           pointerEvents: 'none',
-          transformOrigin: 'center center',
         }}
         title="KloptHet hero achtergrond"
+      />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '22%',
+          height: '40%',
+          background: '#000',
+          zIndex: 10,
+          pointerEvents: 'none',
+        }}
       />
     </div>
   )
