@@ -18,12 +18,12 @@ export function HeroSpline() {
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-62%, -50%)',
-          width: 'calc(100vh * 1716 / 775)',
-          height: '105vh',
+          transform: 'translate(-57%, -50%)',
+          width: 'calc(110vh * 1716 / 775)',
+          height: '110vh',
           border: 'none',
           pointerEvents: 'none',
-          minWidth: '105%',
+          minWidth: '110%',
         }}
         title="KloptHet hero achtergrond"
       />
