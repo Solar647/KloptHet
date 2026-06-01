@@ -1,5 +1,5 @@
 const BREVO_API_KEY = process.env.BREVO_API_KEY!
-const FROM_EMAIL = process.env.BREVO_FROM_EMAIL ?? 'noreply@klopthet.nl'
+const FROM_EMAIL = process.env.BREVO_FROM_EMAIL ?? 'noreply@klopthet.com'
 const FROM_NAME = process.env.BREVO_FROM_NAME ?? 'KloptHet'
 
 interface SendEmailOptions {
