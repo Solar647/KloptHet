@@ -11,6 +11,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'E-mail en bericht zijn verplicht' }, { status: 400 })
     }
 
+    console.log(
+      'BREVO_API_KEY aanwezig:',
+      !!BREVO_API_KEY,
+      'lengte:',
+      BREVO_API_KEY?.length,
+      'start:',
+      BREVO_API_KEY?.substring(0, 8)
+    )
+
     const res = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: {
