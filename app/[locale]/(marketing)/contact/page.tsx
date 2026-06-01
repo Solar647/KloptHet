@@ -17,10 +17,23 @@ export default function ContactPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    // TODO: Brevo koppelen
-    await new Promise((r) => setTimeout(r, 1000))
-    setLoading(false)
-    setSent(true)
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, subject, message }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ?? 'Er ging iets mis.')
+      } else {
+        setSent(true)
+      }
+    } catch {
+      setError('Geen verbinding. Probeer het later opnieuw.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -83,16 +96,10 @@ export default function ContactPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               {[
                 {
-                  label: 'E-mail hulp',
-                  value: 'hulp@klopthet.nl',
-                  desc: 'Voor vragen over de dienst',
-                  href: 'mailto:hulp@klopthet.nl',
-                },
-                {
-                  label: 'E-mail privacy',
-                  value: 'privacy@klopthet.nl',
-                  desc: 'Voor AVG-verzoeken en privacyvragen',
-                  href: 'mailto:privacy@klopthet.nl',
+                  label: 'E-mail',
+                  value: 'hulp@klopthet.com',
+                  desc: 'Voor alle vragen en verzoeken',
+                  href: 'mailto:hulp@klopthet.com',
                 },
                 {
                   label: 'Reactietijd',
@@ -435,7 +442,7 @@ export default function ContactPage() {
                     lineHeight: 1.5,
                   }}
                 >
-                  Wij reageren binnen één werkdag · hulp@klopthet.nl
+                  Wij reageren binnen één werkdag · hulp@klopthet.com
                 </p>
               </form>
             )}
