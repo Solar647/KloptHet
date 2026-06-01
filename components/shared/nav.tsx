@@ -119,12 +119,9 @@ export function Nav() {
           style={{
             listStyle: 'none',
             display: 'flex',
-            gap: '.25rem',
-            padding: '4px',
+            gap: '0',
+            padding: 0,
             margin: 0,
-            background: 'rgba(244,236,219,.06)',
-            border: '1px solid rgba(244,236,219,.14)',
-            borderRadius: 9999,
           }}
         >
           {links.map(({ label, href }) => (
@@ -133,21 +130,19 @@ export function Nav() {
                 href={href}
                 style={{
                   textDecoration: 'none',
-                  color: 'rgba(244,236,219,.80)',
+                  color: 'rgba(244,236,219,.65)',
                   fontSize: '.88rem',
                   fontWeight: 500,
-                  padding: '.45rem .95rem',
-                  borderRadius: 9999,
+                  padding: '.45rem 1.1rem',
                   display: 'inline-block',
-                  transition: 'background .15s, color .15s',
+                  transition: 'color .15s',
+                  letterSpacing: '.01em',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(244,236,219,.10)'
                   e.currentTarget.style.color = '#F4ECDB'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = 'rgba(244,236,219,.80)'
+                  e.currentTarget.style.color = 'rgba(244,236,219,.65)'
                 }}
               >
                 {label}
