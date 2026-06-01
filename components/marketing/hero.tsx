@@ -53,9 +53,20 @@ export function Hero() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              gap: 'clamp(1rem, 2vw, 1.5rem)',
+              gap: 'clamp(0.75rem, 1.5vw, 1.25rem)',
             }}
           >
+            <style>{`
+              .hero-heading {
+                font-size: clamp(2rem, 3.8vw, 4.5rem) !important;
+              }
+              @media (max-height: 850px) {
+                .hero-heading { font-size: clamp(1.8rem, 3.2vw, 3.5rem) !important; }
+              }
+              @media (max-height: 700px) {
+                .hero-heading { font-size: clamp(1.6rem, 2.8vw, 3rem) !important; }
+              }
+            `}</style>
             {/* Liquid glass pill */}
             <motion.div
               variants={{
@@ -101,6 +112,7 @@ export function Hero() {
 
             {/* Heading */}
             <motion.h1
+              className="hero-heading"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 show: { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.1 } },
