@@ -12,7 +12,7 @@ export function HeroSpline() {
       }}
     >
       <iframe
-        src="https://my.spline.design/retrofuturismbganimation-7xolqE33y4ARSsB9pRW7Ct3l/"
+        src="https://my.spline.design/retrofuturismbganimation-QBCiovlRVzesqqTOfu829dti/"
         frameBorder="0"
         style={{
           position: 'absolute',
@@ -26,19 +26,6 @@ export function HeroSpline() {
           transformOrigin: 'center center',
         }}
         title="KloptHet hero achtergrond"
-      />
-      {/* Klein blokje over de Sunsets tekst in de linker onderhoek */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          width: '22%',
-          height: '40%',
-          background: '#000',
-          zIndex: 10,
-          pointerEvents: 'none',
-        }}
       />
     </div>
   )
