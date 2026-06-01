@@ -95,7 +95,7 @@ export function Hero() {
                     fontSize: '.7rem',
                   }}
                 >
-                  Nieuw
+                  Gratis
                 </span>
                 <span
                   style={{
@@ -105,7 +105,7 @@ export function Hero() {
                     color: 'rgba(255,255,255,.55)',
                   }}
                 >
-                  Europese AI · Gemaakt in Nederland
+                  Controleer elk verdacht bericht in 5 seconden
                 </span>
               </div>
             </motion.div>
