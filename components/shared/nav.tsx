@@ -215,7 +215,7 @@ export function Nav() {
                   width: 40,
                   height: 40,
                   borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #102040 0%, #1b3a6e 100%)',
+                  background: 'linear-gradient(135deg, #1B4731 0%, #2A6541 100%)',
                   border: '2px solid rgba(58,172,110,.5)',
                   color: '#F4ECDB',
                   cursor: 'pointer',
