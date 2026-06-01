@@ -5,7 +5,6 @@ import { useIsMobile } from '@/lib/utils/use-mobile'
 export function HeroSpline() {
   const isMobile = useIsMobile(1024)
 
-  // Mobiel: lichtgewicht CSS gradient ipv zware Spline iframe
   if (isMobile) {
     return (
       <div
@@ -14,8 +13,13 @@ export function HeroSpline() {
           inset: 0,
           zIndex: 0,
           pointerEvents: 'none',
-          background:
-            'radial-gradient(ellipse 120% 80% at 70% 40%, rgba(30,60,120,.6) 0%, rgba(10,20,60,.3) 50%, transparent 80%)',
+          background: `
+            radial-gradient(ellipse 140% 70% at 75% 35%,
+              rgba(30,80,180,.55) 0%,
+              rgba(15,40,100,.35) 40%,
+              rgba(5,15,50,.15) 70%,
+              transparent 100%)
+          `,
         }}
       />
     )
@@ -29,6 +33,8 @@ export function HeroSpline() {
         zIndex: 0,
         pointerEvents: 'none',
         overflow: 'hidden',
+        transform: 'translateZ(0)',
+        isolation: 'isolate',
       }}
     >
       <iframe
@@ -38,7 +44,7 @@ export function HeroSpline() {
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-57%, -50%)',
+          transform: 'translate(-57%, -50%) translateZ(0)',
           width: 'calc(110vh * 1716 / 775)',
           height: '110vh',
           border: 'none',
