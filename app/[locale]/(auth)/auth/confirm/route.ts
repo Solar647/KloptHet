@@ -54,11 +54,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ loca
         return NextResponse.redirect(`${origin}/${locale}/auth/reset`)
       }
 
-      // Signup bevestigd — stuur naar succes-pagina (zonder automatische login op dit device)
       if (type === 'signup') {
-        // Uitloggen zodat de gebruiker bewust kan inloggen op het apparaat van keuze
-        await supabase.auth.signOut()
-        return NextResponse.redirect(`${origin}/${locale}/auth/bevestigd`)
+        return NextResponse.redirect(`${origin}/${locale}/dashboard`)
       }
 
       return NextResponse.redirect(`${origin}/${locale}/dashboard`)
