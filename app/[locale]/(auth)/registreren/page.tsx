@@ -18,6 +18,8 @@ export default function RegistrerenPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [resending, setResending] = useState(false)
+  const [resent, setResent] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -62,6 +64,15 @@ export default function RegistrerenPage() {
     return () => clearInterval(interval)
   }, [success, email, password, locale, router])
 
+  const handleResend = async () => {
+    setResending(true)
+    const supabase = createClient()
+    await supabase.auth.resend({ type: 'signup', email })
+    setResending(false)
+    setResent(true)
+    setTimeout(() => setResent(false), 4000)
+  }
+
   if (success) {
     return (
       <AuthCard
@@ -80,30 +91,28 @@ export default function RegistrerenPage() {
             fontFamily: 'var(--font-sans)',
           }}
         >
-          ✓ Klik op de link in uw e-mail om uw e-mailadres te bevestigen. De link werkt op elk
-          apparaat. Controleer ook uw spammap.
+          ✓ Klik op de link in uw e-mail om uw e-mailadres te bevestigen. Controleer ook uw spammap.
         </div>
-        <Link
-          href={`/${locale}/inloggen`}
+        <button
+          onClick={handleResend}
+          disabled={resending || resent}
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 8,
+            width: '100%',
             marginTop: '1rem',
             padding: '1rem',
-            background: 'rgba(58,172,110,.12)',
-            border: '1px solid rgba(58,172,110,.3)',
+            background: 'transparent',
+            border: '1px solid rgba(244,236,219,.2)',
             borderRadius: 12,
-            color: '#3AAC6E',
+            color: resent ? '#3AAC6E' : 'rgba(244,236,219,.6)',
             fontFamily: 'var(--font-sans)',
             fontSize: '.92rem',
-            fontWeight: 700,
-            textDecoration: 'none',
+            fontWeight: 600,
+            cursor: resending || resent ? 'default' : 'pointer',
+            transition: 'all .2s',
           }}
         >
-          E-mail bevestigd? Klik hier om in te loggen →
-        </Link>
+          {resent ? '✓ E-mail opnieuw verstuurd' : resending ? 'Bezig…' : 'E-mail opnieuw sturen'}
+        </button>
       </AuthCard>
     )
   }
