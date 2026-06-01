@@ -9,6 +9,7 @@ export default function ContactPage() {
   const [email, setEmail] = useState('')
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
+  const [honeypot, setHoneypot] = useState('')
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
@@ -21,7 +22,7 @@ export default function ContactPage() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, subject, message }),
+        body: JSON.stringify({ name, email, subject, message, website: honeypot }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -308,6 +309,18 @@ export default function ContactPage() {
                 >
                   Stuur ons een bericht
                 </h2>
+
+                {/* Honeypot — onzichtbaar voor mensen, bots vullen dit in */}
+                <div style={{ display: 'none' }} aria-hidden="true">
+                  <input
+                    type="text"
+                    name="website"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <Field label="Naam" required>

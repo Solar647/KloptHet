@@ -11,12 +11,43 @@ const transporter = nodemailer.createTransport({
   },
 })
 
+// Simpele in-memory rate limiter: max 3 per IP per uur
+const rateLimits = new Map<string, number[]>()
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const hour = 60 * 60 * 1000
+  const times = (rateLimits.get(ip) ?? []).filter((t) => now - t < hour)
+  if (times.length >= 3) return true
+  rateLimits.set(ip, [...times, now])
+  return false
+}
+
 export async function POST(req: Request) {
   try {
-    const { name, email, subject, message } = await req.json()
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown'
+
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: 'Te veel berichten. Probeer later opnieuw.' },
+        { status: 429 }
+      )
+    }
+
+    const { name, email, subject, message, website } = await req.json()
+
+    // Honeypot — bots vullen dit in, mensen niet
+    if (website) {
+      return NextResponse.json({ success: true }) // stil negeren
+    }
 
     if (!email || !message) {
       return NextResponse.json({ error: 'E-mail en bericht zijn verplicht' }, { status: 400 })
+    }
+
+    // Basis validatie
+    if (message.length < 10) {
+      return NextResponse.json({ error: 'Bericht is te kort' }, { status: 400 })
     }
 
     await transporter.sendMail({
