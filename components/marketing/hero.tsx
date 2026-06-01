@@ -50,7 +50,7 @@ export function Hero() {
           <div
             style={{
               textAlign: 'center',
-              padding: 'clamp(2rem, 5vw, 4rem) clamp(1.5rem, 3vw, 3rem)',
+              padding: 'clamp(5rem, 10vh, 9rem) clamp(1.5rem, 3vw, 3rem) clamp(3rem, 6vh, 5rem)',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
