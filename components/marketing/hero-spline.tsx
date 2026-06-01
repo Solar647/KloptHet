@@ -1,6 +1,26 @@
 'use client'
 
+import { useIsMobile } from '@/lib/utils/use-mobile'
+
 export function HeroSpline() {
+  const isMobile = useIsMobile(1024)
+
+  // Mobiel: lichtgewicht CSS gradient ipv zware Spline iframe
+  if (isMobile) {
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+          background:
+            'radial-gradient(ellipse 120% 80% at 70% 40%, rgba(30,60,120,.6) 0%, rgba(10,20,60,.3) 50%, transparent 80%)',
+        }}
+      />
+    )
+  }
+
   return (
     <div
       style={{
@@ -24,6 +44,8 @@ export function HeroSpline() {
           border: 'none',
           pointerEvents: 'none',
           minWidth: '110%',
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
         }}
         title="KloptHet hero achtergrond"
       />
