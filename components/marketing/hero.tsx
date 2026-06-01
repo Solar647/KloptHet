@@ -58,13 +58,13 @@ export function Hero() {
           >
             <style>{`
               .hero-heading {
-                font-size: clamp(2rem, 3.8vw, 4.5rem) !important;
+                font-size: clamp(2.4rem, 4.8vw, 5.8rem) !important;
               }
               @media (max-height: 850px) {
-                .hero-heading { font-size: clamp(1.8rem, 3.2vw, 3.5rem) !important; }
+                .hero-heading { font-size: clamp(2rem, 3.8vw, 4.5rem) !important; }
               }
               @media (max-height: 700px) {
-                .hero-heading { font-size: clamp(1.6rem, 2.8vw, 3rem) !important; }
+                .hero-heading { font-size: clamp(1.8rem, 3.2vw, 3.8rem) !important; }
               }
             `}</style>
             {/* Liquid glass pill */}
