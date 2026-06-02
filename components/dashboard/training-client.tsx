@@ -288,32 +288,26 @@ export function TrainingClient() {
         {/* Quiz */}
         {state === 'quiz' && (
           <div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: '1rem',
-              }}
-            >
-              <ProgressHeader
-                current={quizIndex}
-                total={mod.quiz.length}
-                label="Vraag"
-                color={mod.color}
-              />
-              <span
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.78rem',
-                  color: 'rgba(244,236,219,.35)',
-                  flexShrink: 0,
-                  marginLeft: '1rem',
-                }}
-              >
-                {correctCount}/{quizIndex} goed · min. {Math.ceil(mod.quiz.length * PASS_THRESHOLD)}
-                /{mod.quiz.length} nodig
-              </span>
+            <div style={{ marginBottom: '1.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1rem' }}>
+                <ProgressHeader
+                  current={quizIndex}
+                  total={mod.quiz.length}
+                  label="Vraag"
+                  color={mod.color}
+                />
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.72rem',
+                    color: 'rgba(244,236,219,.3)',
+                    flexShrink: 0,
+                    paddingBottom: 2,
+                  }}
+                >
+                  {correctCount}/{quizIndex} goed
+                </span>
+              </div>
             </div>
             <h2
               style={{
@@ -828,36 +822,41 @@ function ProgressHeader({
   label: string
   color: string
 }) {
+  const barWidth = total > 8 ? 18 : total > 5 ? 24 : 32
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '1.5rem',
-      }}
-    >
-      <span
+    <div style={{ flex: 1 }}>
+      <div
         style={{
-          fontFamily: 'var(--font-sans)',
-          fontSize: '.75rem',
-          color: 'rgba(244,236,219,.4)',
-          letterSpacing: '.08em',
-          textTransform: 'uppercase',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '.5rem',
         }}
       >
-        {label} {current + 1} van {total}
-      </span>
-      <div style={{ display: 'flex', gap: 4 }}>
+        <span
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.75rem',
+            color: 'rgba(244,236,219,.4)',
+            letterSpacing: '.08em',
+            textTransform: 'uppercase',
+          }}
+        >
+          {label} {current + 1} van {total}
+        </span>
+      </div>
+      <div style={{ display: 'flex', gap: 3 }}>
         {Array.from({ length: total }).map((_, i) => (
           <div
             key={i}
             style={{
-              width: 28,
+              width: barWidth,
               height: 4,
               borderRadius: 2,
               background: i <= current ? color : 'rgba(244,236,219,.1)',
               transition: 'background .3s',
+              flexShrink: 0,
             }}
           />
         ))}
