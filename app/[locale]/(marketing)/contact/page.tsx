@@ -363,15 +363,45 @@ export default function ContactPage() {
                   <select
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    style={{ ...inputStyle, cursor: 'pointer' }}
+                    style={{
+                      ...inputStyle,
+                      cursor: 'pointer',
+                      appearance: 'none',
+                      WebkitAppearance: 'none',
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(244,236,219,0.5)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E")`,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'right 14px center',
+                      paddingRight: '2.5rem',
+                      color: subject ? '#F4ECDB' : 'rgba(244,236,219,.4)',
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = 'rgba(58,172,110,.5)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = 'rgba(244,236,219,.14)'
+                    }}
                   >
-                    <option value="">Kies een onderwerp</option>
-                    <option value="vraag">Vraag over de dienst</option>
-                    <option value="technisch">Technisch probleem</option>
-                    <option value="abonnement">Vraag over abonnement</option>
-                    <option value="privacy">Privacyvraag (AVG)</option>
-                    <option value="fraude">Fraude melden</option>
-                    <option value="overig">Overig</option>
+                    <option value="" style={{ background: '#091020', color: '#F4ECDB' }}>
+                      Kies een onderwerp
+                    </option>
+                    <option value="vraag" style={{ background: '#091020', color: '#F4ECDB' }}>
+                      Vraag over de dienst
+                    </option>
+                    <option value="technisch" style={{ background: '#091020', color: '#F4ECDB' }}>
+                      Technisch probleem
+                    </option>
+                    <option value="abonnement" style={{ background: '#091020', color: '#F4ECDB' }}>
+                      Vraag over abonnement
+                    </option>
+                    <option value="privacy" style={{ background: '#091020', color: '#F4ECDB' }}>
+                      Privacyvraag (AVG)
+                    </option>
+                    <option value="fraude" style={{ background: '#091020', color: '#F4ECDB' }}>
+                      Fraude melden
+                    </option>
+                    <option value="overig" style={{ background: '#091020', color: '#F4ECDB' }}>
+                      Overig
+                    </option>
                   </select>
                 </Field>
 
