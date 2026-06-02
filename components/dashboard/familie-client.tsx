@@ -26,6 +26,7 @@ type Member = {
 type Props = {
   tier: string
   userEmail: string
+  userName?: string | null
   ownerAvatarUrl?: string | null
   members: Member[]
   max: number
@@ -37,6 +38,7 @@ const catLabel = { safe: 'Veilig', doubt: 'Let op', phishing: 'Gevaar' }
 export function FamilieClient({
   tier,
   userEmail,
+  userName,
   ownerAvatarUrl,
   members: initialMembers,
   max,
@@ -238,7 +240,7 @@ export function FamilieClient({
                 color: '#F4ECDB',
               }}
             >
-              U (eigenaar)
+              {userName ? `${userName.slice(0, 20)} (eigenaar)` : 'U (eigenaar)'}
             </div>
             <div
               style={{

@@ -106,7 +106,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
 
   const { data: ownerProfile } = await supabase
     .from('profiles')
-    .select('avatar_url')
+    .select('avatar_url, full_name')
     .eq('id', user.id)
     .single()
 
@@ -197,6 +197,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
     <FamilieClient
       tier={tier}
       userEmail={user.email ?? ''}
+      userName={ownerProfile?.full_name ?? user.user_metadata?.full_name ?? null}
       ownerAvatarUrl={ownerProfile?.avatar_url ?? null}
       members={members}
       max={max}
