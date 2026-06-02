@@ -86,31 +86,17 @@ export default async function ScanPage({ params }: { params: Promise<{ locale: s
             </svg>
           </div>
 
-          <h1
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 500,
-              fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
-              color: '#F4ECDB',
-              margin: '0 0 .6rem',
-              letterSpacing: '-.03em',
-              lineHeight: 1.1,
-            }}
-          >
-            Twijfelt u over een bericht?
-          </h1>
           <p
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '1rem',
-              color: 'rgba(244,236,219,.5)',
+              fontSize: '.95rem',
+              color: 'rgba(244,236,219,.45)',
               margin: '0 auto',
-              maxWidth: 420,
-              lineHeight: 1.65,
+              maxWidth: 380,
+              lineHeight: 1.6,
             }}
           >
-            Upload een screenshot of plak de tekst — binnen 5 seconden weet u of het te vertrouwen
-            is.
+            Upload een screenshot of plak de tekst — resultaat binnen 5 seconden.
           </p>
 
           {/* Stats pill */}
@@ -156,9 +142,60 @@ export default async function ScanPage({ params }: { params: Promise<{ locale: s
           className="grid-responsive"
         >
           {[
-            { icon: '🔍', text: 'Werkt met WhatsApp, sms, e-mail en websites' },
-            { icon: '🛡️', text: 'Uw bericht wordt nooit opgeslagen' },
-            { icon: '⚡', text: 'Resultaat binnen 5 seconden' },
+            {
+              icon: (
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(100,160,255,.7)"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.35-4.35" />
+                </svg>
+              ),
+              text: 'Werkt met WhatsApp, sms, e-mail en websites',
+            },
+            {
+              icon: (
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(100,160,255,.7)"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                  <path d="m9 12 2 2 4-4" />
+                </svg>
+              ),
+              text: 'Uw bericht wordt nooit opgeslagen',
+            },
+            {
+              icon: (
+                <svg
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="rgba(100,160,255,.7)"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              ),
+              text: 'Resultaat binnen 5 seconden',
+            },
           ].map((tip) => (
             <div
               key={tip.text}
@@ -169,10 +206,10 @@ export default async function ScanPage({ params }: { params: Promise<{ locale: s
                 background: 'rgba(244,236,219,.03)',
                 border: '1px solid rgba(244,236,219,.07)',
                 borderRadius: 10,
-                padding: '.7rem .9rem',
+                padding: '.75rem 1rem',
               }}
             >
-              <span style={{ fontSize: '.9rem', flexShrink: 0 }}>{tip.icon}</span>
+              <div style={{ flexShrink: 0, marginTop: 1 }}>{tip.icon}</div>
               <span
                 style={{
                   fontFamily: 'var(--font-sans)',
