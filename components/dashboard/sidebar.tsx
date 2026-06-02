@@ -142,6 +142,50 @@ export function Sidebar() {
           borderTop: '1px solid rgba(244,236,219,.06)',
         }}
       >
+        {/* Hulp / Contact */}
+        <Link
+          href={`/${locale}/contact`}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+            padding: '.7rem .85rem',
+            borderRadius: 10,
+            marginBottom: 4,
+            background: 'rgba(30,80,180,.08)',
+            border: '1px solid rgba(30,80,180,.18)',
+            color: 'rgba(100,160,255,.8)',
+            textDecoration: 'none',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.85rem',
+            fontWeight: 600,
+            transition: 'all .15s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(30,80,180,.14)'
+            e.currentTarget.style.color = 'rgba(130,180,255,.95)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(30,80,180,.08)'
+            e.currentTarget.style.color = 'rgba(100,160,255,.8)'
+          }}
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01" />
+          </svg>
+          Hulp nodig?
+        </Link>
+
         {isAdmin && (
           <Link
             href={`/${locale}/admin`}
