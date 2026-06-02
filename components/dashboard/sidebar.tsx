@@ -28,6 +28,20 @@ const navItems = [
   { id: 'instellingen', label: 'Instellingen', Icon: SettingsNavIcon, path: '/instellingen' },
 ]
 
+const tierLabel: Record<string, string> = {
+  free: 'Gratis',
+  standard: 'Standaard',
+  family: 'Familie',
+  premium: 'Premium',
+}
+
+const tierColor: Record<string, string> = {
+  free: 'rgba(244,236,219,.35)',
+  standard: '#3AAC6E',
+  family: '#5B8FE8',
+  premium: '#D97B2A',
+}
+
 const ADMIN_EMAIL = 'oscar1056gm@gmail.com'
 
 export function Sidebar() {
@@ -35,11 +49,24 @@ export function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const [isAdmin, setIsAdmin] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const [userName, setUserName] = useState('')
+  const [tier, setTier] = useState('free')
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data }) => {
-      setIsAdmin(data.user?.email === ADMIN_EMAIL)
+    supabase.auth.getUser().then(async ({ data }) => {
+      if (!data.user) return
+      setIsAdmin(data.user.email === ADMIN_EMAIL)
+      setUserEmail(data.user.email ?? '')
+      setUserName(data.user.user_metadata?.full_name ?? '')
+
+      const { data: sub } = await supabase
+        .from('subscriptions')
+        .select('tier')
+        .eq('user_id', data.user.id)
+        .single()
+      if (sub) setTier(sub.tier)
     })
   }, [])
 
@@ -48,6 +75,15 @@ export function Sidebar() {
     await supabase.auth.signOut()
     router.push(`/${locale}`)
   }
+
+  const initials = userName
+    ? userName
+        .split(' ')
+        .map((n: string) => n[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase()
+    : userEmail.charAt(0).toUpperCase()
 
   return (
     <aside
@@ -67,25 +103,20 @@ export function Sidebar() {
       {/* Logo */}
       <div
         style={{
-          padding: '1.5rem 1.25rem 1rem',
-          borderBottom: '1px solid rgba(244,236,219,.08)',
+          padding: '1.25rem 1.25rem .85rem',
+          borderBottom: '1px solid rgba(244,236,219,.07)',
         }}
       >
         <Link
           href={`/${locale}`}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            textDecoration: 'none',
-          }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}
         >
-          <Logo size={26} />
+          <Logo size={24} />
           <span
             style={{
               fontFamily: 'var(--font-serif)',
               fontWeight: 800,
-              fontSize: '1rem',
+              fontSize: '.95rem',
               color: '#F4ECDB',
             }}
           >
@@ -94,14 +125,109 @@ export function Sidebar() {
         </Link>
       </div>
 
+      {/* Gebruikersprofiel */}
+      <div style={{ padding: '1rem 1.25rem', borderBottom: '1px solid rgba(244,236,219,.07)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div
+            style={{
+              width: 34,
+              height: 34,
+              borderRadius: '50%',
+              background: 'rgba(30,80,180,.2)',
+              border: '1.5px solid rgba(30,80,180,.35)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 700,
+              fontSize: '.85rem',
+              color: 'rgba(100,160,255,.9)',
+              flexShrink: 0,
+            }}
+          >
+            {initials}
+          </div>
+          <div style={{ minWidth: 0 }}>
+            {userName && (
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.82rem',
+                  fontWeight: 600,
+                  color: '#F4ECDB',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {userName.slice(0, 18)}
+              </div>
+            )}
+            <div
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.7rem',
+                color: 'rgba(244,236,219,.35)',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {userEmail}
+            </div>
+          </div>
+        </div>
+
+        {/* Abonnement badge */}
+        <div style={{ marginTop: '.65rem' }}>
+          <Link
+            href={`/${locale}/abonnement`}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 5,
+              background: `${tierColor[tier]}14`,
+              border: `1px solid ${tierColor[tier]}30`,
+              borderRadius: 9999,
+              padding: '.2rem .65rem',
+              textDecoration: 'none',
+              transition: 'all .15s',
+            }}
+          >
+            <div
+              style={{
+                width: 5,
+                height: 5,
+                borderRadius: '50%',
+                background: tierColor[tier],
+                flexShrink: 0,
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.68rem',
+                fontWeight: 700,
+                color: tierColor[tier],
+                letterSpacing: '.04em',
+                textTransform: 'uppercase',
+              }}
+            >
+              {tierLabel[tier] ?? tier}
+            </span>
+          </Link>
+        </div>
+      </div>
+
       {/* Nav */}
       <nav
         style={{
           flex: 1,
-          padding: '1rem .75rem',
+          padding: '.75rem .75rem',
           display: 'flex',
           flexDirection: 'column',
           gap: 2,
+          overflowY: 'auto',
         }}
       >
         {navItems.map((item) => {
@@ -115,64 +241,64 @@ export function Sidebar() {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 10,
-                padding: '.7rem .85rem',
-                background: isActive ? 'rgba(244,236,219,.1)' : 'transparent',
-                border: `1px solid ${isActive ? 'rgba(244,236,219,.16)' : 'transparent'}`,
-                color: isActive ? '#F4ECDB' : 'rgba(244,236,219,.6)',
+                padding: '.65rem .85rem',
+                background: isActive ? 'rgba(244,236,219,.08)' : 'transparent',
+                border: `1px solid ${isActive ? 'rgba(244,236,219,.14)' : 'transparent'}`,
+                color: isActive ? '#F4ECDB' : 'rgba(244,236,219,.5)',
                 borderRadius: 10,
                 cursor: 'pointer',
-                fontSize: '.88rem',
-                fontWeight: isActive ? 600 : 500,
+                fontSize: '.85rem',
+                fontWeight: isActive ? 600 : 400,
                 fontFamily: 'var(--font-sans)',
                 textDecoration: 'none',
                 transition: 'all .15s',
               }}
             >
-              <item.Icon size={16} strokeWidth={1.8} />
+              <item.Icon size={15} strokeWidth={isActive ? 2 : 1.6} />
               {item.label}
             </Link>
           )
         })}
       </nav>
 
-      {/* Uitloggen + Admin */}
+      {/* Onderste sectie */}
       <div
         style={{
-          padding: '1rem .75rem 1.5rem',
+          padding: '.75rem .75rem 1.25rem',
           borderTop: '1px solid rgba(244,236,219,.06)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3,
         }}
       >
-        {/* Hulp / Contact */}
+        {/* Hulp */}
         <Link
           href={`/${locale}/contact`}
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 10,
-            padding: '.7rem .85rem',
+            gap: 9,
+            padding: '.6rem .85rem',
             borderRadius: 10,
-            marginBottom: 4,
-            background: 'rgba(30,80,180,.08)',
-            border: '1px solid rgba(30,80,180,.18)',
-            color: 'rgba(100,160,255,.8)',
+            background: 'rgba(30,80,180,.07)',
+            border: '1px solid rgba(30,80,180,.15)',
+            color: 'rgba(100,160,255,.75)',
             textDecoration: 'none',
             fontFamily: 'var(--font-sans)',
-            fontSize: '.85rem',
-            fontWeight: 600,
+            fontSize: '.82rem',
+            fontWeight: 500,
             transition: 'all .15s',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(30,80,180,.14)'
-            e.currentTarget.style.color = 'rgba(130,180,255,.95)'
+            e.currentTarget.style.background = 'rgba(30,80,180,.13)'
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(30,80,180,.08)'
-            e.currentTarget.style.color = 'rgba(100,160,255,.8)'
+            e.currentTarget.style.background = 'rgba(30,80,180,.07)'
           }}
         >
           <svg
-            width="15"
-            height="15"
+            width="14"
+            height="14"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -192,10 +318,9 @@ export function Sidebar() {
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 8,
+              gap: 9,
               padding: '.6rem .85rem',
-              borderRadius: 8,
-              marginBottom: 4,
+              borderRadius: 10,
               background: pathname.includes('/admin') ? 'rgba(229,83,42,.1)' : 'transparent',
               color: 'rgba(229,83,42,.7)',
               textDecoration: 'none',
@@ -205,36 +330,37 @@ export function Sidebar() {
               transition: 'all .15s',
             }}
           >
-            <span style={{ fontSize: '.7rem' }}>⚙</span>
+            <span style={{ fontSize: '.68rem' }}>⚙</span>
             Admin
           </Link>
         )}
+
         <button
           onClick={handleLogout}
           style={{
             width: '100%',
             display: 'flex',
             alignItems: 'center',
-            gap: 10,
-            padding: '.7rem .85rem',
+            gap: 9,
+            padding: '.6rem .85rem',
             background: 'transparent',
             border: 'none',
-            color: 'rgba(244,236,219,.4)',
+            color: 'rgba(244,236,219,.35)',
             borderRadius: 10,
             cursor: 'pointer',
-            fontSize: '.85rem',
+            fontSize: '.82rem',
             fontFamily: 'var(--font-sans)',
             transition: 'color .15s',
             textAlign: 'left',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.color = 'rgba(244,236,219,.7)'
+            e.currentTarget.style.color = 'rgba(244,236,219,.6)'
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.color = 'rgba(244,236,219,.4)'
+            e.currentTarget.style.color = 'rgba(244,236,219,.35)'
           }}
         >
-          <LogoutNavIcon size={15} strokeWidth={1.8} />
+          <LogoutNavIcon size={14} strokeWidth={1.7} />
           Uitloggen
         </button>
       </div>
