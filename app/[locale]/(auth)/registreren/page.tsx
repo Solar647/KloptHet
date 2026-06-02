@@ -29,16 +29,15 @@ export default function RegistrerenPage() {
     setError('')
     setLoading(true)
     const supabase = createClient()
-    const callbackUrl = inviteToken
-      ? `${window.location.origin}/${locale}/auth/callback?invite=${inviteToken}`
-      : `${window.location.origin}/${locale}/auth/callback`
-
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { full_name: name },
-        emailRedirectTo: callbackUrl,
+        data: {
+          full_name: name,
+          ...(inviteToken ? { invite_token: inviteToken } : {}),
+        },
+        emailRedirectTo: `${window.location.origin}/${locale}/auth/callback`,
       },
     })
     if (error) {

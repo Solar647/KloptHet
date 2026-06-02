@@ -55,6 +55,11 @@ export async function GET(request: Request, { params }: { params: Promise<{ loca
       }
 
       if (type === 'signup') {
+        // Als er een invite token in de metadata zit, stuur naar uitnodigingspagina
+        const inviteToken = data.user?.user_metadata?.invite_token
+        if (inviteToken) {
+          return NextResponse.redirect(`${origin}/${locale}/uitnodiging/${inviteToken}`)
+        }
         return NextResponse.redirect(`${origin}/${locale}/dashboard`)
       }
 

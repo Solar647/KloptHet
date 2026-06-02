@@ -42,6 +42,9 @@ export async function POST(req: Request) {
       )
     }
 
+    // Verwijder invite token uit user metadata
+    await supabase.auth.updateUser({ data: { invite_token: null } })
+
     return NextResponse.json({ success: true })
   } catch (err) {
     console.error('Accept route fout:', err)

@@ -6,10 +6,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ loca
   const { locale } = await params
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const inviteToken = searchParams.get('invite')
-  const next = inviteToken
-    ? `/${locale}/uitnodiging/${inviteToken}`
-    : (searchParams.get('next') ?? `/${locale}/dashboard`)
+  const next = searchParams.get('next') ?? `/${locale}/dashboard`
 
   if (code) {
     const cookieStore = await cookies()
