@@ -54,7 +54,7 @@ export function Sidebar() {
       style={{
         width: 240,
         flexShrink: 0,
-        background: 'linear-gradient(180deg, #0A1A0E 0%, #071509 100%)',
+        background: '#000',
         borderRight: '1px solid rgba(244,236,219,.1)',
         display: 'flex',
         flexDirection: 'column',
