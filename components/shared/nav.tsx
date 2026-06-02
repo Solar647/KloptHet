@@ -6,6 +6,7 @@ import { useTranslations, useLocale } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Logo } from './logo'
+import Image from 'next/image'
 import type { User } from '@supabase/supabase-js'
 
 export function Nav() {
@@ -15,6 +16,7 @@ export function Nav() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -26,7 +28,17 @@ export function Nav() {
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    supabase.auth.getUser().then(async ({ data }) => {
+      setUser(data.user)
+      if (data.user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('avatar_url')
+          .eq('id', data.user.id)
+          .single()
+        if (profile?.avatar_url) setAvatarUrl(profile.avatar_url)
+      }
+    })
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -215,7 +227,9 @@ export function Nav() {
                   width: 40,
                   height: 40,
                   borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #1B4731 0%, #2A6541 100%)',
+                  background: avatarUrl
+                    ? 'transparent'
+                    : 'linear-gradient(135deg, #1B4731 0%, #2A6541 100%)',
                   border: '2px solid rgba(58,172,110,.5)',
                   color: '#F4ECDB',
                   cursor: 'pointer',
@@ -226,6 +240,8 @@ export function Nav() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   transition: 'border-color .15s',
+                  overflow: 'hidden',
+                  padding: 0,
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = 'rgba(58,172,110,.9)'
@@ -234,7 +250,18 @@ export function Nav() {
                   e.currentTarget.style.borderColor = 'rgba(58,172,110,.5)'
                 }}
               >
-                {initials}
+                {avatarUrl ? (
+                  <Image
+                    src={avatarUrl}
+                    alt="Profielfoto"
+                    width={40}
+                    height={40}
+                    unoptimized
+                    style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                  />
+                ) : (
+                  initials
+                )}
               </button>
 
               {dropdownOpen && (
