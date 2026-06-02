@@ -25,6 +25,7 @@ type Member = {
 type Props = {
   tier: string
   userEmail: string
+  ownerAvatarUrl?: string | null
   members: Member[]
   max: number
 }
@@ -32,7 +33,13 @@ type Props = {
 const catColor = { safe: '#3AAC6E', doubt: '#D97B2A', phishing: '#E5532A' }
 const catLabel = { safe: 'Veilig', doubt: 'Let op', phishing: 'Gevaar' }
 
-export function FamilieClient({ tier, userEmail, members: initialMembers, max }: Props) {
+export function FamilieClient({
+  tier,
+  userEmail,
+  ownerAvatarUrl,
+  members: initialMembers,
+  max,
+}: Props) {
   const locale = useLocale()
   const [members, setMembers] = useState<Member[]>(initialMembers)
   const [inviteEmail, setInviteEmail] = useState('')
@@ -216,7 +223,11 @@ export function FamilieClient({ tier, userEmail, members: initialMembers, max }:
 
         {/* Eigenaar */}
         <div style={{ padding: '1rem 1.25rem', display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Avatar letter={userEmail.charAt(0).toUpperCase()} color="#3AAC6E" />
+          <Avatar
+            letter={userEmail.charAt(0).toUpperCase()}
+            color="#3AAC6E"
+            avatarUrl={ownerAvatarUrl}
+          />
           <div style={{ flex: 1 }}>
             <div
               style={{
@@ -818,6 +829,7 @@ function Avatar({
         <Image
           src={avatarUrl}
           alt="Profielfoto"
+          unoptimized
           width={36}
           height={36}
           style={{ objectFit: 'cover', width: '100%', height: '100%' }}

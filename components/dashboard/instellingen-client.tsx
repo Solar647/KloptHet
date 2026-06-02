@@ -142,6 +142,7 @@ export function InstellingenClient({
               <Image
                 src={avatarUrl}
                 alt="Profielfoto"
+                unoptimized
                 width={64}
                 height={64}
                 style={{ objectFit: 'cover', width: '100%', height: '100%' }}

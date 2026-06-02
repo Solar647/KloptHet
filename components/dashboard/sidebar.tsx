@@ -152,6 +152,7 @@ export function Sidebar() {
               <Image
                 src={avatarUrl}
                 alt="Profielfoto"
+                unoptimized
                 width={34}
                 height={34}
                 style={{ objectFit: 'cover', width: '100%', height: '100%' }}

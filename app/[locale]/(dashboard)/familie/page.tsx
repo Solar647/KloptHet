@@ -21,6 +21,12 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
   const tier = sub?.tier ?? 'free'
   const max = maxByTier[tier] ?? 0
 
+  const { data: ownerProfile } = await supabase
+    .from('profiles')
+    .select('avatar_url')
+    .eq('id', user.id)
+    .single()
+
   const { data: family } = await supabase
     .from('families')
     .select('id')
@@ -107,5 +113,13 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
     }
   }
 
-  return <FamilieClient tier={tier} userEmail={user.email ?? ''} members={members} max={max} />
+  return (
+    <FamilieClient
+      tier={tier}
+      userEmail={user.email ?? ''}
+      ownerAvatarUrl={ownerProfile?.avatar_url ?? null}
+      members={members}
+      max={max}
+    />
+  )
 }
