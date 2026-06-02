@@ -52,8 +52,8 @@ export function InstellingenClient({
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    if (file.size > 2 * 1024 * 1024) {
-      alert('Maximaal 2MB')
+    if (file.size > 3 * 1024 * 1024) {
+      alert('Maximaal 3MB')
       return
     }
 
@@ -155,7 +155,7 @@ export function InstellingenClient({
             <input
               ref={avatarInputRef}
               type="file"
-              accept="image/png,image/jpeg,image/webp"
+              accept="image/png,image/jpeg,image/webp,image/heic,image/heif"
               style={{ display: 'none' }}
               onChange={handleAvatarUpload}
             />
@@ -185,7 +185,7 @@ export function InstellingenClient({
                 margin: '.35rem 0 0',
               }}
             >
-              JPG, PNG of WebP · max. 2MB
+              JPG, PNG of WebP · max. 3MB
             </p>
           </div>
         </div>
