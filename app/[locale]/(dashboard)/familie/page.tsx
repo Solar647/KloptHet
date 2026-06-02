@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 import { FamilieClient } from '@/components/dashboard/familie-client'
 import { FamilielidView } from '@/components/dashboard/familielid-view'
 
+export const dynamic = 'force-dynamic'
+
 const maxByTier: Record<string, number> = { free: 0, standard: 0, family: 3, premium: 5 }
 
 export default async function FamiliePage({ params }: { params: Promise<{ locale: string }> }) {

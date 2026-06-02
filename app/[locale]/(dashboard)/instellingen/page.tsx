@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { InstellingenClient } from '@/components/dashboard/instellingen-client'
 
+export const dynamic = 'force-dynamic'
+
 export default async function InstellingenPage({
   params,
 }: {
