@@ -123,7 +123,7 @@ export function FamilieClient({
   }
 
   return (
-    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 720 }}>
+    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', margin: '0 auto', maxWidth: 860 }}>
       {/* Header */}
       <div style={{ marginBottom: '1.75rem' }}>
         <h1

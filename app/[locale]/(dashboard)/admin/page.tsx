@@ -118,7 +118,7 @@ export default async function AdminPage({
     : 0
 
   return (
-    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 1100 }}>
+    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', margin: '0 auto', maxWidth: 1100 }}>
       {/* Header */}
       <div
         style={{
