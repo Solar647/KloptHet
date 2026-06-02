@@ -31,7 +31,8 @@ begin
   update public.family_members
   set user_id = p_user_id,
       status = 'active',
-      joined_at = now()
+      joined_at = now(),
+      invite_token = null
   where id = v_member_id;
 
   return true;

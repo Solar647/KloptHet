@@ -24,6 +24,13 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
     .maybeSingle()
 
   if (memberRecord) {
+    // Haal eigen profiel op voor avatar
+    const { data: ownProfile } = await supabase
+      .from('profiles')
+      .select('avatar_url')
+      .eq('id', user.id)
+      .single()
+
     const { data: ownerFamily } = await supabase
       .from('families')
       .select('owner_id')
@@ -89,6 +96,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
         ownerName={ownerName}
         ownerEmail={ownerEmail}
         ownerAvatarUrl={ownerAvatarUrl}
+        ownAvatarUrl={ownProfile?.avatar_url ?? null}
         joinedAt={memberRecord.joined_at}
         ownerCanSeeScans={memberRecord.owner_can_see_scans}
         otherMembers={otherMembersList}

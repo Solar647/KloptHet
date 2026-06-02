@@ -19,6 +19,7 @@ type Props = {
   ownerName: string
   ownerEmail: string
   ownerAvatarUrl: string | null
+  ownAvatarUrl?: string | null
   joinedAt: string | null
   ownerCanSeeScans: boolean
   otherMembers?: OtherMember[]
@@ -29,6 +30,7 @@ export function FamilielidView({
   ownerName,
   ownerEmail,
   ownerAvatarUrl,
+  ownAvatarUrl,
   joinedAt,
   ownerCanSeeScans,
   otherMembers = [],
@@ -72,29 +74,56 @@ export function FamilielidView({
   return (
     <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 700, margin: '0 auto' }}>
       {/* Header */}
-      <div style={{ marginBottom: '2rem' }}>
-        <h1
+      <div
+        style={{
+          marginBottom: '2rem',
+          display: 'flex',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+          gap: '1rem',
+        }}
+      >
+        <div>
+          <h1
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontWeight: 500,
+              fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
+              color: '#F4ECDB',
+              margin: '0 0 .35rem',
+              letterSpacing: '-.02em',
+            }}
+          >
+            Familie
+          </h1>
+          <p
+            style={{
+              color: 'rgba(244,236,219,.5)',
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.9rem',
+              margin: 0,
+            }}
+          >
+            U bent lid van een familiegroep
+          </p>
+        </div>
+        <button
+          onClick={() => router.refresh()}
           style={{
-            fontFamily: 'var(--font-serif)',
-            fontWeight: 500,
-            fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
-            color: '#F4ECDB',
-            margin: '0 0 .35rem',
-            letterSpacing: '-.02em',
-          }}
-        >
-          Familie
-        </h1>
-        <p
-          style={{
-            color: 'rgba(244,236,219,.5)',
+            background: 'transparent',
+            border: '1px solid rgba(244,236,219,.15)',
+            borderRadius: 8,
+            padding: '.45rem .8rem',
             fontFamily: 'var(--font-sans)',
-            fontSize: '.9rem',
-            margin: 0,
+            fontSize: '.78rem',
+            color: 'rgba(244,236,219,.45)',
+            cursor: 'pointer',
+            flexShrink: 0,
+            marginTop: 4,
           }}
         >
-          U bent lid van een familiegroep
-        </p>
+          ↻ Vernieuwen
+        </button>
       </div>
 
       {/* Status banner */}
@@ -300,9 +329,21 @@ export function FamilielidView({
               fontSize: '.9rem',
               color: 'rgba(100,160,255,.8)',
               flexShrink: 0,
+              overflow: 'hidden',
             }}
           >
-            U
+            {ownAvatarUrl ? (
+              <Image
+                src={ownAvatarUrl}
+                alt="U"
+                width={40}
+                height={40}
+                unoptimized
+                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+              />
+            ) : (
+              'U'
+            )}
           </div>
           <div style={{ flex: 1 }}>
             <div
