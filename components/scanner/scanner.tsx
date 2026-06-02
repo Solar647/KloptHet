@@ -14,7 +14,7 @@ import {
 
 type State = 'idle' | 'analyzing' | 'done' | 'error'
 
-export function Scanner() {
+export function Scanner({ dashboard = false }: { dashboard?: boolean }) {
   const locale = useLocale()
   const [state, setState] = useState<State>('idle')
   const [verdict, setVerdict] = useState<Verdict | null>(null)
@@ -141,53 +141,83 @@ export function Scanner() {
     <section
       id="scanner"
       style={{
-        padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 3vw, 3rem)',
+        padding: dashboard ? '0' : 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 3vw, 3rem)',
         position: 'relative',
       }}
     >
       <div style={{ maxWidth: 860, margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <div
-            style={{
-              fontSize: '.72rem',
-              fontWeight: 700,
-              color: 'rgba(244,236,219,.6)',
-              letterSpacing: '.22em',
-              textTransform: 'uppercase',
-              marginBottom: '1rem',
-              fontFamily: 'ui-monospace, monospace',
-            }}
-          >
-            Controleer een bericht
+        {/* Header — alleen op marketing pagina */}
+        {!dashboard && (
+          <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+            <div
+              style={{
+                fontSize: '.72rem',
+                fontWeight: 700,
+                color: 'rgba(244,236,219,.6)',
+                letterSpacing: '.22em',
+                textTransform: 'uppercase',
+                marginBottom: '1rem',
+                fontFamily: 'ui-monospace, monospace',
+              }}
+            >
+              Controleer een bericht
+            </div>
+            <h2
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 500,
+                fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+                lineHeight: 1.05,
+                letterSpacing: '-.03em',
+                color: '#F4ECDB',
+                margin: '0 0 .75rem',
+              }}
+            >
+              Twijfelt u over een bericht?
+            </h2>
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '1.05rem',
+                color: 'rgba(244,236,219,.65)',
+                lineHeight: 1.65,
+                maxWidth: 520,
+                margin: '0 auto',
+              }}
+            >
+              Upload een screenshot van een bericht, e-mail of website — of plak de tekst. Wij
+              vertellen u in 5 seconden of het te vertrouwen is.
+            </p>
           </div>
-          <h2
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 500,
-              fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-              lineHeight: 1.05,
-              letterSpacing: '-.03em',
-              color: '#F4ECDB',
-              margin: '0 0 .75rem',
-            }}
-          >
-            Twijfelt u over een bericht?
-          </h2>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '1.05rem',
-              color: 'rgba(244,236,219,.65)',
-              lineHeight: 1.65,
-              maxWidth: 520,
-              margin: '0 auto',
-            }}
-          >
-            Upload een screenshot van een bericht, e-mail of website — of plak de tekst. Wij
-            vertellen u in 5 seconden of het te vertrouwen is.
-          </p>
-        </div>
+        )}
+
+        {/* Dashboard header */}
+        {dashboard && (
+          <div style={{ marginBottom: '1.5rem' }}>
+            <h1
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 500,
+                fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
+                color: '#F4ECDB',
+                margin: '0 0 .35rem',
+                letterSpacing: '-.02em',
+              }}
+            >
+              Bericht controleren
+            </h1>
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.9rem',
+                color: 'rgba(244,236,219,.5)',
+                margin: 0,
+              }}
+            >
+              Upload een screenshot of plak de tekst — resultaat binnen 5 seconden.
+            </p>
+          </div>
+        )}
 
         {/* Mode toggle */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.75rem' }}>
@@ -288,12 +318,13 @@ export function Scanner() {
             onDragLeave={() => setDragOver(false)}
             onClick={() => fileInputRef.current?.click()}
             style={{
-              border: `2px dashed ${dragOver ? 'rgba(58,172,110,.7)' : 'rgba(244,236,219,.25)'}`,
+              border: `2px dashed ${dragOver ? 'rgba(58,172,110,.7)' : 'rgba(244,236,219,.2)'}`,
               borderRadius: 18,
-              padding: 'clamp(2.5rem, 6vw, 4rem) 2rem',
+              padding: dashboard ? 'clamp(3rem, 8vh, 6rem) 2rem' : 'clamp(2.5rem, 6vw, 4rem) 2rem',
+              minHeight: dashboard ? 320 : undefined,
               textAlign: 'center',
               cursor: state === 'analyzing' ? 'wait' : 'pointer',
-              background: dragOver ? 'rgba(58,172,110,.06)' : 'rgba(244,236,219,.03)',
+              background: dragOver ? 'rgba(58,172,110,.05)' : 'rgba(244,236,219,.02)',
               transition: 'all .2s',
               position: 'relative',
               overflow: 'hidden',
