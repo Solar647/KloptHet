@@ -59,17 +59,17 @@ export function InstellingenClient({
 
     setUploadingAvatar(true)
     const supabase = createClient()
-    const ext = file.name.split('.').pop()
-    const path = `${userId}/avatar.${ext}`
+    const ext = file.name.split('.').pop() ?? 'jpg'
+    // Uniek bestandsnaam per upload — voorkomt CDN caching van oude foto
+    const path = `${userId}/avatar_${Date.now()}.${ext}`
 
-    const { error } = await supabase.storage.from('avatars').upload(path, file, { upsert: true })
+    const { error } = await supabase.storage.from('avatars').upload(path, file, { upsert: false })
     if (!error) {
       const {
         data: { publicUrl },
       } = supabase.storage.from('avatars').getPublicUrl(path)
-      const urlWithCache = `${publicUrl}?t=${Date.now()}`
-      await supabase.from('profiles').update({ avatar_url: urlWithCache }).eq('id', userId)
-      setAvatarUrl(urlWithCache)
+      await supabase.from('profiles').update({ avatar_url: publicUrl }).eq('id', userId)
+      setAvatarUrl(publicUrl)
       router.refresh()
     }
     setUploadingAvatar(false)
