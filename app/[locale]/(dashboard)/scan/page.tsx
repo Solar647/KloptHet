@@ -86,19 +86,6 @@ export default async function ScanPage({ params }: { params: Promise<{ locale: s
             </svg>
           </div>
 
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.95rem',
-              color: 'rgba(244,236,219,.45)',
-              margin: '0 auto',
-              maxWidth: 380,
-              lineHeight: 1.6,
-            }}
-          >
-            Upload een screenshot of plak de tekst — resultaat binnen 5 seconden.
-          </p>
-
           {/* Stats pill */}
           {(totalScans ?? 0) > 0 && (
             <div
