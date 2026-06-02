@@ -76,7 +76,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
   }
 
   return (
-    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', margin: '0 auto', maxWidth: 900 }}>
+    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', margin: '0 auto', maxWidth: 1100 }}>
       {/* Header */}
       <div style={{ marginBottom: '2rem' }}>
         <h1

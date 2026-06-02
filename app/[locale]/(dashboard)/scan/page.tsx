@@ -2,7 +2,7 @@ import { Scanner } from '@/components/scanner/scanner'
 
 export default function ScanPage() {
   return (
-    <div style={{ maxWidth: 900 }}>
+    <div style={{ maxWidth: 1100 }}>
       <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem) clamp(1.5rem, 3vw, 2.5rem) 0' }}>
         <h1
           style={{

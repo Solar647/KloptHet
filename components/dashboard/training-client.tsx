@@ -64,7 +64,7 @@ export function TrainingClient() {
     const ModIcon = moduleIcons[mod.icon]
 
     return (
-      <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', margin: '0 auto', maxWidth: 860 }}>
+      <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', margin: '0 auto', maxWidth: 1000 }}>
         <button
           onClick={back}
           style={{
@@ -457,7 +457,7 @@ export function TrainingClient() {
   }
 
   return (
-    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', margin: '0 auto', maxWidth: 900 }}>
+    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', margin: '0 auto', maxWidth: 1100 }}>
       <div style={{ marginBottom: '2rem' }}>
         <h1
           style={{

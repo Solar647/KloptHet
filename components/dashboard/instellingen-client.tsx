@@ -102,7 +102,7 @@ export function InstellingenClient({
   }
 
   return (
-    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', margin: '0 auto', maxWidth: 860 }}>
+    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', margin: '0 auto', maxWidth: 1000 }}>
       <h1
         style={{
           fontFamily: 'var(--font-serif)',
