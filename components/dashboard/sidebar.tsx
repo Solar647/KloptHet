@@ -54,6 +54,7 @@ export function Sidebar() {
   const [userName, setUserName] = useState('')
   const [tier, setTier] = useState('free')
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+  const [badges, setBadges] = useState<Record<string, number>>({})
 
   useEffect(() => {
     const supabase = createClient()
@@ -63,14 +64,68 @@ export function Sidebar() {
       setUserEmail(data.user.email ?? '')
       setUserName(data.user.user_metadata?.full_name ?? '')
 
-      const [{ data: sub }, { data: profile }] = await Promise.all([
-        supabase.from('subscriptions').select('tier').eq('user_id', data.user.id).single(),
-        supabase.from('profiles').select('avatar_url').eq('id', data.user.id).single(),
-      ])
+      const [{ data: sub }, { data: profile }, { count: scanCount }, { count: familyCount }] =
+        await Promise.all([
+          supabase.from('subscriptions').select('tier').eq('user_id', data.user.id).single(),
+          supabase.from('profiles').select('avatar_url').eq('id', data.user.id).single(),
+          supabase
+            .from('scans')
+            .select('id', { count: 'exact', head: true })
+            .eq('user_id', data.user.id),
+          supabase
+            .from('family_members')
+            .select('id', { count: 'exact', head: true })
+            .eq('user_id', data.user.id)
+            .eq('status', 'active'),
+        ])
       if (sub) setTier(sub.tier)
       if (profile?.avatar_url) setAvatarUrl(profile.avatar_url)
+
+      // Badge berekening via localStorage
+      const stored = JSON.parse(localStorage.getItem('kh_seen') ?? '{}')
+      const newBadges: Record<string, number> = {}
+
+      const seenScans = stored.scans ?? scanCount ?? 0
+      const currentScans = scanCount ?? 0
+      if (currentScans > seenScans) newBadges.geschiedenis = Math.min(currentScans - seenScans, 9)
+
+      const seenFamily = stored.family ?? familyCount ?? 0
+      const currentFamily = familyCount ?? 0
+      if (currentFamily > seenFamily) newBadges.familie = Math.min(currentFamily - seenFamily, 9)
+
+      setBadges(newBadges)
     })
   }, [])
+
+  const clearBadge = (tabId: string, tabPath: string) => {
+    if (!badges[tabId]) return
+    const supabase = createClient()
+    supabase.auth.getUser().then(async ({ data }) => {
+      if (!data.user) return
+      const stored = JSON.parse(localStorage.getItem('kh_seen') ?? '{}')
+      if (tabId === 'geschiedenis') {
+        const { count } = await supabase
+          .from('scans')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', data.user.id)
+        stored.scans = count ?? 0
+      }
+      if (tabId === 'familie') {
+        const { count } = await supabase
+          .from('family_members')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', data.user.id)
+          .eq('status', 'active')
+        stored.family = count ?? 0
+      }
+      localStorage.setItem('kh_seen', JSON.stringify(stored))
+      setBadges((prev) => {
+        const n = { ...prev }
+        delete n[tabId]
+        return n
+      })
+    })
+  }
 
   const handleLogout = async () => {
     const supabase = createClient()
@@ -247,10 +302,12 @@ export function Sidebar() {
         {navItems.map((item) => {
           const href = `/${locale}${item.path}`
           const isActive = pathname.includes(item.path)
+          const badgeCount = badges[item.id] ?? 0
           return (
             <Link
               key={item.id}
               href={href}
+              onMouseEnter={() => clearBadge(item.id, item.path)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -266,10 +323,32 @@ export function Sidebar() {
                 fontFamily: 'var(--font-sans)',
                 textDecoration: 'none',
                 transition: 'all .15s',
+                position: 'relative',
               }}
             >
               <item.Icon size={15} strokeWidth={isActive ? 2 : 1.6} />
-              {item.label}
+              <span style={{ flex: 1 }}>{item.label}</span>
+              {badgeCount > 0 && (
+                <span
+                  style={{
+                    background: '#E5532A',
+                    color: '#fff',
+                    borderRadius: 9999,
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.6rem',
+                    fontWeight: 700,
+                    minWidth: 16,
+                    height: 16,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '0 4px',
+                    flexShrink: 0,
+                  }}
+                >
+                  {badgeCount === 9 ? '9+' : badgeCount}
+                </span>
+              )}
             </Link>
           )
         })}
