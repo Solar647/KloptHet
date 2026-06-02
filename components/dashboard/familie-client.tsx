@@ -584,9 +584,23 @@ function MemberRow({
               marginTop: 1,
             }}
           >
-            {member.status === 'active'
-              ? `Actief lid${member.joined_at ? ` · Lid sinds ${new Date(member.joined_at).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}` : ''}`
-              : 'Uitnodiging verstuurd'}
+            {member.status === 'active' ? (
+              `Actief lid${member.joined_at ? ` · Lid sinds ${new Date(member.joined_at).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}` : ''}`
+            ) : (
+              <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
+                    background: '#D97B2A',
+                    flexShrink: 0,
+                    display: 'inline-block',
+                  }}
+                />
+                Wacht op acceptatie
+              </span>
+            )}
           </div>
         </div>
 
@@ -694,6 +708,13 @@ function MemberRow({
         </button>
       </div>
 
+      {/* Uitnodigingslink direct zichtbaar voor pending leden */}
+      {member.status === 'pending' && member.invite_token && (
+        <div style={{ padding: '0 1.25rem .85rem' }}>
+          <PendingInviteLink token={member.invite_token} locale={locale} />
+        </div>
+      )}
+
       {/* Uitklapbaar: instellingen + recente activiteit */}
       {expanded && (
         <div style={{ padding: '0 1.25rem 1.25rem', borderTop: '1px solid rgba(244,236,219,.05)' }}>
@@ -794,11 +815,6 @@ function MemberRow({
           >
             Lid verwijderen
           </button>
-
-          {/* Uitnodigingslink voor pending leden */}
-          {member.status === 'pending' && member.invite_token && (
-            <PendingInviteLink token={member.invite_token} locale={locale} />
-          )}
         </div>
       )}
     </div>

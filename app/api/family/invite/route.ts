@@ -128,6 +128,7 @@ export async function POST(req: Request) {
           owner_can_see_scans: true,
           member_can_see_owner: false,
           joined_at: null,
+          invite_token: member.invite_token,
         },
       })
     }
@@ -142,6 +143,7 @@ export async function POST(req: Request) {
         owner_can_see_scans: true,
         member_can_see_owner: false,
         joined_at: null,
+        invite_token: member.invite_token,
       },
     })
   } catch (err) {
