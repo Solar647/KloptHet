@@ -50,327 +50,309 @@ export function FamilielidView({
     setConfirmLeave(false)
   }
 
-  const initials = ownerName.charAt(0).toUpperCase()
+  const allMembers = [
+    {
+      name: ownerName,
+      email: ownerEmail,
+      avatarUrl: ownerAvatarUrl,
+      role: 'Eigenaar',
+      roleColor: '#3AAC6E',
+      joinedAt: null as string | null,
+    },
+    ...otherMembers.map((m) => ({
+      name: m.name,
+      email: m.email,
+      avatarUrl: m.avatarUrl,
+      role: 'Lid',
+      roleColor: 'rgba(244,236,219,.4)',
+      joinedAt: m.joinedAt,
+    })),
+  ]
 
   return (
-    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 640, margin: '0 auto' }}>
-      <h1
-        style={{
-          fontFamily: 'var(--font-serif)',
-          fontWeight: 500,
-          fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
-          color: '#F4ECDB',
-          margin: '0 0 .35rem',
-          letterSpacing: '-.02em',
-        }}
-      >
-        Familie
-      </h1>
-      <p
-        style={{
-          color: 'rgba(244,236,219,.5)',
-          fontFamily: 'var(--font-sans)',
-          fontSize: '.9rem',
-          margin: '0 0 2rem',
-        }}
-      >
-        U bent lid van een familiegroep
-      </p>
+    <div style={{ padding: 'clamp(1.5rem, 3vw, 2.5rem)', maxWidth: 700, margin: '0 auto' }}>
+      {/* Header */}
+      <div style={{ marginBottom: '2rem' }}>
+        <h1
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontWeight: 500,
+            fontSize: 'clamp(1.6rem, 3vw, 2.2rem)',
+            color: '#F4ECDB',
+            margin: '0 0 .35rem',
+            letterSpacing: '-.02em',
+          }}
+        >
+          Familie
+        </h1>
+        <p
+          style={{
+            color: 'rgba(244,236,219,.5)',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.9rem',
+            margin: 0,
+          }}
+        >
+          U bent lid van een familiegroep
+        </p>
+      </div>
 
-      {/* Familie kaart */}
+      {/* Status banner */}
       <div
         style={{
-          background: 'rgba(58,172,110,.06)',
+          background: 'rgba(58,172,110,.07)',
           border: '1px solid rgba(58,172,110,.2)',
+          borderRadius: 14,
+          padding: '1rem 1.25rem',
+          marginBottom: '1.25rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+        }}
+      >
+        <div
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: '50%',
+            background: 'rgba(58,172,110,.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#3AAC6E"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        </div>
+        <div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 600,
+              fontSize: '.9rem',
+              color: '#F4ECDB',
+            }}
+          >
+            Gratis toegang via familieabonnement
+          </div>
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.78rem',
+              color: 'rgba(244,236,219,.45)',
+              marginTop: 2,
+            }}
+          >
+            Uw gebruik is inbegrepen bij het abonnement van {ownerName}
+          </div>
+        </div>
+      </div>
+
+      {/* Leden lijst */}
+      <div
+        style={{
+          background: 'rgba(244,236,219,.04)',
+          border: '1px solid rgba(244,236,219,.1)',
           borderRadius: 16,
-          padding: '1.5rem',
+          overflow: 'hidden',
           marginBottom: '1.25rem',
         }}
       >
         <div
           style={{
+            padding: '.85rem 1.25rem',
+            borderBottom: '1px solid rgba(244,236,219,.07)',
             fontFamily: 'var(--font-sans)',
             fontSize: '.72rem',
             fontWeight: 700,
-            color: '#3AAC6E',
+            color: 'rgba(244,236,219,.35)',
             letterSpacing: '.1em',
             textTransform: 'uppercase',
-            marginBottom: '.85rem',
           }}
         >
-          Uw familiegroep
+          Leden van uw familiegroep
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+
+        {allMembers.map((member, i) => (
+          <div
+            key={i}
+            style={{
+              padding: '1rem 1.25rem',
+              borderBottom: i < allMembers.length - 1 ? '1px solid rgba(244,236,219,.06)' : 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+            }}
+          >
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                background: 'rgba(244,236,219,.08)',
+                border: '1.5px solid rgba(244,236,219,.14)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'var(--font-sans)',
+                fontWeight: 700,
+                fontSize: '.9rem',
+                color: 'rgba(244,236,219,.6)',
+                flexShrink: 0,
+                overflow: 'hidden',
+              }}
+            >
+              {member.avatarUrl ? (
+                <Image
+                  src={member.avatarUrl}
+                  alt={member.name}
+                  width={40}
+                  height={40}
+                  unoptimized
+                  style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                />
+              ) : (
+                member.name.charAt(0).toUpperCase()
+              )}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontWeight: 600,
+                  fontSize: '.9rem',
+                  color: '#F4ECDB',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {member.name}
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.75rem',
+                  color: 'rgba(244,236,219,.35)',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {member.email}
+              </div>
+            </div>
+            <span
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.68rem',
+                fontWeight: 700,
+                color: member.roleColor,
+                background: `${member.roleColor}18`,
+                border: `1px solid ${member.roleColor}30`,
+                padding: '.2rem .6rem',
+                borderRadius: 9999,
+                textTransform: 'uppercase',
+                letterSpacing: '.05em',
+                flexShrink: 0,
+              }}
+            >
+              {member.role}
+            </span>
+          </div>
+        ))}
+
+        {/* Uzelf */}
+        <div
+          style={{
+            padding: '1rem 1.25rem',
+            borderTop: '1px solid rgba(244,236,219,.06)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 12,
+            background: 'rgba(30,80,180,.05)',
+          }}
+        >
           <div
             style={{
-              width: 44,
-              height: 44,
+              width: 40,
+              height: 40,
               borderRadius: '50%',
-              background: 'rgba(58,172,110,.15)',
-              border: '1.5px solid rgba(58,172,110,.3)',
+              background: 'rgba(30,80,180,.15)',
+              border: '1.5px solid rgba(30,80,180,.25)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontFamily: 'var(--font-sans)',
               fontWeight: 700,
-              fontSize: '1rem',
-              color: '#3AAC6E',
+              fontSize: '.9rem',
+              color: 'rgba(100,160,255,.8)',
               flexShrink: 0,
-              overflow: 'hidden',
             }}
           >
-            {ownerAvatarUrl ? (
-              <Image
-                src={ownerAvatarUrl}
-                alt={ownerName}
-                width={44}
-                height={44}
-                unoptimized
-                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-              />
-            ) : (
-              initials
-            )}
+            U
           </div>
-          <div>
+          <div style={{ flex: 1 }}>
             <div
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontWeight: 600,
-                fontSize: '.95rem',
+                fontSize: '.9rem',
                 color: '#F4ECDB',
               }}
             >
-              {ownerName}
+              U
             </div>
-            <div
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.75rem',
-                color: 'rgba(244,236,219,.4)',
-                marginTop: 2,
-              }}
-            >
-              {ownerEmail}
-            </div>
+            {joinedAt && (
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.75rem',
+                  color: 'rgba(244,236,219,.35)',
+                }}
+              >
+                Lid sinds{' '}
+                {new Date(joinedAt).toLocaleDateString('nl-NL', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })}
+              </div>
+            )}
           </div>
           <span
             style={{
-              marginLeft: 'auto',
               fontFamily: 'var(--font-sans)',
               fontSize: '.68rem',
               fontWeight: 700,
-              color: '#3AAC6E',
-              background: 'rgba(58,172,110,.1)',
-              border: '1px solid rgba(58,172,110,.2)',
+              color: 'rgba(100,160,255,.8)',
+              background: 'rgba(30,80,180,.12)',
+              border: '1px solid rgba(30,80,180,.2)',
               padding: '.2rem .6rem',
               borderRadius: 9999,
               textTransform: 'uppercase',
               letterSpacing: '.05em',
+              flexShrink: 0,
             }}
           >
-            Eigenaar
+            Lid
           </span>
         </div>
-
-        {joinedAt && (
-          <div
-            style={{
-              marginTop: '1rem',
-              paddingTop: '1rem',
-              borderTop: '1px solid rgba(244,236,219,.07)',
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.8rem',
-              color: 'rgba(244,236,219,.4)',
-            }}
-          >
-            Lid geworden op{' '}
-            {new Date(joinedAt).toLocaleDateString('nl-NL', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
-          </div>
-        )}
-
-        {/* Andere leden */}
-        {otherMembers.length > 0 && (
-          <div
-            style={{
-              marginTop: '1rem',
-              paddingTop: '1rem',
-              borderTop: '1px solid rgba(244,236,219,.07)',
-            }}
-          >
-            <div
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.68rem',
-                fontWeight: 700,
-                color: 'rgba(244,236,219,.3)',
-                letterSpacing: '.08em',
-                textTransform: 'uppercase',
-                marginBottom: '.65rem',
-              }}
-            >
-              Andere leden
-            </div>
-            {otherMembers.map((m) => (
-              <div
-                key={m.id}
-                style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '.5rem' }}
-              >
-                <div
-                  style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: '50%',
-                    background: 'rgba(244,236,219,.1)',
-                    border: '1px solid rgba(244,236,219,.15)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontFamily: 'var(--font-sans)',
-                    fontWeight: 700,
-                    fontSize: '.8rem',
-                    color: 'rgba(244,236,219,.6)',
-                    flexShrink: 0,
-                    overflow: 'hidden',
-                  }}
-                >
-                  {m.avatarUrl ? (
-                    <Image
-                      src={m.avatarUrl}
-                      alt={m.name}
-                      width={32}
-                      height={32}
-                      unoptimized
-                      style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                    />
-                  ) : (
-                    m.name.charAt(0).toUpperCase()
-                  )}
-                </div>
-                <div>
-                  <div
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '.85rem',
-                      color: 'rgba(244,236,219,.75)',
-                    }}
-                  >
-                    {m.name}
-                  </div>
-                  {m.joinedAt && (
-                    <div
-                      style={{
-                        fontFamily: 'var(--font-sans)',
-                        fontSize: '.7rem',
-                        color: 'rgba(244,236,219,.3)',
-                      }}
-                    >
-                      Lid sinds{' '}
-                      {new Date(m.joinedAt).toLocaleDateString('nl-NL', {
-                        day: 'numeric',
-                        month: 'short',
-                      })}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
-      {/* Info kaartjes */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '.75rem',
-          marginBottom: '1.25rem',
-        }}
-      >
-        <div
-          style={{
-            background: 'rgba(244,236,219,.04)',
-            border: '1px solid rgba(244,236,219,.08)',
-            borderRadius: 12,
-            padding: '1rem',
-          }}
-        >
-          <div
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.68rem',
-              fontWeight: 700,
-              color: 'rgba(244,236,219,.35)',
-              letterSpacing: '.08em',
-              textTransform: 'uppercase',
-              marginBottom: '.4rem',
-            }}
-          >
-            Toegang
-          </div>
-          <div style={{ fontFamily: 'var(--font-sans)', fontSize: '.88rem', color: '#F4ECDB' }}>
-            Gratis gebruik
-          </div>
-          <div
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.75rem',
-              color: 'rgba(244,236,219,.4)',
-              marginTop: 2,
-            }}
-          >
-            Inbegrepen bij hun abonnement
-          </div>
-        </div>
-        <div
-          style={{
-            background: 'rgba(244,236,219,.04)',
-            border: '1px solid rgba(244,236,219,.08)',
-            borderRadius: 12,
-            padding: '1rem',
-          }}
-        >
-          <div
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.68rem',
-              fontWeight: 700,
-              color: 'rgba(244,236,219,.35)',
-              letterSpacing: '.08em',
-              textTransform: 'uppercase',
-              marginBottom: '.4rem',
-            }}
-          >
-            Scans zichtbaar
-          </div>
-          <div
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.88rem',
-              color: ownerCanSeeScans ? '#D97B2A' : '#3AAC6E',
-            }}
-          >
-            {ownerCanSeeScans ? 'Voor eigenaar' : 'Alleen voor u'}
-          </div>
-          <div
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.75rem',
-              color: 'rgba(244,236,219,.4)',
-              marginTop: 2,
-            }}
-          >
-            {ownerCanSeeScans ? 'Eigenaar kan uw scans zien' : 'Uw scans zijn privé'}
-          </div>
-        </div>
-      </div>
-
-      {/* Eigen familie wil */}
+      {/* Privacy info */}
       <div
         style={{
           background: 'rgba(244,236,219,.03)',
@@ -384,8 +366,8 @@ export function FamilielidView({
         }}
       >
         <svg
-          width="15"
-          height="15"
+          width="14"
+          height="14"
           viewBox="0 0 24 24"
           fill="none"
           stroke="rgba(244,236,219,.35)"
@@ -397,26 +379,27 @@ export function FamilielidView({
           <circle cx="12" cy="12" r="10" />
           <path d="M12 16v-4M12 8h.01" />
         </svg>
-        <div>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.82rem',
-              color: 'rgba(244,236,219,.45)',
-              margin: 0,
-              lineHeight: 1.6,
-            }}
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.82rem',
+            color: 'rgba(244,236,219,.45)',
+            margin: 0,
+            lineHeight: 1.6,
+          }}
+        >
+          {ownerCanSeeScans
+            ? `${ownerName} kan uw scan-uitslagen zien. U kunt dit aanpassen via de eigenaar.`
+            : 'Uw scan-uitslagen zijn privé en niet zichtbaar voor de eigenaar.'}{' '}
+          Wilt u uw eigen groep beheren?{' '}
+          <Link
+            href={`/${locale}/abonnement`}
+            style={{ color: 'rgba(58,172,110,.8)', textDecoration: 'none' }}
           >
-            Wilt u uw eigen familiegroep beheren? Verlaat eerst deze groep en kies dan een{' '}
-            <Link
-              href={`/${locale}/abonnement`}
-              style={{ color: 'rgba(58,172,110,.8)', textDecoration: 'none' }}
-            >
-              Familie- of Premium-abonnement
-            </Link>
-            .
-          </p>
-        </div>
+            Bekijk abonnementen
+          </Link>
+          .
+        </p>
       </div>
 
       {/* Verlaten */}
