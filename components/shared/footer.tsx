@@ -40,8 +40,8 @@ export function Footer() {
   return (
     <footer
       style={{
-        background: '#07190F',
-        borderTop: '1px solid rgba(244,236,219,.1)',
+        background: '#000',
+        borderTop: '1px solid rgba(244,236,219,.12)',
         padding: '3.5rem clamp(1.5rem, 3vw, 3rem) 2rem',
         color: 'rgba(244,236,219,.6)',
         position: 'relative',
