@@ -84,6 +84,24 @@ export function HowItWorks() {
         overflow: 'hidden',
       }}
     >
+      {/* Grid patroon */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(rgba(244,236,219,.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(244,236,219,.04) 1px, transparent 1px)
+          `,
+          backgroundSize: '44px 44px',
+          maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
+          WebkitMaskImage:
+            'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* Ambient glow */}
       <div
         aria-hidden="true"
@@ -94,7 +112,7 @@ export function HowItWorks() {
           transform: 'translateX(-50%)',
           width: '60%',
           height: '40%',
-          background: 'radial-gradient(ellipse, rgba(30,80,180,.08) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse, rgba(30,80,180,.1) 0%, transparent 70%)',
           pointerEvents: 'none',
         }}
       />
