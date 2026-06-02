@@ -81,6 +81,18 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
         }
       }
 
+      // Haal avatar_url op voor actieve leden
+      const avatarMap: Record<string, string> = {}
+      if (activeUserIds.length > 0) {
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('id, avatar_url')
+          .in('id', activeUserIds)
+        profiles?.forEach((p) => {
+          if (p.avatar_url) avatarMap[p.id] = p.avatar_url
+        })
+      }
+
       members = rawMembers.map((m) => ({
         id: m.id,
         invited_email: m.invited_email,
@@ -89,6 +101,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
         member_can_see_owner: m.member_can_see_owner,
         joined_at: m.joined_at,
         user_id: m.user_id,
+        avatar_url: (m.user_id && avatarMap[m.user_id]) || null,
         recentScans: (m.user_id && scansByUser[m.user_id]) || [],
       }))
     }

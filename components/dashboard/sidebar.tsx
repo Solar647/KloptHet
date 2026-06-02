@@ -7,6 +7,7 @@ import { Logo } from '@/components/shared/logo'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import {
   GridIcon,
   SearchIcon,
@@ -52,6 +53,7 @@ export function Sidebar() {
   const [userEmail, setUserEmail] = useState('')
   const [userName, setUserName] = useState('')
   const [tier, setTier] = useState('free')
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
 
   useEffect(() => {
     const supabase = createClient()
@@ -61,12 +63,12 @@ export function Sidebar() {
       setUserEmail(data.user.email ?? '')
       setUserName(data.user.user_metadata?.full_name ?? '')
 
-      const { data: sub } = await supabase
-        .from('subscriptions')
-        .select('tier')
-        .eq('user_id', data.user.id)
-        .single()
+      const [{ data: sub }, { data: profile }] = await Promise.all([
+        supabase.from('subscriptions').select('tier').eq('user_id', data.user.id).single(),
+        supabase.from('profiles').select('avatar_url').eq('id', data.user.id).single(),
+      ])
       if (sub) setTier(sub.tier)
+      if (profile?.avatar_url) setAvatarUrl(profile.avatar_url)
     })
   }, [])
 
@@ -143,9 +145,20 @@ export function Sidebar() {
               fontSize: '.85rem',
               color: 'rgba(100,160,255,.9)',
               flexShrink: 0,
+              overflow: 'hidden',
             }}
           >
-            {initials}
+            {avatarUrl ? (
+              <Image
+                src={avatarUrl}
+                alt="Profielfoto"
+                width={34}
+                height={34}
+                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+              />
+            ) : (
+              initials
+            )}
           </div>
           <div style={{ minWidth: 0 }}>
             {userName && (

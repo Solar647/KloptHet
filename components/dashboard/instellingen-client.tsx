@@ -1,13 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useLocale } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
+import Image from 'next/image'
 
 type Props = {
   email: string
   fullName: string
+  avatarUrl: string | null
+  userId: string
   tier: string
   status: string
   periodEnd: string | null
@@ -26,7 +29,15 @@ const tierPrice: Record<string, string> = {
   premium: '€9,99/mnd',
 }
 
-export function InstellingenClient({ email, fullName, tier, status, periodEnd }: Props) {
+export function InstellingenClient({
+  email,
+  fullName,
+  avatarUrl: initialAvatarUrl,
+  userId,
+  tier,
+  status,
+  periodEnd,
+}: Props) {
   const locale = useLocale()
   const router = useRouter()
   const [name, setName] = useState(fullName)
@@ -34,6 +45,35 @@ export function InstellingenClient({ email, fullName, tier, status, periodEnd }:
   const [saved, setSaved] = useState(false)
   const [deleteConfirm, setDeleteConfirm] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(initialAvatarUrl)
+  const [uploadingAvatar, setUploadingAvatar] = useState(false)
+  const avatarInputRef = useRef<HTMLInputElement>(null)
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Maximaal 2MB')
+      return
+    }
+
+    setUploadingAvatar(true)
+    const supabase = createClient()
+    const ext = file.name.split('.').pop()
+    const path = `${userId}/avatar.${ext}`
+
+    const { error } = await supabase.storage.from('avatars').upload(path, file, { upsert: true })
+    if (!error) {
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from('avatars').getPublicUrl(path)
+      const urlWithCache = `${publicUrl}?t=${Date.now()}`
+      await supabase.from('profiles').update({ avatar_url: urlWithCache }).eq('id', userId)
+      setAvatarUrl(urlWithCache)
+      router.refresh()
+    }
+    setUploadingAvatar(false)
+  }
 
   const handleSaveName = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -78,6 +118,77 @@ export function InstellingenClient({ email, fullName, tier, status, periodEnd }:
 
       {/* Profiel */}
       <Section title="Profiel">
+        {/* Avatar */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+          <div
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: '50%',
+              background: 'rgba(30,80,180,.2)',
+              border: '2px solid rgba(30,80,180,.35)',
+              overflow: 'hidden',
+              flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontFamily: 'var(--font-sans)',
+              fontWeight: 700,
+              fontSize: '1.3rem',
+              color: 'rgba(100,160,255,.9)',
+            }}
+          >
+            {avatarUrl ? (
+              <Image
+                src={avatarUrl}
+                alt="Profielfoto"
+                width={64}
+                height={64}
+                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+              />
+            ) : (
+              (fullName || email).charAt(0).toUpperCase()
+            )}
+          </div>
+          <div>
+            <input
+              ref={avatarInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              style={{ display: 'none' }}
+              onChange={handleAvatarUpload}
+            />
+            <button
+              type="button"
+              onClick={() => avatarInputRef.current?.click()}
+              disabled={uploadingAvatar}
+              style={{
+                background: 'rgba(244,236,219,.08)',
+                border: '1px solid rgba(244,236,219,.18)',
+                borderRadius: 8,
+                padding: '.5rem 1rem',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.82rem',
+                color: '#F4ECDB',
+                cursor: uploadingAvatar ? 'wait' : 'pointer',
+                opacity: uploadingAvatar ? 0.6 : 1,
+              }}
+            >
+              {uploadingAvatar ? 'Uploaden…' : 'Foto wijzigen'}
+            </button>
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.72rem',
+                color: 'rgba(244,236,219,.35)',
+                margin: '.35rem 0 0',
+              }}
+            >
+              JPG, PNG of WebP · max. 2MB
+            </p>
+          </div>
+        </div>
+
         <form onSubmit={handleSaveName}>
           <Field label="E-mailadres">
             <input value={email} disabled style={inputStyle(true)} />

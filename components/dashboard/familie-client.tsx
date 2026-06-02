@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
+import Image from 'next/image'
 
 type Scan = {
   verdict_category: 'safe' | 'doubt' | 'phishing'
@@ -17,6 +18,7 @@ type Member = {
   owner_can_see_scans: boolean
   member_can_see_owner: boolean
   joined_at: string | null
+  avatar_url?: string | null
   recentScans?: Scan[]
 }
 
@@ -545,6 +547,7 @@ function MemberRow({
         <Avatar
           letter={member.invited_email.charAt(0).toUpperCase()}
           color={member.status === 'active' ? 'rgba(244,236,219,.7)' : 'rgba(244,236,219,.3)'}
+          avatarUrl={member.avatar_url}
         />
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
@@ -783,7 +786,15 @@ function MemberRow({
   )
 }
 
-function Avatar({ letter, color }: { letter: string; color: string }) {
+function Avatar({
+  letter,
+  color,
+  avatarUrl,
+}: {
+  letter: string
+  color: string
+  avatarUrl?: string | null
+}) {
   return (
     <div
       style={{
@@ -800,9 +811,20 @@ function Avatar({ letter, color }: { letter: string; color: string }) {
         fontSize: '.9rem',
         color,
         flexShrink: 0,
+        overflow: 'hidden',
       }}
     >
-      {letter}
+      {avatarUrl ? (
+        <Image
+          src={avatarUrl}
+          alt="Profielfoto"
+          width={36}
+          height={36}
+          style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+        />
+      ) : (
+        letter
+      )}
     </div>
   )
 }

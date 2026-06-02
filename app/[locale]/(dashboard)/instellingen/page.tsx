@@ -16,7 +16,7 @@ export default async function InstellingenPage({
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('full_name, locale')
+    .select('full_name, locale, avatar_url')
     .eq('id', user.id)
     .single()
 
@@ -30,6 +30,8 @@ export default async function InstellingenPage({
     <InstellingenClient
       email={user.email ?? ''}
       fullName={profile?.full_name ?? ''}
+      avatarUrl={profile?.avatar_url ?? null}
+      userId={user.id}
       tier={sub?.tier ?? 'standard'}
       status={sub?.status ?? 'active'}
       periodEnd={sub?.current_period_end ?? null}
