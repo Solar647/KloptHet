@@ -471,18 +471,16 @@ export function AbonnementClient({
       </div>
 
       {/* Sterren decoratie */}
-      <div style={{ position: 'relative', height: 0 }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '3rem' }}>
         <img
           src="/stars.jpg"
           alt=""
           aria-hidden="true"
           style={{
-            position: 'absolute',
-            bottom: 0,
-            left: -20,
-            width: 140,
-            opacity: 0.18,
-            filter: 'invert(1) sepia(1) saturate(2) hue-rotate(190deg)',
+            width: 130,
+            opacity: 0.55,
+            filter: 'invert(1)',
+            mixBlendMode: 'screen',
             pointerEvents: 'none',
             userSelect: 'none',
           }}
