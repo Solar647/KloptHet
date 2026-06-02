@@ -471,7 +471,14 @@ export function AbonnementClient({
       </div>
 
       {/* Sterren decoratie */}
-      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '3rem' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          marginTop: '3rem',
+          marginLeft: '-1rem',
+        }}
+      >
         <img
           src="/stars.jpg"
           alt=""
