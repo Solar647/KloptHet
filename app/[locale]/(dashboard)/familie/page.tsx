@@ -138,7 +138,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
     const { data: rawMembers } = await supabase
       .from('family_members')
       .select(
-        'id, invited_email, status, owner_can_see_scans, member_can_see_owner, joined_at, user_id'
+        'id, invited_email, status, owner_can_see_scans, member_can_see_owner, joined_at, user_id, invite_token'
       )
       .eq('family_id', family.id)
       .neq('status', 'removed')
@@ -186,6 +186,8 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
         joined_at: m.joined_at,
         user_id: m.user_id,
         avatar_url: (m.user_id && avatarMap[m.user_id]) || null,
+        invite_token:
+          m.status === 'pending' ? ((m as { invite_token?: string }).invite_token ?? null) : null,
         recentScans: (m.user_id && scansByUser[m.user_id]) || [],
       }))
     }

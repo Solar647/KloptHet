@@ -19,6 +19,7 @@ type Member = {
   member_can_see_owner: boolean
   joined_at: string | null
   avatar_url?: string | null
+  invite_token?: string | null
   recentScans?: Scan[]
 }
 
@@ -583,7 +584,7 @@ function MemberRow({
           >
             {member.status === 'active'
               ? `Actief lid${member.joined_at ? ` · Lid sinds ${new Date(member.joined_at).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}` : ''}`
-              : 'Uitnodiging verstuurd · wacht op acceptatie'}
+              : 'Uitnodiging verstuurd'}
           </div>
         </div>
 
@@ -791,6 +792,11 @@ function MemberRow({
           >
             Lid verwijderen
           </button>
+
+          {/* Uitnodigingslink voor pending leden */}
+          {member.status === 'pending' && member.invite_token && (
+            <PendingInviteLink token={member.invite_token} locale={locale} />
+          )}
         </div>
       )}
     </div>
@@ -837,6 +843,92 @@ function Avatar({
       ) : (
         letter
       )}
+    </div>
+  )
+}
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://www.klopthet.com'
+
+function PendingInviteLink({ token, locale }: { token: string; locale: string }) {
+  const [copied, setCopied] = useState(false)
+  const link = `${APP_URL}/${locale}/uitnodiging/${token}`
+  const copy = () => {
+    navigator.clipboard.writeText(link)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+  return (
+    <div
+      style={{
+        marginTop: '.75rem',
+        padding: '.75rem',
+        background: 'rgba(244,236,219,.04)',
+        border: '1px solid rgba(244,236,219,.08)',
+        borderRadius: 10,
+      }}
+    >
+      <div
+        style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: '.68rem',
+          fontWeight: 700,
+          color: 'rgba(244,236,219,.35)',
+          letterSpacing: '.08em',
+          textTransform: 'uppercase',
+          marginBottom: '.4rem',
+        }}
+      >
+        Uitnodigingslink
+      </div>
+      <div style={{ display: 'flex', gap: '.5rem', alignItems: 'center' }}>
+        <span
+          style={{
+            fontFamily: 'ui-monospace,monospace',
+            fontSize: '.68rem',
+            color: 'rgba(244,236,219,.4)',
+            flex: 1,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {link}
+        </span>
+        <button
+          onClick={copy}
+          style={{
+            background: copied ? 'rgba(58,172,110,.15)' : 'rgba(244,236,219,.08)',
+            border: 'none',
+            borderRadius: 6,
+            padding: '.3rem .7rem',
+            color: copied ? '#3AAC6E' : 'rgba(244,236,219,.6)',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.72rem',
+            cursor: 'pointer',
+            flexShrink: 0,
+          }}
+        >
+          {copied ? 'Gekopieerd!' : 'Kopieer'}
+        </button>
+        <a
+          href={`https://wa.me/?text=${encodeURIComponent(`Uitnodiging KloptHet: ${link}`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            background: 'rgba(37,211,102,.08)',
+            border: 'none',
+            borderRadius: 6,
+            padding: '.3rem .7rem',
+            color: '#25D366',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.72rem',
+            textDecoration: 'none',
+            flexShrink: 0,
+          }}
+        >
+          WhatsApp
+        </a>
+      </div>
     </div>
   )
 }
