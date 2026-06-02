@@ -94,7 +94,7 @@ export function HowItWorks() {
             linear-gradient(rgba(244,236,219,.04) 1px, transparent 1px),
             linear-gradient(90deg, rgba(244,236,219,.04) 1px, transparent 1px)
           `,
-          backgroundSize: '44px 44px',
+          backgroundSize: '72px 72px',
           maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
           WebkitMaskImage:
             'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
