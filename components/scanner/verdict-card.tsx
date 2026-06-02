@@ -315,7 +315,20 @@ export function VerdictCard({
             alignItems: 'flex-start',
           }}
         >
-          <span style={{ fontSize: '1rem', flexShrink: 0 }}>ℹ️</span>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="rgba(244,236,219,.4)"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ flexShrink: 0, marginTop: 2 }}
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4M12 8h.01" />
+          </svg>
           <p
             style={{
               fontFamily: 'var(--font-sans)',
