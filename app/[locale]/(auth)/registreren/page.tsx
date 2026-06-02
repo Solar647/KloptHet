@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
@@ -11,6 +11,8 @@ import { AuthField } from '@/components/auth/auth-field'
 export default function RegistrerenPage() {
   const locale = useLocale()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const inviteToken = searchParams.get('invite')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -27,10 +29,17 @@ export default function RegistrerenPage() {
     setError('')
     setLoading(true)
     const supabase = createClient()
+    const callbackUrl = inviteToken
+      ? `${window.location.origin}/${locale}/auth/callback?invite=${inviteToken}`
+      : `${window.location.origin}/${locale}/auth/callback`
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: name } },
+      options: {
+        data: { full_name: name },
+        emailRedirectTo: callbackUrl,
+      },
     })
     if (error) {
       setError(error.message)
