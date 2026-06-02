@@ -4,7 +4,9 @@ import { useState } from 'react'
 import { modules } from '@/lib/training/modules'
 import { moduleIcons, BadgeIcon, CheckIcon, ArrowRightIcon } from '@/components/shared/icons'
 
-type ModuleState = 'intro' | 'lesson' | 'quiz' | 'done'
+type ModuleState = 'intro' | 'lesson' | 'quiz' | 'done' | 'failed'
+
+const PASS_THRESHOLD = 0.7 // 70% goed = geslaagd
 
 const difficultyLabel = {
   basis: { label: 'Basis', color: '#3AAC6E' },
@@ -20,6 +22,7 @@ export function TrainingClient() {
   const [selected, setSelected] = useState<number | null>(null)
   const [showExp, setShowExp] = useState(false)
   const [completed, setCompleted] = useState<string[]>([])
+  const [correctCount, setCorrectCount] = useState(0)
 
   const mod = modules.find((m) => m.id === activeId)
 
@@ -30,6 +33,15 @@ export function TrainingClient() {
     setQuizIndex(0)
     setSelected(null)
     setShowExp(false)
+    setCorrectCount(0)
+  }
+
+  const retryQuiz = () => {
+    setQuizIndex(0)
+    setSelected(null)
+    setShowExp(false)
+    setCorrectCount(0)
+    setState('quiz')
   }
 
   const nextLesson = () => {
@@ -41,10 +53,17 @@ export function TrainingClient() {
       setQuizIndex(0)
       setSelected(null)
       setShowExp(false)
+      setCorrectCount(0)
     }
   }
 
-  const submitAnswer = () => setShowExp(true)
+  const submitAnswer = () => {
+    if (!mod || selected === null) return
+    if (selected === mod.quiz[quizIndex].correct) {
+      setCorrectCount((c) => c + 1)
+    }
+    setShowExp(true)
+  }
 
   const nextQuestion = () => {
     if (!mod) return
@@ -53,8 +72,15 @@ export function TrainingClient() {
       setSelected(null)
       setShowExp(false)
     } else {
-      setCompleted((p) => (p.includes(mod.id) ? p : [...p, mod.id]))
-      setState('done')
+      // +1 because correctCount hasn't updated yet for the last question
+      const finalCorrect = correctCount + (selected === mod.quiz[quizIndex].correct ? 1 : 0)
+      const passed = finalCorrect / mod.quiz.length >= PASS_THRESHOLD
+      if (passed) {
+        setCompleted((p) => (p.includes(mod.id) ? p : [...p, mod.id]))
+        setState('done')
+      } else {
+        setState('failed')
+      }
     }
   }
 
@@ -210,36 +236,47 @@ export function TrainingClient() {
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontWeight: 500,
-                fontSize: '1.45rem',
+                fontSize: '1.55rem',
                 color: '#F4ECDB',
-                margin: '0 0 1.25rem',
-                letterSpacing: '-.01em',
-                lineHeight: 1.25,
+                margin: '0 0 1.5rem',
+                letterSpacing: '-.02em',
+                lineHeight: 1.2,
               }}
             >
               {mod.lessons[lessonIndex].title}
             </h2>
             <div
               style={{
-                background: 'rgba(244,236,219,.04)',
-                border: '1px solid rgba(244,236,219,.1)',
-                borderRadius: 14,
-                padding: '1.5rem 1.75rem',
+                background: 'rgba(244,236,219,.03)',
+                border: '1px solid rgba(244,236,219,.09)',
+                borderLeft: `3px solid ${mod.color}60`,
+                borderRadius: '0 14px 14px 0',
+                padding: '1.75rem 2rem',
                 marginBottom: '2rem',
               }}
             >
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '1rem',
-                  color: 'rgba(244,236,219,.85)',
-                  lineHeight: 1.85,
-                  margin: 0,
-                  whiteSpace: 'pre-line',
-                }}
-              >
-                {mod.lessons[lessonIndex].content}
-              </p>
+              {mod.lessons[lessonIndex].content.split('\n\n').map((para, i) => (
+                <p
+                  key={i}
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.97rem',
+                    color:
+                      para.length < 40 && !para.startsWith('•')
+                        ? '#F4ECDB'
+                        : 'rgba(244,236,219,.82)',
+                    fontWeight: para.length < 40 && !para.startsWith('•') ? 600 : 400,
+                    lineHeight: 1.85,
+                    margin:
+                      i < mod.lessons[lessonIndex].content.split('\n\n').length - 1
+                        ? '0 0 1.1rem'
+                        : 0,
+                    whiteSpace: 'pre-line',
+                  }}
+                >
+                  {para}
+                </p>
+              ))}
             </div>
             <ActionButton onClick={nextLesson} color={mod.color}>
               {lessonIndex < mod.lessons.length - 1 ? 'Volgende les' : 'Naar de quiz'}
@@ -251,12 +288,33 @@ export function TrainingClient() {
         {/* Quiz */}
         {state === 'quiz' && (
           <div>
-            <ProgressHeader
-              current={quizIndex}
-              total={mod.quiz.length}
-              label="Vraag"
-              color={mod.color}
-            />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '1rem',
+              }}
+            >
+              <ProgressHeader
+                current={quizIndex}
+                total={mod.quiz.length}
+                label="Vraag"
+                color={mod.color}
+              />
+              <span
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.78rem',
+                  color: 'rgba(244,236,219,.35)',
+                  flexShrink: 0,
+                  marginLeft: '1rem',
+                }}
+              >
+                {correctCount}/{quizIndex} goed · min. {Math.ceil(mod.quiz.length * PASS_THRESHOLD)}
+                /{mod.quiz.length} nodig
+              </span>
+            </div>
             <h2
               style={{
                 fontFamily: 'var(--font-serif)',
@@ -387,6 +445,85 @@ export function TrainingClient() {
           </div>
         )}
 
+        {/* Failed */}
+        {state === 'failed' && (
+          <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: 72,
+                height: 72,
+                borderRadius: '50%',
+                background: 'rgba(229,83,42,.12)',
+                border: '2px solid rgba(229,83,42,.3)',
+                color: '#E5532A',
+                marginBottom: '1.5rem',
+                fontSize: '2rem',
+              }}
+            >
+              ✕
+            </div>
+            <h2
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontWeight: 500,
+                fontSize: '1.8rem',
+                color: '#F4ECDB',
+                margin: '0 0 .5rem',
+                letterSpacing: '-.02em',
+              }}
+            >
+              Niet geslaagd
+            </h2>
+            <p
+              style={{
+                color: 'rgba(244,236,219,.55)',
+                fontFamily: 'var(--font-sans)',
+                margin: '0 0 .5rem',
+                fontSize: '.95rem',
+              }}
+            >
+              U had {correctCount} van de {mod.quiz.length} vragen goed.
+            </p>
+            <p
+              style={{
+                color: 'rgba(244,236,219,.4)',
+                fontFamily: 'var(--font-sans)',
+                margin: '0 0 2rem',
+                fontSize: '.88rem',
+              }}
+            >
+              U heeft minimaal {Math.ceil(mod.quiz.length * PASS_THRESHOLD)} goed nodig voor een
+              badge.
+            </p>
+            <div
+              style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}
+            >
+              <ActionButton onClick={retryQuiz} color={mod.color}>
+                Quiz opnieuw proberen
+                <ArrowRightIcon size={16} strokeWidth={2.2} />
+              </ActionButton>
+              <button
+                onClick={back}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid rgba(244,236,219,.2)',
+                  borderRadius: 12,
+                  padding: '.85rem 1.5rem',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.92rem',
+                  color: 'rgba(244,236,219,.55)',
+                  cursor: 'pointer',
+                }}
+              >
+                Terug naar modules
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Done */}
         {state === 'done' && (
           <div style={{ textAlign: 'center', padding: '2rem 0' }}>
@@ -420,9 +557,20 @@ export function TrainingClient() {
             </h2>
             <p
               style={{
-                color: 'rgba(244,236,219,.6)',
+                color: 'rgba(244,236,219,.55)',
+                fontFamily: 'var(--font-sans)',
+                margin: '0 0 .35rem',
+                fontSize: '.95rem',
+              }}
+            >
+              {correctCount} van de {mod.quiz.length} vragen goed — geslaagd!
+            </p>
+            <p
+              style={{
+                color: 'rgba(244,236,219,.4)',
                 fontFamily: 'var(--font-sans)',
                 margin: '0 0 1.5rem',
+                fontSize: '.88rem',
               }}
             >
               U heeft het badge verdiend:

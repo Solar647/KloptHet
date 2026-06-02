@@ -157,6 +157,83 @@ Vergeet niet: het is nooit uw schuld als u slachtoffer wordt. Oplichters zijn pr
         explanation:
           'Direct uw bank bellen is essentieel — soms kan een betaling nog worden gestopt of teruggedraaid. Aangifte bij de politie is ook belangrijk voor statistieken en opsporing.',
       },
+      {
+        question:
+          'Iemand zegt: "Ik ben uw kleinzoon, vertel het niet aan mijn ouders want die maken zich zorgen." Wat is het eerste alarmsignaal?',
+        options: [
+          'Het bericht is in slecht Nederlands geschreven',
+          'Het verzoek om geheimhouding — dit is een klassieke manipulatietactiek',
+          'Uw kleinzoon zou nooit bellen',
+          'De naam klopt niet',
+        ],
+        correct: 1,
+        explanation:
+          'Verzoeken om geheimhouding zijn een groot alarmsignaal. Oplichters willen voorkomen dat u het verhaal kunt controleren bij anderen.',
+      },
+      {
+        question:
+          'U belt uw kleinkind terug op het oude nummer maar krijgt geen gehoor. Wat doet u?',
+        options: [
+          'U stuurt toch het geld — het moet dringend zijn',
+          'U wacht een uur en probeert het daarna opnieuw',
+          'U belt een ander familielid om te controleren of alles goed is',
+          'U vraagt het nieuwe nummer om een foto te sturen',
+        ],
+        correct: 2,
+        explanation:
+          'Altijd via een ander kanaal controleren. Bel een ander familielid, of wacht tot u persoonlijk contact heeft. Stuur nooit geld zonder bevestiging.',
+      },
+      {
+        question: 'Welk bedrag is "veilig" om te sturen als u twijfelt maar wil helpen?',
+        options: [
+          '€50 — dat is te weinig om echt gevaarlijk te zijn',
+          '€100 — een klein bedrag om goodwill te tonen',
+          'Geen enkel bedrag — u stuurt nooit geld op basis van een tekstbericht',
+          '€200 — als het echt uw kleinkind is, heeft het waarschijnlijk meer nodig',
+        ],
+        correct: 2,
+        explanation:
+          'Er bestaat geen "veilig" bedrag. Als het fraude is, moedigt u de oplichter aan door te betalen. Controleer altijd eerst de identiteit.',
+      },
+      {
+        question:
+          'Hoe kunnen oplichters uw naam en familierelaties kennen zonder dat u ze dat heeft verteld?',
+        options: [
+          'Dat kunnen ze niet — ze raden het gewoon',
+          'Via sociale media en openbare informatie die u of uw familie deelt',
+          'Via uw bank',
+          'Via de overheid',
+        ],
+        correct: 1,
+        explanation:
+          "Oplichters zoeken op sociale media naar informatie. Foto's van familiefeesten, namen van kinderen en kleinkinderen zijn vaak openbaar zichtbaar.",
+      },
+      {
+        question:
+          'U heeft al twee keer geld gestuurd aan iemand die u denkt dat uw kleinkind is. Nu vragen ze om een derde betaling. Wat doet u?',
+        options: [
+          'U betaalt opnieuw — u heeft al zoveel geïnvesteerd',
+          'U vraagt eerst om terugbetaling van de eerdere bedragen',
+          'U stopt met betalen, belt uw echte kleinkind én uw bank',
+          'U vraagt een foto als bewijs van identiteit',
+        ],
+        correct: 2,
+        explanation:
+          'Het feit dat u al heeft betaald maakt het lastiger te stoppen, maar het is de juiste keuze. Bel uw bank direct — soms is geld nog terug te halen.',
+      },
+      {
+        question:
+          'Een bericht zegt: "Mama dit is echt ik, geloof me alsjeblieft." Wat betekent dit patroon?',
+        options: [
+          'Uw kind is echt in nood en voelt zich niet serieus genomen',
+          'Het is waarschijnlijk fraude — echte familieleden hoeven zelden zo te smeken',
+          'Uw kind is van streek over iets',
+          'Het bericht is van een vriend van uw kind',
+        ],
+        correct: 1,
+        explanation:
+          'Overdreven emotioneel smeken is een manipulatietactiek. Echte familieleden begrijpen dat u voorzichtig bent en zullen het accepteren als u belt voor verificatie.',
+      },
     ],
   },
   {
