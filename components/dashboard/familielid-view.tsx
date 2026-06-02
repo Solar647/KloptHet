@@ -6,6 +6,14 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
+type OtherMember = {
+  id: string
+  email: string
+  name: string
+  avatarUrl: string | null
+  joinedAt: string | null
+}
+
 type Props = {
   memberId: string
   ownerName: string
@@ -13,6 +21,7 @@ type Props = {
   ownerAvatarUrl: string | null
   joinedAt: string | null
   ownerCanSeeScans: boolean
+  otherMembers?: OtherMember[]
 }
 
 export function FamilielidView({
@@ -22,6 +31,7 @@ export function FamilielidView({
   ownerAvatarUrl,
   joinedAt,
   ownerCanSeeScans,
+  otherMembers = [],
 }: Props) {
   const locale = useLocale()
   const router = useRouter()
@@ -180,6 +190,95 @@ export function FamilielidView({
               month: 'long',
               year: 'numeric',
             })}
+          </div>
+        )}
+
+        {/* Andere leden */}
+        {otherMembers.length > 0 && (
+          <div
+            style={{
+              marginTop: '1rem',
+              paddingTop: '1rem',
+              borderTop: '1px solid rgba(244,236,219,.07)',
+            }}
+          >
+            <div
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.68rem',
+                fontWeight: 700,
+                color: 'rgba(244,236,219,.3)',
+                letterSpacing: '.08em',
+                textTransform: 'uppercase',
+                marginBottom: '.65rem',
+              }}
+            >
+              Andere leden
+            </div>
+            {otherMembers.map((m) => (
+              <div
+                key={m.id}
+                style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: '.5rem' }}
+              >
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    background: 'rgba(244,236,219,.1)',
+                    border: '1px solid rgba(244,236,219,.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: 700,
+                    fontSize: '.8rem',
+                    color: 'rgba(244,236,219,.6)',
+                    flexShrink: 0,
+                    overflow: 'hidden',
+                  }}
+                >
+                  {m.avatarUrl ? (
+                    <Image
+                      src={m.avatarUrl}
+                      alt={m.name}
+                      width={32}
+                      height={32}
+                      unoptimized
+                      style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                    />
+                  ) : (
+                    m.name.charAt(0).toUpperCase()
+                  )}
+                </div>
+                <div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.85rem',
+                      color: 'rgba(244,236,219,.75)',
+                    }}
+                  >
+                    {m.name}
+                  </div>
+                  {m.joinedAt && (
+                    <div
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.7rem',
+                        color: 'rgba(244,236,219,.3)',
+                      }}
+                    >
+                      Lid sinds{' '}
+                      {new Date(m.joinedAt).toLocaleDateString('nl-NL', {
+                        day: 'numeric',
+                        month: 'short',
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>

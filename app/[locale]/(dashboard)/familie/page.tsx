@@ -22,7 +22,6 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
     .maybeSingle()
 
   if (memberRecord) {
-    // Haal eigenaar info op
     const { data: ownerFamily } = await supabase
       .from('families')
       .select('owner_id')
@@ -44,6 +43,44 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
       ownerAvatarUrl = ownerProfile?.avatar_url ?? null
     }
 
+    // Haal andere leden op
+    const { data: otherMembers } = await supabase
+      .from('family_members')
+      .select('id, invited_email, user_id, joined_at, status')
+      .eq('family_id', memberRecord.family_id)
+      .eq('status', 'active')
+      .neq('user_id', user.id)
+
+    type OtherMember = {
+      id: string
+      email: string
+      name: string
+      avatarUrl: string | null
+      joinedAt: string | null
+    }
+    let otherMembersList: OtherMember[] = []
+
+    if (otherMembers && otherMembers.length > 0) {
+      const userIds = otherMembers.filter((m) => m.user_id).map((m) => m.user_id as string)
+      const profileMap: Record<string, { full_name: string | null; avatar_url: string | null }> = {}
+      if (userIds.length > 0) {
+        const { data: profiles } = await supabase
+          .from('profiles')
+          .select('id, full_name, avatar_url')
+          .in('id', userIds)
+        profiles?.forEach((p) => {
+          profileMap[p.id] = { full_name: p.full_name, avatar_url: p.avatar_url }
+        })
+      }
+      otherMembersList = otherMembers.map((m) => ({
+        id: m.id,
+        email: m.invited_email,
+        name: (m.user_id && profileMap[m.user_id]?.full_name) || m.invited_email,
+        avatarUrl: (m.user_id && profileMap[m.user_id]?.avatar_url) || null,
+        joinedAt: m.joined_at,
+      }))
+    }
+
     return (
       <FamilielidView
         memberId={memberRecord.id}
@@ -52,6 +89,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
         ownerAvatarUrl={ownerAvatarUrl}
         joinedAt={memberRecord.joined_at}
         ownerCanSeeScans={memberRecord.owner_can_see_scans}
+        otherMembers={otherMembersList}
       />
     )
   }
