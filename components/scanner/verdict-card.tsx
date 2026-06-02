@@ -40,13 +40,17 @@ const severityLabel = {
   danger: { color: '#E5532A', prefix: 'Waarschuwing:' },
 }
 
-export function VerdictCard({ verdict, onReset }: Props) {
+export function VerdictCard({
+  verdict,
+  onReset,
+  dashboard = false,
+}: Props & { dashboard?: boolean }) {
   const config = categoryConfig[verdict.category]
 
   return (
     <section
       style={{
-        padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 3vw, 3rem)',
+        padding: dashboard ? '0' : 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 3vw, 3rem)',
       }}
     >
       <div style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -56,8 +60,8 @@ export function VerdictCard({ verdict, onReset }: Props) {
             background: config.bg,
             border: `1px solid ${config.border}`,
             borderRadius: 18,
-            padding: '2rem',
-            marginBottom: '1.25rem',
+            padding: dashboard ? '1.25rem' : '2rem',
+            marginBottom: '1rem',
           }}
         >
           {/* Label + score */}

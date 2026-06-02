@@ -134,7 +134,7 @@ export function Scanner({ dashboard = false }: { dashboard?: boolean }) {
   }
 
   if (state === 'done' && verdict) {
-    return <VerdictCard verdict={verdict} onReset={reset} />
+    return <VerdictCard verdict={verdict} onReset={reset} dashboard={dashboard} />
   }
 
   return (

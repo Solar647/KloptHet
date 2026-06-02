@@ -55,7 +55,7 @@ export default async function ScanPage({ params }: { params: Promise<{ locale: s
         }}
       >
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
           {/* Schild icoon */}
           <div
             style={{
@@ -67,7 +67,7 @@ export default async function ScanPage({ params }: { params: Promise<{ locale: s
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              margin: '0 auto 1.25rem',
+              margin: '0 auto .85rem',
             }}
           >
             <svg
