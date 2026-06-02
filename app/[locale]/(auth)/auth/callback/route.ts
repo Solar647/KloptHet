@@ -44,6 +44,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ loca
         })
       }
 
+      // Na signup: check invite token in metadata
+      const inviteToken = data.user.user_metadata?.invite_token
+      if (inviteToken) {
+        return NextResponse.redirect(`${origin}/${locale}/uitnodiging/${inviteToken}`)
+      }
+
       return NextResponse.redirect(`${origin}${next}`)
     }
   }
