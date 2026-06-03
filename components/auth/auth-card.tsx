@@ -1,3 +1,6 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
 import { Logo } from '@/components/shared/logo'
 
 type Props = {
@@ -7,6 +10,8 @@ type Props = {
 }
 
 export function AuthCard({ title, subtitle, children }: Props) {
+  const router = useRouter()
+
   return (
     <div
       style={{
@@ -19,18 +24,63 @@ export function AuthCard({ title, subtitle, children }: Props) {
         fontFamily: 'var(--font-sans)',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: '1rem' }}>
-        <Logo size={26} />
-        <span
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '1rem',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Logo size={26} />
+          <span
+            style={{
+              fontFamily: 'var(--font-serif)',
+              fontSize: '.95rem',
+              fontWeight: 600,
+              letterSpacing: '-.01em',
+            }}
+          >
+            KloptHet
+          </span>
+        </div>
+        <button
+          onClick={() => router.back()}
           style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '.95rem',
-            fontWeight: 600,
-            letterSpacing: '-.01em',
+            background: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            color: 'rgba(244,236,219,.4)',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.82rem',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 4,
+            padding: '.25rem 0',
+            transition: 'color .15s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'rgba(244,236,219,.8)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = 'rgba(244,236,219,.4)'
           }}
         >
-          KloptHet
-        </span>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M19 12H5M12 5l-7 7 7 7" />
+          </svg>
+          Terug
+        </button>
       </div>
 
       <h1
