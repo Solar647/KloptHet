@@ -365,28 +365,29 @@ export function DemoCarousel() {
           />
         </div>
 
-        {/* Main grid */}
+        {/* Main grid — asymmetrisch: bericht smal, analyse breed */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '1.25rem',
+            gridTemplateColumns: '5fr 7fr',
+            gap: '1.5rem',
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(10px)',
-            transition: 'opacity .25s ease, transform .25s ease',
+            transition: 'opacity .3s ease, transform .3s ease',
+            alignItems: 'stretch',
           }}
           className="grid-responsive-2"
         >
-          {/* LEFT — telefoon-mockup */}
+          {/* LEFT — bericht */}
           <div
             style={{
-              background: 'rgba(6,12,24,0.85)',
-              border: '1px solid rgba(255,255,255,.08)',
-              borderRadius: 22,
+              background: 'linear-gradient(180deg, rgba(8,14,30,.95) 0%, rgba(6,10,22,.9) 100%)',
+              border: '1px solid rgba(255,255,255,.07)',
+              borderRadius: 20,
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              boxShadow: '0 24px 48px -12px rgba(0,0,0,.5)',
+              boxShadow: '0 20px 40px -10px rgba(0,0,0,.6)',
             }}
           >
             {/* Phone status bar */}
@@ -650,9 +651,9 @@ export function DemoCarousel() {
           {/* RIGHT — analyse panel */}
           <div
             style={{
-              background: `linear-gradient(160deg, rgba(6,12,24,.95) 0%, rgba(${cfg.color === '#E5532A' ? '40,15,10' : cfg.color === '#D97B2A' ? '35,20,5' : '8,20,40'},.85) 100%)`,
+              background: `linear-gradient(145deg, rgba(8,14,30,.98) 0%, rgba(${cfg.color === '#E5532A' ? '45,12,8' : cfg.color === '#D97B2A' ? '40,22,5' : '10,18,45'},.9) 100%)`,
               border: `1px solid ${cfg.border}`,
-              borderRadius: 22,
+              borderRadius: 20,
               padding: '1.75rem',
               display: 'flex',
               flexDirection: 'column',
@@ -721,7 +722,7 @@ export function DemoCarousel() {
                     style={{
                       fontFamily: 'var(--font-serif)',
                       fontWeight: 500,
-                      fontSize: '1.15rem',
+                      fontSize: '1.35rem',
                       color: '#F4ECDB',
                       letterSpacing: '-.02em',
                       marginTop: 1,
@@ -747,14 +748,15 @@ export function DemoCarousel() {
                   style={{
                     fontFamily: 'var(--font-serif)',
                     fontWeight: 700,
-                    fontSize: '1.8rem',
+                    fontSize: '2.8rem',
                     lineHeight: 1,
                     color: cfg.color,
+                    textShadow: `0 0 30px ${cfg.color}50`,
                   }}
                 >
                   {ex.score}
                   <span
-                    style={{ fontSize: '.8rem', color: 'rgba(244,236,219,.25)', fontWeight: 400 }}
+                    style={{ fontSize: '1rem', color: 'rgba(244,236,219,.2)', fontWeight: 400 }}
                   >
                     /10
                   </span>
@@ -762,11 +764,11 @@ export function DemoCarousel() {
                 <div
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '.62rem',
-                    color: 'rgba(244,236,219,.3)',
+                    fontSize: '.6rem',
+                    color: 'rgba(244,236,219,.25)',
                     textTransform: 'uppercase',
-                    letterSpacing: '.06em',
-                    marginTop: 2,
+                    letterSpacing: '.08em',
+                    marginTop: 3,
                   }}
                 >
                   risico
