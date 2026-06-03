@@ -84,15 +84,24 @@ export function Sidebar() {
       // Badge berekening via localStorage
       const stored = JSON.parse(localStorage.getItem('kh_seen') ?? '{}')
       const newBadges: Record<string, number> = {}
+      let changed = false
 
-      const seenScans = stored.scans ?? scanCount ?? 0
       const currentScans = scanCount ?? 0
-      if (currentScans > seenScans) newBadges.geschiedenis = Math.min(currentScans - seenScans, 9)
-
-      const seenFamily = stored.family ?? familyCount ?? 0
       const currentFamily = familyCount ?? 0
-      if (currentFamily > seenFamily) newBadges.familie = Math.min(currentFamily - seenFamily, 9)
 
+      if (stored.scans === undefined) {
+        // Eerste keer: sla huidige staat op als baseline
+        stored.scans = currentScans
+        stored.family = currentFamily
+        changed = true
+      } else {
+        if (currentScans > stored.scans)
+          newBadges.geschiedenis = Math.min(currentScans - stored.scans, 9)
+        if (currentFamily > stored.family)
+          newBadges.familie = Math.min(currentFamily - (stored.family ?? 0), 9)
+      }
+
+      if (changed) localStorage.setItem('kh_seen', JSON.stringify(stored))
       setBadges(newBadges)
     })
   }, [])
