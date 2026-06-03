@@ -183,131 +183,141 @@ export function HowItWorks() {
           }}
           className="grid-responsive"
         >
-          {steps.map((step, i) => (
-            <motion.div
-              key={step.num}
-              initial={reduced ? false : { opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.65, delay: i * 0.12, ease: EASE }}
-              style={{
-                background: 'rgba(244,236,219,.04)',
-                border: '1px solid rgba(244,236,219,.1)',
-                borderRadius: 20,
-                padding: 'clamp(1.5rem, 3vw, 2rem)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '1.25rem',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              {/* Subtiele achtergrond glow per kaart */}
-              <div
-                aria-hidden="true"
+          {steps.map((step, i) => {
+            const origins = [
+              { x: -40, y: 20 },
+              { x: 0, y: 50 },
+              { x: 40, y: 20 },
+            ]
+            const origin = origins[i] || { x: 0, y: 32 }
+            return (
+              <motion.div
+                key={step.num}
+                initial={reduced ? false : { opacity: 0, x: origin.x, y: origin.y, scale: 0.95 }}
+                whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+                whileHover={reduced ? {} : { y: -6, scale: 1.02, transition: { duration: 0.2 } }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.7, delay: i * 0.15, ease: EASE }}
                 style={{
-                  position: 'absolute',
-                  top: -40,
-                  right: -40,
-                  width: 140,
-                  height: 140,
-                  background: 'radial-gradient(circle, rgba(30,80,180,.06) 0%, transparent 70%)',
-                  pointerEvents: 'none',
-                }}
-              />
-
-              {/* Stap nummer + icoon */}
-              <div
-                style={{
+                  background: 'rgba(244,236,219,.04)',
+                  border: '1px solid rgba(244,236,219,.1)',
+                  borderRadius: 20,
+                  padding: 'clamp(1.5rem, 3vw, 2rem)',
                   display: 'flex',
-                  alignItems: 'flex-start',
-                  justifyContent: 'space-between',
+                  flexDirection: 'column',
+                  gap: '1.25rem',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  cursor: 'default',
                 }}
               >
+                {/* Subtiele achtergrond glow per kaart */}
                 <div
+                  aria-hidden="true"
                   style={{
-                    width: 52,
-                    height: 52,
-                    borderRadius: 14,
-                    background: 'rgba(30,80,180,.1)',
-                    border: '1px solid rgba(30,80,180,.2)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'rgba(100,160,255,.85)',
-                    flexShrink: 0,
-                  }}
-                >
-                  {step.icon}
-                </div>
-                <span
-                  style={{
-                    fontFamily: 'ui-monospace, monospace',
-                    fontSize: '.65rem',
-                    fontWeight: 700,
-                    color: 'rgba(244,236,219,.2)',
-                    letterSpacing: '.12em',
-                  }}
-                >
-                  {step.num}
-                </span>
-              </div>
-
-              {/* Tekst */}
-              <div style={{ flex: 1 }}>
-                <h3
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontWeight: 700,
-                    fontSize: 'clamp(1.05rem, 1.8vw, 1.25rem)',
-                    color: '#F4ECDB',
-                    margin: '0 0 .6rem',
-                    lineHeight: 1.25,
-                    letterSpacing: '-.01em',
-                  }}
-                >
-                  {step.title}
-                </h3>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.92rem',
-                    color: 'rgba(244,236,219,.58)',
-                    lineHeight: 1.7,
-                    margin: 0,
-                  }}
-                >
-                  {step.body}
-                </p>
-              </div>
-
-              {/* Stap label onderaan */}
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.72rem',
-                  fontWeight: 700,
-                  color: 'rgba(58,172,110,.7)',
-                  letterSpacing: '.06em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                <span
-                  style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: '50%',
-                    background: '#3AAC6E',
-                    flexShrink: 0,
+                    position: 'absolute',
+                    top: -40,
+                    right: -40,
+                    width: 140,
+                    height: 140,
+                    background: 'radial-gradient(circle, rgba(30,80,180,.06) 0%, transparent 70%)',
+                    pointerEvents: 'none',
                   }}
                 />
-                {step.tag}
-              </div>
-            </motion.div>
-          ))}
+
+                {/* Stap nummer + icoon */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 52,
+                      height: 52,
+                      borderRadius: 14,
+                      background: 'rgba(30,80,180,.1)',
+                      border: '1px solid rgba(30,80,180,.2)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'rgba(100,160,255,.85)',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {step.icon}
+                  </div>
+                  <span
+                    style={{
+                      fontFamily: 'ui-monospace, monospace',
+                      fontSize: '.65rem',
+                      fontWeight: 700,
+                      color: 'rgba(244,236,219,.2)',
+                      letterSpacing: '.12em',
+                    }}
+                  >
+                    {step.num}
+                  </span>
+                </div>
+
+                {/* Tekst */}
+                <div style={{ flex: 1 }}>
+                  <h3
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontWeight: 700,
+                      fontSize: 'clamp(1.05rem, 1.8vw, 1.25rem)',
+                      color: '#F4ECDB',
+                      margin: '0 0 .6rem',
+                      lineHeight: 1.25,
+                      letterSpacing: '-.01em',
+                    }}
+                  >
+                    {step.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.92rem',
+                      color: 'rgba(244,236,219,.58)',
+                      lineHeight: 1.7,
+                      margin: 0,
+                    }}
+                  >
+                    {step.body}
+                  </p>
+                </div>
+
+                {/* Stap label onderaan */}
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.72rem',
+                    fontWeight: 700,
+                    color: 'rgba(58,172,110,.7)',
+                    letterSpacing: '.06em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      background: '#3AAC6E',
+                      flexShrink: 0,
+                    }}
+                  />
+                  {step.tag}
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>
