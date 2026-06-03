@@ -218,20 +218,17 @@ export function DemoCarousel() {
         background: '#091020',
       }}
     >
-      {/* Grid — doorlopend van hoe-het-werkt, iets kleiner en meer gefaded */}
+      {/* Dot patroon */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: `
-            linear-gradient(rgba(244,236,219,.022) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(244,236,219,.022) 1px, transparent 1px)
-          `,
-          backgroundSize: '56px 56px',
-          maskImage: 'radial-gradient(ellipse 90% 70% at 50% 30%, black 20%, transparent 80%)',
+          backgroundImage: 'radial-gradient(circle, rgba(244,236,219,.07) 1px, transparent 1px)',
+          backgroundSize: '28px 28px',
+          maskImage: 'radial-gradient(ellipse 85% 75% at 50% 40%, black 30%, transparent 85%)',
           WebkitMaskImage:
-            'radial-gradient(ellipse 90% 70% at 50% 30%, black 20%, transparent 80%)',
+            'radial-gradient(ellipse 85% 75% at 50% 40%, black 30%, transparent 85%)',
           pointerEvents: 'none',
         }}
       />
