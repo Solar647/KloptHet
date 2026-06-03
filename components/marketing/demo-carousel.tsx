@@ -380,12 +380,13 @@ export function DemoCarousel() {
           {/* LEFT — telefoon-mockup */}
           <div
             style={{
-              background: 'rgba(8,20,12,0.7)',
-              border: '1px solid rgba(244,236,219,.1)',
+              background: 'rgba(6,12,24,0.85)',
+              border: '1px solid rgba(255,255,255,.08)',
               borderRadius: 22,
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
+              boxShadow: '0 24px 48px -12px rgba(0,0,0,.5)',
             }}
           >
             {/* Phone status bar */}
@@ -517,28 +518,47 @@ export function DemoCarousel() {
               {/* Bericht bubble */}
               <div
                 style={{
-                  maxWidth: '85%',
-                  background: 'rgba(244,236,219,.07)',
-                  border: '1px solid rgba(244,236,219,.1)',
-                  borderRadius: '4px 16px 16px 16px',
-                  padding: '.9rem 1rem',
+                  maxWidth: '88%',
+                  background: 'rgba(30,40,80,.6)',
+                  border: '1px solid rgba(80,100,180,.25)',
+                  borderRadius: '4px 18px 18px 18px',
+                  padding: '1rem 1.1rem',
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '.92rem',
-                  color: 'rgba(244,236,219,.9)',
-                  lineHeight: 1.6,
+                  fontSize: '.9rem',
+                  color: 'rgba(244,236,219,.92)',
+                  lineHeight: 1.65,
+                  boxShadow: '0 2px 12px rgba(0,0,0,.25)',
                 }}
               >
                 {ex.message}
               </div>
               <div
                 style={{
-                  marginTop: '.45rem',
+                  marginTop: '.5rem',
                   fontFamily: 'var(--font-sans)',
                   fontSize: '.68rem',
-                  color: 'rgba(244,236,219,.28)',
+                  color: 'rgba(244,236,219,.22)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 4,
                 }}
               >
-                Vandaag 14:23 · Gelezen
+                14:23
+                <svg
+                  width="14"
+                  height="9"
+                  viewBox="0 0 14 9"
+                  fill="rgba(100,160,255,.5)"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M1 4.5L4.5 8L9 1M5 4.5L8.5 8L13 1"
+                    strokeWidth="1.2"
+                    stroke="rgba(100,160,255,.5)"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                </svg>
               </div>
 
               {/* KloptHet scan-indicator */}
@@ -630,7 +650,7 @@ export function DemoCarousel() {
           {/* RIGHT — analyse panel */}
           <div
             style={{
-              background: 'rgba(8,20,12,0.7)',
+              background: `linear-gradient(160deg, rgba(6,12,24,.95) 0%, rgba(${cfg.color === '#E5532A' ? '40,15,10' : cfg.color === '#D97B2A' ? '35,20,5' : '8,20,40'},.85) 100%)`,
               border: `1px solid ${cfg.border}`,
               borderRadius: 22,
               padding: '1.75rem',
@@ -639,6 +659,7 @@ export function DemoCarousel() {
               gap: '1.25rem',
               position: 'relative',
               overflow: 'hidden',
+              boxShadow: `0 24px 48px -12px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06)`,
             }}
           >
             {/* Subtle top glow */}
@@ -646,14 +667,14 @@ export function DemoCarousel() {
               aria-hidden="true"
               style={{
                 position: 'absolute',
-                top: -40,
+                top: -60,
                 left: '50%',
                 transform: 'translateX(-50%)',
-                width: '80%',
-                height: 80,
-                background: `radial-gradient(ellipse, ${cfg.color}18 0%, transparent 70%)`,
+                width: '100%',
+                height: 120,
+                background: `radial-gradient(ellipse, ${cfg.color}22 0%, transparent 70%)`,
                 pointerEvents: 'none',
-                filter: 'blur(20px)',
+                filter: 'blur(30px)',
               }}
             />
 
