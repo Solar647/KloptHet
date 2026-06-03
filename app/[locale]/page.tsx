@@ -5,6 +5,7 @@ import { Hero } from '@/components/marketing/hero'
 import { HowItWorks } from '@/components/marketing/how-it-works'
 import { DemoCarousel } from '@/components/marketing/demo-carousel'
 import { Pricing } from '@/components/marketing/pricing'
+import { Testimonials } from '@/components/marketing/testimonials'
 import { FAQ } from '@/components/marketing/faq'
 import { Reveal } from '@/components/shared/reveal'
 
@@ -93,6 +94,9 @@ export default function HomePage() {
         </Reveal>
         <Reveal delay={50}>
           <Pricing />
+        </Reveal>
+        <Reveal delay={50}>
+          <Testimonials />
         </Reveal>
         <Reveal delay={50}>
           <FAQ />
