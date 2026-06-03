@@ -145,7 +145,7 @@ export default function RegistrerenPage() {
           label="Uw naam"
           type="text"
           value={name}
-          onChange={setName}
+          onChange={(v) => setName(v.slice(0, 60))}
           placeholder="Jan de Vries"
           autoComplete="name"
         />
@@ -153,7 +153,7 @@ export default function RegistrerenPage() {
           label="E-mailadres"
           type="email"
           value={email}
-          onChange={setEmail}
+          onChange={(v) => setEmail(v.slice(0, 100))}
           placeholder="uw@email.nl"
           required
           autoComplete="email"
@@ -184,17 +184,31 @@ export default function RegistrerenPage() {
           </label>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.4fr', gap: '.5rem' }}>
             {[
-              { placeholder: 'Dag', value: birthDay, onChange: setBirthDay, max: 31 },
-              { placeholder: 'Maand', value: birthMonth, onChange: setBirthMonth, max: 12 },
-              { placeholder: 'Jaar', value: birthYear, onChange: setBirthYear, max: 9999 },
-            ].map(({ placeholder, value, onChange, max }) => (
+              { placeholder: 'Dag', value: birthDay, onChange: setBirthDay, min: 1, max: 31 },
+              { placeholder: 'Maand', value: birthMonth, onChange: setBirthMonth, min: 1, max: 12 },
+              {
+                placeholder: 'Jaar',
+                value: birthYear,
+                onChange: setBirthYear,
+                min: 1900,
+                max: new Date().getFullYear(),
+              },
+            ].map(({ placeholder, value, onChange, min, max }) => (
               <input
                 key={placeholder}
                 type="number"
                 placeholder={placeholder}
                 value={value}
-                onChange={(e) => onChange(e.target.value)}
-                min={1}
+                onChange={(e) => {
+                  const val = e.target.value
+                  if (val === '') {
+                    onChange('')
+                    return
+                  }
+                  const num = parseInt(val)
+                  if (!isNaN(num) && num >= min && num <= max) onChange(val)
+                }}
+                min={min}
                 max={max}
                 style={{
                   padding: '.75rem .9rem',
