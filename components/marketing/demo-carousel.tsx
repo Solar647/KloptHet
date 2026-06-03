@@ -174,10 +174,9 @@ export function DemoCarousel() {
           transform: 'translateX(-50%)',
           width: '70%',
           height: '60%',
-          background: `radial-gradient(ellipse at center, ${cfg.glow} 0%, transparent 65%)`,
+          background: 'radial-gradient(ellipse at center, rgba(30,60,120,.1) 0%, transparent 65%)',
           pointerEvents: 'none',
           filter: 'blur(60px)',
-          transition: 'background .8s ease',
         }}
       />
 
