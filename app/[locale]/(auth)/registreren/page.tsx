@@ -199,15 +199,7 @@ export default function RegistrerenPage() {
                 type="number"
                 placeholder={placeholder}
                 value={value}
-                onChange={(e) => {
-                  const val = e.target.value
-                  if (val === '') {
-                    onChange('')
-                    return
-                  }
-                  const num = parseInt(val)
-                  if (!isNaN(num) && num >= min && num <= max) onChange(val)
-                }}
+                onChange={(e) => onChange(e.target.value)}
                 min={min}
                 max={max}
                 style={{
@@ -228,6 +220,10 @@ export default function RegistrerenPage() {
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = 'rgba(244,236,219,.14)'
+                  const val = e.target.value
+                  if (val === '') return
+                  const num = parseInt(val)
+                  if (isNaN(num) || num < min || num > max) onChange('')
                 }}
               />
             ))}
