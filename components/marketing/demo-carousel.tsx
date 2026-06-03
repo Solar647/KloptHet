@@ -66,21 +66,6 @@ const categoryConfig = {
     border: 'rgba(58,172,110,.22)',
     glow: 'rgba(58,172,110,.15)',
     label: 'Geen alarmsignalen',
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-        <path d="m9 12 2 2 4-4" />
-      </svg>
-    ),
   },
   doubt: {
     color: '#D97B2A',
@@ -88,21 +73,6 @@ const categoryConfig = {
     border: 'rgba(217,123,42,.22)',
     glow: 'rgba(217,123,42,.15)',
     label: 'Let op',
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
-        <path d="M12 9v4M12 17h.01" />
-      </svg>
-    ),
   },
   phishing: {
     color: '#E5532A',
@@ -110,52 +80,13 @@ const categoryConfig = {
     border: 'rgba(229,83,42,.22)',
     glow: 'rgba(229,83,42,.2)',
     label: 'Waarschijnlijk oplichting',
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="m15 9-6 6M9 9l6 6" />
-      </svg>
-    ),
   },
 }
 
 const flagConfig = {
-  danger: {
-    color: '#E5532A',
-    bg: 'rgba(229,83,42,.1)',
-    icon: (
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-      </svg>
-    ),
-  },
-  warn: {
-    color: '#D97B2A',
-    bg: 'rgba(217,123,42,.1)',
-    icon: (
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" />
-      </svg>
-    ),
-  },
-  safe: {
-    color: '#3AAC6E',
-    bg: 'rgba(58,172,110,.1)',
-    icon: (
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-      </svg>
-    ),
-  },
+  danger: { color: '#E5532A', bg: 'rgba(229,83,42,.1)', dot: '#E5532A' },
+  warn: { color: '#D97B2A', bg: 'rgba(217,123,42,.1)', dot: '#D97B2A' },
+  safe: { color: '#3AAC6E', bg: 'rgba(58,172,110,.1)', dot: '#3AAC6E' },
 }
 
 const INTERVAL_MS = 12000
@@ -238,7 +169,7 @@ export function DemoCarousel() {
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: '30%',
+          top: '20%',
           left: '50%',
           transform: 'translateX(-50%)',
           width: '70%',
@@ -310,7 +241,7 @@ export function DemoCarousel() {
           style={{
             display: 'flex',
             justifyContent: 'center',
-            gap: '.45rem',
+            gap: '.5rem',
             marginBottom: '2rem',
             flexWrap: 'wrap',
           }}
@@ -323,20 +254,33 @@ export function DemoCarousel() {
                 key={e.id}
                 onClick={() => switchTo(i)}
                 style={{
-                  padding: '.4rem 1rem',
+                  padding: '.45rem 1.1rem',
                   borderRadius: 9999,
                   border: `1px solid ${isActive ? c.border : 'rgba(244,236,219,.1)'}`,
                   cursor: 'pointer',
                   background: isActive ? c.bg : 'transparent',
-                  color: isActive ? c.color : 'rgba(244,236,219,.45)',
+                  color: isActive ? c.color : 'rgba(244,236,219,.4)',
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '.8rem',
-                  fontWeight: isActive ? 600 : 400,
+                  fontSize: '.82rem',
+                  fontWeight: isActive ? 700 : 400,
                   transition: 'all .2s',
                   outline: 'none',
-                  letterSpacing: '.01em',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
                 }}
               >
+                {isActive && (
+                  <span
+                    style={{
+                      width: 6,
+                      height: 6,
+                      borderRadius: '50%',
+                      background: c.color,
+                      flexShrink: 0,
+                    }}
+                  />
+                )}
                 {e.type}
               </button>
             )
@@ -348,8 +292,8 @@ export function DemoCarousel() {
           style={{
             height: 2,
             borderRadius: 9999,
-            background: 'rgba(244,236,219,.07)',
-            marginBottom: '1.75rem',
+            background: 'rgba(244,236,219,.06)',
+            marginBottom: '2rem',
             overflow: 'hidden',
           }}
           aria-hidden="true"
@@ -359,110 +303,52 @@ export function DemoCarousel() {
             style={{
               height: '100%',
               borderRadius: 9999,
-              background: `linear-gradient(90deg, ${cfg.color}80, ${cfg.color})`,
+              background: `linear-gradient(90deg, ${cfg.color}60, ${cfg.color})`,
               animation: `progress-fill ${INTERVAL_MS}ms linear forwards`,
             }}
           />
         </div>
 
-        {/* Main grid — asymmetrisch: bericht smal, analyse breed */}
+        {/* Hoofd kaart — één geïntegreerd scherm */}
         <div
           style={{
-            display: 'grid',
-            gridTemplateColumns: '5fr 7fr',
-            gap: '1.5rem',
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(10px)',
             transition: 'opacity .3s ease, transform .3s ease',
-            alignItems: 'stretch',
           }}
-          className="grid-responsive-2"
         >
-          {/* LEFT — bericht */}
           <div
             style={{
-              background: 'linear-gradient(180deg, rgba(8,14,30,.95) 0%, rgba(6,10,22,.9) 100%)',
-              border: '1px solid rgba(255,255,255,.07)',
-              borderRadius: 20,
+              background: 'rgba(6,10,20,.94)',
+              border: '1px solid rgba(255,255,255,.08)',
+              borderRadius: 24,
               overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              boxShadow: '0 20px 40px -10px rgba(0,0,0,.6)',
+              boxShadow: `0 40px 80px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.04), inset 0 1px 0 rgba(255,255,255,.06)`,
             }}
           >
-            {/* Phone status bar */}
+            {/* Header — afzender + status */}
             <div
               style={{
-                padding: '.6rem 1.1rem .5rem',
+                padding: '1rem 1.5rem',
+                borderBottom: '1px solid rgba(255,255,255,.06)',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between',
-                borderBottom: '1px solid rgba(244,236,219,.06)',
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.7rem',
-                  color: 'rgba(244,236,219,.35)',
-                  fontWeight: 600,
-                }}
-              >
-                14:23
-              </span>
-              <div style={{ display: 'flex', gap: 5, alignItems: 'center' }}>
-                {/* Signal bars */}
-                <svg
-                  width="16"
-                  height="12"
-                  viewBox="0 0 16 12"
-                  fill="rgba(244,236,219,.3)"
-                  aria-hidden="true"
-                >
-                  <rect x="0" y="8" width="3" height="4" rx="1" />
-                  <rect x="4.5" y="5" width="3" height="7" rx="1" />
-                  <rect x="9" y="2" width="3" height="10" rx="1" opacity=".5" />
-                  <rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".25" />
-                </svg>
-                {/* Battery */}
-                <svg width="22" height="12" viewBox="0 0 22 12" fill="none" aria-hidden="true">
-                  <rect
-                    x="0.5"
-                    y="0.5"
-                    width="18"
-                    height="11"
-                    rx="2.5"
-                    stroke="rgba(244,236,219,.3)"
-                  />
-                  <rect x="2" y="2" width="11" height="8" rx="1.5" fill="rgba(244,236,219,.3)" />
-                  <path d="M20 4v4a2 2 0 0 0 0-4Z" fill="rgba(244,236,219,.3)" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Chat header */}
-            <div
-              style={{
-                padding: '.85rem 1.1rem',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                borderBottom: '1px solid rgba(244,236,219,.07)',
-                background: 'rgba(244,236,219,.02)',
+                gap: 12,
+                background: `linear-gradient(90deg, rgba(${cfg.color === '#E5532A' ? '60,15,5' : cfg.color === '#D97B2A' ? '50,25,5' : '10,30,60'},.3) 0%, transparent 60%)`,
               }}
             >
               <div
                 style={{
-                  width: 40,
-                  height: 40,
+                  width: 42,
+                  height: 42,
                   borderRadius: '50%',
-                  background: `linear-gradient(135deg, ${cfg.color}40, ${cfg.color}20)`,
-                  border: `1.5px solid ${cfg.border}`,
+                  background: cfg.bg,
+                  border: `2px solid ${cfg.border}`,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontFamily: 'var(--font-serif)',
-                  fontWeight: 700,
+                  fontFamily: 'var(--font-sans)',
+                  fontWeight: 800,
                   fontSize: '1rem',
                   color: cfg.color,
                   flexShrink: 0,
@@ -474,8 +360,8 @@ export function DemoCarousel() {
                 <div
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontWeight: 600,
-                    fontSize: '.9rem',
+                    fontWeight: 700,
+                    fontSize: '.95rem',
                     color: '#F4ECDB',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -488,235 +374,259 @@ export function DemoCarousel() {
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: '.72rem',
-                    color: 'rgba(244,236,219,.38)',
+                    color: 'rgba(244,236,219,.35)',
                   }}
                 >
                   {ex.fromLabel}
                 </div>
               </div>
-              {/* Categorie badge */}
-              <span
+              <div
                 style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.65rem',
-                  fontWeight: 700,
-                  color: cfg.color,
-                  letterSpacing: '.05em',
-                  textTransform: 'uppercase',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 6,
                   background: cfg.bg,
                   border: `1px solid ${cfg.border}`,
-                  padding: '.25rem .65rem',
                   borderRadius: 9999,
+                  padding: '.3rem .9rem',
                   flexShrink: 0,
                 }}
               >
-                {ex.type}
-              </span>
-            </div>
-
-            {/* Berichtruimte */}
-            <div style={{ padding: '1.25rem 1.1rem', flex: 1 }}>
-              {/* Bericht bubble */}
-              <div
-                style={{
-                  maxWidth: '88%',
-                  background: 'rgba(30,40,80,.6)',
-                  border: '1px solid rgba(80,100,180,.25)',
-                  borderRadius: '4px 18px 18px 18px',
-                  padding: '1rem 1.1rem',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.9rem',
-                  color: 'rgba(244,236,219,.92)',
-                  lineHeight: 1.65,
-                  boxShadow: '0 2px 12px rgba(0,0,0,.25)',
-                }}
-              >
-                {ex.message}
-              </div>
-              <div
-                style={{
-                  marginTop: '.5rem',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.68rem',
-                  color: 'rgba(244,236,219,.22)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 4,
-                }}
-              >
-                14:23
-                <svg
-                  width="14"
-                  height="9"
-                  viewBox="0 0 14 9"
-                  fill="rgba(100,160,255,.5)"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M1 4.5L4.5 8L9 1M5 4.5L8.5 8L13 1"
-                    strokeWidth="1.2"
-                    stroke="rgba(100,160,255,.5)"
-                    fill="none"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </div>
-
-              {/* KloptHet scan-indicator */}
-              <div
-                style={{
-                  marginTop: '1.5rem',
-                  padding: '.75rem 1rem',
-                  background: scanning ? 'rgba(58,172,110,.06)' : cfg.bg,
-                  border: `1px solid ${scanning ? 'rgba(58,172,110,.2)' : cfg.border}`,
-                  borderRadius: 12,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 10,
-                  transition: 'all .5s ease',
-                }}
-              >
-                {/* KH logo mark */}
-                <div
+                <span
                   style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: 8,
-                    background: scanning ? 'rgba(58,172,110,.2)' : `${cfg.color}22`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    width: 7,
+                    height: 7,
+                    borderRadius: '50%',
+                    background: cfg.color,
+                    boxShadow: `0 0 8px ${cfg.color}`,
                     flexShrink: 0,
                   }}
+                />
+                <span
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.7rem',
+                    fontWeight: 700,
+                    color: cfg.color,
+                    textTransform: 'uppercase',
+                    letterSpacing: '.06em',
+                  }}
                 >
+                  {cfg.label}
+                </span>
+              </div>
+            </div>
+
+            {/* Body — twee kolommen */}
+            <div
+              style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
+              className="grid-responsive-2"
+            >
+              {/* Links: bericht */}
+              <div
+                style={{
+                  padding: '1.75rem 1.5rem',
+                  borderRight: '1px solid rgba(255,255,255,.05)',
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.65rem',
+                    fontWeight: 700,
+                    color: 'rgba(244,236,219,.25)',
+                    letterSpacing: '.12em',
+                    textTransform: 'uppercase',
+                    marginBottom: '1rem',
+                  }}
+                >
+                  Ontvangen bericht
+                </div>
+
+                {/* SMS bubble */}
+                <div
+                  style={{
+                    background: 'rgba(20,30,65,.7)',
+                    border: '1px solid rgba(80,100,200,.2)',
+                    borderRadius: '4px 18px 18px 18px',
+                    padding: '1rem 1.15rem',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.93rem',
+                    color: 'rgba(244,236,219,.9)',
+                    lineHeight: 1.7,
+                    marginBottom: '.6rem',
+                    boxShadow: '0 4px 16px rgba(0,0,0,.3)',
+                  }}
+                >
+                  {ex.message}
+                </div>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.7rem',
+                    color: 'rgba(244,236,219,.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                  }}
+                >
+                  14:23
                   <svg
                     width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
+                    height="9"
+                    viewBox="0 0 14 9"
                     fill="none"
-                    stroke={scanning ? '#3AAC6E' : cfg.color}
-                    strokeWidth="2.2"
+                    stroke="rgba(100,160,255,.35)"
+                    strokeWidth="1.2"
                     strokeLinecap="round"
-                    strokeLinejoin="round"
                   >
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-                    {!scanning && <path d="m9 12 2 2 4-4" />}
+                    <path d="M1 4.5L4.5 8L9 1M5 4.5L8.5 8L13 1" />
                   </svg>
                 </div>
-                <div>
+
+                {/* KloptHet scan badge */}
+                <div
+                  style={{
+                    marginTop: '1.5rem',
+                    padding: '.75rem 1rem',
+                    background: scanning ? 'rgba(58,172,110,.06)' : cfg.bg,
+                    border: `1px solid ${scanning ? 'rgba(58,172,110,.2)' : cfg.border}`,
+                    borderRadius: 12,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    transition: 'all .5s',
+                  }}
+                >
                   <div
                     style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '.75rem',
-                      fontWeight: 600,
-                      color: scanning ? '#3AAC6E' : cfg.color,
+                      width: 28,
+                      height: 28,
+                      borderRadius: 8,
+                      background: scanning ? 'rgba(58,172,110,.15)' : `${cfg.color}18`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
                     }}
                   >
-                    {scanning ? 'KloptHet analyseert...' : 'KloptHet heeft gescand'}
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke={scanning ? '#3AAC6E' : cfg.color}
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                      {!scanning && <path d="m9 12 2 2 4-4" />}
+                    </svg>
                   </div>
-                  {!scanning && (
+                  <div style={{ flex: 1 }}>
                     <div
                       style={{
                         fontFamily: 'var(--font-sans)',
-                        fontSize: '.68rem',
-                        color: 'rgba(244,236,219,.4)',
-                        marginTop: 1,
+                        fontSize: '.78rem',
+                        fontWeight: 700,
+                        color: scanning ? '#3AAC6E' : cfg.color,
                       }}
                     >
-                      {cfg.label}
+                      {scanning ? 'KloptHet analyseert...' : 'KloptHet heeft gescand'}
+                    </div>
+                  </div>
+                  {scanning && (
+                    <div style={{ display: 'flex', gap: 4 }}>
+                      {[0, 1, 2].map((i) => (
+                        <div
+                          key={i}
+                          style={{
+                            width: 5,
+                            height: 5,
+                            borderRadius: '50%',
+                            background: '#3AAC6E',
+                            opacity: 0.6,
+                            animation: `pulse-dot 1.2s ease-in-out ${i * 0.2}s infinite`,
+                          }}
+                        />
+                      ))}
                     </div>
                   )}
                 </div>
-                {scanning && (
-                  <div style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
-                    {[0, 1, 2].map((i) => (
-                      <div
-                        key={i}
-                        style={{
-                          width: 5,
-                          height: 5,
-                          borderRadius: '50%',
-                          background: '#3AAC6E',
-                          opacity: 0.6,
-                          animation: `pulse-dot 1.2s ease-in-out ${i * 0.2}s infinite`,
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
               </div>
-            </div>
-          </div>
 
-          {/* RIGHT — analyse panel */}
-          <div
-            style={{
-              background: `linear-gradient(145deg, rgba(8,14,30,.98) 0%, rgba(${cfg.color === '#E5532A' ? '45,12,8' : cfg.color === '#D97B2A' ? '40,22,5' : '10,18,45'},.9) 100%)`,
-              border: `1px solid ${cfg.border}`,
-              borderRadius: 20,
-              padding: '1.75rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1.25rem',
-              position: 'relative',
-              overflow: 'hidden',
-              boxShadow: `0 24px 48px -12px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06)`,
-            }}
-          >
-            {/* Subtle top glow */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: -60,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '100%',
-                height: 120,
-                background: `radial-gradient(ellipse, ${cfg.color}22 0%, transparent 70%)`,
-                pointerEvents: 'none',
-                filter: 'blur(30px)',
-              }}
-            />
-
-            {/* Score header */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                position: 'relative',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              {/* Rechts: analyse */}
+              <div
+                style={{
+                  padding: '1.75rem 1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1.1rem',
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* Glow */}
                 <div
+                  aria-hidden="true"
                   style={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: 12,
-                    background: cfg.bg,
-                    border: `1.5px solid ${cfg.border}`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: cfg.color,
-                    flexShrink: 0,
+                    position: 'absolute',
+                    top: -60,
+                    right: -40,
+                    width: 220,
+                    height: 220,
+                    background: `radial-gradient(circle, ${cfg.color}20 0%, transparent 65%)`,
+                    pointerEvents: 'none',
+                    filter: 'blur(35px)',
                   }}
-                >
-                  {cfg.icon}
-                </div>
-                <div>
+                />
+
+                {/* Score groot */}
+                <div style={{ position: 'relative' }}>
                   <div
                     style={{
                       fontFamily: 'var(--font-sans)',
-                      fontSize: '.68rem',
+                      fontSize: '.65rem',
                       fontWeight: 700,
-                      color: 'rgba(244,236,219,.4)',
-                      letterSpacing: '.1em',
+                      color: 'rgba(244,236,219,.25)',
+                      letterSpacing: '.12em',
                       textTransform: 'uppercase',
+                      marginBottom: '.6rem',
                     }}
                   >
                     Onze analyse
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'baseline',
+                      gap: '.4rem',
+                      marginBottom: '.35rem',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-serif)',
+                        fontWeight: 700,
+                        fontSize: '3.8rem',
+                        lineHeight: 1,
+                        color: cfg.color,
+                        textShadow: `0 0 40px ${cfg.color}50`,
+                      }}
+                    >
+                      {ex.score}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.82rem',
+                        color: 'rgba(244,236,219,.2)',
+                        fontWeight: 400,
+                      }}
+                    >
+                      /10
+                    </span>
                   </div>
                   <div
                     style={{
@@ -725,182 +635,87 @@ export function DemoCarousel() {
                       fontSize: '1.35rem',
                       color: '#F4ECDB',
                       letterSpacing: '-.02em',
-                      marginTop: 1,
+                      lineHeight: 1.2,
                     }}
                   >
                     {cfg.label}
                   </div>
                 </div>
-              </div>
 
-              {/* Score badge */}
-              <div
-                style={{
-                  textAlign: 'center',
-                  background: cfg.bg,
-                  border: `1.5px solid ${cfg.border}`,
-                  borderRadius: 14,
-                  padding: '.5rem .9rem',
-                  flexShrink: 0,
-                }}
-              >
+                {/* Scorebalk */}
                 <div
                   style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontWeight: 700,
-                    fontSize: '2.8rem',
-                    lineHeight: 1,
-                    color: cfg.color,
-                    textShadow: `0 0 30px ${cfg.color}50`,
-                  }}
-                >
-                  {ex.score}
-                  <span
-                    style={{ fontSize: '1rem', color: 'rgba(244,236,219,.2)', fontWeight: 400 }}
-                  >
-                    /10
-                  </span>
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.6rem',
-                    color: 'rgba(244,236,219,.25)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '.08em',
-                    marginTop: 3,
-                  }}
-                >
-                  risico
-                </div>
-              </div>
-            </div>
-
-            {/* Score balk */}
-            <div>
-              <div
-                style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '.4rem' }}
-              >
-                <span
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.65rem',
-                    color: 'rgba(244,236,219,.3)',
-                    letterSpacing: '.06em',
-                  }}
-                >
-                  LAAG
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.65rem',
-                    color: 'rgba(244,236,219,.3)',
-                    letterSpacing: '.06em',
-                  }}
-                >
-                  HOOG
-                </span>
-              </div>
-              <div
-                style={{
-                  height: 6,
-                  borderRadius: 9999,
-                  background: 'rgba(244,236,219,.06)',
-                  overflow: 'hidden',
-                }}
-              >
-                <div
-                  style={{
-                    height: '100%',
+                    height: 4,
                     borderRadius: 9999,
-                    width: `${ex.score * 10}%`,
-                    background: `linear-gradient(90deg, ${cfg.color}99, ${cfg.color})`,
-                    transition: 'width .8s cubic-bezier(.16,1,.3,1)',
-                    boxShadow: `0 0 8px ${cfg.color}60`,
+                    background: 'rgba(244,236,219,.06)',
+                    overflow: 'hidden',
                   }}
-                />
-              </div>
-            </div>
+                >
+                  <div
+                    style={{
+                      height: '100%',
+                      borderRadius: 9999,
+                      width: `${ex.score * 10}%`,
+                      background: `linear-gradient(90deg, ${cfg.color}70, ${cfg.color})`,
+                      boxShadow: `0 0 10px ${cfg.color}60`,
+                      transition: 'width .8s cubic-bezier(.16,1,.3,1)',
+                    }}
+                  />
+                </div>
 
-            {/* Divider */}
-            <div style={{ height: 1, background: 'rgba(244,236,219,.07)' }} />
+                {/* Samenvatting */}
+                <p
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.88rem',
+                    color: 'rgba(244,236,219,.65)',
+                    lineHeight: 1.7,
+                    margin: 0,
+                  }}
+                >
+                  {ex.verdict}
+                </p>
 
-            {/* Verdict tekst */}
-            <div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.68rem',
-                  fontWeight: 700,
-                  color: 'rgba(244,236,219,.35)',
-                  letterSpacing: '.1em',
-                  textTransform: 'uppercase',
-                  marginBottom: '.6rem',
-                }}
-              >
-                Wat wij zien
-              </div>
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.9rem',
-                  color: 'rgba(244,236,219,.78)',
-                  lineHeight: 1.7,
-                  margin: 0,
-                }}
-              >
-                {ex.verdict}
-              </p>
-            </div>
-
-            {/* Flags */}
-            <div>
-              <div
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.68rem',
-                  fontWeight: 700,
-                  color: 'rgba(244,236,219,.35)',
-                  letterSpacing: '.1em',
-                  textTransform: 'uppercase',
-                  marginBottom: '.6rem',
-                }}
-              >
-                Alarmsignalen
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '.45rem' }}>
-                {ex.flags.map((f) => {
-                  const fc = flagConfig[f.level]
-                  return (
-                    <div
-                      key={f.text}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: 8,
-                        padding: '.5rem .75rem',
-                        background: fc.bg,
-                        borderRadius: 8,
-                        border: `1px solid ${fc.color}20`,
-                      }}
-                    >
-                      <span style={{ color: fc.color, flexShrink: 0, marginTop: 1 }}>
-                        {fc.icon}
-                      </span>
-                      <span
+                {/* Flags */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '.4rem' }}>
+                  {ex.flags.map((f) => {
+                    const fc = flagConfig[f.level]
+                    return (
+                      <div
+                        key={f.text}
                         style={{
-                          fontFamily: 'var(--font-sans)',
-                          fontSize: '.83rem',
-                          color: 'rgba(244,236,219,.82)',
-                          lineHeight: 1.5,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 8,
+                          padding: '.45rem .75rem',
+                          background: fc.bg,
+                          borderRadius: 8,
+                          border: `1px solid ${fc.color}18`,
                         }}
                       >
-                        {f.text}
-                      </span>
-                    </div>
-                  )
-                })}
+                        <div
+                          style={{
+                            width: 6,
+                            height: 6,
+                            borderRadius: '50%',
+                            background: fc.dot,
+                            flexShrink: 0,
+                          }}
+                        />
+                        <span
+                          style={{
+                            fontFamily: 'var(--font-sans)',
+                            fontSize: '.82rem',
+                            color: 'rgba(244,236,219,.78)',
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          {f.text}
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           </div>
