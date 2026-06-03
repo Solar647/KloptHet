@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Nav } from '@/components/shared/nav'
 import { Footer } from '@/components/shared/footer'
 import { Hero } from '@/components/marketing/hero'
+import { WhatIs } from '@/components/marketing/what-is'
 import { HowItWorks } from '@/components/marketing/how-it-works'
 import { DemoCarousel } from '@/components/marketing/demo-carousel'
 import { Pricing } from '@/components/marketing/pricing'
@@ -86,6 +87,9 @@ export default function HomePage() {
       <Nav />
       <main id="main">
         <Hero />
+        <Reveal>
+          <WhatIs />
+        </Reveal>
         <Reveal>
           <HowItWorks />
         </Reveal>
