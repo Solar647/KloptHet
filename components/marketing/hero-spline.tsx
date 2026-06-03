@@ -11,7 +11,6 @@ export function HeroSpline() {
         overflow: 'hidden',
       }}
     >
-      {/* Mobiel: gradient achtergrond via CSS */}
       <style>{`
         .spline-mobile-bg {
           display: none;
@@ -27,6 +26,11 @@ export function HeroSpline() {
         }
         .spline-desktop-iframe {
           display: block;
+          animation: splineFadeIn 1.8s ease forwards;
+        }
+        @keyframes splineFadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
         @media (max-width: 1023px) {
           .spline-mobile-bg { display: block; }

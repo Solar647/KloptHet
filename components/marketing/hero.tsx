@@ -24,7 +24,7 @@ export function Hero() {
       style={{
         position: 'relative',
         minHeight: '100svh',
-        background: '#000',
+        background: 'linear-gradient(135deg, #05080F 0%, #080F1E 40%, #0A1028 70%, #060A16 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

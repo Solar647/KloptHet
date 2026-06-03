@@ -98,6 +98,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} className={`${spaceGrotesk.variable} ${inter.variable} h-full`}>
+      <head>
+        <link rel="preconnect" href="https://my.spline.design" />
+        <link rel="dns-prefetch" href="https://my.spline.design" />
+        <link rel="preconnect" href="https://prod.spline.design" />
+      </head>
       <body className="flex min-h-full flex-col">
         <a href="#main" className="skip-link">
           Naar hoofdinhoud
