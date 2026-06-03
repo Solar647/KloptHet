@@ -16,6 +16,9 @@ export default function RegistrerenPage() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [birthDay, setBirthDay] = useState('')
+  const [birthMonth, setBirthMonth] = useState('')
+  const [birthYear, setBirthYear] = useState('')
   const [agreed, setAgreed] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -44,6 +47,16 @@ export default function RegistrerenPage() {
       setError(error.message)
       setLoading(false)
       return
+    }
+    // Sla geboortedatum op als die is ingevuld
+    if (birthDay && birthMonth && birthYear) {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (user) {
+        const birthDate = `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`
+        await supabase.from('profiles').update({ birth_date: birthDate }).eq('id', user.id)
+      }
     }
     setSuccess(true)
     setLoading(false)
@@ -154,6 +167,58 @@ export default function RegistrerenPage() {
           required
           autoComplete="new-password"
         />
+
+        {/* Geboortedatum */}
+        <div style={{ marginBottom: '1rem' }}>
+          <label
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.82rem',
+              fontWeight: 600,
+              color: 'rgba(244,236,219,.7)',
+              display: 'block',
+              marginBottom: '.4rem',
+            }}
+          >
+            Geboortedatum
+          </label>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.4fr', gap: '.5rem' }}>
+            {[
+              { placeholder: 'Dag', value: birthDay, onChange: setBirthDay, max: 31 },
+              { placeholder: 'Maand', value: birthMonth, onChange: setBirthMonth, max: 12 },
+              { placeholder: 'Jaar', value: birthYear, onChange: setBirthYear, max: 9999 },
+            ].map(({ placeholder, value, onChange, max }) => (
+              <input
+                key={placeholder}
+                type="number"
+                placeholder={placeholder}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                min={1}
+                max={max}
+                style={{
+                  padding: '.75rem .9rem',
+                  background: 'rgba(244,236,219,.06)',
+                  border: '1px solid rgba(244,236,219,.14)',
+                  borderRadius: 10,
+                  color: '#F4ECDB',
+                  fontSize: '.95rem',
+                  fontFamily: 'var(--font-sans)',
+                  outline: 'none',
+                  width: '100%',
+                  boxSizing: 'border-box' as const,
+                  MozAppearance: 'textfield' as never,
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = 'rgba(58,172,110,.5)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'rgba(244,236,219,.14)'
+                }}
+              />
+            ))}
+          </div>
+        </div>
 
         {/* Akkoord checkbox */}
         <label
