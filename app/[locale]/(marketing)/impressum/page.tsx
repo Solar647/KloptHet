@@ -27,16 +27,10 @@ export default function ImpressumPage() {
 
       <Section title="Contactgegevens">
         <P>
-          <strong>E-mail (algemeen):</strong> info@klopthet.nl
+          <strong>E-mail:</strong> hulp@klopthet.com
         </P>
         <P>
-          <strong>E-mail (privacy):</strong> privacy@klopthet.nl
-        </P>
-        <P>
-          <strong>E-mail (hulp):</strong> hulp@klopthet.nl
-        </P>
-        <P>
-          <strong>Website:</strong> klopthet.nl
+          <strong>Website:</strong> klopthet.com
         </P>
       </Section>
 
