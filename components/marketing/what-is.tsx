@@ -136,6 +136,10 @@ export function WhatIs() {
           backgroundSize: '28px 28px',
           zIndex: 1,
           pointerEvents: 'none',
+          maskImage:
+            'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
+          WebkitMaskImage:
+            'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
         }}
       />
 
