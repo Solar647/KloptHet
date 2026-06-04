@@ -99,6 +99,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
         ownAvatarUrl={ownProfile?.avatar_url ?? null}
         joinedAt={memberRecord.joined_at}
         ownerCanSeeScans={memberRecord.owner_can_see_scans}
+        memberCanSeeOwner={memberRecord.member_can_see_owner}
         otherMembers={otherMembersList}
       />
     )

@@ -22,6 +22,7 @@ type Props = {
   ownAvatarUrl?: string | null
   joinedAt: string | null
   ownerCanSeeScans: boolean
+  memberCanSeeOwner: boolean
   otherMembers?: OtherMember[]
 }
 
@@ -32,13 +33,28 @@ export function FamilielidView({
   ownerAvatarUrl,
   ownAvatarUrl,
   joinedAt,
-  ownerCanSeeScans,
+  ownerCanSeeScans: initialOwnerCanSeeScans,
+  memberCanSeeOwner,
   otherMembers = [],
 }: Props) {
   const locale = useLocale()
   const router = useRouter()
   const [leaving, setLeaving] = useState(false)
   const [confirmLeave, setConfirmLeave] = useState(false)
+  const [ownerCanSeeScans, setOwnerCanSeeScans] = useState(initialOwnerCanSeeScans)
+  const [savingPrivacy, setSavingPrivacy] = useState(false)
+
+  const toggleOwnerCanSee = async () => {
+    const newVal = !ownerCanSeeScans
+    setOwnerCanSeeScans(newVal)
+    setSavingPrivacy(true)
+    await fetch('/api/family/members', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ memberId, owner_can_see_scans: newVal }),
+    })
+    setSavingPrivacy(false)
+  }
 
   const handleLeave = async () => {
     setLeaving(true)
@@ -393,46 +409,159 @@ export function FamilielidView({
         </div>
       </div>
 
-      {/* Privacy info */}
+      {/* Privacy instellingen */}
       <div
         style={{
-          background: 'rgba(244,236,219,.03)',
-          border: '1px solid rgba(244,236,219,.07)',
-          borderRadius: 12,
-          padding: '1rem 1.25rem',
-          marginBottom: '1.5rem',
-          display: 'flex',
-          gap: 10,
-          alignItems: 'flex-start',
+          background: 'rgba(244,236,219,.04)',
+          border: '1px solid rgba(244,236,219,.1)',
+          borderRadius: 16,
+          overflow: 'hidden',
+          marginBottom: '1.25rem',
         }}
       >
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="rgba(244,236,219,.35)"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ flexShrink: 0, marginTop: 1 }}
+        <div
+          style={{
+            padding: '.85rem 1.25rem',
+            borderBottom: '1px solid rgba(244,236,219,.07)',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.72rem',
+            fontWeight: 700,
+            color: 'rgba(244,236,219,.35)',
+            letterSpacing: '.1em',
+            textTransform: 'uppercase',
+          }}
         >
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 16v-4M12 8h.01" />
-        </svg>
+          Privacy
+        </div>
+
+        {/* Toggle: eigenaar mag mijn scans zien */}
+        <div style={{ padding: '1rem 1.25rem' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              gap: '1rem',
+            }}
+          >
+            <div style={{ flex: 1 }}>
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontWeight: 600,
+                  fontSize: '.9rem',
+                  color: '#F4ECDB',
+                  marginBottom: '.25rem',
+                }}
+              >
+                {ownerName} mag mijn scans zien
+              </div>
+              <div
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.78rem',
+                  color: 'rgba(244,236,219,.4)',
+                  lineHeight: 1.5,
+                }}
+              >
+                {ownerCanSeeScans
+                  ? `${ownerName} kan uw scan-uitslagen bekijken in het familie-dashboard.`
+                  : 'Uw scan-uitslagen zijn privé. Alleen u kunt ze zien.'}
+              </div>
+            </div>
+            <button
+              onClick={toggleOwnerCanSee}
+              disabled={savingPrivacy}
+              role="switch"
+              aria-checked={ownerCanSeeScans}
+              style={{
+                width: 42,
+                height: 24,
+                borderRadius: 9999,
+                background: ownerCanSeeScans ? '#3AAC6E' : 'rgba(244,236,219,.12)',
+                border: 'none',
+                cursor: savingPrivacy ? 'wait' : 'pointer',
+                position: 'relative',
+                transition: 'background .2s',
+                flexShrink: 0,
+                padding: 0,
+                opacity: savingPrivacy ? 0.6 : 1,
+              }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 3,
+                  left: ownerCanSeeScans ? 21 : 3,
+                  width: 18,
+                  height: 18,
+                  borderRadius: '50%',
+                  background: '#fff',
+                  transition: 'left .2s',
+                  boxShadow: '0 1px 3px rgba(0,0,0,.3)',
+                }}
+              />
+            </button>
+          </div>
+        </div>
+
+        {/* Info: wat eigenaar voor jou heeft ingesteld */}
+        <div
+          style={{
+            padding: '.75rem 1.25rem 1rem',
+            borderTop: '1px solid rgba(244,236,219,.06)',
+          }}
+        >
+          <div
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.78rem',
+              color: 'rgba(244,236,219,.35)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+            }}
+          >
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            Uw rechten:{' '}
+            <span style={{ color: 'rgba(244,236,219,.6)', fontWeight: 600 }}>
+              {memberCanSeeOwner ? 'Bekijken + scannen' : 'Alleen bekijken'}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style={{
+          marginBottom: '1.5rem',
+          padding: '.75rem 1rem',
+          background: 'rgba(244,236,219,.02)',
+          border: '1px solid rgba(244,236,219,.06)',
+          borderRadius: 10,
+        }}
+      >
         <p
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '.82rem',
-            color: 'rgba(244,236,219,.45)',
+            fontSize: '.78rem',
+            color: 'rgba(244,236,219,.35)',
             margin: 0,
             lineHeight: 1.6,
           }}
         >
-          {ownerCanSeeScans
-            ? `${ownerName} kan uw scan-uitslagen zien. U kunt dit aanpassen via de eigenaar.`
-            : 'Uw scan-uitslagen zijn privé en niet zichtbaar voor de eigenaar.'}{' '}
-          Wilt u uw eigen groep beheren?{' '}
+          Wilt u uw eigen familiegroep beheren?{' '}
           <Link
             href={`/${locale}/abonnement`}
             style={{ color: 'rgba(58,172,110,.8)', textDecoration: 'none' }}

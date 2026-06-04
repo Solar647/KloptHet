@@ -94,9 +94,10 @@ export function FamilieClient({
     }
   }
 
+  // Alleen member_can_see_owner (lid-rechten) wordt door eigenaar gezet
   const updatePermission = async (
     memberId: string,
-    field: 'owner_can_see_scans' | 'member_can_see_owner',
+    field: 'member_can_see_owner',
     value: boolean
   ) => {
     setMembers((prev) => prev.map((m) => (m.id === memberId ? { ...m, [field]: value } : m)))
@@ -260,7 +261,7 @@ export function FamilieClient({
           <MemberRow
             key={member.id}
             member={member}
-            onToggle={updatePermission}
+            onTogglePermission={updatePermission}
             onRemove={removeMember}
             locale={locale}
           />
@@ -314,7 +315,6 @@ export function FamilieClient({
           </div>
 
           {inviteLink ? (
-            /* Na succesvolle invite: link tonen + knop voor nieuwe invite */
             <div>
               <div
                 style={{
@@ -421,7 +421,6 @@ export function FamilieClient({
               </button>
             </div>
           ) : (
-            /* Formulier */
             <div>
               <form
                 onSubmit={handleInvite}
@@ -484,6 +483,18 @@ export function FamilieClient({
                   {inviteError}
                 </p>
               )}
+              {inviteSuccess && !inviteLink && (
+                <p
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.82rem',
+                    color: '#3AAC6E',
+                    margin: '.6rem 0 0',
+                  }}
+                >
+                  {inviteSuccess}
+                </p>
+              )}
               <p
                 style={{
                   fontFamily: 'var(--font-sans)',
@@ -535,9 +546,8 @@ export function FamilieClient({
             lineHeight: 1.6,
           }}
         >
-          Zet &ldquo;Ik zie hun scans&rdquo; aan om de scan-uitslagen van een familielid te
-          bekijken. U ontvangt automatisch een melding wanneer een familielid een gevaarlijk bericht
-          controleert.
+          Familieleden bepalen zelf of u hun scans mag zien. U kunt per lid instellen welke rechten
+          zij hebben: alleen bekijken of ook zelf scannen.
         </p>
       </div>
     </div>
@@ -546,16 +556,12 @@ export function FamilieClient({
 
 function MemberRow({
   member,
-  onToggle,
+  onTogglePermission,
   onRemove,
   locale,
 }: {
   member: Member
-  onToggle: (
-    id: string,
-    field: 'owner_can_see_scans' | 'member_can_see_owner',
-    value: boolean
-  ) => void
+  onTogglePermission: (id: string, field: 'member_can_see_owner', value: boolean) => void
   onRemove: (id: string) => void
   locale: string
 }) {
@@ -610,7 +616,34 @@ function MemberRow({
             }}
           >
             {member.status === 'active' ? (
-              `Actief lid${member.joined_at ? ` · Lid sinds ${new Date(member.joined_at).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}` : ''}`
+              <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                {member.joined_at &&
+                  `Actief · Lid sinds ${new Date(member.joined_at).toLocaleDateString('nl-NL', { day: 'numeric', month: 'short' })}`}
+                {/* Indicator: lid heeft scans gedeeld */}
+                {member.owner_can_see_scans && (
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 3,
+                      color: '#3AAC6E',
+                      fontSize: '.68rem',
+                      fontWeight: 600,
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: 5,
+                        height: 5,
+                        borderRadius: '50%',
+                        background: '#3AAC6E',
+                        display: 'inline-block',
+                      }}
+                    />
+                    Deelt scans
+                  </span>
+                )}
+              </span>
             ) : (
               <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span
@@ -629,8 +662,8 @@ function MemberRow({
           </div>
         </div>
 
-        {/* Recente scans dots */}
-        {member.recentScans && member.recentScans.length > 0 && (
+        {/* Recente scans dots — alleen als lid scans deelt */}
+        {member.owner_can_see_scans && member.recentScans && member.recentScans.length > 0 && (
           <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
             {member.recentScans.slice(0, 5).map((s, i) => (
               <div
@@ -733,37 +766,91 @@ function MemberRow({
         </button>
       </div>
 
-      {/* Uitnodigingslink direct zichtbaar voor pending leden */}
+      {/* Uitnodigingslink voor pending leden */}
       {member.status === 'pending' && member.invite_token && (
         <div style={{ padding: '0 1.25rem .85rem' }}>
           <PendingInviteLink token={member.invite_token} locale={locale} />
         </div>
       )}
 
-      {/* Uitklapbaar: instellingen + recente activiteit */}
+      {/* Uitklapbaar: rechten + scans */}
       {expanded && (
         <div style={{ padding: '0 1.25rem 1.25rem', borderTop: '1px solid rgba(244,236,219,.05)' }}>
-          {/* Toestemmingen */}
-          <div
-            style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '.75rem' }}
-          >
-            <Toggle
-              label="Ik zie hun scan-uitslagen"
-              description="U kunt de scan-uitslagen van dit familielid zien"
-              value={member.owner_can_see_scans}
-              onChange={(v) => onToggle(member.id, 'owner_can_see_scans', v)}
-            />
-            <Toggle
-              label="Zij zien mijn scan-uitslagen"
-              description="Uw familielid kan uw gecontroleerde berichten ook zien"
-              value={member.member_can_see_owner}
-              onChange={(v) => onToggle(member.id, 'member_can_see_owner', v)}
-            />
+          {/* Lid-rechten: eigenaar kiest */}
+          <div style={{ marginTop: '1rem' }}>
+            <div
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.68rem',
+                fontWeight: 700,
+                color: 'rgba(244,236,219,.3)',
+                letterSpacing: '.1em',
+                textTransform: 'uppercase',
+                marginBottom: '.75rem',
+              }}
+            >
+              Rechten van dit lid
+            </div>
+            <div style={{ display: 'flex', gap: '.5rem' }}>
+              {[
+                {
+                  value: false,
+                  label: 'Alleen bekijken',
+                  desc: 'Lid kan scan-geschiedenis inzien',
+                },
+                {
+                  value: true,
+                  label: 'Bekijken + scannen',
+                  desc: 'Lid kan ook zelf scans toevoegen',
+                },
+              ].map((opt) => (
+                <button
+                  key={String(opt.value)}
+                  onClick={() => onTogglePermission(member.id, 'member_can_see_owner', opt.value)}
+                  style={{
+                    flex: 1,
+                    padding: '.65rem .85rem',
+                    borderRadius: 10,
+                    border: `1px solid ${member.member_can_see_owner === opt.value ? 'rgba(58,172,110,.4)' : 'rgba(244,236,219,.1)'}`,
+                    background:
+                      member.member_can_see_owner === opt.value
+                        ? 'rgba(58,172,110,.08)'
+                        : 'rgba(244,236,219,.03)',
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                  }}
+                >
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.82rem',
+                      fontWeight: 600,
+                      color:
+                        member.member_can_see_owner === opt.value
+                          ? '#3AAC6E'
+                          : 'rgba(244,236,219,.6)',
+                      marginBottom: '.2rem',
+                    }}
+                  >
+                    {opt.label}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.72rem',
+                      color: 'rgba(244,236,219,.3)',
+                    }}
+                  >
+                    {opt.desc}
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Recente activiteit */}
+          {/* Scans van dit lid — alleen zichtbaar als lid dit heeft ingeschakeld */}
           {member.owner_can_see_scans && member.recentScans && member.recentScans.length > 0 && (
-            <div style={{ marginTop: '1rem' }}>
+            <div style={{ marginTop: '1.25rem' }}>
               <div
                 style={{
                   fontFamily: 'var(--font-sans)',
@@ -775,7 +862,7 @@ function MemberRow({
                   marginBottom: '.6rem',
                 }}
               >
-                Recente activiteit
+                Recente scans
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '.35rem' }}>
                 {member.recentScans.map((s, i) => (
@@ -815,6 +902,31 @@ function MemberRow({
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Lid heeft scans niet gedeeld */}
+          {!member.owner_can_see_scans && member.status === 'active' && (
+            <div
+              style={{
+                marginTop: '1rem',
+                padding: '.65rem .85rem',
+                background: 'rgba(244,236,219,.03)',
+                border: '1px solid rgba(244,236,219,.07)',
+                borderRadius: 10,
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.78rem',
+                  color: 'rgba(244,236,219,.3)',
+                  margin: 0,
+                }}
+              >
+                Dit lid heeft scans nog niet gedeeld. Zij kunnen dit zelf aanzetten in hun
+                familie-dashboard.
+              </p>
             </div>
           )}
 
@@ -994,83 +1106,5 @@ function Badge({ label, color }: { label: string; color: string }) {
     >
       {label}
     </span>
-  )
-}
-
-function Toggle({
-  label,
-  description,
-  value,
-  onChange,
-}: {
-  label: string
-  description: string
-  value: boolean
-  onChange: (v: boolean) => void
-}) {
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        gap: '1rem',
-      }}
-    >
-      <div style={{ flex: 1 }}>
-        <div
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '.85rem',
-            fontWeight: 600,
-            color: '#F4ECDB',
-            marginBottom: '.15rem',
-          }}
-        >
-          {label}
-        </div>
-        <div
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: '.75rem',
-            color: 'rgba(244,236,219,.4)',
-            lineHeight: 1.4,
-          }}
-        >
-          {description}
-        </div>
-      </div>
-      <button
-        onClick={() => onChange(!value)}
-        role="switch"
-        aria-checked={value}
-        style={{
-          width: 42,
-          height: 24,
-          borderRadius: 9999,
-          background: value ? '#3AAC6E' : 'rgba(244,236,219,.12)',
-          border: 'none',
-          cursor: 'pointer',
-          position: 'relative',
-          transition: 'background .2s',
-          flexShrink: 0,
-          padding: 0,
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            top: 3,
-            left: value ? 21 : 3,
-            width: 18,
-            height: 18,
-            borderRadius: '50%',
-            background: '#fff',
-            transition: 'left .2s',
-            boxShadow: '0 1px 3px rgba(0,0,0,.3)',
-          }}
-        />
-      </button>
-    </div>
   )
 }
