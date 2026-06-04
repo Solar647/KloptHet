@@ -137,7 +137,7 @@ export function FamilielidView({
           </p>
         </div>
         <button
-          onClick={() => router.refresh()}
+          onClick={() => window.location.reload()}
           style={{
             background: 'transparent',
             border: '1px solid rgba(244,236,219,.15)',
@@ -743,6 +743,20 @@ function FamilieActiviteitLid({ feed }: { feed: ActivityScan[] }) {
             gap: '.6rem',
           }}
         >
+          {feed.length === 0 && (
+            <p
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.82rem',
+                color: 'rgba(244,236,219,.35)',
+                margin: 0,
+                textAlign: 'center',
+                padding: '.5rem 0',
+              }}
+            >
+              Geen gedeelde scans. Familieleden kunnen dit aanzetten via hun privacy-instellingen.
+            </p>
+          )}
           {feed.map((s, i) => {
             const color = catColor[s.verdict_category]
             const label = catLabel[s.verdict_category]
