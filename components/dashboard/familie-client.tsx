@@ -968,6 +968,8 @@ function MemberRow({
 
 function FamilieActiviteit({ members }: { members: Member[] }) {
   const [open, setOpen] = useState(false)
+  const [showAll, setShowAll] = useState(false)
+  const PAGE = 3
 
   // Verzamel alle scans van leden die delen, gesorteerd op datum
   const feed = members
@@ -1082,7 +1084,7 @@ function FamilieActiviteit({ members }: { members: Member[] }) {
             <div
               style={{ display: 'flex', flexDirection: 'column', gap: '.6rem', marginTop: '1rem' }}
             >
-              {feed.map((s, i) => {
+              {(showAll ? feed : feed.slice(0, PAGE)).map((s, i) => {
                 const isDanger = s.verdict_category === 'phishing'
                 const isWarn = s.verdict_category === 'doubt'
                 const color = isDanger ? '#E5532A' : isWarn ? '#D97B2A' : '#3AAC6E'
@@ -1265,6 +1267,35 @@ function FamilieActiviteit({ members }: { members: Member[] }) {
                   </div>
                 )
               })}
+
+              {/* Meer laden */}
+              {!showAll && feed.length > PAGE && (
+                <button
+                  onClick={() => setShowAll(true)}
+                  style={{
+                    marginTop: '.5rem',
+                    width: '100%',
+                    padding: '.65rem',
+                    background: 'transparent',
+                    border: '1px solid rgba(244,236,219,.1)',
+                    borderRadius: 10,
+                    color: 'rgba(244,236,219,.45)',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.82rem',
+                    cursor: 'pointer',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = '#F4ECDB'
+                    e.currentTarget.style.borderColor = 'rgba(244,236,219,.25)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = 'rgba(244,236,219,.45)'
+                    e.currentTarget.style.borderColor = 'rgba(244,236,219,.1)'
+                  }}
+                >
+                  Meer laden ({feed.length - PAGE} resterend)
+                </button>
+              )}
             </div>
           )}
         </div>

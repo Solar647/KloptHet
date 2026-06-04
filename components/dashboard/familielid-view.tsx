@@ -650,6 +650,8 @@ const catLabel = { safe: 'Veilig', doubt: 'Let op', phishing: 'Gevaarlijk' }
 
 function FamilieActiviteitLid({ feed }: { feed: ActivityScan[] }) {
   const [open, setOpen] = useState(false)
+  const [showAll, setShowAll] = useState(false)
+  const PAGE = 3
   const alertCount = feed.filter((s) => s.verdict_category === 'phishing').length
 
   return (
@@ -748,7 +750,7 @@ function FamilieActiviteitLid({ feed }: { feed: ActivityScan[] }) {
               Geen gedeelde scans. Familieleden kunnen dit aanzetten via hun privacy-instellingen.
             </p>
           )}
-          {feed.map((s, i) => {
+          {(showAll ? feed : feed.slice(0, PAGE)).map((s, i) => {
             const color = catColor[s.verdict_category]
             const label = catLabel[s.verdict_category]
             const name = s.memberName || s.memberEmail.split('@')[0]
@@ -896,6 +898,34 @@ function FamilieActiviteitLid({ feed }: { feed: ActivityScan[] }) {
               </div>
             )
           })}
+
+          {!showAll && feed.length > PAGE && (
+            <button
+              onClick={() => setShowAll(true)}
+              style={{
+                marginTop: '.5rem',
+                width: '100%',
+                padding: '.65rem',
+                background: 'transparent',
+                border: '1px solid rgba(244,236,219,.1)',
+                borderRadius: 10,
+                color: 'rgba(244,236,219,.45)',
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.82rem',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#F4ECDB'
+                e.currentTarget.style.borderColor = 'rgba(244,236,219,.25)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'rgba(244,236,219,.45)'
+                e.currentTarget.style.borderColor = 'rgba(244,236,219,.1)'
+              }}
+            >
+              Meer laden ({feed.length - PAGE} resterend)
+            </button>
+          )}
         </div>
       )}
     </div>
