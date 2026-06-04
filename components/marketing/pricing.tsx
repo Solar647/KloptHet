@@ -75,27 +75,58 @@ export function Pricing() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
+        background: '#060C1A',
         overflow: 'hidden',
       }}
     >
-      {/* Soft glow */}
+      {/* Kleur glows */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: '10%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '70%',
-          height: '60%',
-          background:
-            'radial-gradient(ellipse at center, rgba(168,203,160,.28) 0%, transparent 70%)',
+          top: '-20%',
+          left: '-10%',
+          width: 700,
+          height: 700,
+          background: 'radial-gradient(circle, rgba(20,200,150,.35) 0%, transparent 55%)',
+          filter: 'blur(60px)',
           pointerEvents: 'none',
-          filter: 'blur(40px)',
+          zIndex: 0,
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '-20%',
+          right: '-10%',
+          width: 700,
+          height: 700,
+          background: 'radial-gradient(circle, rgba(140,60,230,.35) 0%, transparent 55%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+          zIndex: 0,
         }}
       />
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+      {/* Grid dot patroon */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1px)',
+          backgroundSize: '28px 28px',
+          zIndex: 1,
+          pointerEvents: 'none',
+          maskImage:
+            'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
+          WebkitMaskImage:
+            'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
+        }}
+      />
+
+      <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 2 }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <div
