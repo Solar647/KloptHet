@@ -135,6 +135,9 @@ export async function POST(request: Request) {
       .eq('content_hash', contentHash)
       .single()
 
+    // Unieke reporter fingerprint — user_id heeft voorrang over ip
+    const reporterFingerprint = user?.id ?? hashIp(getIpFromRequest(request))
+
     if (knownPattern && knownPattern.report_count >= PATTERN_THRESHOLD) {
       // Bekende scam — geen AI-call nodig
       const verdict = {
@@ -147,14 +150,20 @@ export async function POST(request: Request) {
         reportCount: knownPattern.report_count,
       }
 
-      // Update report_count
-      await supabase
-        .from('scam_patterns')
-        .update({
-          report_count: knownPattern.report_count + 1,
-          last_seen_at: new Date().toISOString(),
-        })
-        .eq('content_hash', contentHash)
+      // Alleen tellen als nieuwe unieke reporter (insert faalt bij duplicaat)
+      const { error: dupError } = await supabase
+        .from('scam_pattern_reporters')
+        .insert({ content_hash: contentHash, reporter_fingerprint: reporterFingerprint })
+
+      if (!dupError) {
+        await supabase
+          .from('scam_patterns')
+          .update({
+            report_count: knownPattern.report_count + 1,
+            last_seen_at: new Date().toISOString(),
+          })
+          .eq('content_hash', contentHash)
+      }
 
       const ipHash = user ? null : hashIp(getIpFromRequest(request))
       await supabase.from('scans').insert({
@@ -196,32 +205,40 @@ export async function POST(request: Request) {
       scan_duration_ms: verdict.durationMs,
     })
 
-    // --- Scam pattern bijwerken ---
+    // --- Scam pattern bijwerken (alleen unieke reporters) ---
     if (verdict.category === 'phishing' || verdict.category === 'doubt') {
-      const { data: existing } = await supabase
-        .from('scam_patterns')
-        .select('id, report_count')
-        .eq('content_hash', contentHash)
-        .single()
+      // Probeer reporter in te voegen — faalt bij duplicaat
+      const { error: dupError } = await supabase
+        .from('scam_pattern_reporters')
+        .insert({ content_hash: contentHash, reporter_fingerprint: reporterFingerprint })
 
-      if (existing) {
-        await supabase
+      if (!dupError) {
+        // Nieuwe unieke reporter — pattern updaten of aanmaken
+        const { data: existing } = await supabase
           .from('scam_patterns')
-          .update({
-            report_count: existing.report_count + 1,
-            last_seen_at: new Date().toISOString(),
-          })
+          .select('id, report_count')
           .eq('content_hash', contentHash)
-      } else {
-        await supabase.from('scam_patterns').insert({
-          content_hash: contentHash,
-          input_kind: input.kind,
-          verdict_category: verdict.category,
-          verdict_score: verdict.score,
-          verdict_summary: verdict.summary,
-          verdict_flags: verdict.flags,
-          fraud_type: verdict.fraudType ?? null,
-        })
+          .single()
+
+        if (existing) {
+          await supabase
+            .from('scam_patterns')
+            .update({
+              report_count: existing.report_count + 1,
+              last_seen_at: new Date().toISOString(),
+            })
+            .eq('content_hash', contentHash)
+        } else {
+          await supabase.from('scam_patterns').insert({
+            content_hash: contentHash,
+            input_kind: input.kind,
+            verdict_category: verdict.category,
+            verdict_score: verdict.score,
+            verdict_summary: verdict.summary,
+            verdict_flags: verdict.flags,
+            fraud_type: verdict.fraudType ?? null,
+          })
+        }
       }
     }
 
