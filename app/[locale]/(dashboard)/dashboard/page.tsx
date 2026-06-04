@@ -1,8 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowRightIcon } from '@/components/shared/icons'
-import { Mascot } from '@/components/shared/mascot'
+import { SearchIcon, ArrowRightIcon } from '@/components/shared/icons'
 
 const fraudTips = [
   {
@@ -503,29 +502,25 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
 
           {!recentScans?.length ? (
             <div style={{ padding: '2.5rem', textAlign: 'center' }}>
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '.5rem' }}>
-                <Mascot size={100} expression="searching" />
+              <div
+                style={{
+                  color: 'rgba(244,236,219,.3)',
+                  marginBottom: '.75rem',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <SearchIcon size={32} strokeWidth={1.4} />
               </div>
               <p
                 style={{
-                  color: 'rgba(244,236,219,.5)',
-                  fontFamily: 'var(--font-sans)',
-                  margin: '0 0 .25rem',
-                  fontSize: '.95rem',
-                  fontWeight: 600,
-                }}
-              >
-                Nog geen controles uitgevoerd.
-              </p>
-              <p
-                style={{
-                  color: 'rgba(244,236,219,.3)',
+                  color: 'rgba(244,236,219,.4)',
                   fontFamily: 'var(--font-sans)',
                   margin: 0,
-                  fontSize: '.82rem',
+                  fontSize: '.9rem',
                 }}
               >
-                Upload een screenshot of plak een verdacht bericht.
+                Nog geen controles. Controleer uw eerste bericht.
               </p>
             </div>
           ) : (
