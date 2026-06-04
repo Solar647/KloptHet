@@ -1,4 +1,5 @@
 import { Scanner } from '@/components/scanner/scanner'
+import { ScanCounter } from '@/components/scanner/scan-counter'
 import { createClient } from '@/lib/supabase/server'
 
 export default async function ScanPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -99,48 +100,7 @@ export default async function ScanPage({ params }: { params: Promise<{ locale: s
           </div>
 
           {/* Gratis scan teller */}
-          {scansLeft !== null && (
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 8,
-                marginTop: '1rem',
-                background: scansLeft === 0 ? 'rgba(229,83,42,.08)' : 'rgba(244,236,219,.06)',
-                border: `1px solid ${scansLeft === 0 ? 'rgba(229,83,42,.25)' : 'rgba(244,236,219,.14)'}`,
-                borderRadius: 9999,
-                padding: '.35rem 1rem',
-              }}
-            >
-              {/* Bolletjes */}
-              <div style={{ display: 'flex', gap: 4 }}>
-                {Array.from({ length: FREE_LIMIT }).map((_, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      width: 7,
-                      height: 7,
-                      borderRadius: '50%',
-                      background: i < scansLeft ? '#3AAC6E' : 'rgba(244,236,219,.2)',
-                      transition: 'background .3s',
-                    }}
-                  />
-                ))}
-              </div>
-              <span
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.78rem',
-                  fontWeight: 600,
-                  color: scansLeft === 0 ? '#E5532A' : 'rgba(244,236,219,.7)',
-                }}
-              >
-                {scansLeft === 0
-                  ? 'Gratis controles op'
-                  : `${scansLeft} van ${FREE_LIMIT} gratis ${scansLeft === 1 ? 'controle' : 'controles'} over`}
-              </span>
-            </div>
-          )}
+          {scansLeft !== null && <ScanCounter initial={scansLeft} limit={FREE_LIMIT} />}
 
           {/* Stats pill */}
           {(totalScans ?? 0) > 0 && !isFree && (
