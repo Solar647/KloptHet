@@ -335,7 +335,6 @@ export function Scanner({ dashboard = false }: { dashboard?: boolean }) {
               ref={fileInputRef}
               type="file"
               accept="image/png,image/jpeg,image/webp,image/heic,image/heif"
-              capture="environment"
               style={{ display: 'none' }}
               onChange={(e) => {
                 const file = e.target.files?.[0]
