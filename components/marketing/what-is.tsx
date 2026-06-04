@@ -132,8 +132,8 @@ export function WhatIs() {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,.09) 1px, transparent 1px)',
-          backgroundSize: '44px 44px',
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,.14) 1px, transparent 1px)',
+          backgroundSize: '36px 36px',
           zIndex: 1,
           pointerEvents: 'none',
           maskImage:
