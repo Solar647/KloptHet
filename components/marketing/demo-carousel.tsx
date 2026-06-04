@@ -745,22 +745,24 @@ export function DemoCarousel() {
               gap: 8,
               padding: '.9rem 2rem',
               borderRadius: 14,
-              background: '#3AAC6E',
-              color: '#07190F',
+              background: 'linear-gradient(135deg, #3fc97a 0%, #2ea85c 100%)',
+              color: '#04120A',
               fontFamily: 'var(--font-sans)',
               fontSize: '.95rem',
               fontWeight: 700,
               textDecoration: 'none',
               transition: 'transform .15s, box-shadow .15s',
-              boxShadow: '0 4px 20px rgba(58,172,110,.25)',
+              boxShadow: '0 4px 28px rgba(58,172,110,.5), 0 0 0 1px rgba(58,172,110,.2)',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-2px)'
-              e.currentTarget.style.boxShadow = '0 6px 28px rgba(58,172,110,.35)'
+              e.currentTarget.style.boxShadow =
+                '0 8px 36px rgba(58,172,110,.65), 0 0 0 1px rgba(58,172,110,.3)'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)'
-              e.currentTarget.style.boxShadow = '0 4px 20px rgba(58,172,110,.25)'
+              e.currentTarget.style.boxShadow =
+                '0 4px 28px rgba(58,172,110,.5), 0 0 0 1px rgba(58,172,110,.2)'
             }}
           >
             Controleer uw eigen bericht
