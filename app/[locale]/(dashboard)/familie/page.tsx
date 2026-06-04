@@ -112,9 +112,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
       .eq('owner_can_see_scans', true)
 
     if (sharingMembers && sharingMembers.length > 0) {
-      const sharingUserIds = sharingMembers
-        .filter((m) => m.user_id && m.user_id !== user.id)
-        .map((m) => m.user_id as string)
+      const sharingUserIds = sharingMembers.filter((m) => m.user_id).map((m) => m.user_id as string)
 
       if (sharingUserIds.length > 0) {
         const [{ data: scans }, { data: profiles }] = await Promise.all([
