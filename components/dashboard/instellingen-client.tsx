@@ -339,6 +339,57 @@ export function InstellingenClient({
         </button>
       </Section>
 
+      {/* Gegevens exporteren */}
+      <Section title="Uw gegevens downloaden">
+        <p
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.9rem',
+            color: 'rgba(244,236,219,.55)',
+            margin: '0 0 1rem',
+            lineHeight: 1.6,
+          }}
+        >
+          Download een overzicht van al uw gegevens die wij bewaren: accountinfo, scangeschiedenis
+          en abonnementsgegevens. Uw recht op inzage conform de AVG.
+        </p>
+        <a
+          href="/api/export"
+          download
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '.75rem 1.25rem',
+            borderRadius: 10,
+            background: 'rgba(244,236,219,.07)',
+            border: '1px solid rgba(244,236,219,.18)',
+            color: '#F4ECDB',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.9rem',
+            fontWeight: 600,
+            textDecoration: 'none',
+            cursor: 'pointer',
+          }}
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Gegevens downloaden (JSON)
+        </a>
+      </Section>
+
       {/* Account verwijderen */}
       <Section title="Account verwijderen" danger>
         <p

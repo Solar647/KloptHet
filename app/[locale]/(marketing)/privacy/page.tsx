@@ -38,6 +38,12 @@ export default function PrivacyPage() {
             rate-limiting (anoniem)
           </li>
           <li>
+            <strong>Scam-meldingen:</strong> wanneer u een bericht scant dat als oplichting wordt
+            herkend, slaan wij een anonieme vingerafdruk (SHA-256 hash) van de inhoud op — nooit de
+            inhoud zelf — om dubbele meldingen te voorkomen en andere gebruikers te waarschuwen.
+            Deze hash is niet herleidbaar naar het originele bericht.
+          </li>
+          <li>
             <strong>Betalingsgegevens:</strong> worden verwerkt door Mollie — wij slaan geen
             betaalkaartgegevens op
           </li>
@@ -107,8 +113,8 @@ export default function PrivacyPage() {
         <P>Op grond van de AVG heeft u de volgende rechten:</P>
         <Ul>
           <li>
-            <strong>Inzage:</strong> u kunt al uw gegevens opvragen via uw dashboard (export als
-            JSON)
+            <strong>Inzage:</strong> u kunt al uw gegevens downloaden via uw dashboard onder
+            Instellingen → &ldquo;Gegevens downloaden&rdquo; (JSON-bestand)
           </li>
           <li>
             <strong>Rectificatie:</strong> u kunt uw naam en e-mailadres aanpassen in de
