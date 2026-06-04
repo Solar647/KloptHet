@@ -327,10 +327,10 @@ export default async function OverOnsPage({ params }: { params: Promise<{ locale
             >
               Neem contact op via{' '}
               <a
-                href="mailto:info@klopthet.nl"
+                href="mailto:hulp@klopthet.com"
                 style={{ color: '#3AAC6E', textDecoration: 'none' }}
               >
-                info@klopthet.nl
+                hulp@klopthet.com
               </a>{' '}
               — wij reageren binnen één werkdag.
             </p>

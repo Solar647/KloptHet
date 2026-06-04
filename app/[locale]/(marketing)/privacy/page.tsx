@@ -15,7 +15,7 @@ export default function PrivacyPage() {
         </P>
         <P>
           Bij vragen kunt u contact opnemen via{' '}
-          <A href="mailto:privacy@klopthet.nl">privacy@klopthet.nl</A>.
+          <A href="mailto:hulp@klopthet.com">hulp@klopthet.com</A>.
         </P>
       </Section>
 
@@ -120,7 +120,7 @@ export default function PrivacyPage() {
           </li>
           <li>
             <strong>Bezwaar:</strong> u kunt bezwaar maken tegen verwerking via{' '}
-            <A href="mailto:privacy@klopthet.nl">privacy@klopthet.nl</A>
+            <A href="mailto:hulp@klopthet.com">hulp@klopthet.com</A>
           </li>
         </Ul>
         <P>

@@ -94,7 +94,8 @@ export default function VoorwaardenPage() {
 
       <Section title="8. Contact">
         <P>
-          Voor vragen over deze voorwaarden: <A href="mailto:info@klopthet.nl">info@klopthet.nl</A>
+          Voor vragen over deze voorwaarden:{' '}
+          <A href="mailto:hulp@klopthet.com">hulp@klopthet.com</A>
         </P>
       </Section>
     </LegalLayout>
