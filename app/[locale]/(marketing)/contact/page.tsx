@@ -1,10 +1,16 @@
 'use client'
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
+import { useLocale } from 'next-intl'
 import { Nav } from '@/components/shared/nav'
 import { Footer } from '@/components/shared/footer'
 
 export default function ContactPage() {
+  const locale = useLocale()
+  const searchParams = useSearchParams()
+  const fromDashboard = searchParams.get('from') === 'dashboard'
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [subject, setSubject] = useState('')
@@ -37,6 +43,9 @@ export default function ContactPage() {
     }
   }
 
+  const backHref = fromDashboard ? `/${locale}/dashboard` : `/${locale}`
+  const backLabel = fromDashboard ? '← Terug naar dashboard' : '← Terug naar home'
+
   return (
     <>
       <Nav />
@@ -53,6 +62,31 @@ export default function ContactPage() {
           }}
           className="grid-responsive-2"
         >
+          {/* Terugknop */}
+          <div style={{ gridColumn: '1 / -1', marginBottom: '-.5rem' }}>
+            <Link
+              href={backHref}
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.85rem',
+                color: 'rgba(244,236,219,.45)',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                transition: 'color .15s',
+              }}
+              onMouseEnter={(e) =>
+                ((e.currentTarget as HTMLElement).style.color = 'rgba(244,236,219,.8)')
+              }
+              onMouseLeave={(e) =>
+                ((e.currentTarget as HTMLElement).style.color = 'rgba(244,236,219,.45)')
+              }
+            >
+              {backLabel}
+            </Link>
+          </div>
+
           {/* Links: info */}
           <div>
             <div
@@ -287,11 +321,30 @@ export default function ContactPage() {
                     fontSize: '.95rem',
                     color: 'rgba(244,236,219,.6)',
                     lineHeight: 1.7,
-                    margin: 0,
+                    margin: '0 0 1.5rem',
                   }}
                 >
                   Wij reageren binnen één werkdag op uw bericht.
                 </p>
+                <Link
+                  href={backHref}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    padding: '.8rem 1.5rem',
+                    borderRadius: 12,
+                    background: 'rgba(244,236,219,.08)',
+                    border: '1px solid rgba(244,236,219,.15)',
+                    color: '#F4ECDB',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.9rem',
+                    fontWeight: 600,
+                    textDecoration: 'none',
+                  }}
+                >
+                  {backLabel}
+                </Link>
               </div>
             ) : (
               <form

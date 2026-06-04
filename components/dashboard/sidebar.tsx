@@ -375,7 +375,7 @@ export function Sidebar() {
       >
         {/* Hulp */}
         <Link
-          href={`/${locale}/contact`}
+          href={`/${locale}/contact?from=dashboard`}
           style={{
             display: 'flex',
             alignItems: 'center',
