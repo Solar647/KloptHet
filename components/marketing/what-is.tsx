@@ -153,14 +153,29 @@ export function WhatIs() {
           }}
           className="grid-responsive-2"
         >
-          {/* Links: tekst */}
+          {/* Links: tekst — elk element staggered */}
           <motion.div
-            initial={reduced ? false : { opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: EASE }}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.25 }}
+            variants={
+              reduced
+                ? {}
+                : {
+                    hidden: {},
+                    show: { transition: { staggerChildren: 0.12 } },
+                  }
+            }
           >
-            <div
+            <motion.div
+              variants={
+                reduced
+                  ? {}
+                  : {
+                      hidden: { opacity: 0, y: 16 },
+                      show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
+                    }
+              }
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -183,9 +198,17 @@ export function WhatIs() {
                 }}
               />
               Wat is KloptHet?
-            </div>
+            </motion.div>
 
-            <h2
+            <motion.h2
+              variants={
+                reduced
+                  ? {}
+                  : {
+                      hidden: { opacity: 0, y: 20 },
+                      show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE } },
+                    }
+              }
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontWeight: 500,
@@ -200,9 +223,17 @@ export function WhatIs() {
               <em style={{ fontStyle: 'italic', color: 'rgba(58,172,110,.9)' }}>
                 fraude&shy;detective.
               </em>
-            </h2>
+            </motion.h2>
 
-            <p
+            <motion.p
+              variants={
+                reduced
+                  ? {}
+                  : {
+                      hidden: { opacity: 0, y: 16 },
+                      show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+                    }
+              }
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '1.05rem',
@@ -215,9 +246,17 @@ export function WhatIs() {
               Fraude via WhatsApp, sms en e-mail groeit explosief — en ouderen zijn het vaakst het
               doelwit. KloptHet analyseert elk verdacht bericht in seconden en geeft een duidelijk
               antwoord in gewone taal.
-            </p>
+            </motion.p>
 
-            <p
+            <motion.p
+              variants={
+                reduced
+                  ? {}
+                  : {
+                      hidden: { opacity: 0, y: 16 },
+                      show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+                    }
+              }
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '1.05rem',
@@ -229,10 +268,18 @@ export function WhatIs() {
             >
               Geen app te installeren. Geen technische kennis nodig. Gewoon een screenshot uploaden
               — en binnen 5 seconden weet u of het te vertrouwen is.
-            </p>
+            </motion.p>
 
             {/* Stats */}
-            <div
+            <motion.div
+              variants={
+                reduced
+                  ? {}
+                  : {
+                      hidden: { opacity: 0, y: 16 },
+                      show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+                    }
+              }
               style={{
                 display: 'flex',
                 gap: '2.5rem',
@@ -271,11 +318,15 @@ export function WhatIs() {
                   </div>
                 </div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* Rechts: 4 pillars */}
-          <div
+          {/* Rechts: 4 pillars — schuift van rechts in */}
+          <motion.div
+            initial={reduced ? false : { opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, ease: EASE }}
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
@@ -285,10 +336,10 @@ export function WhatIs() {
             {pillars.map((p, i) => (
               <motion.div
                 key={p.title}
-                initial={reduced ? false : { opacity: 0, y: 24, scale: 0.97 }}
+                initial={reduced ? false : { opacity: 0, y: 20, scale: 0.97 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: EASE }}
+                transition={{ duration: 0.5, delay: 0.15 + i * 0.08, ease: EASE }}
                 style={{
                   background: 'rgba(244,236,219,.04)',
                   border: '1px solid rgba(244,236,219,.08)',
@@ -337,7 +388,7 @@ export function WhatIs() {
                 </p>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
