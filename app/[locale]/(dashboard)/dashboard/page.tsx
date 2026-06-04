@@ -50,7 +50,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
       .select('id, verdict_category, verdict_score, verdict_summary, created_at, input_kind')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
-      .limit(5),
+      .limit(3),
     supabase.from('scans').select('id', { count: 'exact', head: true }).eq('user_id', user.id),
     supabase.from('scans').select('verdict_category').eq('user_id', user.id),
   ])
@@ -485,7 +485,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ loca
             >
               Recente controles
             </h2>
-            {(totalScans ?? 0) > 5 && (
+            {(totalScans ?? 0) > 0 && (
               <Link
                 href={`/${locale}/geschiedenis`}
                 style={{
