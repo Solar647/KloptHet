@@ -15,9 +15,6 @@ export default function ImpressumPage() {
           <strong>Rechtsvorm:</strong> Eenmanszaak
         </P>
         <P>
-          <strong>Eigenaar:</strong> Oscar De G.
-        </P>
-        <P>
           <strong>Vestigingsland:</strong> Nederland
         </P>
         <P>
