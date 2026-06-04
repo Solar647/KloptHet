@@ -157,7 +157,7 @@ export function Sidebar() {
   const handleLogout = async () => {
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.push(`/${locale}`)
+    window.location.href = `/${locale}`
   }
 
   const [hoveredId, setHoveredId] = useState<string | null>(null)
