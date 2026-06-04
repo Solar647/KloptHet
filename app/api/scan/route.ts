@@ -20,7 +20,7 @@ const PATTERN_THRESHOLD = 5 // na 5 meldingen = bekende scam
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'image/heif']
 const MAX_SIZE = 10 * 1024 * 1024 // 10 MB
 const ANON_MONTHLY_LIMIT = 3
-const FREE_MONTHLY_LIMIT = 5
+const FREE_TOTAL_LIMIT = 3
 
 export async function POST(request: Request) {
   try {
@@ -62,19 +62,18 @@ export async function POST(request: Request) {
         .single()
 
       if (sub?.tier === 'free') {
-        const startOfMonth = new Date()
-        startOfMonth.setDate(1)
-        startOfMonth.setHours(0, 0, 0, 0)
-
         const { count } = await supabase
           .from('scans')
           .select('id', { count: 'exact', head: true })
           .eq('user_id', user.id)
-          .gte('created_at', startOfMonth.toISOString())
 
-        if ((count ?? 0) >= FREE_MONTHLY_LIMIT) {
+        if ((count ?? 0) >= FREE_TOTAL_LIMIT) {
           return NextResponse.json(
-            { error: 'Maandlimiet bereikt. Upgrade naar Standaard voor onbeperkte scans.' },
+            {
+              error:
+                'U heeft uw 3 gratis controles gebruikt. Upgrade naar een abonnement voor onbeperkte scans.',
+              upgrade: true,
+            },
             { status: 429 }
           )
         }

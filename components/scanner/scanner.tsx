@@ -53,7 +53,7 @@ export function Scanner({ dashboard = false }: { dashboard?: boolean }) {
         const data = await response.json()
 
         if (!response.ok) {
-          setErrorMsg(data.error ?? 'Er ging iets mis.')
+          setErrorMsg(data.upgrade ? '__upgrade__' : (data.error ?? 'Er ging iets mis.'))
           setState('error')
           return
         }
@@ -532,44 +532,89 @@ export function Scanner({ dashboard = false }: { dashboard?: boolean }) {
           <div
             style={{
               marginTop: '1.25rem',
-              background: 'rgba(229,83,42,.1)',
-              border: '1px solid rgba(229,83,42,.3)',
+              background:
+                errorMsg === '__upgrade__' ? 'rgba(58,172,110,.08)' : 'rgba(229,83,42,.1)',
+              border: `1px solid ${errorMsg === '__upgrade__' ? 'rgba(58,172,110,.3)' : 'rgba(229,83,42,.3)'}`,
               borderRadius: 12,
-              padding: '1rem 1.25rem',
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: 10,
+              padding: '1.25rem',
             }}
           >
-            <span style={{ color: '#E5532A', flexShrink: 0, display: 'flex' }}>
-              <AlertIcon size={18} strokeWidth={1.8} />
-            </span>
-            <div>
-              <p
-                style={{
-                  color: '#FF8585',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.95rem',
-                  margin: '0 0 .5rem',
-                }}
-              >
-                {errorMsg}
-              </p>
-              <button
-                onClick={reset}
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  color: 'rgba(244,236,219,.6)',
-                  cursor: 'pointer',
-                  fontSize: '.85rem',
-                  fontFamily: 'var(--font-sans)',
-                  padding: 0,
-                }}
-              >
-                Probeer opnieuw
-              </button>
-            </div>
+            {errorMsg === '__upgrade__' ? (
+              <div>
+                <p
+                  style={{
+                    color: '#F4ECDB',
+                    fontFamily: 'var(--font-sans)',
+                    fontWeight: 600,
+                    fontSize: '.95rem',
+                    margin: '0 0 .35rem',
+                  }}
+                >
+                  Uw 3 gratis controles zijn op
+                </p>
+                <p
+                  style={{
+                    color: 'rgba(244,236,219,.6)',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.85rem',
+                    margin: '0 0 1rem',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Upgrade naar een abonnement voor onbeperkte scans.
+                </p>
+                <a
+                  href={`/${locale}/abonnement`}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    padding: '.75rem 1.25rem',
+                    background: '#3AAC6E',
+                    color: '#07190F',
+                    borderRadius: 10,
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.9rem',
+                    fontWeight: 700,
+                    textDecoration: 'none',
+                  }}
+                >
+                  Bekijk abonnementen →
+                </a>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                <span style={{ color: '#E5532A', flexShrink: 0, display: 'flex' }}>
+                  <AlertIcon size={18} strokeWidth={1.8} />
+                </span>
+                <div>
+                  <p
+                    style={{
+                      color: '#FF8585',
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.95rem',
+                      margin: '0 0 .5rem',
+                    }}
+                  >
+                    {errorMsg}
+                  </p>
+                  <button
+                    onClick={reset}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: 'rgba(244,236,219,.6)',
+                      cursor: 'pointer',
+                      fontSize: '.85rem',
+                      fontFamily: 'var(--font-sans)',
+                      padding: 0,
+                    }}
+                  >
+                    Probeer opnieuw
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
