@@ -146,37 +146,53 @@ export function DemoCarousel() {
         padding: 'clamp(4rem, 8vw, 7rem) clamp(1.5rem, 3vw, 3rem)',
         position: 'relative',
         overflow: 'hidden',
-        background: '#091020',
+        background: '#060C1A',
       }}
     >
+      {/* Kleur glows */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '-10%',
+          right: '-5%',
+          width: 550,
+          height: 550,
+          background: 'radial-gradient(circle, rgba(140,60,230,.2) 0%, transparent 55%)',
+          filter: 'blur(80px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '-10%',
+          left: '-5%',
+          width: 500,
+          height: 500,
+          background: 'radial-gradient(circle, rgba(20,200,150,.22) 0%, transparent 55%)',
+          filter: 'blur(80px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
       {/* Dot patroon */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'radial-gradient(circle, rgba(244,236,219,.07) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-          maskImage: 'radial-gradient(ellipse 85% 75% at 50% 40%, black 30%, transparent 85%)',
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,.14) 1px, transparent 1px)',
+          backgroundSize: '36px 36px',
+          maskImage:
+            'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
           WebkitMaskImage:
-            'radial-gradient(ellipse 85% 75% at 50% 40%, black 30%, transparent 85%)',
+            'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
           pointerEvents: 'none',
-        }}
-      />
-
-      {/* Ambient glow */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: '20%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '70%',
-          height: '60%',
-          background: 'radial-gradient(ellipse at center, rgba(30,60,120,.1) 0%, transparent 65%)',
-          pointerEvents: 'none',
-          filter: 'blur(60px)',
+          zIndex: 1,
         }}
       />
 
