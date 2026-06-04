@@ -819,7 +819,7 @@ function ExampleCard({
 
 function FamilyDashboardPreview() {
   const members = [
-    { name: 'U (eigenaar)', email: 'oscar@...', initial: 'O', active: true },
+    { name: 'U (eigenaar)', email: 'u@...', initial: 'U', active: true },
     { name: 'Moeder', email: 'truus@...', initial: 'T', active: true },
     { name: 'Vader', email: 'jan@...', initial: 'J', active: false },
   ]
