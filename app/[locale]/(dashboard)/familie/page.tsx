@@ -127,6 +127,15 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
     .eq('owner_id', user.id)
     .maybeSingle()
 
+  type ScanRow = {
+    verdict_category: 'safe' | 'doubt' | 'phishing'
+    verdict_score: number
+    verdict_summary: string | null
+    input_kind: string
+    created_at: string
+    user_id: string
+  }
+
   type MemberRow = {
     id: string
     invited_email: string
@@ -136,9 +145,12 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
     joined_at: string | null
     user_id: string | null
     avatar_url?: string | null
+    memberName?: string | null
     recentScans: {
       verdict_category: 'safe' | 'doubt' | 'phishing'
       verdict_score: number
+      verdict_summary: string | null
+      input_kind: string
       created_at: string
     }[]
   }
@@ -162,30 +174,39 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
 
       const scansByUser: Record<string, MemberRow['recentScans']> = {}
       const avatarMap: Record<string, string> = {}
+      const nameMap: Record<string, string> = {}
 
       if (activeUserIds.length > 0) {
         const [{ data: allScans }, { data: profiles }] = await Promise.all([
           supabase
             .from('scans')
-            .select('user_id, verdict_category, verdict_score, created_at')
+            .select(
+              'user_id, verdict_category, verdict_score, verdict_summary, input_kind, created_at'
+            )
             .in('user_id', activeUserIds)
             .order('created_at', { ascending: false })
-            .limit(activeUserIds.length * 5),
-          supabase.from('profiles').select('id, avatar_url').in('id', activeUserIds),
+            .limit(activeUserIds.length * 15),
+          supabase.from('profiles').select('id, avatar_url, full_name').in('id', activeUserIds),
         ])
-        for (const scan of allScans ?? []) {
+        const nameMap: Record<string, string> = {}
+        for (const scan of (allScans ?? []) as ScanRow[]) {
           if (!scansByUser[scan.user_id]) scansByUser[scan.user_id] = []
-          if (scansByUser[scan.user_id].length < 5) {
+          if (scansByUser[scan.user_id].length < 15) {
             scansByUser[scan.user_id].push({
-              verdict_category: scan.verdict_category as 'safe' | 'doubt' | 'phishing',
+              verdict_category: scan.verdict_category,
               verdict_score: scan.verdict_score,
+              verdict_summary: scan.verdict_summary,
+              input_kind: scan.input_kind,
               created_at: scan.created_at,
             })
           }
         }
-        profiles?.forEach((p) => {
-          if (p.avatar_url) avatarMap[p.id] = p.avatar_url
-        })
+        profiles?.forEach(
+          (p: { id: string; avatar_url: string | null; full_name: string | null }) => {
+            if (p.avatar_url) avatarMap[p.id] = p.avatar_url
+            if (p.full_name) nameMap[p.id] = p.full_name
+          }
+        )
       }
 
       members = rawMembers.map((m) => ({
@@ -197,6 +218,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
         joined_at: m.joined_at,
         user_id: m.user_id,
         avatar_url: (m.user_id && avatarMap[m.user_id]) || null,
+        memberName: (m.user_id && nameMap[m.user_id]) || null,
         invite_token:
           m.status === 'pending' ? ((m as { invite_token?: string }).invite_token ?? null) : null,
         recentScans: (m.user_id && scansByUser[m.user_id]) || [],
