@@ -55,6 +55,7 @@ export function Sidebar() {
   const [tier, setTier] = useState('free')
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [badges, setBadges] = useState<Record<string, number>>({})
+  const [fadingBadges, setFadingBadges] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     const supabase = createClient()
@@ -137,11 +138,19 @@ export function Sidebar() {
         stored.family = count ?? 0
       }
       localStorage.setItem('kh_seen', JSON.stringify(stored))
-      setBadges((prev) => {
-        const n = { ...prev }
-        delete n[tabId]
-        return n
-      })
+      setFadingBadges((prev) => new Set(prev).add(tabId))
+      setTimeout(() => {
+        setBadges((prev) => {
+          const n = { ...prev }
+          delete n[tabId]
+          return n
+        })
+        setFadingBadges((prev) => {
+          const n = new Set(prev)
+          n.delete(tabId)
+          return n
+        })
+      }, 400)
     })
   }
 
@@ -379,6 +388,9 @@ export function Sidebar() {
                     justifyContent: 'center',
                     padding: '0 4px',
                     flexShrink: 0,
+                    opacity: fadingBadges.has(item.id) ? 0 : 1,
+                    transform: fadingBadges.has(item.id) ? 'scale(.6)' : 'scale(1)',
+                    transition: 'opacity .35s ease, transform .35s ease',
                   }}
                 >
                   {badgeCount === 9 ? '9+' : badgeCount}
