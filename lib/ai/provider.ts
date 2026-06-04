@@ -16,6 +16,8 @@ export interface Verdict {
   learnMoreSlug?: string
   model: string
   durationMs: number
+  knownScam?: boolean
+  reportCount?: number
 }
 
 export interface AIProvider {
