@@ -32,7 +32,7 @@ export function MobileBottomNav() {
         left: 0,
         right: 0,
         zIndex: 100,
-        background: 'rgba(7,25,15,.95)',
+        background: 'rgba(0,0,0,.97)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderTop: '1px solid rgba(244,236,219,.1)',
