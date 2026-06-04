@@ -87,14 +87,15 @@ const STEPS = [
   },
 ]
 
-export function DashboardTour() {
+export function DashboardTour({ userId }: { userId: string }) {
   const [step, setStep] = useState(0)
   const [visible, setVisible] = useState(false)
   const [rect, setRect] = useState<DOMRect | null>(null)
+  const tourKey = `kh_tour_done_${userId}`
 
   useEffect(() => {
     if (typeof window === 'undefined' || window.innerWidth < 900) return
-    const done = localStorage.getItem('kh_tour_done')
+    const done = localStorage.getItem(tourKey)
     if (!done) {
       // Wacht tot sidebar gerenderd is, probeer meerdere keren
       let attempts = 0
@@ -126,7 +127,7 @@ export function DashboardTour() {
   }, [visible, step])
 
   const finish = () => {
-    localStorage.setItem('kh_tour_done', '1')
+    localStorage.setItem(tourKey, '1')
     setVisible(false)
   }
 
