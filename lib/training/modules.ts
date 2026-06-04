@@ -803,6 +803,108 @@ Geen enkel legitiem bedrijf of instantie vraagt dit telefonisch.`,
         explanation:
           'Nummer-spoofing maakt het mogelijk elk nummer te tonen. Uw naam en adres kunnen uit eerder gelekte databases komen. Dit bewijst niet dat het uw bank is.',
       },
+      {
+        question:
+          'U ontvangt een sms-code terwijl u aan de telefoon bent met iemand die zegt van uw bank te zijn. Ze vragen u de code voor te lezen. Wat doet u?',
+        options: [
+          'U leest de code voor — de bank heeft hem nodig',
+          'U geeft de code alleen als ze uw naam kunnen noemen',
+          'U geeft de code nooit door — deze codes zijn altijd alleen voor uzelf',
+          'U vraagt of ze de code zelf kunnen opvragen',
+        ],
+        correct: 2,
+        explanation:
+          'Sms-codes (zoals inlogcodes of bevestigingscodes) zijn altijd alleen voor uzelf bedoeld. Een echte bank vraagt hier nooit om. Door de code door te geven geeft u de oplichter toegang tot uw rekening.',
+      },
+      {
+        question:
+          'Iemand belt namens de Belastingdienst. U zou €800 terugkrijgen maar moet eerst €25 administratiekosten betalen. Wat is dit?',
+        options: [
+          'Een echte teruggave — de Belastingdienst werkt soms zo',
+          'Loterij-fraude vermomd als belastingteruggave',
+          'Legitiem — €25 kosten voor €800 terug is een goede deal',
+          'Fraude — de Belastingdienst vraagt nooit vooraf te betalen voor een teruggave',
+        ],
+        correct: 3,
+        explanation:
+          'De Belastingdienst vraagt nooit vooraf geld te betalen voor een teruggave. Dit is een klassiek voorbeeld van advance-fee fraude: u betaalt, maar de "teruggave" bestaat niet.',
+      },
+      {
+        question:
+          'U wordt gebeld: "Uw computer stuurt verdachte signalen. Installeer dit programma zodat we kunnen helpen." Wat doet u?',
+        options: [
+          'U installeert het — anders loopt u risico',
+          'U installeert het alleen als ze een officieel e-mailadres hebben',
+          'U hangt op en installeert niets — dit is computerhulp-fraude',
+          'U vraagt wat het programma kost',
+        ],
+        correct: 2,
+        explanation:
+          "Programma's zoals TeamViewer of AnyDesk geven de beller volledige toegang tot uw computer. Geen legitiem bedrijf vraagt u dit te installeren na een onverwacht telefoontje.",
+      },
+      {
+        question: 'Wat is "nummer-spoofing"?',
+        options: [
+          'Een techniek waarbij oplichters uw telefoonnummer stelen',
+          'Een manier om elk telefoonnummer op uw scherm te laten verschijnen, ook dat van uw bank',
+          'Een app die valse nummers blokkeert',
+          'Het doorsturen van gesprekken naar een ander nummer',
+        ],
+        correct: 1,
+        explanation:
+          'Nummer-spoofing stelt oplichters in staat elk willekeurig nummer op het scherm van het slachtoffer te tonen. Zelfs het officiële nummer van uw bank kan worden nagebootst.',
+      },
+      {
+        question:
+          'U hangt op na een verdacht gesprek maar wilt controleren of het echt uw bank was. Wat is het veiligste om te doen?',
+        options: [
+          'Terugbellen naar het nummer dat belde',
+          'Wacht 10 minuten en bel dan zelf het officiële nummer op uw bankpas of de website',
+          'Stuur een e-mail naar de bank',
+          'Bel de politie',
+        ],
+        correct: 1,
+        explanation:
+          'Na ophangen kan de lijn soms nog actief zijn aan de kant van de oplichter. Wacht enkele minuten en bel dan zelf via het officiële nummer op uw bankpas, rekening of de officiële website.',
+      },
+      {
+        question:
+          'Een beller zegt: "Uw rekening wordt geblokkeerd als u niet direct actie onderneemt." Hoe herkent u dit als oplichting?',
+        options: [
+          'Echte banken blokkeren nooit rekeningen',
+          'Tijdsdruk en urgentie zijn klassieke technieken van oplichters om u niet te laten nadenken',
+          'De beller spreekt Nederlands met een accent',
+          "Banken bellen altijd 's avonds",
+        ],
+        correct: 1,
+        explanation:
+          'Oplichters creëren bewust tijdsdruk zodat u niet de kans krijgt na te denken of iemand te raadplegen. "Direct actie ondernemen" is een alarmsignaal. Echte banken geven u altijd bedenktijd.',
+      },
+      {
+        question:
+          'Iemand belt namens de politie: "Wij hebben uw geld nodig als bewijs in een fraudeonderzoek. U krijgt het later terug." Wat doet u?',
+        options: [
+          'U helpt — de politie vertrouwen is belangrijk',
+          'U geeft het geld alleen als ze een legitimatiebewijs tonen',
+          'U hangt op — de politie vraagt nooit geld over te maken als bewijs',
+          'U maakt de helft over als compromis',
+        ],
+        correct: 2,
+        explanation:
+          'De politie vraagt nooit geld over te maken als onderdeel van een onderzoek. Dit is een bekende vorm van oplichting genaamd "bankhelpdeskfraude". Hang op en bel de politie via 0900-8844.',
+      },
+      {
+        question: 'Welke informatie is het gevaarlijkst om telefonisch door te geven?',
+        options: [
+          'Uw postcode',
+          'Uw geboortedatum',
+          'Pincode, wachtwoord of inlogcodes',
+          'Uw naam',
+        ],
+        correct: 2,
+        explanation:
+          'Pincodes, wachtwoorden en eenmalige codes geven directe toegang tot uw rekeningen. Geen enkele legitieme organisatie vraagt hier telefonisch om. Uw naam of postcode is minder gevaarlijk.',
+      },
     ],
   },
 ]
