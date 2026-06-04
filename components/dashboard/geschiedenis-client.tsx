@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { HistoryIcon } from '@/components/shared/icons'
 
 type Flag = { label: string; severity: 'danger' | 'warn' | 'info' }
@@ -48,6 +49,13 @@ const PAGE_SIZE = 5
 export function GeschiedenisClient({ scans }: { scans: Scan[] }) {
   const [selected, setSelected] = useState<Scan | null>(null)
   const [page, setPage] = useState(1)
+  const router = useRouter()
+
+  useEffect(() => {
+    const onScan = () => router.refresh()
+    window.addEventListener('kh:scan_done', onScan)
+    return () => window.removeEventListener('kh:scan_done', onScan)
+  }, [router])
 
   const visible = scans.slice(0, page * PAGE_SIZE)
   const hasMore = scans.length > visible.length
