@@ -27,7 +27,7 @@ const tiers = [
     yearly: 59.9,
     features: [
       'Onbeperkt controles',
-      'Tot 5 familieleden',
+      'Tot 3 familieleden',
       'Mantelzorger-dashboard',
       'Melding bij verdacht bericht',
       'Wekelijkse fraude-nieuwsbrief',
@@ -43,7 +43,7 @@ const tiers = [
     yearly: 99.9,
     features: [
       'Alles uit Familie',
-      'Telefonische hulplijn (24/7)',
+      'Tot 5 familieleden',
       'Persoonlijke installatie-hulp',
       'Prioriteit-support',
       'Cadeau-abonnement instellen',

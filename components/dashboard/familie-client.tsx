@@ -187,7 +187,7 @@ export function FamilieClient({
             te nodigen en hun berichten te volgen.
           </p>
           <Link
-            href={`/${locale}/abonnement/checkout?tier=family`}
+            href={`/${locale}/abonnement`}
             style={{
               background: '#3AAC6E',
               color: '#07190F',

@@ -20,13 +20,13 @@ const tierInfo: Record<
     name: 'Familie',
     monthly: 5.99,
     yearly: 59.9,
-    features: ['Onbeperkt controles', 'Tot 5 familieleden', 'Mantelzorger-dashboard'],
+    features: ['Onbeperkt controles', 'Tot 3 familieleden', 'Mantelzorger-dashboard'],
   },
   premium: {
     name: 'Premium',
     monthly: 9.99,
     yearly: 99.9,
-    features: ['Alles uit Familie', 'Telefonische hulplijn (24/7)', 'Prioriteit-support'],
+    features: ['Alles uit Familie', 'Tot 5 familieleden', 'Prioriteit-support'],
   },
 }
 

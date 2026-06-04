@@ -40,7 +40,7 @@ const tiers = [
     yearlyPrice: 99.9,
     features: [
       'Alles uit Familie',
-      'Telefonische hulplijn (24/7)',
+      'Tot 5 familieleden',
       'Persoonlijke installatie-hulp',
       'Prioriteit-support',
     ],
