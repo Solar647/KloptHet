@@ -67,9 +67,9 @@ export function HeroSpline() {
           position: 'absolute',
           bottom: 0,
           right: 0,
-          width: 160,
-          height: 40,
-          background: '#05080F',
+          width: 200,
+          height: 52,
+          background: 'linear-gradient(135deg, transparent 0%, #05080F 55%)',
           zIndex: 1,
           pointerEvents: 'none',
         }}
