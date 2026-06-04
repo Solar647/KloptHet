@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { HistoryIcon } from '@/components/shared/icons'
 
-type Flag = { text: string; level: 'danger' | 'warn' | 'safe' }
+type Flag = { label: string; severity: 'danger' | 'warn' | 'info' }
 
 type Scan = {
   id: string
@@ -40,7 +40,7 @@ const cat = {
 const flagColor = {
   danger: { color: '#E5532A', bg: 'rgba(229,83,42,.1)', dot: '#E5532A' },
   warn: { color: '#D97B2A', bg: 'rgba(217,123,42,.1)', dot: '#D97B2A' },
-  safe: { color: '#3AAC6E', bg: 'rgba(58,172,110,.1)', dot: '#3AAC6E' },
+  info: { color: 'rgba(244,236,219,.6)', bg: 'rgba(244,236,219,.05)', dot: 'rgba(244,236,219,.4)' },
 }
 
 const PAGE_SIZE = 5
@@ -233,7 +233,7 @@ export function GeschiedenisClient({ scans }: { scans: Scan[] }) {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '.45rem' }}>
                 {flags.map((flag, i) => {
-                  const fc = flagColor[flag.level] ?? flagColor.warn
+                  const fc = flagColor[flag.severity] ?? flagColor.info
                   return (
                     <div
                       key={i}
@@ -265,7 +265,7 @@ export function GeschiedenisClient({ scans }: { scans: Scan[] }) {
                           lineHeight: 1.5,
                         }}
                       >
-                        {flag.text}
+                        {flag.label}
                       </span>
                     </div>
                   )
@@ -355,7 +355,7 @@ export function GeschiedenisClient({ scans }: { scans: Scan[] }) {
             {visible.map((scan, i) => {
               const c = cat[scan.verdict_category as keyof typeof cat] ?? cat.safe
               const flags = scan.verdict_flags ?? []
-              const dangerCount = flags.filter((f) => f.level === 'danger').length
+              const dangerCount = flags.filter((f) => f.severity === 'danger').length
 
               return (
                 <button
