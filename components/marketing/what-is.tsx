@@ -321,12 +321,8 @@ export function WhatIs() {
             </motion.div>
           </motion.div>
 
-          {/* Rechts: 4 pillars — schuift van rechts in */}
-          <motion.div
-            initial={reduced ? false : { opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7, ease: EASE }}
+          {/* Rechts: 4 pillars */}
+          <div
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
@@ -336,15 +332,17 @@ export function WhatIs() {
             {pillars.map((p, i) => (
               <motion.div
                 key={p.title}
-                initial={reduced ? false : { opacity: 0, y: 20, scale: 0.97 }}
+                initial={reduced ? false : { opacity: 0, y: 60, scale: 0.88 }}
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: 0.15 + i * 0.08, ease: EASE }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, delay: i * 0.15, ease: EASE }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 style={{
                   background: 'rgba(244,236,219,.04)',
                   border: '1px solid rgba(244,236,219,.08)',
                   borderRadius: 16,
                   padding: '1.25rem',
+                  cursor: 'default',
                 }}
               >
                 <div
@@ -388,7 +386,7 @@ export function WhatIs() {
                 </p>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
