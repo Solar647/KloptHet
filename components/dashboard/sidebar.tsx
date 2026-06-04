@@ -104,6 +104,15 @@ export function Sidebar() {
       if (changed) localStorage.setItem('kh_seen', JSON.stringify(stored))
       setBadges(newBadges)
     })
+
+    const onScanDone = () => {
+      setBadges((prev) => ({
+        ...prev,
+        geschiedenis: Math.min((prev.geschiedenis ?? 0) + 1, 9),
+      }))
+    }
+    window.addEventListener('kh:scan_done', onScanDone)
+    return () => window.removeEventListener('kh:scan_done', onScanDone)
   }, [])
 
   const clearBadge = (tabId: string, tabPath: string) => {
@@ -362,8 +371,9 @@ export function Sidebar() {
                     fontFamily: 'var(--font-sans)',
                     fontSize: '.6rem',
                     fontWeight: 700,
-                    minWidth: 16,
-                    height: 16,
+                    lineHeight: 1,
+                    minWidth: 18,
+                    height: 18,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',

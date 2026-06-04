@@ -60,6 +60,7 @@ export function Scanner({ dashboard = false }: { dashboard?: boolean }) {
 
         setVerdict(data.verdict)
         setState('done')
+        window.dispatchEvent(new CustomEvent('kh:scan_done'))
       } catch {
         setErrorMsg('Geen verbinding. Controleer uw internet en probeer opnieuw.')
         setState('error')
