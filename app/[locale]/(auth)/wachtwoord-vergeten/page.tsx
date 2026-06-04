@@ -18,7 +18,7 @@ export default function WachtwoordVergetenPage() {
     setLoading(true)
     const supabase = createClient()
     await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/${locale}/auth/reset`,
+      redirectTo: `${window.location.origin}/${locale}/auth/callback?next=/${locale}/auth/reset`,
     })
     setLoading(false)
     setSent(true)

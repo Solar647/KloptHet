@@ -42,7 +42,7 @@ export function HeroSpline() {
 
       <iframe
         className="spline-desktop-iframe"
-        src="https://my.spline.design/bganimation-NotapPXDYaifuZfA2eRMLFUX/"
+        src="https://my.spline.design/bganimation-UbaeTL6qYDkDSbXLxE5l3ik8/"
         frameBorder="0"
         style={{
           position: 'absolute',

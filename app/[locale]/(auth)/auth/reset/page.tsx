@@ -17,12 +17,34 @@ export default function ResetPage() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    // Supabase zet de sessie via de URL hash — even wachten
     const supabase = createClient()
+
+    // Check existing session (set by callback route after code exchange)
     supabase.auth.getSession().then(({ data }) => {
-      setReady(!!data.session)
+      if (data.session) setReady(true)
     })
-  }, [])
+
+    // Also listen for PASSWORD_RECOVERY event (fallback for hash-based flows)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'PASSWORD_RECOVERY' || session) {
+        setReady(true)
+      }
+    })
+
+    // If no session after 3s, send to forgot-password
+    const timeout = setTimeout(() => {
+      supabase.auth.getSession().then(({ data }) => {
+        if (!data.session) router.push(`/${locale}/wachtwoord-vergeten`)
+      })
+    }, 3000)
+
+    return () => {
+      subscription.unsubscribe()
+      clearTimeout(timeout)
+    }
+  }, [locale, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

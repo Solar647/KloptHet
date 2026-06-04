@@ -92,26 +92,54 @@ export function WhatIs() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
-        background: 'linear-gradient(180deg, #060C1A 0%, #04080F 100%)',
+        background: '#060C1A',
         overflow: 'hidden',
       }}
     >
-      {/* Ambient glow */}
+      {/* Kleur glows — links teal, rechts paars */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: '20%',
-          right: '-10%',
-          width: 500,
-          height: 500,
-          background: 'radial-gradient(circle, rgba(30,80,180,.08) 0%, transparent 65%)',
-          pointerEvents: 'none',
+          top: '-20%',
+          left: '-10%',
+          width: 700,
+          height: 700,
+          background: 'radial-gradient(circle, rgba(20,200,150,.35) 0%, transparent 55%)',
           filter: 'blur(60px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '-20%',
+          right: '-10%',
+          width: 700,
+          height: 700,
+          background: 'radial-gradient(circle, rgba(140,60,230,.35) 0%, transparent 55%)',
+          filter: 'blur(60px)',
+          pointerEvents: 'none',
+          zIndex: 0,
         }}
       />
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+      {/* Grid dot patroon */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1px)',
+          backgroundSize: '28px 28px',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      />
+
+      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 2 }}>
         <div
           style={{
             display: 'grid',
