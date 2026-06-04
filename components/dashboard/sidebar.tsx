@@ -142,6 +142,8 @@ export function Sidebar() {
     router.push(`/${locale}`)
   }
 
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
+
   const initials = userName
     ? userName
         .split(' ')
@@ -316,26 +318,40 @@ export function Sidebar() {
             <Link
               key={item.id}
               href={href}
-              onMouseEnter={() => clearBadge(item.id, item.path)}
+              prefetch={true}
+              onMouseEnter={() => {
+                setHoveredId(item.id)
+                clearBadge(item.id, item.path)
+                router.prefetch(href)
+              }}
+              onMouseLeave={() => setHoveredId(null)}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: 10,
                 padding: '.65rem .85rem',
-                background: isActive ? 'rgba(244,236,219,.08)' : 'transparent',
-                border: `1px solid ${isActive ? 'rgba(244,236,219,.14)' : 'transparent'}`,
-                color: isActive ? '#F4ECDB' : 'rgba(244,236,219,.5)',
+                background: isActive
+                  ? 'rgba(244,236,219,.08)'
+                  : hoveredId === item.id
+                    ? 'rgba(244,236,219,.05)'
+                    : 'transparent',
+                border: `1px solid ${isActive ? 'rgba(244,236,219,.14)' : hoveredId === item.id ? 'rgba(244,236,219,.08)' : 'transparent'}`,
+                color: isActive
+                  ? '#F4ECDB'
+                  : hoveredId === item.id
+                    ? 'rgba(244,236,219,.85)'
+                    : 'rgba(244,236,219,.5)',
                 borderRadius: 10,
                 cursor: 'pointer',
                 fontSize: '.85rem',
-                fontWeight: isActive ? 600 : 400,
+                fontWeight: isActive ? 600 : hoveredId === item.id ? 500 : 400,
                 fontFamily: 'var(--font-sans)',
                 textDecoration: 'none',
-                transition: 'all .15s',
+                transition: 'color .12s, background .12s, border-color .12s',
                 position: 'relative',
               }}
             >
-              <item.Icon size={15} strokeWidth={isActive ? 2 : 1.6} />
+              <item.Icon size={15} strokeWidth={isActive || hoveredId === item.id ? 2 : 1.6} />
               <span style={{ flex: 1 }}>{item.label}</span>
               {badgeCount > 0 && (
                 <span
