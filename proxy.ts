@@ -10,10 +10,11 @@ const PROTECTED_PATHS = ['/dashboard', '/scan', '/geschiedenis', '/instellingen'
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Ingelogde gebruikers van home naar dashboard sturen
+  // Ingelogde gebruikers van home naar dashboard sturen (niet als via logo-link)
   const isHomePage = pathname === '/' || /^\/(nl|en)\/?$/.test(pathname)
+  const fromLogo = request.nextUrl.searchParams.get('from') === 'logo'
 
-  if (isHomePage) {
+  if (isHomePage && !fromLogo) {
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,

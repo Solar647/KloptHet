@@ -194,7 +194,7 @@ export function Sidebar() {
         }}
       >
         <Link
-          href={`/${locale}`}
+          href={`/${locale}?from=logo`}
           style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}
         >
           <Logo size={24} />
