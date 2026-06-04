@@ -59,6 +59,21 @@ export function HeroSpline() {
         }}
         title="KloptHet hero achtergrond"
       />
+
+      {/* Spline watermerk verbergen */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          width: 160,
+          height: 40,
+          background: '#05080F',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      />
     </div>
   )
 }
