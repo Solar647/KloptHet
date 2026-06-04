@@ -358,6 +358,57 @@ Heeft u al geklikt en gegevens ingevuld?
         explanation:
           'Herbezorging door PostNL is gratis in Nederland. Als er om betaling wordt gevraagd voor herbezorging, is het altijd fraude.',
       },
+      {
+        question:
+          'U ontvangt een e-mail van "DHL-service@dhl-pakket-nl.com". Is dit een echt DHL-adres?',
+        options: [
+          'Ja — het bevat de naam DHL',
+          'Nee — het echte DHL gebruikt @dhl.com of @dhl.nl, niet een extra woord ertussen',
+          'Waarschijnlijk wel — het ziet er professioneel uit',
+          'Onmogelijk te zeggen zonder de e-mail te openen',
+        ],
+        correct: 1,
+        explanation:
+          'Het echte DHL stuurt e-mails van @dhl.com of @dhl.nl. Adressen zoals "dhl-pakket-nl.com" zijn nep — er staan extra woorden of koppeltekens in om vertrouwen te wekken.',
+      },
+      {
+        question:
+          'U verwacht helemaal geen pakket maar krijgt toch een bezorgbericht met een betaallink. Wat doet u?',
+        options: [
+          'U klikt op de link om te controleren of er misschien toch een pakket onderweg is',
+          'U verwijdert het bericht — als u niets heeft besteld is er ook geen pakket',
+          'U betaalt het kleine bedrag voor de zekerheid',
+          'U belt het nummer in het bericht om navraag te doen',
+        ],
+        correct: 1,
+        explanation:
+          'Als u niets heeft besteld, is er ook geen pakket. Bezorgdiensten sturen geen berichten over pakketten die niet bestaan. Verwijder het bericht zonder op links te klikken.',
+      },
+      {
+        question:
+          'Wat is het gevaar van klikken op een link in een nep-bezorgbericht, ook als u niets betaalt?',
+        options: [
+          'Er is geen gevaar als u niets betaalt',
+          'De link kan malware installeren of uw inloggegevens stelen via een neppagina',
+          'U krijgt meer spam-berichten',
+          'Uw e-mailadres wordt doorverkocht',
+        ],
+        correct: 1,
+        explanation:
+          'Klikken op een link kan al gevaarlijk zijn — zelfs zonder betalen. De pagina kan eruit zien als de echte PostNL-site maar uw inloggegevens stelen, of malware downloaden op uw apparaat.',
+      },
+      {
+        question: 'Hoe controleert u veilig of een pakket echt bij u onderweg is?',
+        options: [
+          'Via de link in het bericht',
+          'Door te bellen naar het nummer in het sms-bericht',
+          'Door zelf postnl.nl of dhl.nl in uw browser in te typen en de Track & Trace code in te voeren',
+          'Door te reageren op het bericht met uw adres',
+        ],
+        correct: 2,
+        explanation:
+          'Typ altijd het adres zelf in uw browser (postnl.nl, dhl.nl, etc.). Klik nooit op een link in een bericht. Uw echte Track & Trace code staat in de bevestigingsmail van de webshop waar u iets heeft gekocht.',
+      },
     ],
   },
   {
