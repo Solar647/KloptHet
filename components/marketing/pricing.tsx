@@ -84,12 +84,12 @@ export function Pricing() {
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: '-20%',
-          left: '-10%',
-          width: 700,
-          height: 700,
-          background: 'radial-gradient(circle, rgba(20,200,150,.35) 0%, transparent 55%)',
-          filter: 'blur(60px)',
+          top: '20%',
+          left: '-8%',
+          width: 550,
+          height: 550,
+          background: 'radial-gradient(circle, rgba(140,60,230,.2) 0%, transparent 55%)',
+          filter: 'blur(80px)',
           pointerEvents: 'none',
           zIndex: 0,
         }}
@@ -98,12 +98,12 @@ export function Pricing() {
         aria-hidden="true"
         style={{
           position: 'absolute',
-          bottom: '-20%',
-          right: '-10%',
-          width: 700,
-          height: 700,
-          background: 'radial-gradient(circle, rgba(140,60,230,.35) 0%, transparent 55%)',
-          filter: 'blur(60px)',
+          bottom: '10%',
+          right: '-5%',
+          width: 500,
+          height: 500,
+          background: 'radial-gradient(circle, rgba(20,200,150,.22) 0%, transparent 55%)',
+          filter: 'blur(80px)',
           pointerEvents: 'none',
           zIndex: 0,
         }}
@@ -115,8 +115,8 @@ export function Pricing() {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,.09) 1px, transparent 1px)',
+          backgroundSize: '44px 44px',
           zIndex: 1,
           pointerEvents: 'none',
           maskImage:
