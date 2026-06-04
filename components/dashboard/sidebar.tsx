@@ -337,6 +337,7 @@ export function Sidebar() {
               key={item.id}
               href={href}
               prefetch={true}
+              data-tour={item.id}
               onMouseEnter={() => {
                 setHoveredId(item.id)
                 clearBadge(item.id, item.path)

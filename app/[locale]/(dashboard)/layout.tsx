@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { MobileBottomNav } from '@/components/dashboard/mobile-bottom-nav'
+import { DashboardTour } from '@/components/dashboard/tour'
 
 export default async function DashboardLayout({
   children,
@@ -33,6 +34,8 @@ export default async function DashboardLayout({
       <div className="dashboard-bottom-nav" style={{ display: 'none' }}>
         <MobileBottomNav />
       </div>
+
+      <DashboardTour />
     </div>
   )
 }
