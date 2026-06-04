@@ -14,6 +14,17 @@ type OtherMember = {
   joinedAt: string | null
 }
 
+type ActivityScan = {
+  memberEmail: string
+  memberName: string | null
+  memberAvatar: string | null
+  verdict_category: 'safe' | 'doubt' | 'phishing'
+  verdict_score: number
+  verdict_summary: string | null
+  input_kind: string
+  created_at: string
+}
+
 type Props = {
   memberId: string
   ownerName: string
@@ -24,6 +35,7 @@ type Props = {
   ownerCanSeeScans: boolean
   memberCanSeeOwner: boolean
   otherMembers?: OtherMember[]
+  activityFeed?: ActivityScan[]
 }
 
 export function FamilielidView({
@@ -36,6 +48,7 @@ export function FamilielidView({
   ownerCanSeeScans: initialOwnerCanSeeScans,
   memberCanSeeOwner,
   otherMembers = [],
+  activityFeed = [],
 }: Props) {
   const locale = useLocale()
   const router = useRouter()
@@ -543,6 +556,9 @@ export function FamilielidView({
         </div>
       </div>
 
+      {/* Familie activiteit */}
+      {activityFeed.length > 0 && <FamilieActiviteitLid feed={activityFeed} />}
+
       <div
         style={{
           marginBottom: '1.5rem',
@@ -632,6 +648,249 @@ export function FamilielidView({
           >
             Annuleren
           </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+const catColor = { safe: '#3AAC6E', doubt: '#D97B2A', phishing: '#E5532A' }
+const catLabel = { safe: 'Veilig', doubt: 'Let op', phishing: 'Gevaarlijk' }
+
+function FamilieActiviteitLid({ feed }: { feed: ActivityScan[] }) {
+  const [open, setOpen] = useState(false)
+  const alertCount = feed.filter((s) => s.verdict_category === 'phishing').length
+
+  return (
+    <div
+      style={{
+        background: 'rgba(244,236,219,.04)',
+        border: `1px solid ${alertCount > 0 ? 'rgba(229,83,42,.25)' : 'rgba(244,236,219,.1)'}`,
+        borderRadius: 16,
+        overflow: 'hidden',
+        marginBottom: '1.25rem',
+      }}
+    >
+      <button
+        onClick={() => setOpen((x) => !x)}
+        style={{
+          width: '100%',
+          padding: '.9rem 1.25rem',
+          background: 'transparent',
+          border: 'none',
+          borderBottom: open ? '1px solid rgba(244,236,219,.07)' : 'none',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 10,
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '.72rem',
+            fontWeight: 700,
+            color: 'rgba(244,236,219,.35)',
+            letterSpacing: '.1em',
+            textTransform: 'uppercase',
+            flex: 1,
+            textAlign: 'left',
+          }}
+        >
+          Familie activiteit
+        </span>
+        {feed.length > 0 && (
+          <span
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.68rem',
+              fontWeight: 700,
+              color: alertCount > 0 ? '#E5532A' : 'rgba(244,236,219,.4)',
+              background: alertCount > 0 ? 'rgba(229,83,42,.12)' : 'rgba(244,236,219,.08)',
+              border: `1px solid ${alertCount > 0 ? 'rgba(229,83,42,.25)' : 'rgba(244,236,219,.12)'}`,
+              padding: '.15rem .5rem',
+              borderRadius: 9999,
+            }}
+          >
+            {alertCount > 0 ? `${alertCount} gevaarlijk` : `${feed.length} scans`}
+          </span>
+        )}
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="rgba(244,236,219,.35)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{
+            transition: 'transform .2s',
+            transform: open ? 'rotate(180deg)' : 'rotate(0)',
+            flexShrink: 0,
+          }}
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          style={{
+            padding: '1rem 1.25rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '.6rem',
+          }}
+        >
+          {feed.map((s, i) => {
+            const color = catColor[s.verdict_category]
+            const label = catLabel[s.verdict_category]
+            const name = s.memberName || s.memberEmail.split('@')[0]
+            const isDanger = s.verdict_category === 'phishing'
+
+            return (
+              <div
+                key={i}
+                style={{
+                  background: isDanger
+                    ? 'rgba(229,83,42,.07)'
+                    : s.verdict_category === 'doubt'
+                      ? 'rgba(217,123,42,.06)'
+                      : 'rgba(58,172,110,.06)',
+                  border: `1px solid ${color}30`,
+                  borderRadius: 12,
+                  padding: '.85rem 1rem',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    marginBottom: s.verdict_summary ? '.5rem' : 0,
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 28,
+                      height: 28,
+                      borderRadius: '50%',
+                      background: `${color}20`,
+                      border: `1.5px solid ${color}40`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontFamily: 'var(--font-sans)',
+                      fontWeight: 700,
+                      fontSize: '.75rem',
+                      color,
+                      flexShrink: 0,
+                      overflow: 'hidden',
+                    }}
+                  >
+                    {s.memberAvatar ? (
+                      <Image
+                        src={s.memberAvatar}
+                        alt={name}
+                        width={28}
+                        height={28}
+                        unoptimized
+                        style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                      />
+                    ) : (
+                      name.charAt(0).toUpperCase()
+                    )}
+                  </div>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.82rem',
+                      fontWeight: 600,
+                      color: '#F4ECDB',
+                      flex: 1,
+                    }}
+                  >
+                    {name}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.7rem',
+                      fontWeight: 700,
+                      color,
+                      background: `${color}15`,
+                      border: `1px solid ${color}30`,
+                      padding: '.2rem .55rem',
+                      borderRadius: 9999,
+                      flexShrink: 0,
+                    }}
+                  >
+                    {label} · {s.verdict_score}/10
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.7rem',
+                      color: 'rgba(244,236,219,.3)',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {new Date(s.created_at).toLocaleDateString('nl-NL', {
+                      day: 'numeric',
+                      month: 'short',
+                    })}
+                  </span>
+                </div>
+                {s.verdict_summary && (
+                  <p
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.78rem',
+                      color: 'rgba(244,236,219,.55)',
+                      margin: 0,
+                      lineHeight: 1.55,
+                      paddingLeft: 36,
+                    }}
+                  >
+                    {s.verdict_summary.length > 120
+                      ? s.verdict_summary.slice(0, 120) + '…'
+                      : s.verdict_summary}
+                  </p>
+                )}
+                {isDanger && (
+                  <div
+                    style={{
+                      marginTop: '.6rem',
+                      marginLeft: 36,
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.75rem',
+                      color: '#E5532A',
+                      fontWeight: 600,
+                    }}
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z" />
+                      <path d="M12 9v4M12 17h.01" />
+                    </svg>
+                    Waarschuw dit familielid — dit bericht is oplichting
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </div>
       )}
     </div>

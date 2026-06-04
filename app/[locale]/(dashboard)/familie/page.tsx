@@ -90,6 +90,68 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
       }))
     }
 
+    // Haal scans op van leden die delen (inclusief eigenaar) voor activiteitenfeed
+    type ActivityScan = {
+      memberEmail: string
+      memberName: string | null
+      memberAvatar: string | null
+      verdict_category: 'safe' | 'doubt' | 'phishing'
+      verdict_score: number
+      verdict_summary: string | null
+      input_kind: string
+      created_at: string
+    }
+    const activityFeed: ActivityScan[] = []
+
+    // Haal alle leden in de groep op die owner_can_see_scans=true hebben
+    const { data: sharingMembers } = await supabase
+      .from('family_members')
+      .select('user_id, invited_email, owner_can_see_scans')
+      .eq('family_id', memberRecord.family_id)
+      .eq('status', 'active')
+      .eq('owner_can_see_scans', true)
+
+    if (sharingMembers && sharingMembers.length > 0) {
+      const sharingUserIds = sharingMembers
+        .filter((m) => m.user_id && m.user_id !== user.id)
+        .map((m) => m.user_id as string)
+
+      if (sharingUserIds.length > 0) {
+        const [{ data: scans }, { data: profiles }] = await Promise.all([
+          supabase
+            .from('scans')
+            .select(
+              'user_id, verdict_category, verdict_score, verdict_summary, input_kind, created_at'
+            )
+            .in('user_id', sharingUserIds)
+            .order('created_at', { ascending: false })
+            .limit(30),
+          supabase.from('profiles').select('id, full_name, avatar_url').in('id', sharingUserIds),
+        ])
+        const profileMap: Record<string, { full_name: string | null; avatar_url: string | null }> =
+          {}
+        profiles?.forEach(
+          (p: { id: string; full_name: string | null; avatar_url: string | null }) => {
+            profileMap[p.id] = { full_name: p.full_name, avatar_url: p.avatar_url }
+          }
+        )
+        for (const s of scans ?? []) {
+          const member = sharingMembers.find((m) => m.user_id === s.user_id)
+          if (!member) continue
+          activityFeed.push({
+            memberEmail: member.invited_email,
+            memberName: profileMap[s.user_id]?.full_name ?? null,
+            memberAvatar: profileMap[s.user_id]?.avatar_url ?? null,
+            verdict_category: s.verdict_category as 'safe' | 'doubt' | 'phishing',
+            verdict_score: s.verdict_score,
+            verdict_summary: s.verdict_summary,
+            input_kind: s.input_kind,
+            created_at: s.created_at,
+          })
+        }
+      }
+    }
+
     return (
       <FamilielidView
         memberId={memberRecord.id}
@@ -101,6 +163,7 @@ export default async function FamiliePage({ params }: { params: Promise<{ locale
         ownerCanSeeScans={memberRecord.owner_can_see_scans}
         memberCanSeeOwner={memberRecord.member_can_see_owner}
         otherMembers={otherMembersList}
+        activityFeed={activityFeed}
       />
     )
   }
