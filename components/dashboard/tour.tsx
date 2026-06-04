@@ -91,7 +91,6 @@ export function DashboardTour() {
   const [step, setStep] = useState(0)
   const [visible, setVisible] = useState(false)
   const [rect, setRect] = useState<DOMRect | null>(null)
-  const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
     if (typeof window === 'undefined' || window.innerWidth < 900) return
