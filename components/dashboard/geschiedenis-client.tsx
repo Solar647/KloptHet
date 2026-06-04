@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { HistoryIcon } from '@/components/shared/icons'
+import { Mascot } from '@/components/shared/mascot'
 
 type Flag = { label: string; severity: 'danger' | 'warn' | 'info' }
 
@@ -328,18 +328,28 @@ export function GeschiedenisClient({ scans }: { scans: Scan[] }) {
             textAlign: 'center',
           }}
         >
-          <div
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '.5rem' }}>
+            <Mascot size={100} expression="searching" />
+          </div>
+          <p
             style={{
-              color: 'rgba(244,236,219,.3)',
-              marginBottom: '.75rem',
-              display: 'flex',
-              justifyContent: 'center',
+              color: 'rgba(244,236,219,.5)',
+              fontFamily: 'var(--font-sans)',
+              margin: '0 0 .25rem',
+              fontWeight: 600,
             }}
           >
-            <HistoryIcon size={32} strokeWidth={1.4} />
-          </div>
-          <p style={{ color: 'rgba(244,236,219,.4)', fontFamily: 'var(--font-sans)', margin: 0 }}>
             Nog geen controles uitgevoerd.
+          </p>
+          <p
+            style={{
+              color: 'rgba(244,236,219,.3)',
+              fontFamily: 'var(--font-sans)',
+              margin: 0,
+              fontSize: '.82rem',
+            }}
+          >
+            Upload een screenshot of plak een verdacht bericht.
           </p>
         </div>
       ) : (
