@@ -3,6 +3,19 @@ import { createClient } from '@/lib/supabase/server'
 import { getAIProvider } from '@/lib/ai'
 import { stripExif } from '@/lib/utils/exif-strip'
 import { hashIp, getIpFromRequest } from '@/lib/utils/ip-hash'
+import { createHash } from 'crypto'
+
+function hashContent(input: { kind: string; text?: string; data?: Buffer }): string {
+  const h = createHash('sha256')
+  if (input.kind === 'text' && input.text) {
+    h.update(input.text.toLowerCase().trim())
+  } else if (input.kind === 'image' && input.data) {
+    h.update(input.data)
+  }
+  return h.digest('hex')
+}
+
+const PATTERN_THRESHOLD = 5 // na 5 meldingen = bekende scam
 
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'image/heif']
 const MAX_SIZE = 10 * 1024 * 1024 // 10 MB
@@ -107,6 +120,61 @@ export async function POST(request: Request) {
       input = { kind: 'text', text: text.trim(), locale }
     }
 
+    // --- Check bekende scam-patterns ---
+    const contentHash = hashContent(
+      input.kind === 'text'
+        ? { kind: 'text', text: (input as { text: string }).text }
+        : { kind: 'image', data: (input as { data: Buffer }).data }
+    )
+
+    const { data: knownPattern } = await supabase
+      .from('scam_patterns')
+      .select(
+        'verdict_category, verdict_score, verdict_summary, verdict_flags, fraud_type, report_count'
+      )
+      .eq('content_hash', contentHash)
+      .single()
+
+    if (knownPattern && knownPattern.report_count >= PATTERN_THRESHOLD) {
+      // Bekende scam — geen AI-call nodig
+      const verdict = {
+        category: knownPattern.verdict_category as 'safe' | 'doubt' | 'phishing',
+        score: knownPattern.verdict_score,
+        summary: knownPattern.verdict_summary ?? '',
+        flags: knownPattern.verdict_flags ?? [],
+        fraudType: knownPattern.fraud_type,
+        knownScam: true,
+        reportCount: knownPattern.report_count,
+      }
+
+      // Update report_count
+      await supabase
+        .from('scam_patterns')
+        .update({
+          report_count: knownPattern.report_count + 1,
+          last_seen_at: new Date().toISOString(),
+        })
+        .eq('content_hash', contentHash)
+
+      const ipHash = user ? null : hashIp(getIpFromRequest(request))
+      await supabase.from('scans').insert({
+        user_id: user?.id ?? null,
+        ip_hash: ipHash,
+        input_kind: input.kind,
+        verdict_category: verdict.category,
+        verdict_score: verdict.score,
+        verdict_summary: verdict.summary,
+        verdict_flags: verdict.flags,
+        fraud_type: verdict.fraudType ?? null,
+        locale,
+        ai_provider: 'pattern',
+        ai_model: 'known_scam',
+        scan_duration_ms: 0,
+      })
+
+      return NextResponse.json({ verdict })
+    }
+
     // --- AI analyse ---
     const ai = getAIProvider()
     const verdict = await ai.scan(input)
@@ -127,6 +195,35 @@ export async function POST(request: Request) {
       ai_model: verdict.model,
       scan_duration_ms: verdict.durationMs,
     })
+
+    // --- Scam pattern bijwerken ---
+    if (verdict.category === 'phishing' || verdict.category === 'doubt') {
+      const { data: existing } = await supabase
+        .from('scam_patterns')
+        .select('id, report_count')
+        .eq('content_hash', contentHash)
+        .single()
+
+      if (existing) {
+        await supabase
+          .from('scam_patterns')
+          .update({
+            report_count: existing.report_count + 1,
+            last_seen_at: new Date().toISOString(),
+          })
+          .eq('content_hash', contentHash)
+      } else {
+        await supabase.from('scam_patterns').insert({
+          content_hash: contentHash,
+          input_kind: input.kind,
+          verdict_category: verdict.category,
+          verdict_score: verdict.score,
+          verdict_summary: verdict.summary,
+          verdict_flags: verdict.flags,
+          fraud_type: verdict.fraudType ?? null,
+        })
+      }
+    }
 
     return NextResponse.json({ verdict })
   } catch (err) {
