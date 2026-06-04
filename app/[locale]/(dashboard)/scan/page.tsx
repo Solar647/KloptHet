@@ -8,10 +8,22 @@ export default async function ScanPage({ params }: { params: Promise<{ locale: s
     data: { user },
   } = await supabase.auth.getUser()
 
-  const { count: totalScans } = await supabase
-    .from('scans')
-    .select('id', { count: 'exact', head: true })
-    .eq('user_id', user?.id ?? '')
+  const [{ count: totalScans }, { data: sub }] = await Promise.all([
+    supabase
+      .from('scans')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user?.id ?? ''),
+    supabase
+      .from('subscriptions')
+      .select('tier')
+      .eq('user_id', user?.id ?? '')
+      .single(),
+  ])
+
+  const FREE_LIMIT = 3
+  const isFree = !sub || sub.tier === 'free'
+  const scansUsed = totalScans ?? 0
+  const scansLeft = isFree ? Math.max(0, FREE_LIMIT - scansUsed) : null
 
   return (
     <div style={{ minHeight: '100%', position: 'relative', overflow: 'hidden' }}>
@@ -86,8 +98,52 @@ export default async function ScanPage({ params }: { params: Promise<{ locale: s
             </svg>
           </div>
 
+          {/* Gratis scan teller */}
+          {scansLeft !== null && (
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                marginTop: '1rem',
+                background: scansLeft === 0 ? 'rgba(229,83,42,.08)' : 'rgba(244,236,219,.06)',
+                border: `1px solid ${scansLeft === 0 ? 'rgba(229,83,42,.25)' : 'rgba(244,236,219,.14)'}`,
+                borderRadius: 9999,
+                padding: '.35rem 1rem',
+              }}
+            >
+              {/* Bolletjes */}
+              <div style={{ display: 'flex', gap: 4 }}>
+                {Array.from({ length: FREE_LIMIT }).map((_, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      width: 7,
+                      height: 7,
+                      borderRadius: '50%',
+                      background: i < scansLeft ? '#3AAC6E' : 'rgba(244,236,219,.2)',
+                      transition: 'background .3s',
+                    }}
+                  />
+                ))}
+              </div>
+              <span
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '.78rem',
+                  fontWeight: 600,
+                  color: scansLeft === 0 ? '#E5532A' : 'rgba(244,236,219,.7)',
+                }}
+              >
+                {scansLeft === 0
+                  ? 'Gratis controles op'
+                  : `${scansLeft} van ${FREE_LIMIT} gratis ${scansLeft === 1 ? 'controle' : 'controles'} over`}
+              </span>
+            </div>
+          )}
+
           {/* Stats pill */}
-          {(totalScans ?? 0) > 0 && (
+          {(totalScans ?? 0) > 0 && !isFree && (
             <div
               style={{
                 display: 'inline-flex',
