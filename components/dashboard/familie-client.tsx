@@ -153,7 +153,9 @@ export function FamilieClient({
             margin: 0,
           }}
         >
-          {activeMembers.length + 1} van {max} plekken bezet
+          {canInvite
+            ? `${activeMembers.length + 1} van ${max + 1} plekken bezet`
+            : 'Alleen u · upgrade om familieleden toe te voegen'}
         </p>
       </div>
 
@@ -181,8 +183,8 @@ export function FamilieClient({
               margin: 0,
             }}
           >
-            Upgrade naar <strong style={{ color: '#F4ECDB' }}>Familie</strong> om tot 5 leden uit te
-            nodigen.
+            Upgrade naar <strong style={{ color: '#F4ECDB' }}>Familie</strong> om familieleden uit
+            te nodigen en hun berichten te volgen.
           </p>
           <Link
             href={`/${locale}/abonnement/checkout?tier=family`}
