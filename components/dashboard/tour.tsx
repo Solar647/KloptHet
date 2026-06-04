@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 
 const STEPS = [
   {
@@ -94,25 +94,36 @@ export function DashboardTour() {
   const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
-    // Alleen op desktop
     if (typeof window === 'undefined' || window.innerWidth < 900) return
     const done = localStorage.getItem('kh_tour_done')
     if (!done) {
-      setTimeout(() => setVisible(true), 800)
+      // Wacht tot sidebar gerenderd is, probeer meerdere keren
+      let attempts = 0
+      const tryShow = () => {
+        const el = document.querySelector(`[data-tour="${STEPS[0].target}"]`)
+        if (el) {
+          setVisible(true)
+        } else if (attempts < 10) {
+          attempts++
+          setTimeout(tryShow, 300)
+        }
+      }
+      setTimeout(tryShow, 600)
     }
   }, [])
 
   useEffect(() => {
     if (!visible) return
-    const measure = () => {
+    const findRect = () => {
       const el = document.querySelector(`[data-tour="${STEPS[step]?.target}"]`)
-      if (el) setRect(el.getBoundingClientRect())
+      if (el) {
+        setRect(el.getBoundingClientRect())
+      } else {
+        // Element nog niet gevonden, probeer opnieuw
+        setTimeout(findRect, 100)
+      }
     }
-    measure()
-    rafRef.current = requestAnimationFrame(measure)
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-    }
+    findRect()
   }, [visible, step])
 
   const finish = () => {
