@@ -10,6 +10,31 @@ const PROTECTED_PATHS = ['/dashboard', '/scan', '/geschiedenis', '/instellingen'
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Ingelogde gebruikers van home naar dashboard sturen
+  const isHomePage = pathname === '/' || /^\/(nl|en)\/?$/.test(pathname)
+
+  if (isHomePage) {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll()
+          },
+          setAll() {},
+        },
+      }
+    )
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+    if (user) {
+      const locale = pathname.startsWith('/en') ? 'en' : 'nl'
+      return NextResponse.redirect(new URL(`/${locale}/dashboard`, request.url))
+    }
+  }
+
   // Controleer of het een beschermde route is (strip de locale prefix)
   const isProtected = PROTECTED_PATHS.some((path) => pathname.match(new RegExp(`^/(nl|en)${path}`)))
 
