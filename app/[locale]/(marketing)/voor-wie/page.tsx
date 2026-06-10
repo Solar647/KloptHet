@@ -3,8 +3,8 @@ import { Footer } from '@/components/shared/footer'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Voor wie is KloptHet? — Ouderen & Familie',
-  description: 'KloptHet beschermt ouderen én hun familie tegen WhatsApp- en sms-fraude.',
+  title: 'Voor wie is KloptHet? — Senioren & Familie',
+  description: 'KloptHet beschermt senioren én hun familie tegen WhatsApp- en sms-fraude.',
 }
 
 export default async function VoorWiePage({ params }: { params: Promise<{ locale: string }> }) {
@@ -77,7 +77,7 @@ export default async function VoorWiePage({ params }: { params: Promise<{ locale
                 maxWidth: 520,
               }}
             >
-              KloptHet is gemaakt voor twee groepen: ouderen die snel en eenvoudig een bericht
+              KloptHet is gemaakt voor twee groepen: senioren die snel en eenvoudig een bericht
               willen controleren, en familie die van een afstand wil helpen beschermen.
             </p>
           </div>
@@ -125,7 +125,7 @@ export default async function VoorWiePage({ params }: { params: Promise<{ locale
                     textTransform: 'uppercase',
                   }}
                 >
-                  Voor ouderen
+                  Voor senioren
                 </span>
               </div>
               <h2

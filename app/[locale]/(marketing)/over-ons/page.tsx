@@ -4,7 +4,7 @@ import { Footer } from '@/components/shared/footer'
 export const metadata = {
   title: 'Over ons — KloptHet',
   description:
-    'KloptHet is een Nederlands bedrijf dat ouderen en hun familie beschermt tegen WhatsApp- en sms-fraude.',
+    'KloptHet is een Nederlands bedrijf dat senioren en hun familie beschermt tegen WhatsApp- en sms-fraude.',
 }
 
 export default async function OverOnsPage({ params }: { params: Promise<{ locale: string }> }) {
@@ -77,7 +77,7 @@ export default async function OverOnsPage({ params }: { params: Promise<{ locale
                 marginRight: 'auto',
               }}
             >
-              KloptHet is een Nederlands bedrijf met één missie: ouderen en hun familie beschermen
+              KloptHet is een Nederlands bedrijf met één missie: senioren en hun familie beschermen
               tegen de groeiende stroom van WhatsApp- en sms-fraude.
             </p>
           </div>

@@ -243,7 +243,7 @@ export function WhatIs() {
                 maxWidth: 480,
               }}
             >
-              Fraude via WhatsApp, sms en e-mail groeit explosief — en ouderen zijn het vaakst het
+              Fraude via WhatsApp, sms en e-mail groeit explosief — en senioren zijn het vaakst het
               doelwit. KloptHet analyseert elk verdacht bericht in seconden en geeft een duidelijk
               antwoord in gewone taal.
             </motion.p>
