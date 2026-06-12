@@ -179,7 +179,7 @@ export function WhatIs() {
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 8,
+                gap: 10,
                 fontSize: '.7rem',
                 fontWeight: 700,
                 color: 'rgba(244,236,219,.4)',
@@ -191,10 +191,13 @@ export function WhatIs() {
             >
               <span
                 style={{
-                  width: 20,
-                  height: 1,
-                  background: 'currentColor',
+                  width: 7,
+                  height: 7,
+                  borderRadius: '50%',
+                  background: '#3AAC6E',
+                  boxShadow: '0 0 12px rgba(58,172,110,.7)',
                   display: 'inline-block',
+                  flexShrink: 0,
                 }}
               />
               Wat is KloptHet?
@@ -236,16 +239,16 @@ export function WhatIs() {
               }
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: '1.05rem',
-                color: 'rgba(244,236,219,.62)',
-                lineHeight: 1.8,
-                margin: '0 0 1.5rem',
+                fontSize: '1.15rem',
+                fontWeight: 500,
+                color: 'rgba(244,236,219,.85)',
+                lineHeight: 1.75,
+                margin: '0 0 1rem',
                 maxWidth: 480,
               }}
             >
               Fraude via WhatsApp, sms en e-mail groeit explosief — en senioren zijn het vaakst het
-              doelwit. KloptHet analyseert elk verdacht bericht in seconden en geeft een duidelijk
-              antwoord in gewone taal.
+              doelwit.
             </motion.p>
 
             <motion.p
@@ -260,14 +263,15 @@ export function WhatIs() {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '1.05rem',
-                color: 'rgba(244,236,219,.62)',
+                color: 'rgba(244,236,219,.55)',
                 lineHeight: 1.8,
                 margin: 0,
                 maxWidth: 480,
               }}
             >
-              Geen app te installeren. Geen technische kennis nodig. Gewoon een screenshot uploaden
-              — en binnen 5 seconden weet u of het te vertrouwen is.
+              KloptHet analyseert elk verdacht bericht in seconden en geeft een duidelijk antwoord
+              in gewone taal. Geen app te installeren, geen technische kennis nodig — gewoon een
+              screenshot uploaden.
             </motion.p>
 
             {/* Stats */}
@@ -282,8 +286,10 @@ export function WhatIs() {
               }
               style={{
                 display: 'flex',
-                gap: '2.5rem',
-                marginTop: '2.5rem',
+                gap: 'clamp(1.5rem, 3vw, 2.5rem)',
+                marginTop: '2.75rem',
+                paddingTop: '2rem',
+                borderTop: '1px solid rgba(244,236,219,.08)',
                 flexWrap: 'wrap',
               }}
             >
@@ -291,16 +297,22 @@ export function WhatIs() {
                 { value: '5s', label: 'Analyse tijd' },
                 { value: '99%', label: 'Nauwkeurigheid' },
                 { value: '0', label: 'Data bewaard' },
-              ].map((stat) => (
-                <div key={stat.label}>
+              ].map((stat, i) => (
+                <div
+                  key={stat.label}
+                  style={{
+                    paddingLeft: i > 0 ? 'clamp(1.5rem, 3vw, 2.5rem)' : 0,
+                    borderLeft: i > 0 ? '1px solid rgba(244,236,219,.08)' : 'none',
+                  }}
+                >
                   <div
                     style={{
                       fontFamily: 'var(--font-serif)',
                       fontWeight: 500,
-                      fontSize: '2rem',
+                      fontSize: '2.1rem',
                       color: '#3AAC6E',
                       lineHeight: 1,
-                      marginBottom: '.25rem',
+                      marginBottom: '.3rem',
                     }}
                   >
                     {stat.value}
@@ -336,26 +348,50 @@ export function WhatIs() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.6, delay: i * 0.15, ease: EASE }}
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                whileHover={
+                  reduced
+                    ? {}
+                    : {
+                        y: -4,
+                        borderColor: 'rgba(58,172,110,.3)',
+                        boxShadow: '0 12px 32px rgba(0,0,0,.25)',
+                        transition: { duration: 0.2 },
+                      }
+                }
                 style={{
+                  position: 'relative',
                   background: 'rgba(244,236,219,.04)',
                   border: '1px solid rgba(244,236,219,.08)',
                   borderRadius: 16,
-                  padding: '1.25rem',
+                  padding: '1.4rem 1.25rem',
                   cursor: 'default',
                 }}
               >
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '1.1rem',
+                    right: '1.1rem',
+                    fontFamily: 'ui-monospace, monospace',
+                    fontSize: '.7rem',
+                    fontWeight: 700,
+                    color: 'rgba(244,236,219,.18)',
+                    letterSpacing: '.05em',
+                  }}
+                >
+                  0{i + 1}
+                </span>
                 <div
                   style={{
                     width: 44,
                     height: 44,
                     borderRadius: 12,
-                    background: 'rgba(30,80,180,.12)',
-                    border: '1px solid rgba(30,80,180,.2)',
+                    background: 'rgba(58,172,110,.12)',
+                    border: '1px solid rgba(58,172,110,.2)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: 'rgba(100,160,255,.85)',
+                    color: '#3AAC6E',
                     marginBottom: '.9rem',
                   }}
                 >
@@ -365,7 +401,7 @@ export function WhatIs() {
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontWeight: 700,
-                    fontSize: '.9rem',
+                    fontSize: '.95rem',
                     color: '#F4ECDB',
                     marginBottom: '.4rem',
                     letterSpacing: '-.01em',
@@ -376,10 +412,11 @@ export function WhatIs() {
                 <p
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '.8rem',
+                    fontSize: '.82rem',
                     color: 'rgba(244,236,219,.5)',
-                    lineHeight: 1.6,
+                    lineHeight: 1.65,
                     margin: 0,
+                    maxWidth: '90%',
                   }}
                 >
                   {p.body}
