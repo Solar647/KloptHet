@@ -1,8 +1,49 @@
 'use client'
 
+import { useEffect, useRef } from 'react'
+
 export function HeroSpline() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = containerRef.current
+    const overlay = overlayRef.current
+    if (!el || !overlay) return
+
+    let hasEntered = false
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (hasEntered) {
+            // Heeft de viewport verlaten en is terug: even afdekken zodat
+            // de Spline-scene kan bijtrekken zonder dat je het geflikker ziet.
+            overlay.style.transition = 'none'
+            overlay.style.opacity = '1'
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => {
+                overlay.style.transition = 'opacity .8s ease'
+                overlay.style.opacity = '0'
+              })
+            })
+          }
+          hasEntered = true
+        } else if (hasEntered) {
+          overlay.style.transition = 'none'
+          overlay.style.opacity = '1'
+        }
+      },
+      { threshold: 0.15 }
+    )
+
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div
+      ref={containerRef}
       style={{
         position: 'absolute',
         inset: 0,
@@ -72,6 +113,21 @@ export function HeroSpline() {
           background: 'linear-gradient(135deg, transparent 0%, #05080F 55%)',
           zIndex: 1,
           pointerEvents: 'none',
+        }}
+      />
+
+      {/* Re-entry overlay: dekt geflikker af terwijl de scene bijtrekt */}
+      <div
+        ref={overlayRef}
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(135deg, #05080F 0%, #080F1E 40%, #0A1028 70%, #060A16 100%)',
+          zIndex: 2,
+          opacity: 0,
+          pointerEvents: 'none',
+          willChange: 'opacity',
         }}
       />
     </div>
