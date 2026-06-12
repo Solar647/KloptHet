@@ -73,13 +73,13 @@ export function Hero() {
           >
             <style>{`
               .hero-heading {
-                font-size: clamp(2.4rem, 4.8vw, 5.8rem) !important;
+                font-size: clamp(2.6rem, 5.2vw, 6.2rem) !important;
               }
               @media (max-height: 850px) {
-                .hero-heading { font-size: clamp(2rem, 3.8vw, 4.5rem) !important; }
+                .hero-heading { font-size: clamp(2.2rem, 4.2vw, 4.8rem) !important; }
               }
               @media (max-height: 700px) {
-                .hero-heading { font-size: clamp(1.8rem, 3.2vw, 3.8rem) !important; }
+                .hero-heading { font-size: clamp(2rem, 3.6vw, 4.1rem) !important; }
               }
             `}</style>
             {/* Liquid glass pill */}
@@ -96,7 +96,7 @@ export function Hero() {
                   alignItems: 'center',
                   gap: 8,
                   borderRadius: 10,
-                  padding: '.4rem .9rem',
+                  padding: '.45rem 1rem',
                 }}
               >
                 <span
@@ -104,10 +104,10 @@ export function Hero() {
                     background: '#3AAC6E',
                     color: '#000',
                     borderRadius: 6,
-                    padding: '.15rem .55rem',
+                    padding: '.18rem .6rem',
                     fontFamily: 'var(--font-sans)',
                     fontWeight: 700,
-                    fontSize: '.7rem',
+                    fontSize: '.75rem',
                   }}
                 >
                   Nieuw
@@ -115,7 +115,7 @@ export function Hero() {
                 <span
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: '.8rem',
+                    fontSize: '.88rem',
                     fontWeight: 500,
                     color: 'rgba(255,255,255,.55)',
                   }}
@@ -135,7 +135,7 @@ export function Hero() {
               style={{
                 fontFamily: 'var(--font-serif)',
                 fontWeight: 700,
-                fontSize: 'clamp(2.4rem, 4.8vw, 5.8rem)',
+                fontSize: 'clamp(2.6rem, 5.2vw, 6.2rem)',
                 lineHeight: 1.08,
                 letterSpacing: '-.04em',
                 color: '#fff',
@@ -163,10 +163,10 @@ export function Hero() {
               }}
               style={{
                 fontFamily: 'var(--font-sans)',
-                fontSize: 'clamp(.95rem, 1.2vw, 1.1rem)',
+                fontSize: 'clamp(1.05rem, 1.35vw, 1.2rem)',
                 lineHeight: 1.7,
                 color: 'rgba(255,255,255,.55)',
-                maxWidth: 460,
+                maxWidth: 500,
                 margin: 0,
               }}
             >
@@ -188,11 +188,11 @@ export function Hero() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '.6rem',
-                    padding: '1rem 2rem',
+                    padding: '1.1rem 2.2rem',
                     borderRadius: 9999,
                     fontFamily: 'var(--font-sans)',
                     fontWeight: 700,
-                    fontSize: '1rem',
+                    fontSize: '1.08rem',
                     textDecoration: 'none',
                     background: 'linear-gradient(135deg, #fff 0%, #d4f0e0 100%)',
                     color: '#000',
