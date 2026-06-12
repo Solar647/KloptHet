@@ -383,9 +383,9 @@ export function WhatIs() {
                 </span>
                 <div
                   style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 12,
+                    width: 52,
+                    height: 52,
+                    borderRadius: 13,
                     background: 'rgba(58,172,110,.12)',
                     border: '1px solid rgba(58,172,110,.2)',
                     display: 'flex',
@@ -393,6 +393,7 @@ export function WhatIs() {
                     justifyContent: 'center',
                     color: '#3AAC6E',
                     marginBottom: '.9rem',
+                    marginLeft: '.5rem',
                   }}
                 >
                   {p.icon}
