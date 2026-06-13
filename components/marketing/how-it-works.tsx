@@ -117,7 +117,7 @@ export function HowItWorks() {
         }}
       />
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         {/* Header */}
         <motion.div
           initial={reduced ? false : { opacity: 0, y: 24 }}
