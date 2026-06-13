@@ -143,12 +143,12 @@ export function WhatIs() {
         }}
       />
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 2 }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 2 }}>
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 'clamp(3rem, 6vw, 6rem)',
+            gridTemplateColumns: '1fr 1.15fr',
+            gap: 'clamp(3rem, 6vw, 5rem)',
             alignItems: 'center',
           }}
           className="grid-responsive-2"
