@@ -393,7 +393,6 @@ export function WhatIs() {
                     justifyContent: 'center',
                     color: '#3AAC6E',
                     marginBottom: '.9rem',
-                    marginLeft: 'auto',
                   }}
                 >
                   {p.icon}
