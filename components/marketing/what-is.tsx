@@ -1,8 +1,41 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import { motion, useReducedMotion, useInView, animate } from 'framer-motion'
 
 const EASE = [0.16, 1, 0.3, 1] as const
+
+function AnimatedStat({
+  target,
+  suffix = '',
+  duration = 1.4,
+}: {
+  target: number
+  suffix?: string
+  duration?: number
+}) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const isInView = useInView(ref, { once: true, amount: 0.6 })
+  const reduced = useReducedMotion() ?? false
+  const [value, setValue] = useState(reduced ? target : 0)
+
+  useEffect(() => {
+    if (!isInView || reduced) return
+    const controls = animate(0, target, {
+      duration,
+      ease: EASE,
+      onUpdate: (v) => setValue(Math.round(v)),
+    })
+    return () => controls.stop()
+  }, [isInView, reduced, target, duration])
+
+  return (
+    <span ref={ref}>
+      {value}
+      {suffix}
+    </span>
+  )
+}
 
 const pillars = [
   {
@@ -294,9 +327,9 @@ export function WhatIs() {
               }}
             >
               {[
-                { value: '5s', label: 'Analyse tijd' },
-                { value: '99%', label: 'Nauwkeurigheid' },
-                { value: '0', label: 'Data bewaard' },
+                { target: 5, suffix: 's', label: 'Analyse tijd' },
+                { target: 99, suffix: '%', label: 'Nauwkeurigheid' },
+                { target: 0, suffix: '', label: 'Data bewaard' },
               ].map((stat, i) => (
                 <div
                   key={stat.label}
@@ -315,7 +348,7 @@ export function WhatIs() {
                       marginBottom: '.3rem',
                     }}
                   >
-                    {stat.value}
+                    <AnimatedStat target={stat.target} suffix={stat.suffix} />
                   </div>
                   <div
                     style={{
