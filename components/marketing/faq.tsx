@@ -96,7 +96,7 @@ function FAQContent() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
-        borderTop: '1px solid rgba(244,236,219,.1)',
+        background: 'linear-gradient(180deg, #091020 0%, #0A1322 45%, #04060C 100%)',
         overflow: 'hidden',
       }}
     >

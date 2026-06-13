@@ -79,6 +79,21 @@ export function Pricing() {
         overflow: 'hidden',
       }}
     >
+      {/* Vloeiende overgang vanaf vorige sectie */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 140,
+          background: 'linear-gradient(to bottom, #091020 0%, transparent 100%)',
+          zIndex: 1,
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* Kleur glows */}
       <div
         aria-hidden="true"

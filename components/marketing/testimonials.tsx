@@ -134,6 +134,21 @@ export function Testimonials() {
         position: 'relative',
       }}
     >
+      {/* Vloeiende overgang vanaf vorige sectie */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 140,
+          background: 'linear-gradient(to bottom, #060C1A 0%, transparent 100%)',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* Header */}
       <div
         style={{ textAlign: 'center', marginBottom: '3rem', padding: '0 clamp(1.5rem, 3vw, 3rem)' }}

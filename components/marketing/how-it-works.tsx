@@ -84,6 +84,20 @@ export function HowItWorks() {
         overflow: 'hidden',
       }}
     >
+      {/* Vloeiende overgang vanaf vorige sectie */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: 120,
+          background: 'linear-gradient(to bottom, #060C1A 0%, transparent 100%)',
+          pointerEvents: 'none',
+        }}
+      />
+
       {/* Grid patroon */}
       <div
         aria-hidden="true"
