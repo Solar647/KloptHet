@@ -155,15 +155,16 @@ export function HowItWorks() {
 
         {/* Proces met kronkellijn */}
         <div style={{ position: 'relative' }}>
-          {/* Kronkelende verbindingslijn (desktop) */}
+          {/* Kronkelende verbindingslijn (desktop) — non-scaling-stroke houdt 'm strak */}
           <svg
             aria-hidden="true"
             className="process-line"
-            viewBox="0 0 1200 1080"
+            viewBox="0 0 1000 1000"
             preserveAspectRatio="none"
             style={{
               position: 'absolute',
-              inset: 0,
+              top: 0,
+              left: 0,
               width: '100%',
               height: '100%',
               zIndex: 0,
@@ -171,40 +172,59 @@ export function HowItWorks() {
               overflow: 'visible',
             }}
           >
+            <defs>
+              <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#3AAC6E" stopOpacity="0.15" />
+                <stop offset="12%" stopColor="#3AAC6E" stopOpacity="0.85" />
+                <stop offset="88%" stopColor="#3AAC6E" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#3AAC6E" stopOpacity="0.15" />
+              </linearGradient>
+            </defs>
             <motion.path
-              d="M600 20
-                 C 980 120, 1120 240, 980 360
-                 C 820 500, 180 460, 200 620
-                 C 215 760, 1050 740, 980 880
-                 C 930 980, 500 1000, 600 1080"
+              d="M500 8
+                 C 300 90, 150 190, 235 305
+                 C 330 435, 880 415, 795 560
+                 C 715 700, 150 685, 245 820
+                 C 305 915, 500 935, 500 992"
               fill="none"
-              stroke="#3AAC6E"
+              stroke="url(#lineGrad)"
               strokeWidth="2.5"
-              strokeDasharray="2 10"
+              strokeDasharray="1 11"
               strokeLinecap="round"
-              opacity="0.6"
+              vectorEffect="non-scaling-stroke"
               initial={reduced ? false : { pathLength: 0 }}
               whileInView={{ pathLength: 1 }}
               viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 2.4, ease: 'easeInOut' }}
+              transition={{ duration: 2.2, ease: 'easeInOut' }}
             />
           </svg>
 
-          {/* Start-label */}
+          {/* Start-node + label */}
           <div
             className="process-start"
             style={{
-              fontFamily: 'var(--font-serif)',
-              fontStyle: 'italic',
-              fontSize: '1.1rem',
-              color: '#3AAC6E',
-              textAlign: 'center',
-              marginBottom: 'clamp(1.5rem, 4vw, 3rem)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '.8rem',
+              marginBottom: 'clamp(2rem, 5vw, 3.5rem)',
               position: 'relative',
               zIndex: 1,
             }}
           >
-            het proces.
+            <span className="process-start-dot">
+              <span className="process-start-core" />
+            </span>
+            <span
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: '1.15rem',
+                color: '#3AAC6E',
+              }}
+            >
+              het proces.
+            </span>
           </div>
 
           {/* Stappen */}
@@ -296,13 +316,118 @@ export function HowItWorks() {
               </motion.div>
             ))}
           </div>
+
+          {/* Eind-node + afsluitende badge */}
+          <motion.div
+            initial={reduced ? false : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '1.1rem',
+              marginTop: 'clamp(2.5rem, 6vw, 4.5rem)',
+              position: 'relative',
+              zIndex: 1,
+            }}
+          >
+            {/* Pijlpunt onderaan de lijn */}
+            <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
+              <path
+                d="M11 15 L3 4 M11 15 L19 4"
+                fill="none"
+                stroke="#3AAC6E"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '.7rem 1.4rem',
+                borderRadius: 9999,
+                background: 'rgba(58,172,110,.1)',
+                border: '1px solid rgba(58,172,110,.3)',
+                boxShadow: '0 0 30px rgba(58,172,110,.18)',
+              }}
+            >
+              <span
+                style={{
+                  width: 22,
+                  height: 22,
+                  borderRadius: '50%',
+                  background: '#3AAC6E',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#07190F"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </span>
+              <span
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontWeight: 700,
+                  fontSize: '.95rem',
+                  color: '#fff',
+                }}
+              >
+                Klaar — u weet of het klopt.
+              </span>
+            </div>
+          </motion.div>
         </div>
       </div>
 
       <style>{`
+        .process-start-dot {
+          position: relative;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(58,172,110,.2);
+        }
+        .process-start-dot::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          border: 1px solid rgba(58,172,110,.6);
+          animation: processPing 2s ease-out infinite;
+        }
+        .process-start-core {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: #3AAC6E;
+          box-shadow: 0 0 14px rgba(58,172,110,.9);
+        }
+        @keyframes processPing {
+          0% { transform: scale(1); opacity: .8; }
+          80%, 100% { transform: scale(2.4); opacity: 0; }
+        }
         @media (max-width: 768px) {
           .process-line { display: none; }
-          .process-start { text-align: left !important; }
           .process-step { justify-content: flex-start !important; }
           .process-text { text-align: left !important; }
           .process-text > div { flex-direction: row !important; }
