@@ -115,124 +115,133 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
         }}
       />
 
+      <style>{`
+        @keyframes radarPulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: .45; transform: scale(.8); }
+        }
+        .radar-stats {
+          display: flex;
+          justify-content: center;
+          align-items: stretch;
+          gap: 0;
+          flex-wrap: nowrap;
+        }
+        .radar-stat {
+          flex: 1;
+          max-width: 240px;
+          padding: 0 clamp(1rem, 4vw, 3rem);
+        }
+        .radar-stat + .radar-stat {
+          border-left: 1px solid rgba(244,236,219,.1);
+        }
+        @media (max-width: 640px) {
+          .radar-stat { padding: 0 clamp(.5rem, 3vw, 1rem); }
+        }
+      `}</style>
+
       <div
         style={{
-          maxWidth: 1100,
+          maxWidth: 820,
           margin: '0 auto',
           position: 'relative',
           zIndex: 2,
-          display: 'grid',
-          gridTemplateColumns: '1fr 1.2fr',
-          gap: 'clamp(2rem, 5vw, 4rem)',
-          alignItems: 'center',
+          textAlign: 'center',
         }}
-        className="grid-responsive-2"
       >
-        {/* Links: boodschap */}
+        {/* Label */}
         <motion.div
+          initial={reduced ? false : { opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, ease: EASE }}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 9,
+            fontSize: '.7rem',
+            fontWeight: 700,
+            color: 'rgba(217,123,42,.9)',
+            letterSpacing: '.22em',
+            textTransform: 'uppercase',
+            fontFamily: 'ui-monospace, monospace',
+            marginBottom: '1.4rem',
+          }}
+        >
+          <span
+            style={{
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              background: '#D97B2A',
+              boxShadow: '0 0 12px rgba(217,123,42,.8)',
+              display: 'inline-block',
+              flexShrink: 0,
+              animation: reduced ? 'none' : 'radarPulse 2s ease-in-out infinite',
+            }}
+          />
+          Fraude-radar · live
+        </motion.div>
+
+        {/* Kop */}
+        <motion.h2
+          initial={reduced ? false : { opacity: 0, y: 22 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7, delay: 0.05, ease: EASE }}
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontWeight: 500,
+            fontSize: 'clamp(1.9rem, 4vw, 3.1rem)',
+            lineHeight: 1.08,
+            letterSpacing: '-.035em',
+            color: '#F4ECDB',
+            margin: '0 auto .9rem',
+            maxWidth: 640,
+          }}
+        >
+          Oplichting wordt steeds slimmer —{' '}
+          <em style={{ fontStyle: 'italic', color: 'rgba(58,172,110,.9)' }}>en treft iedereen.</em>
+        </motion.h2>
+
+        {/* Subregel */}
+        <motion.p
+          initial={reduced ? false : { opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.6, delay: 0.12, ease: EASE }}
+          style={{
+            fontFamily: 'var(--font-sans)',
+            fontSize: '1.02rem',
+            color: 'rgba(244,236,219,.55)',
+            lineHeight: 1.7,
+            margin: '0 auto clamp(2.5rem, 5vw, 3.5rem)',
+            maxWidth: 500,
+          }}
+        >
+          Nep-betaalverzoeken, valse pakketberichten, gehackte accounts. KloptHet checkt elk
+          verdacht bericht in 5 seconden — gratis.
+        </motion.p>
+
+        {/* Cijfers — één rij, dunne dividers, geen boxen */}
+        <motion.div
+          className="radar-stats"
           initial={reduced ? false : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.7, ease: EASE }}
+          transition={{ duration: 0.7, delay: 0.18, ease: EASE }}
         >
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 9,
-              fontSize: '.7rem',
-              fontWeight: 700,
-              color: 'rgba(217,123,42,.9)',
-              letterSpacing: '.2em',
-              textTransform: 'uppercase',
-              fontFamily: 'ui-monospace, monospace',
-              marginBottom: '1.1rem',
-            }}
-          >
-            <span
-              style={{
-                width: 8,
-                height: 8,
-                borderRadius: '50%',
-                background: '#D97B2A',
-                boxShadow: '0 0 12px rgba(217,123,42,.8)',
-                display: 'inline-block',
-                flexShrink: 0,
-                animation: reduced ? 'none' : 'radarPulse 2s ease-in-out infinite',
-              }}
-            />
-            Fraude-radar · live
-          </div>
-          <style>{`
-            @keyframes radarPulse {
-              0%, 100% { opacity: 1; transform: scale(1); }
-              50% { opacity: .45; transform: scale(.8); }
-            }
-          `}</style>
-
-          <h2
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontWeight: 500,
-              fontSize: 'clamp(1.7rem, 3.2vw, 2.7rem)',
-              lineHeight: 1.1,
-              letterSpacing: '-.03em',
-              color: '#F4ECDB',
-              margin: '0 0 1rem',
-            }}
-          >
-            Oplichting wordt steeds slimmer —{' '}
-            <em style={{ fontStyle: 'italic', color: 'rgba(58,172,110,.9)' }}>
-              en treft iedereen.
-            </em>
-          </h2>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '1.02rem',
-              color: 'rgba(244,236,219,.6)',
-              lineHeight: 1.75,
-              margin: 0,
-              maxWidth: 440,
-            }}
-          >
-            Nep-betaalverzoeken, valse pakketberichten, gehackte accounts — niemand is meer veilig.
-            KloptHet checkt elk verdacht bericht in 5 seconden. Gratis.
-          </p>
-        </motion.div>
-
-        {/* Rechts: cijfers */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1rem',
-          }}
-        >
-          {items.map((item, i) => (
-            <motion.div
-              key={item.label}
-              initial={reduced ? false : { opacity: 0, y: 30, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, delay: i * 0.12, ease: EASE }}
-              style={{
-                background: 'rgba(244,236,219,.04)',
-                border: '1px solid rgba(244,236,219,.09)',
-                borderRadius: 16,
-                padding: 'clamp(1.1rem, 2vw, 1.5rem) 1rem',
-                textAlign: 'center',
-              }}
-            >
+          {items.map((item) => (
+            <div key={item.label} className="radar-stat">
               <div
                 style={{
                   fontFamily: 'var(--font-serif)',
-                  fontWeight: 600,
-                  fontSize: 'clamp(1.6rem, 3vw, 2.4rem)',
+                  fontWeight: 500,
+                  fontSize: 'clamp(2rem, 5vw, 3.4rem)',
                   color: '#3AAC6E',
                   lineHeight: 1,
-                  marginBottom: '.5rem',
-                  letterSpacing: '-.02em',
+                  marginBottom: '.6rem',
+                  letterSpacing: '-.03em',
                 }}
               >
                 <CountUp target={item.value} />
@@ -240,17 +249,19 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
               <div
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '.72rem',
-                  color: 'rgba(244,236,219,.45)',
+                  fontSize: '.7rem',
+                  fontWeight: 600,
+                  color: 'rgba(244,236,219,.42)',
                   lineHeight: 1.4,
-                  letterSpacing: '.02em',
+                  letterSpacing: '.1em',
+                  textTransform: 'uppercase',
                 }}
               >
                 {item.label}
               </div>
-            </motion.div>
+            </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
