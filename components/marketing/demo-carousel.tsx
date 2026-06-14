@@ -111,16 +111,22 @@ export function DemoCarousel() {
     >
       {/* Doodles */}
       <Doodle
-        type="spark"
-        size={40}
+        type="lightning"
+        size={36}
         color="rgba(58,172,110,.18)"
-        style={{ top: '10%', right: '10%' }}
+        style={{ top: '9%', right: '10%' }}
+      />
+      <Doodle
+        type="waves"
+        size={40}
+        color="rgba(255,255,255,.08)"
+        style={{ top: '15%', left: '7%' }}
       />
       <Doodle
         type="star"
-        size={30}
-        color="rgba(255,255,255,.08)"
-        style={{ top: '16%', left: '8%' }}
+        size={28}
+        color="rgba(255,255,255,.07)"
+        style={{ top: '6%', left: '24%' }}
       />
 
       <div style={{ maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 1 }}>

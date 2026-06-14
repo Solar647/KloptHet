@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { Doodle } from './doodles'
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -115,6 +116,26 @@ function FAQContent() {
           pointerEvents: 'none',
           zIndex: 0,
         }}
+      />
+
+      {/* Doodles */}
+      <Doodle
+        type="spark"
+        size={34}
+        color="rgba(58,172,110,.18)"
+        style={{ top: '16%', left: '11%' }}
+      />
+      <Doodle
+        type="refresh"
+        size={32}
+        color="rgba(255,255,255,.08)"
+        style={{ bottom: '16%', right: '10%' }}
+      />
+      <Doodle
+        type="waves"
+        size={38}
+        color="rgba(255,255,255,.07)"
+        style={{ top: '40%', right: '8%' }}
       />
 
       <div style={{ maxWidth: 880, margin: '0 auto', position: 'relative', zIndex: 1 }}>

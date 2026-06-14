@@ -1,5 +1,7 @@
 'use client'
 
+import { Doodle } from './doodles'
+
 const reviews = [
   {
     name: 'Anneke V.',
@@ -164,6 +166,20 @@ export function Testimonials() {
           pointerEvents: 'none',
           zIndex: 0,
         }}
+      />
+
+      {/* Doodles */}
+      <Doodle
+        type="heart"
+        size={32}
+        color="rgba(58,172,110,.2)"
+        style={{ top: '14%', left: '10%' }}
+      />
+      <Doodle
+        type="star"
+        size={28}
+        color="rgba(255,255,255,.08)"
+        style={{ top: '10%', right: '12%' }}
       />
 
       {/* Header */}

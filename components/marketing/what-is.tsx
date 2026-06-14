@@ -54,22 +54,28 @@ export function WhatIs() {
 
       {/* Doodles */}
       <Doodle
-        type="asterisk"
-        size={32}
-        color="rgba(58,172,110,.2)"
-        style={{ top: '12%', left: '8%' }}
+        type="star"
+        size={34}
+        color="rgba(58,172,110,.22)"
+        style={{ top: '11%', left: '7%' }}
       />
       <Doodle
-        type="spiral"
-        size={48}
-        color="rgba(255,255,255,.07)"
-        style={{ top: '18%', right: '7%' }}
-      />
-      <Doodle
-        type="arrow"
-        size={52}
+        type="spark"
+        size={40}
         color="rgba(255,255,255,.08)"
-        style={{ bottom: '14%', left: '6%' }}
+        style={{ top: '16%', right: '6%' }}
+      />
+      <Doodle
+        type="heart"
+        size={30}
+        color="rgba(58,172,110,.16)"
+        style={{ bottom: '16%', right: '5%' }}
+      />
+      <Doodle
+        type="lightning"
+        size={34}
+        color="rgba(255,255,255,.08)"
+        style={{ bottom: '12%', left: '6%' }}
       />
 
       <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 1 }}>

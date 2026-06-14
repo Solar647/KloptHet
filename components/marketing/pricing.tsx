@@ -82,20 +82,20 @@ export function Pricing() {
     >
       {/* Doodles */}
       <Doodle
-        type="star"
-        size={38}
-        color="rgba(58,172,110,.18)"
-        style={{ top: '14%', left: '9%' }}
-      />
-      <Doodle
-        type="spark"
+        type="crown"
         size={42}
-        color="rgba(255,255,255,.08)"
-        style={{ top: '24%', right: '8%' }}
+        color="rgba(58,172,110,.2)"
+        style={{ top: '13%', left: '9%' }}
       />
       <Doodle
-        type="circle"
-        size={50}
+        type="diamond"
+        size={40}
+        color="rgba(255,255,255,.08)"
+        style={{ top: '22%', right: '8%' }}
+      />
+      <Doodle
+        type="heart"
+        size={32}
         color="rgba(255,255,255,.07)"
         style={{ bottom: '14%', left: '6%' }}
       />

@@ -58,22 +58,28 @@ export function HowItWorks() {
 
       {/* Doodles */}
       <Doodle
-        type="arrow"
-        size={56}
-        color="rgba(58,172,110,.16)"
-        style={{ top: '16%', right: '12%' }}
+        type="zigzag"
+        size={42}
+        color="rgba(58,172,110,.18)"
+        style={{ top: '15%', right: '11%' }}
       />
       <Doodle
-        type="asterisk"
-        size={30}
+        type="note"
+        size={32}
         color="rgba(255,255,255,.08)"
-        style={{ top: '44%', left: '7%' }}
+        style={{ top: '46%', left: '6%' }}
       />
       <Doodle
         type="spiral"
         size={46}
         color="rgba(255,255,255,.07)"
-        style={{ bottom: '12%', right: '10%' }}
+        style={{ bottom: '12%', right: '9%' }}
+      />
+      <Doodle
+        type="spark"
+        size={30}
+        color="rgba(58,172,110,.16)"
+        style={{ bottom: '30%', left: '9%' }}
       />
 
       <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
