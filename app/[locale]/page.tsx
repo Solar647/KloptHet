@@ -12,6 +12,9 @@ import { FAQ } from '@/components/marketing/faq'
 import { Reveal } from '@/components/shared/reveal'
 import { createClient } from '@/lib/supabase/server'
 
+// Altijd vers renderen zodat de fraude-radar de actuele cijfers toont
+export const dynamic = 'force-dynamic'
+
 const BASE_URL = 'https://www.klopthet.com'
 
 export async function generateMetadata({
@@ -86,7 +89,17 @@ async function getHomeStats(): Promise<HomeStats | null> {
     const supabase = await createClient()
     const { data, error } = await supabase.rpc('homepage_stats')
     if (error || !data) return null
-    return data as HomeStats
+    // De SQL-functie geeft snake_case terug — omzetten naar camelCase
+    const d = data as {
+      total_scans?: number
+      scams_detected?: number
+      known_patterns?: number
+    }
+    return {
+      totalScans: d.total_scans ?? 0,
+      scamsDetected: d.scams_detected ?? 0,
+      knownPatterns: d.known_patterns ?? 0,
+    }
   } catch {
     // Migratie nog niet gedraaid o.i.d. — radar valt terug op basisaantallen
     return null
