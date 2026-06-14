@@ -181,11 +181,10 @@ export function HowItWorks() {
               </linearGradient>
             </defs>
             <motion.path
-              d="M500 8
-                 C 300 90, 150 190, 235 305
-                 C 330 435, 880 415, 795 560
-                 C 715 700, 150 685, 245 820
-                 C 305 915, 500 935, 500 992"
+              d="M500 6
+                 C 330 110, 330 240, 500 340
+                 C 670 440, 670 560, 500 660
+                 C 330 760, 330 890, 500 994"
               fill="none"
               stroke="url(#lineGrad)"
               strokeWidth="2.5"
@@ -317,82 +316,29 @@ export function HowItWorks() {
             ))}
           </div>
 
-          {/* Eind-node + afsluitende badge */}
-          <motion.div
-            initial={reduced ? false : { opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.6, delay: 0.15, ease: EASE }}
+          {/* Ruimte zodat de lijn netjes onder stap 03 kan eindigen */}
+          <div style={{ height: 'clamp(3rem, 7vw, 6rem)' }} />
+
+          {/* Schone eind-node */}
+          <div
+            className="process-end"
             style={{
               display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '1.1rem',
-              marginTop: 'clamp(2.5rem, 6vw, 4.5rem)',
+              justifyContent: 'center',
               position: 'relative',
               zIndex: 1,
             }}
           >
-            {/* Pijlpunt onderaan de lijn */}
-            <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
-              <path
-                d="M11 15 L3 4 M11 15 L19 4"
-                fill="none"
-                stroke="#3AAC6E"
-                strokeWidth="2.4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <div
+            <span
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 10,
-                padding: '.7rem 1.4rem',
-                borderRadius: 9999,
-                background: 'rgba(58,172,110,.1)',
-                border: '1px solid rgba(58,172,110,.3)',
-                boxShadow: '0 0 30px rgba(58,172,110,.18)',
+                width: 14,
+                height: 14,
+                borderRadius: '50%',
+                background: '#3AAC6E',
+                boxShadow: '0 0 18px rgba(58,172,110,.9)',
               }}
-            >
-              <span
-                style={{
-                  width: 22,
-                  height: 22,
-                  borderRadius: '50%',
-                  background: '#3AAC6E',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}
-              >
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#07190F"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
-              </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontWeight: 700,
-                  fontSize: '.95rem',
-                  color: '#fff',
-                }}
-              >
-                Klaar — u weet of het klopt.
-              </span>
-            </div>
-          </motion.div>
+            />
+          </div>
         </div>
       </div>
 
