@@ -1,44 +1,87 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+const SPLINE_SRC = 'https://my.spline.design/bganimation-UbaeTL6qYDkDSbXLxE5l3ik8/'
 
 export function HeroSpline() {
   const containerRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
+  const fadeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Door de key te verhogen wordt de iframe opnieuw gemount = verse WebGL-scene.
+  // Dit voorkomt het geflikker/degraderen nadat de pagina lang openstond of de
+  // tab op de achtergrond is geweest.
+  const [reloadKey, setReloadKey] = useState(0)
+
+  const showOverlay = () => {
+    const overlay = overlayRef.current
+    if (!overlay) return
+    if (fadeTimer.current) clearTimeout(fadeTimer.current)
+    overlay.style.transition = 'none'
+    overlay.style.opacity = '1'
+  }
+
+  const hideOverlay = (delay = 700) => {
+    const overlay = overlayRef.current
+    if (!overlay) return
+    if (fadeTimer.current) clearTimeout(fadeTimer.current)
+    fadeTimer.current = setTimeout(() => {
+      overlay.style.transition = 'opacity .9s ease'
+      overlay.style.opacity = '0'
+    }, delay)
+  }
 
   useEffect(() => {
     const el = containerRef.current
-    const overlay = overlayRef.current
-    if (!el || !overlay) return
+    if (!el) return
 
-    let hasEntered = false
+    let inView = true
+    let hasLeft = false
+    let leftAt = 0
+
+    // Verse scene laden + overlay eroverheen tot de iframe geladen is
+    const refresh = () => {
+      showOverlay()
+      setReloadKey((k) => k + 1)
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          if (hasEntered) {
-            // Heeft de viewport verlaten en is terug: even afdekken zodat
-            // de Spline-scene kan bijtrekken zonder dat je het geflikker ziet.
-            overlay.style.transition = 'none'
-            overlay.style.opacity = '1'
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
-                overlay.style.transition = 'opacity .8s ease'
-                overlay.style.opacity = '0'
-              })
-            })
+        inView = entry.isIntersecting
+        if (!entry.isIntersecting) {
+          if (!document.hidden) {
+            hasLeft = true
+            leftAt = Date.now()
+            showOverlay()
           }
-          hasEntered = true
-        } else if (hasEntered) {
-          overlay.style.transition = 'none'
-          overlay.style.opacity = '1'
+        } else if (hasLeft) {
+          hasLeft = false
+          // Lang weg geweest? Dan verse scene. Kort weg? Alleen overlay wegfaden.
+          if (Date.now() - leftAt > 4000) {
+            refresh()
+          } else {
+            hideOverlay(200)
+          }
         }
       },
       { threshold: 0.15 }
     )
-
     observer.observe(el)
-    return () => observer.disconnect()
+
+    // Tab terug op de voorgrond na achtergrond → verse scene als hero in beeld is
+    const onVisibility = () => {
+      if (!document.hidden && inView) {
+        refresh()
+      }
+    }
+    document.addEventListener('visibilitychange', onVisibility)
+
+    return () => {
+      observer.disconnect()
+      document.removeEventListener('visibilitychange', onVisibility)
+      if (fadeTimer.current) clearTimeout(fadeTimer.current)
+    }
   }, [])
 
   return (
@@ -82,9 +125,14 @@ export function HeroSpline() {
       <div className="spline-mobile-bg" />
 
       <iframe
+        key={reloadKey}
         className="spline-desktop-iframe"
-        src="https://my.spline.design/bganimation-UbaeTL6qYDkDSbXLxE5l3ik8/"
+        src={SPLINE_SRC}
         frameBorder="0"
+        onLoad={() => {
+          // Iframe (her)geladen — overlay wegfaden zodra de scene zichtbaar is
+          if (reloadKey > 0) hideOverlay(600)
+        }}
         style={{
           position: 'absolute',
           top: '50%',
@@ -116,7 +164,7 @@ export function HeroSpline() {
         }}
       />
 
-      {/* Re-entry overlay: dekt geflikker af terwijl de scene bijtrekt */}
+      {/* Re-entry overlay: dekt geflikker af terwijl de scene (her)laadt */}
       <div
         ref={overlayRef}
         aria-hidden="true"
