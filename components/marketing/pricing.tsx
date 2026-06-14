@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
+import { Doodle } from './doodles'
 
 const tiers = [
   {
@@ -79,6 +80,32 @@ export function Pricing() {
         overflow: 'hidden',
       }}
     >
+      {/* Doodles */}
+      <Doodle
+        type="star"
+        size={38}
+        color="rgba(58,172,110,.18)"
+        style={{ top: '14%', left: '9%' }}
+      />
+      <Doodle
+        type="spark"
+        size={42}
+        color="rgba(255,255,255,.08)"
+        style={{ top: '24%', right: '8%' }}
+      />
+      <Doodle
+        type="circle"
+        size={50}
+        color="rgba(255,255,255,.07)"
+        style={{ bottom: '14%', left: '6%' }}
+      />
+      <Doodle
+        type="squiggle"
+        size={60}
+        color="rgba(58,172,110,.12)"
+        style={{ bottom: '20%', right: '7%' }}
+      />
+
       <div style={{ maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 2 }}>
         {/* Eyebrow */}
         <div
@@ -120,14 +147,18 @@ export function Pricing() {
             style={{
               fontFamily: 'var(--font-serif)',
               fontWeight: 700,
-              fontSize: 'clamp(4rem, 16vw, 13rem)',
-              lineHeight: 0.9,
+              fontSize: 'clamp(4.5rem, 18vw, 15rem)',
+              lineHeight: 0.85,
               letterSpacing: '-.05em',
-              color: '#fff',
-              opacity: 0.06,
               margin: 0,
               userSelect: 'none',
               whiteSpace: 'nowrap',
+              background:
+                'linear-gradient(180deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.05) 100%)',
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              color: 'transparent',
             }}
           >
             Prijzen
@@ -151,79 +182,85 @@ export function Pricing() {
           </p>
         </div>
 
-        {/* Toggle */}
+        {/* Toggle — segmented control */}
         <div
           style={{
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'center',
-            gap: 12,
             margin: 'clamp(2.5rem, 5vw, 4rem) 0 2.5rem',
           }}
         >
-          <span
+          <div
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.9rem',
-              fontWeight: 600,
-              color: yearly ? 'rgba(255,255,255,.45)' : '#fff',
-            }}
-          >
-            Per maand
-          </span>
-          <button
-            onClick={() => setYearly((v) => !v)}
-            aria-label="Wissel tussen maand en jaar"
-            style={{
-              width: 52,
-              height: 28,
-              borderRadius: 9999,
-              border: '1px solid rgba(255,255,255,.2)',
-              background: yearly ? '#3AAC6E' : 'rgba(255,255,255,.1)',
               position: 'relative',
-              cursor: 'pointer',
-              transition: 'background .25s',
-              flexShrink: 0,
+              display: 'inline-flex',
+              padding: 5,
+              borderRadius: 9999,
+              background: 'rgba(255,255,255,.05)',
+              border: '1px solid rgba(255,255,255,.1)',
             }}
           >
+            {/* Schuivende indicator */}
             <span
+              aria-hidden="true"
               style={{
                 position: 'absolute',
-                top: 2,
-                left: yearly ? 25 : 2,
-                width: 22,
-                height: 22,
-                borderRadius: '50%',
+                top: 5,
+                bottom: 5,
+                left: yearly ? '50%' : 5,
+                width: 'calc(50% - 5px)',
+                borderRadius: 9999,
                 background: '#fff',
-                transition: 'left .25s cubic-bezier(.16,1,.3,1)',
+                transition: 'left .3s cubic-bezier(.16,1,.3,1)',
               }}
             />
-          </button>
-          <span
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '.9rem',
-              fontWeight: 600,
-              color: yearly ? '#fff' : 'rgba(255,255,255,.45)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
-            Per jaar
-            <span
-              style={{
-                background: 'rgba(58,172,110,.2)',
-                color: '#3AAC6E',
-                fontSize: '.65rem',
-                fontWeight: 700,
-                padding: '2px 7px',
-                borderRadius: 9999,
-              }}
-            >
-              17% korting
-            </span>
-          </span>
+            {[
+              { label: 'Per maand', value: false },
+              { label: 'Per jaar', value: true },
+            ].map(({ label, value }) => {
+              const activeBtn = yearly === value
+              return (
+                <button
+                  key={String(value)}
+                  onClick={() => setYearly(value)}
+                  style={{
+                    position: 'relative',
+                    zIndex: 1,
+                    border: 'none',
+                    background: 'transparent',
+                    cursor: 'pointer',
+                    padding: '.6rem 1.5rem',
+                    borderRadius: 9999,
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '.9rem',
+                    fontWeight: 700,
+                    color: activeBtn ? '#0a0a0c' : 'rgba(255,255,255,.6)',
+                    transition: 'color .25s',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {label}
+                  {value && (
+                    <span
+                      style={{
+                        background: activeBtn ? 'rgba(58,172,110,.2)' : 'rgba(58,172,110,.18)',
+                        color: '#1f7a4d',
+                        fontSize: '.65rem',
+                        fontWeight: 800,
+                        padding: '2px 7px',
+                        borderRadius: 9999,
+                      }}
+                    >
+                      -17%
+                    </span>
+                  )}
+                </button>
+              )
+            })}
+          </div>
         </div>
 
         {/* Kaarten */}
@@ -289,25 +326,33 @@ export function Pricing() {
                     flex: 1,
                   }}
                 >
-                  {tier.badge && (
-                    <div
-                      style={{
-                        alignSelf: 'flex-start',
-                        background: '#3AAC6E',
-                        color: '#07190F',
-                        fontSize: '.68rem',
-                        fontWeight: 700,
-                        letterSpacing: '.05em',
-                        textTransform: 'uppercase',
-                        padding: '.3rem .7rem',
-                        borderRadius: 9999,
-                        marginBottom: '1rem',
-                        fontFamily: 'var(--font-sans)',
-                      }}
-                    >
-                      ★ {tier.badge}
-                    </div>
-                  )}
+                  {/* Vaste badge-rij zodat alle kaarten uitlijnen */}
+                  <div
+                    style={{
+                      height: 26,
+                      marginBottom: '1rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {tier.badge && (
+                      <span
+                        style={{
+                          background: '#3AAC6E',
+                          color: '#07190F',
+                          fontSize: '.68rem',
+                          fontWeight: 700,
+                          letterSpacing: '.05em',
+                          textTransform: 'uppercase',
+                          padding: '.3rem .7rem',
+                          borderRadius: 9999,
+                          fontFamily: 'var(--font-sans)',
+                        }}
+                      >
+                        ★ {tier.badge}
+                      </span>
+                    )}
+                  </div>
 
                   <div
                     style={{

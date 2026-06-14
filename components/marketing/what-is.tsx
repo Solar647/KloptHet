@@ -1,6 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'framer-motion'
+import { Doodle } from './doodles'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -49,6 +50,26 @@ export function WhatIs() {
           pointerEvents: 'none',
           zIndex: 0,
         }}
+      />
+
+      {/* Doodles */}
+      <Doodle
+        type="asterisk"
+        size={32}
+        color="rgba(58,172,110,.2)"
+        style={{ top: '12%', left: '8%' }}
+      />
+      <Doodle
+        type="spiral"
+        size={48}
+        color="rgba(255,255,255,.07)"
+        style={{ top: '18%', right: '7%' }}
+      />
+      <Doodle
+        type="arrow"
+        size={52}
+        color="rgba(255,255,255,.08)"
+        style={{ bottom: '14%', left: '6%' }}
       />
 
       <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative', zIndex: 1 }}>

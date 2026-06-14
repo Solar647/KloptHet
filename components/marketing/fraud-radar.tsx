@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion, useInView, animate } from 'framer-motion'
+import { Doodle } from './doodles'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -61,7 +62,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
     <section
       style={{
         position: 'relative',
-        padding: 'clamp(3.5rem, 6vw, 5.5rem) clamp(1.5rem, 3vw, 3rem)',
+        padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
         background: '#0a0a0c',
         overflow: 'hidden',
       }}
@@ -115,6 +116,26 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
         }}
       />
 
+      {/* Doodles */}
+      <Doodle
+        type="spark"
+        size={46}
+        color="rgba(58,172,110,.18)"
+        style={{ top: '22%', left: '8%' }}
+      />
+      <Doodle
+        type="squiggle"
+        size={64}
+        color="rgba(255,255,255,.08)"
+        style={{ bottom: '18%', right: '9%' }}
+      />
+      <Doodle
+        type="star"
+        size={34}
+        color="rgba(217,123,42,.2)"
+        style={{ top: '30%', right: '14%' }}
+      />
+
       <style>{`
         @keyframes radarPulse {
           0%, 100% { opacity: 1; transform: scale(1); }
@@ -129,8 +150,8 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
         }
         .radar-stat {
           flex: 1;
-          max-width: 240px;
-          padding: 0 clamp(1rem, 4vw, 3rem);
+          max-width: 280px;
+          padding: 0 clamp(1rem, 4vw, 3.25rem);
         }
         .radar-stat + .radar-stat {
           border-left: 1px solid rgba(255,255,255,.1);
@@ -191,13 +212,13 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
           transition={{ duration: 0.7, delay: 0.05, ease: EASE }}
           style={{
             fontFamily: 'var(--font-serif)',
-            fontWeight: 500,
-            fontSize: 'clamp(1.9rem, 4vw, 3.1rem)',
-            lineHeight: 1.08,
-            letterSpacing: '-.035em',
+            fontWeight: 600,
+            fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
+            lineHeight: 1.05,
+            letterSpacing: '-.04em',
             color: '#fff',
-            margin: '0 auto .9rem',
-            maxWidth: 640,
+            margin: '0 auto 1rem',
+            maxWidth: 760,
           }}
         >
           Oplichting wordt steeds slimmer —{' '}
@@ -212,11 +233,11 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
           transition={{ duration: 0.6, delay: 0.12, ease: EASE }}
           style={{
             fontFamily: 'var(--font-sans)',
-            fontSize: '1.02rem',
+            fontSize: '1.15rem',
             color: 'rgba(255,255,255,.55)',
             lineHeight: 1.7,
-            margin: '0 auto clamp(2.5rem, 5vw, 3.5rem)',
-            maxWidth: 500,
+            margin: '0 auto clamp(3rem, 6vw, 4.5rem)',
+            maxWidth: 560,
           }}
         >
           Nep-betaalverzoeken, valse pakketberichten, gehackte accounts. KloptHet checkt elk
@@ -236,8 +257,8 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
               <div
                 style={{
                   fontFamily: 'var(--font-serif)',
-                  fontWeight: 500,
-                  fontSize: 'clamp(2rem, 5vw, 3.4rem)',
+                  fontWeight: 600,
+                  fontSize: 'clamp(2.6rem, 6vw, 4.6rem)',
                   color: '#3AAC6E',
                   lineHeight: 1,
                   marginBottom: '.6rem',
@@ -249,7 +270,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
               <div
                 style={{
                   fontFamily: 'var(--font-sans)',
-                  fontSize: '.7rem',
+                  fontSize: '.8rem',
                   fontWeight: 600,
                   color: 'rgba(255,255,255,.42)',
                   lineHeight: 1.4,

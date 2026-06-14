@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { ArrowRightIcon } from '@/components/shared/icons'
+import { Doodle } from './doodles'
 
 const examples = [
   {
@@ -86,6 +87,7 @@ export function DemoCarousel() {
   }
 
   const switchTo = (idx: number) => {
+    if (idx === active) return
     setActive(idx)
     startInterval()
   }
@@ -107,6 +109,20 @@ export function DemoCarousel() {
         background: '#0a0a0c',
       }}
     >
+      {/* Doodles */}
+      <Doodle
+        type="spark"
+        size={40}
+        color="rgba(58,172,110,.18)"
+        style={{ top: '10%', right: '10%' }}
+      />
+      <Doodle
+        type="star"
+        size={30}
+        color="rgba(255,255,255,.08)"
+        style={{ top: '16%', left: '8%' }}
+      />
+
       <div style={{ maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 'clamp(2.5rem, 5vw, 4rem)' }}>
@@ -177,6 +193,7 @@ export function DemoCarousel() {
               <div
                 key={ex.id}
                 onClick={() => switchTo(i)}
+                onMouseEnter={() => switchTo(i)}
                 className={isActive ? 'demo-card demo-card-active' : 'demo-card'}
                 style={{
                   cursor: 'pointer',
@@ -491,46 +508,57 @@ export function DemoCarousel() {
         </div>
       </div>
 
-      {/* Donkere wave onderaan */}
+      {/* Donkere wave onderaan — volledige breedte, van rand tot rand */}
       <div
         aria-hidden="true"
         style={{
           position: 'relative',
           marginTop: 'clamp(3rem, 6vw, 5rem)',
-          height: 'clamp(120px, 18vw, 240px)',
+          width: '100vw',
+          marginLeft: 'calc(-50vw + 50%)',
+          height: 'clamp(150px, 22vw, 300px)',
           overflow: 'hidden',
         }}
       >
         <svg
-          viewBox="0 0 1440 240"
+          viewBox="0 0 1440 300"
           preserveAspectRatio="none"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
         >
           <defs>
             <linearGradient id="waveA" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#26272b" />
+              <stop offset="0%" stopColor="#2a2b30" />
               <stop offset="50%" stopColor="#141416" />
               <stop offset="100%" stopColor="#0a0a0c" />
             </linearGradient>
             <linearGradient id="waveB" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#0c0c0e" />
-              <stop offset="45%" stopColor="#1c1d20" />
+              <stop offset="45%" stopColor="#1e1f23" />
               <stop offset="100%" stopColor="#0c0c0e" />
             </linearGradient>
           </defs>
           <path
-            d="M0 120 C 360 40, 540 200, 840 120 C 1080 56, 1260 180, 1440 110 L1440 240 L0 240 Z"
+            d="M0 150 C 240 50, 420 250, 720 140 C 1000 40, 1200 230, 1440 120 L1440 300 L0 300 Z"
             fill="url(#waveA)"
             opacity="0.9"
           />
           <path
-            d="M0 170 C 300 110, 600 220, 900 160 C 1140 112, 1320 210, 1440 165 L1440 240 L0 240 Z"
+            d="M0 210 C 260 130, 560 270, 880 190 C 1140 126, 1320 260, 1440 200 L1440 300 L0 300 Z"
             fill="url(#waveB)"
           />
+          {/* Kronkelende groene lijn over de wave */}
           <path
-            d="M0 120 C 360 40, 540 200, 840 120 C 1080 56, 1260 180, 1440 110"
+            d="M0 150 C 240 50, 420 250, 720 140 C 1000 40, 1200 230, 1440 120"
             fill="none"
-            stroke="rgba(255,255,255,.12)"
+            stroke="rgba(58,172,110,.5)"
+            strokeWidth="2"
+            strokeDasharray="2 9"
+            strokeLinecap="round"
+          />
+          <path
+            d="M0 150 C 240 50, 420 250, 720 140 C 1000 40, 1200 230, 1440 120"
+            fill="none"
+            stroke="rgba(255,255,255,.1)"
             strokeWidth="1"
           />
         </svg>
