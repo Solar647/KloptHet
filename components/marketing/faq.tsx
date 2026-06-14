@@ -155,7 +155,6 @@ function FAQContent() {
               letterSpacing: '-.03em',
               color: '#F4ECDB',
               margin: 0,
-              textShadow: '0 0 50px rgba(244,236,219,.18)',
             }}
           >
             Vragen? <em style={{ fontStyle: 'italic', color: 'rgba(58,172,110,.9)' }}>Logisch.</em>

@@ -204,7 +204,6 @@ export function Testimonials() {
             letterSpacing: '-.04em',
             color: '#F4ECDB',
             margin: '0 0 .75rem',
-            textShadow: '0 0 50px rgba(244,236,219,.18)',
           }}
         >
           Het hielp ons echt.

@@ -198,7 +198,6 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
             color: '#F4ECDB',
             margin: '0 auto .9rem',
             maxWidth: 640,
-            textShadow: '0 0 50px rgba(244,236,219,.18)',
           }}
         >
           Oplichting wordt steeds slimmer —{' '}
