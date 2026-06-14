@@ -144,7 +144,7 @@ export function HowItWorks() {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: 8,
+              gap: 10,
               fontSize: '.7rem',
               fontWeight: 700,
               color: 'rgba(244,236,219,.4)',
@@ -155,7 +155,15 @@ export function HowItWorks() {
             }}
           >
             <span
-              style={{ width: 20, height: 1, background: 'currentColor', display: 'inline-block' }}
+              style={{
+                width: 7,
+                height: 7,
+                borderRadius: '50%',
+                background: '#3AAC6E',
+                boxShadow: '0 0 12px rgba(58,172,110,.7)',
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
             />
             Hoe het werkt
           </div>
@@ -168,6 +176,7 @@ export function HowItWorks() {
               letterSpacing: '-.04em',
               color: '#F4ECDB',
               margin: '0 0 1rem',
+              textShadow: '0 0 50px rgba(244,236,219,.18)',
             }}
           >
             Drie stappen.{' '}

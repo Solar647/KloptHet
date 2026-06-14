@@ -146,6 +146,9 @@ export function Pricing() {
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <div
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
               fontSize: '.72rem',
               fontWeight: 700,
               color: 'rgba(244,236,219,.7)',
@@ -155,6 +158,17 @@ export function Pricing() {
               fontFamily: 'ui-monospace, monospace',
             }}
           >
+            <span
+              style={{
+                width: 7,
+                height: 7,
+                borderRadius: '50%',
+                background: '#3AAC6E',
+                boxShadow: '0 0 12px rgba(58,172,110,.7)',
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
             Abonnementen
           </div>
           <h2
@@ -166,6 +180,7 @@ export function Pricing() {
               letterSpacing: '-.03em',
               color: '#F4ECDB',
               margin: '0 0 1rem',
+              textShadow: '0 0 50px rgba(244,236,219,.18)',
             }}
           >
             Minder dan een kop koffie.{' '}

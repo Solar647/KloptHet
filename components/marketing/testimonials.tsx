@@ -149,9 +149,32 @@ export function Testimonials() {
         }}
       />
 
+      {/* Spotlight achter de titel */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 'clamp(3rem, 7vw, 6rem)',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 700,
+          height: 320,
+          background: 'radial-gradient(ellipse, rgba(244,236,219,.055) 0%, transparent 70%)',
+          filter: 'blur(40px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
       {/* Header */}
       <div
-        style={{ textAlign: 'center', marginBottom: '3rem', padding: '0 clamp(1.5rem, 3vw, 3rem)' }}
+        style={{
+          textAlign: 'center',
+          marginBottom: '3rem',
+          padding: '0 clamp(1.5rem, 3vw, 3rem)',
+          position: 'relative',
+          zIndex: 1,
+        }}
       >
         <div
           style={{
@@ -181,6 +204,7 @@ export function Testimonials() {
             letterSpacing: '-.04em',
             color: '#F4ECDB',
             margin: '0 0 .75rem',
+            textShadow: '0 0 50px rgba(244,236,219,.18)',
           }}
         >
           Het hielp ons echt.

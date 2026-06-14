@@ -100,10 +100,30 @@ function FAQContent() {
         overflow: 'hidden',
       }}
     >
+      {/* Spotlight achter de titel */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 'clamp(3rem, 7vw, 6rem)',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 700,
+          height: 320,
+          background: 'radial-gradient(ellipse, rgba(244,236,219,.055) 0%, transparent 70%)',
+          filter: 'blur(40px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
       <div style={{ maxWidth: 880, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
           <div
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
               fontSize: '.72rem',
               fontWeight: 700,
               color: 'rgba(244,236,219,.6)',
@@ -113,6 +133,17 @@ function FAQContent() {
               fontFamily: 'ui-monospace, monospace',
             }}
           >
+            <span
+              style={{
+                width: 7,
+                height: 7,
+                borderRadius: '50%',
+                background: '#3AAC6E',
+                boxShadow: '0 0 12px rgba(58,172,110,.7)',
+                display: 'inline-block',
+                flexShrink: 0,
+              }}
+            />
             Veelgestelde vragen
           </div>
           <h2
@@ -124,6 +155,7 @@ function FAQContent() {
               letterSpacing: '-.03em',
               color: '#F4ECDB',
               margin: 0,
+              textShadow: '0 0 50px rgba(244,236,219,.18)',
             }}
           >
             Vragen? <em style={{ fontStyle: 'italic', color: 'rgba(58,172,110,.9)' }}>Logisch.</em>
