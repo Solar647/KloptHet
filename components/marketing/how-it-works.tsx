@@ -175,9 +175,8 @@ export function HowItWorks() {
             <defs>
               <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#3AAC6E" stopOpacity="0.15" />
-                <stop offset="12%" stopColor="#3AAC6E" stopOpacity="0.85" />
-                <stop offset="88%" stopColor="#3AAC6E" stopOpacity="0.85" />
-                <stop offset="100%" stopColor="#3AAC6E" stopOpacity="0.15" />
+                <stop offset="8%" stopColor="#3AAC6E" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#3AAC6E" stopOpacity="0.85" />
               </linearGradient>
             </defs>
             <motion.path
