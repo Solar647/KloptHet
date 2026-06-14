@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Nav } from '@/components/shared/nav'
 import { Footer } from '@/components/shared/footer'
 import { Hero } from '@/components/marketing/hero'
+import { FraudRadar } from '@/components/marketing/fraud-radar'
 import { WhatIs } from '@/components/marketing/what-is'
 import { HowItWorks } from '@/components/marketing/how-it-works'
 import { DemoCarousel } from '@/components/marketing/demo-carousel'
@@ -9,6 +10,7 @@ import { Pricing } from '@/components/marketing/pricing'
 import { Testimonials } from '@/components/marketing/testimonials'
 import { FAQ } from '@/components/marketing/faq'
 import { Reveal } from '@/components/shared/reveal'
+import { createClient } from '@/lib/supabase/server'
 
 const BASE_URL = 'https://www.klopthet.com'
 
@@ -73,7 +75,27 @@ const websiteSchema = {
   },
 }
 
-export default function HomePage() {
+type HomeStats = {
+  totalScans: number
+  scamsDetected: number
+  knownPatterns: number
+}
+
+async function getHomeStats(): Promise<HomeStats | null> {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase.rpc('homepage_stats')
+    if (error || !data) return null
+    return data as HomeStats
+  } catch {
+    // Migratie nog niet gedraaid o.i.d. — radar valt terug op basisaantallen
+    return null
+  }
+}
+
+export default async function HomePage() {
+  const stats = await getHomeStats()
+
   return (
     <>
       <script
@@ -87,6 +109,7 @@ export default function HomePage() {
       <Nav />
       <main id="main">
         <Hero />
+        <FraudRadar stats={stats} />
         <Reveal>
           <WhatIs />
         </Reveal>
