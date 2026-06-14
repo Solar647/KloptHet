@@ -179,7 +179,7 @@ export function HowItWorks() {
                 <stop offset="100%" stopColor="#3AAC6E" stopOpacity="0.85" />
               </linearGradient>
             </defs>
-            <motion.path
+            <path
               d="M500 6
                  C 330 110, 330 240, 500 340
                  C 670 440, 670 560, 500 660
@@ -190,10 +190,6 @@ export function HowItWorks() {
               strokeDasharray="1 11"
               strokeLinecap="round"
               vectorEffect="non-scaling-stroke"
-              initial={reduced ? false : { pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 2.2, ease: 'easeInOut' }}
             />
           </svg>
 
