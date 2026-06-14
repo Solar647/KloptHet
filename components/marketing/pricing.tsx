@@ -60,7 +60,7 @@ const trustItems = [
 ]
 
 export function Pricing() {
-  const [yearly, setYearly] = useState(false)
+  const [yearly, setYearly] = useState(true)
   const [loggedIn, setLoggedIn] = useState(false)
   const locale = useLocale()
 
@@ -74,196 +74,165 @@ export function Pricing() {
       id="abonnementen"
       style={{
         position: 'relative',
-        padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
-        background: '#060C1A',
+        padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem)',
+        background: '#0a0a0c',
         overflow: 'hidden',
       }}
     >
-      {/* Vloeiende overgang vanaf vorige sectie */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 140,
-          background: 'linear-gradient(to bottom, #091020 0%, transparent 100%)',
-          zIndex: 1,
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Kleur glows */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: '20%',
-          left: '-8%',
-          width: 550,
-          height: 550,
-          background: 'radial-gradient(circle, rgba(140,60,230,.2) 0%, transparent 55%)',
-          filter: 'blur(80px)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          bottom: '10%',
-          right: '-5%',
-          width: 500,
-          height: 500,
-          background: 'radial-gradient(circle, rgba(20,200,150,.22) 0%, transparent 55%)',
-          filter: 'blur(80px)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
-      />
-
-      {/* Grid dot patroon */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,.14) 1px, transparent 1px)',
-          backgroundSize: '36px 36px',
-          zIndex: 1,
-          pointerEvents: 'none',
-          maskImage:
-            'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
-          WebkitMaskImage:
-            'linear-gradient(to bottom, transparent 0%, black 20%, black 80%, transparent 100%)',
-        }}
-      />
-
-      <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 2 }}>
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <div
+      <div style={{ maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 2 }}>
+        {/* Eyebrow */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 10,
+            marginBottom: '1rem',
+          }}
+        >
+          <span
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 10,
-              fontSize: '.72rem',
-              fontWeight: 700,
-              color: 'rgba(244,236,219,.7)',
-              letterSpacing: '.22em',
-              textTransform: 'uppercase',
-              marginBottom: '1rem',
               fontFamily: 'ui-monospace, monospace',
+              fontSize: '.85rem',
+              fontWeight: 700,
+              color: '#3AAC6E',
             }}
           >
-            <span
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: '50%',
-                background: '#3AAC6E',
-                boxShadow: '0 0 12px rgba(58,172,110,.7)',
-                display: 'inline-block',
-                flexShrink: 0,
-              }}
-            />
+            (04)
+          </span>
+          <span
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.78rem',
+              fontWeight: 700,
+              color: 'rgba(255,255,255,.6)',
+              letterSpacing: '.04em',
+            }}
+          >
             Abonnementen
-          </div>
+          </span>
+        </div>
+
+        {/* Grote achtergrondtitel */}
+        <div style={{ position: 'relative', textAlign: 'center' }}>
           <h2
+            aria-hidden="true"
             style={{
               fontFamily: 'var(--font-serif)',
-              fontWeight: 500,
-              fontSize: 'clamp(2rem, 4vw, 3.4rem)',
-              lineHeight: 1.05,
-              letterSpacing: '-.03em',
-              color: '#F4ECDB',
-              margin: '0 0 1rem',
+              fontWeight: 700,
+              fontSize: 'clamp(4rem, 16vw, 13rem)',
+              lineHeight: 0.9,
+              letterSpacing: '-.05em',
+              color: '#fff',
+              opacity: 0.06,
+              margin: 0,
+              userSelect: 'none',
+              whiteSpace: 'nowrap',
             }}
           >
-            Minder dan een kop koffie.{' '}
-            <em style={{ fontStyle: 'italic', color: 'rgba(58,172,110,.9)' }}>
-              Voor altijd gemoedsrust.
-            </em>
+            Prijzen
           </h2>
           <p
             style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: '1rem',
-              color: 'rgba(244,236,219,.65)',
-              maxWidth: 520,
-              margin: '0 auto',
-              lineHeight: 1.65,
+              fontFamily: 'var(--font-serif)',
+              fontStyle: 'italic',
+              fontWeight: 500,
+              fontSize: 'clamp(1.1rem, 2vw, 1.5rem)',
+              color: 'rgba(255,255,255,.6)',
+              position: 'absolute',
+              bottom: 'clamp(-.5rem, 1vw, .5rem)',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              whiteSpace: 'nowrap',
+              margin: 0,
             }}
           >
-            Geen verborgen kosten. Op elk moment opzeggen.
+            Minder dan een kop koffie. Voor altijd gemoedsrust.
           </p>
         </div>
 
         {/* Toggle */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '2.5rem' }}>
-          <div
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 12,
+            margin: 'clamp(2.5rem, 5vw, 4rem) 0 2.5rem',
+          }}
+        >
+          <span
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 4,
-              background: 'rgba(244,236,219,.07)',
-              border: '1px solid rgba(244,236,219,.18)',
-              padding: 5,
-              borderRadius: 9999,
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.9rem',
+              fontWeight: 600,
+              color: yearly ? 'rgba(255,255,255,.45)' : '#fff',
             }}
           >
-            {[
-              { label: 'Per maand', value: false },
-              { label: 'Per jaar', value: true, badge: '17% korting' },
-            ].map(({ label, value, badge }) => (
-              <button
-                key={String(value)}
-                onClick={() => setYearly(value)}
-                style={{
-                  padding: '.55rem 1.2rem',
-                  borderRadius: 9999,
-                  border: 'none',
-                  cursor: 'pointer',
-                  background: yearly === value ? '#102040' : 'transparent',
-                  color: yearly === value ? '#F4ECDB' : 'rgba(244,236,219,.7)',
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: '.88rem',
-                  fontWeight: 600,
-                  transition: 'all .2s',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 8,
-                }}
-              >
-                {label}
-                {badge && (
-                  <span
-                    style={{
-                      background: 'rgba(58,172,110,.25)',
-                      color: 'rgba(58,172,110,1)',
-                      fontSize: '.65rem',
-                      fontWeight: 700,
-                      padding: '2px 7px',
-                      borderRadius: 9999,
-                    }}
-                  >
-                    {badge}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
+            Per maand
+          </span>
+          <button
+            onClick={() => setYearly((v) => !v)}
+            aria-label="Wissel tussen maand en jaar"
+            style={{
+              width: 52,
+              height: 28,
+              borderRadius: 9999,
+              border: '1px solid rgba(255,255,255,.2)',
+              background: yearly ? '#3AAC6E' : 'rgba(255,255,255,.1)',
+              position: 'relative',
+              cursor: 'pointer',
+              transition: 'background .25s',
+              flexShrink: 0,
+            }}
+          >
+            <span
+              style={{
+                position: 'absolute',
+                top: 2,
+                left: yearly ? 25 : 2,
+                width: 22,
+                height: 22,
+                borderRadius: '50%',
+                background: '#fff',
+                transition: 'left .25s cubic-bezier(.16,1,.3,1)',
+              }}
+            />
+          </button>
+          <span
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '.9rem',
+              fontWeight: 600,
+              color: yearly ? '#fff' : 'rgba(255,255,255,.45)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
+            }}
+          >
+            Per jaar
+            <span
+              style={{
+                background: 'rgba(58,172,110,.2)',
+                color: '#3AAC6E',
+                fontSize: '.65rem',
+                fontWeight: 700,
+                padding: '2px 7px',
+                borderRadius: 9999,
+              }}
+            >
+              17% korting
+            </span>
+          </span>
         </div>
 
-        {/* Tier cards */}
+        {/* Kaarten */}
         <div
           className="pricing-grid"
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1rem',
+            gap: '1.25rem',
             alignItems: 'stretch',
           }}
         >
@@ -272,189 +241,207 @@ export function Pricing() {
             const price =
               yearly && tier.yearly
                 ? (tier.yearly / 12).toFixed(2).replace('.', ',')
-                : tier.monthly === 0
-                  ? '0'
-                  : tier.monthly.toFixed(2).replace('.', ',')
-            const period =
-              tier.monthly === 0 ? 'voor altijd' : yearly ? 'per maand, jaarlijks' : 'per maand'
+                : tier.monthly.toFixed(2).replace('.', ',')
+            const period = yearly ? 'p/m, jaarlijks' : 'per maand'
 
             return (
               <div
                 key={tier.name}
                 style={{
-                  background: isHi
-                    ? 'linear-gradient(160deg, #091428 0%, #0D1E3A 55%, #152448 100%)'
-                    : 'rgba(244,236,219,.05)',
-                  border: isHi
-                    ? '1px solid rgba(168,203,160,.35)'
-                    : '1px solid rgba(244,236,219,.14)',
+                  position: 'relative',
                   borderRadius: 22,
                   padding: '2rem 1.75rem',
-                  position: 'relative',
                   display: 'flex',
                   flexDirection: 'column',
-                  transform: isHi ? 'scale(1.03)' : 'scale(1)',
-                  boxShadow: isHi
-                    ? '0 30px 60px -20px rgba(27,58,26,.5), 0 0 32px -8px rgba(168,203,160,.25)'
-                    : 'none',
-                  zIndex: isHi ? 2 : 1,
+                  background: isHi ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.025)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: isHi
+                    ? '1px solid rgba(255,255,255,.22)'
+                    : '1px solid rgba(255,255,255,.09)',
+                  overflow: 'hidden',
+                  boxShadow: isHi ? '0 30px 70px -20px rgba(0,0,0,.7)' : 'none',
                 }}
               >
-                {tier.badge && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: -14,
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      background: '#3AAC6E',
-                      color: '#07190F',
-                      fontSize: '.7rem',
-                      fontWeight: 700,
-                      letterSpacing: '.06em',
-                      textTransform: 'uppercase',
-                      padding: '.35rem .85rem',
-                      borderRadius: 9999,
-                      whiteSpace: 'nowrap',
-                      fontFamily: 'var(--font-sans)',
-                    }}
-                  >
-                    ★ {tier.badge}
-                  </div>
-                )}
+                {/* Zachte lichtgloed achter de kaart */}
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    top: '-30%',
+                    left: '20%',
+                    width: '70%',
+                    height: '60%',
+                    background: isHi
+                      ? 'radial-gradient(ellipse, rgba(255,255,255,.18) 0%, transparent 65%)'
+                      : 'radial-gradient(ellipse, rgba(255,255,255,.08) 0%, transparent 65%)',
+                    filter: 'blur(30px)',
+                    pointerEvents: 'none',
+                  }}
+                />
 
                 <div
                   style={{
-                    fontSize: '.75rem',
-                    fontWeight: 700,
-                    color: isHi ? '#3AAC6E' : 'rgba(244,236,219,.6)',
-                    letterSpacing: '.1em',
-                    textTransform: 'uppercase',
-                    marginBottom: '.35rem',
-                    fontFamily: 'var(--font-sans)',
-                  }}
-                >
-                  {tier.name}
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.85rem',
-                    color: 'rgba(244,236,219,.55)',
-                    marginBottom: '1.4rem',
-                  }}
-                >
-                  {tier.tagline}
-                </div>
-
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'baseline',
-                    gap: '.35rem',
-                    marginBottom: '1.5rem',
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-serif)',
-                      fontWeight: 400,
-                      fontSize: '2.8rem',
-                      lineHeight: 1,
-                      letterSpacing: '-.03em',
-                      color: '#F4ECDB',
-                    }}
-                  >
-                    €{price}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: '.8rem',
-                      color: 'rgba(244,236,219,.45)',
-                    }}
-                  >
-                    / {period}
-                  </span>
-                </div>
-
-                <ul
-                  style={{
-                    listStyle: 'none',
-                    padding: 0,
-                    margin: '0 0 1.75rem',
+                    position: 'relative',
+                    zIndex: 1,
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '.65rem',
                     flex: 1,
                   }}
                 >
-                  {tier.features.map((f) => (
-                    <li
-                      key={f}
+                  {tier.badge && (
+                    <div
                       style={{
+                        alignSelf: 'flex-start',
+                        background: '#3AAC6E',
+                        color: '#07190F',
+                        fontSize: '.68rem',
+                        fontWeight: 700,
+                        letterSpacing: '.05em',
+                        textTransform: 'uppercase',
+                        padding: '.3rem .7rem',
+                        borderRadius: 9999,
+                        marginBottom: '1rem',
                         fontFamily: 'var(--font-sans)',
-                        fontSize: '.9rem',
-                        color: 'rgba(244,236,219,.82)',
-                        display: 'flex',
-                        gap: 10,
-                        alignItems: 'flex-start',
                       }}
                     >
-                      <span
+                      ★ {tier.badge}
+                    </div>
+                  )}
+
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.85rem',
+                      fontWeight: 600,
+                      color: 'rgba(255,255,255,.6)',
+                      marginBottom: '.5rem',
+                    }}
+                  >
+                    {tier.name}
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'baseline',
+                      gap: '.35rem',
+                      marginBottom: '.4rem',
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-serif)',
+                        fontWeight: 700,
+                        fontSize: '3rem',
+                        lineHeight: 1,
+                        letterSpacing: '-.03em',
+                        color: '#fff',
+                      }}
+                    >
+                      €{price}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-sans)',
+                        fontSize: '.8rem',
+                        color: 'rgba(255,255,255,.4)',
+                      }}
+                    >
+                      /{period}
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: 'var(--font-sans)',
+                      fontSize: '.82rem',
+                      color: 'rgba(255,255,255,.4)',
+                      marginBottom: '1.75rem',
+                    }}
+                  >
+                    {tier.tagline}
+                  </div>
+
+                  <ul
+                    style={{
+                      listStyle: 'none',
+                      padding: 0,
+                      margin: '0 0 1.75rem',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '.75rem',
+                      flex: 1,
+                      borderTop: '1px solid rgba(255,255,255,.08)',
+                      paddingTop: '1.5rem',
+                    }}
+                  >
+                    {tier.features.map((f) => (
+                      <li
+                        key={f}
                         style={{
-                          width: 18,
-                          height: 18,
-                          borderRadius: '50%',
-                          background: isHi ? 'rgba(58,172,110,.2)' : 'rgba(244,236,219,.08)',
-                          color: isHi ? '#3AAC6E' : 'rgba(244,236,219,.6)',
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                          marginTop: 2,
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '.88rem',
+                          color: 'rgba(255,255,255,.78)',
+                          display: 'flex',
+                          gap: 10,
+                          alignItems: 'flex-start',
                         }}
                       >
-                        <CheckIcon />
-                      </span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
+                        <span
+                          style={{
+                            width: 18,
+                            height: 18,
+                            borderRadius: '50%',
+                            background: 'rgba(58,172,110,.15)',
+                            color: '#3AAC6E',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                            marginTop: 1,
+                          }}
+                        >
+                          <CheckIcon />
+                        </span>
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
 
-                <Link
-                  href={
-                    loggedIn
-                      ? `/${locale}/abonnement/checkout?tier=${tier.name.toLowerCase() === 'standaard' ? 'standard' : tier.name.toLowerCase()}&billing=${yearly ? 'yearly' : 'monthly'}`
-                      : `/${locale}/registreren`
-                  }
-                  style={{
-                    background: isHi ? '#3AAC6E' : 'rgba(244,236,219,.1)',
-                    color: isHi ? '#07190F' : '#F4ECDB',
-                    border: isHi ? 'none' : '1px solid rgba(244,236,219,.2)',
-                    padding: '.95rem 1rem',
-                    borderRadius: 12,
-                    fontSize: '.92rem',
-                    fontWeight: 700,
-                    fontFamily: 'var(--font-sans)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 8,
-                    transition: 'transform .15s, opacity .15s',
-                    width: '100%',
-                    textDecoration: 'none',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-1px)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)'
-                  }}
-                >
-                  {tier.cta}
-                  <ArrowIcon />
-                </Link>
+                  <Link
+                    href={
+                      loggedIn
+                        ? `/${locale}/abonnement/checkout?tier=${tier.name.toLowerCase() === 'standaard' ? 'standard' : tier.name.toLowerCase()}&billing=${yearly ? 'yearly' : 'monthly'}`
+                        : `/${locale}/registreren`
+                    }
+                    style={{
+                      background: isHi ? '#fff' : 'rgba(255,255,255,.06)',
+                      color: isHi ? '#0a0a0c' : '#fff',
+                      border: isHi ? 'none' : '1px solid rgba(255,255,255,.16)',
+                      padding: '.95rem 1rem',
+                      borderRadius: 9999,
+                      fontSize: '.9rem',
+                      fontWeight: 700,
+                      fontFamily: 'var(--font-sans)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 8,
+                      transition: 'transform .15s, opacity .15s',
+                      width: '100%',
+                      textDecoration: 'none',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-1px)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)'
+                    }}
+                  >
+                    {tier.cta}
+                    <ArrowIcon />
+                  </Link>
+                </div>
               </div>
             )
           })}
@@ -467,10 +454,10 @@ export function Pricing() {
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
             gap: '1rem',
-            marginTop: '2.5rem',
+            marginTop: '2rem',
             padding: '1.25rem 1.5rem',
-            background: 'rgba(244,236,219,.04)',
-            border: '1px solid rgba(244,236,219,.12)',
+            background: 'rgba(255,255,255,.03)',
+            border: '1px solid rgba(255,255,255,.09)',
             borderRadius: 14,
           }}
         >
@@ -483,7 +470,7 @@ export function Pricing() {
                 gap: 10,
                 fontFamily: 'var(--font-sans)',
                 fontSize: '.85rem',
-                color: 'rgba(244,236,219,.72)',
+                color: 'rgba(255,255,255,.72)',
               }}
             >
               <span
@@ -491,7 +478,7 @@ export function Pricing() {
                   width: 28,
                   height: 28,
                   borderRadius: '50%',
-                  background: 'rgba(27,71,49,.6)',
+                  background: 'rgba(58,172,110,.15)',
                   color: '#3AAC6E',
                   display: 'inline-flex',
                   alignItems: 'center',

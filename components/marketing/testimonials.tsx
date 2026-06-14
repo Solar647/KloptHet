@@ -47,8 +47,8 @@ function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
   return (
     <div
       style={{
-        background: 'rgba(244,236,219,.04)',
-        border: '1px solid rgba(244,236,219,.09)',
+        background: 'rgba(255,255,255,.04)',
+        border: '1px solid rgba(255,255,255,.09)',
         borderRadius: 16,
         padding: '1.25rem 1.5rem',
         minWidth: 280,
@@ -68,7 +68,7 @@ function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
         style={{
           fontFamily: 'var(--font-sans)',
           fontSize: '.88rem',
-          color: 'rgba(244,236,219,.78)',
+          color: 'rgba(255,255,255,.78)',
           lineHeight: 1.65,
           margin: '0 0 1rem',
           fontStyle: 'italic',
@@ -102,7 +102,7 @@ function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
               fontFamily: 'var(--font-sans)',
               fontSize: '.8rem',
               fontWeight: 600,
-              color: '#F4ECDB',
+              color: '#fff',
             }}
           >
             {review.name}
@@ -111,7 +111,7 @@ function ReviewCard({ review }: { review: (typeof reviews)[0] }) {
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '.7rem',
-              color: 'rgba(244,236,219,.35)',
+              color: 'rgba(255,255,255,.35)',
             }}
           >
             {review.age} jaar
@@ -129,7 +129,7 @@ export function Testimonials() {
     <section
       style={{
         padding: 'clamp(4rem, 8vw, 7rem) 0',
-        background: '#091020',
+        background: '#0a0a0c',
         overflow: 'hidden',
         position: 'relative',
       }}
@@ -143,7 +143,7 @@ export function Testimonials() {
           left: 0,
           right: 0,
           height: 140,
-          background: 'linear-gradient(to bottom, #060C1A 0%, transparent 100%)',
+          background: 'linear-gradient(to bottom, #0a0a0c 0%, transparent 100%)',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -159,7 +159,7 @@ export function Testimonials() {
           transform: 'translateX(-50%)',
           width: 700,
           height: 320,
-          background: 'radial-gradient(ellipse, rgba(244,236,219,.055) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse, rgba(255,255,255,.055) 0%, transparent 70%)',
           filter: 'blur(40px)',
           pointerEvents: 'none',
           zIndex: 0,
@@ -183,7 +183,7 @@ export function Testimonials() {
             gap: 8,
             fontSize: '.72rem',
             fontWeight: 700,
-            color: 'rgba(244,236,219,.4)',
+            color: 'rgba(255,255,255,.4)',
             letterSpacing: '.2em',
             textTransform: 'uppercase',
             fontFamily: 'ui-monospace, monospace',
@@ -202,7 +202,7 @@ export function Testimonials() {
             fontSize: 'clamp(1.8rem, 4vw, 3rem)',
             lineHeight: 1.08,
             letterSpacing: '-.04em',
-            color: '#F4ECDB',
+            color: '#fff',
             margin: '0 0 .75rem',
           }}
         >
@@ -212,7 +212,7 @@ export function Testimonials() {
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '1rem',
-            color: 'rgba(244,236,219,.5)',
+            color: 'rgba(255,255,255,.5)',
             maxWidth: 420,
             margin: '0 auto',
             lineHeight: 1.65,
@@ -237,7 +237,7 @@ export function Testimonials() {
             top: 0,
             bottom: 0,
             width: 120,
-            background: 'linear-gradient(90deg, #091020 0%, transparent 100%)',
+            background: 'linear-gradient(90deg, #0a0a0c 0%, transparent 100%)',
             zIndex: 2,
             pointerEvents: 'none',
           }}
@@ -250,7 +250,7 @@ export function Testimonials() {
             top: 0,
             bottom: 0,
             width: 120,
-            background: 'linear-gradient(270deg, #091020 0%, transparent 100%)',
+            background: 'linear-gradient(270deg, #0a0a0c 0%, transparent 100%)',
             zIndex: 2,
             pointerEvents: 'none',
           }}

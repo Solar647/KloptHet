@@ -62,7 +62,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
       style={{
         position: 'relative',
         padding: 'clamp(3.5rem, 6vw, 5.5rem) clamp(1.5rem, 3vw, 3rem)',
-        background: '#060C1A',
+        background: '#0a0a0c',
         overflow: 'hidden',
       }}
     >
@@ -133,7 +133,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
           padding: 0 clamp(1rem, 4vw, 3rem);
         }
         .radar-stat + .radar-stat {
-          border-left: 1px solid rgba(244,236,219,.1);
+          border-left: 1px solid rgba(255,255,255,.1);
         }
         @media (max-width: 640px) {
           .radar-stat { padding: 0 clamp(.5rem, 3vw, 1rem); }
@@ -195,7 +195,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
             fontSize: 'clamp(1.9rem, 4vw, 3.1rem)',
             lineHeight: 1.08,
             letterSpacing: '-.035em',
-            color: '#F4ECDB',
+            color: '#fff',
             margin: '0 auto .9rem',
             maxWidth: 640,
           }}
@@ -213,7 +213,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '1.02rem',
-            color: 'rgba(244,236,219,.55)',
+            color: 'rgba(255,255,255,.55)',
             lineHeight: 1.7,
             margin: '0 auto clamp(2.5rem, 5vw, 3.5rem)',
             maxWidth: 500,
@@ -251,7 +251,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
                   fontFamily: 'var(--font-sans)',
                   fontSize: '.7rem',
                   fontWeight: 600,
-                  color: 'rgba(244,236,219,.42)',
+                  color: 'rgba(255,255,255,.42)',
                   lineHeight: 1.4,
                   letterSpacing: '.1em',
                   textTransform: 'uppercase',

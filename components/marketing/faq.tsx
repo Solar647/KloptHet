@@ -96,7 +96,7 @@ function FAQContent() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
-        background: 'linear-gradient(180deg, #091020 0%, #0A1322 45%, #04060C 100%)',
+        background: '#0a0a0c',
         overflow: 'hidden',
       }}
     >
@@ -110,7 +110,7 @@ function FAQContent() {
           transform: 'translateX(-50%)',
           width: 700,
           height: 320,
-          background: 'radial-gradient(ellipse, rgba(244,236,219,.055) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse, rgba(255,255,255,.055) 0%, transparent 70%)',
           filter: 'blur(40px)',
           pointerEvents: 'none',
           zIndex: 0,
@@ -126,7 +126,7 @@ function FAQContent() {
               gap: 10,
               fontSize: '.72rem',
               fontWeight: 700,
-              color: 'rgba(244,236,219,.6)',
+              color: 'rgba(255,255,255,.6)',
               letterSpacing: '.22em',
               textTransform: 'uppercase',
               marginBottom: '1rem',
@@ -153,7 +153,7 @@ function FAQContent() {
               fontSize: 'clamp(2rem, 4vw, 3rem)',
               lineHeight: 1.1,
               letterSpacing: '-.03em',
-              color: '#F4ECDB',
+              color: '#fff',
               margin: 0,
             }}
           >
@@ -168,8 +168,8 @@ function FAQContent() {
               <div
                 key={i}
                 style={{
-                  borderTop: '1px solid rgba(244,236,219,.16)',
-                  borderBottom: i === items.length - 1 ? '1px solid rgba(244,236,219,.16)' : 'none',
+                  borderTop: '1px solid rgba(255,255,255,.16)',
+                  borderBottom: i === items.length - 1 ? '1px solid rgba(255,255,255,.16)' : 'none',
                 }}
               >
                 <button
@@ -194,7 +194,7 @@ function FAQContent() {
                       fontFamily: 'var(--font-serif)',
                       fontWeight: 500,
                       fontSize: 'clamp(1.05rem, 1.5vw, 1.3rem)',
-                      color: '#F4ECDB',
+                      color: '#fff',
                       letterSpacing: '-.02em',
                     }}
                   >
@@ -225,7 +225,7 @@ function FAQContent() {
                     style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '1rem',
-                      color: 'rgba(244,236,219,.7)',
+                      color: 'rgba(255,255,255,.7)',
                       lineHeight: 1.7,
                       paddingBottom: '1.4rem',
                       maxWidth: 680,
