@@ -177,11 +177,24 @@ export function WhatIs() {
                 aspectRatio: '4 / 3',
                 borderRadius: 20,
                 overflow: 'hidden',
-                background:
-                  'radial-gradient(ellipse 80% 60% at 30% 20%, rgba(120,130,150,.35) 0%, transparent 55%), radial-gradient(ellipse 70% 70% at 80% 90%, rgba(31,122,77,.25) 0%, transparent 60%), linear-gradient(135deg, #161618 0%, #0c0c0e 60%, #08080a 100%)',
-                border: '1px solid rgba(255,255,255,.08)',
+                border: '1px solid rgba(255,255,255,.12)',
+                boxShadow: '0 24px 60px -20px rgba(0,0,0,.6)',
               }}
             >
+              {/* Afbeelding vult het hele glas */}
+              <img
+                src="/wat-is-paneel.png"
+                alt=""
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  display: 'block',
+                }}
+              />
               {/* glanzende veeg */}
               <div
                 aria-hidden="true"
@@ -189,7 +202,8 @@ export function WhatIs() {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(115deg, transparent 30%, rgba(255,255,255,.06) 48%, transparent 60%)',
+                    'linear-gradient(115deg, transparent 35%, rgba(255,255,255,.08) 50%, transparent 62%)',
+                  pointerEvents: 'none',
                 }}
               />
             </div>
