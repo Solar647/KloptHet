@@ -7,67 +7,21 @@ const EASE = [0.16, 1, 0.3, 1] as const
 const steps = [
   {
     num: '01',
-    icon: (
-      <svg
-        width="28"
-        height="28"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="3" y="3" width="18" height="18" rx="2" />
-        <path d="M3 9h18M9 21V9" />
-      </svg>
-    ),
     title: 'Upload een screenshot',
     body: 'Maak een screenshot van het verdachte bericht op uw telefoon. Of plak de tekst direct — het werkt allebei.',
-    tag: 'Stap 1',
+    side: 'left' as const,
   },
   {
     num: '02',
-    icon: (
-      <svg
-        width="28"
-        height="28"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <path d="m21 21-4.35-4.35" />
-        <path d="M11 8v6M8 11h6" />
-      </svg>
-    ),
     title: 'Onze AI bekijkt het',
     body: 'Onze Europese AI analyseert afzender, toon, links en bekende oplichterpatronen — net zoals een expert dat zou doen.',
-    tag: 'Stap 2',
+    side: 'right' as const,
   },
   {
     num: '03',
-    icon: (
-      <svg
-        width="28"
-        height="28"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-        <path d="m9 12 2 2 4-4" />
-      </svg>
-    ),
     title: 'U krijgt een duidelijk antwoord',
     body: 'Veilig, twijfelachtig of oplichting — in gewone taal, met uitleg zodat u het de volgende keer zelf herkent.',
-    tag: 'Stap 3',
+    side: 'left' as const,
   },
 ]
 
@@ -79,222 +33,202 @@ export function HowItWorks() {
       id="hoe-het-werkt"
       style={{
         position: 'relative',
-        padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
-        background: 'linear-gradient(180deg, #04080F 0%, #060A14 40%, #08101E 70%, #091020 100%)',
+        padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem)',
+        background: '#0a0a0c',
         overflow: 'hidden',
       }}
     >
-      {/* Vloeiende overgang vanaf vorige sectie */}
+      {/* Subtiele groene gloed */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 120,
-          background: 'linear-gradient(to bottom, #060C1A 0%, transparent 100%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Grid patroon */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `
-            linear-gradient(rgba(244,236,219,.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(244,236,219,.04) 1px, transparent 1px)
-          `,
-          backgroundSize: '72px 72px',
-          maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
-          WebkitMaskImage:
-            'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Ambient glow */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: 0,
+          top: '20%',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '60%',
-          height: '40%',
-          background: 'radial-gradient(ellipse, rgba(30,80,180,.1) 0%, transparent 70%)',
+          width: 700,
+          height: 600,
+          background: 'radial-gradient(ellipse, rgba(31,122,77,.08) 0%, transparent 65%)',
+          filter: 'blur(90px)',
           pointerEvents: 'none',
+          zIndex: 0,
         }}
       />
 
-      <div style={{ maxWidth: 1320, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         {/* Header */}
         <motion.div
           initial={reduced ? false : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.7, ease: EASE }}
-          style={{ marginBottom: 'clamp(3rem, 6vw, 5rem)', maxWidth: 560 }}
+          style={{ textAlign: 'center', marginBottom: 'clamp(3rem, 6vw, 5rem)' }}
         >
           <div
             style={{
-              display: 'inline-flex',
+              display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: 10,
-              fontSize: '.7rem',
-              fontWeight: 700,
-              color: 'rgba(244,236,219,.4)',
-              letterSpacing: '.2em',
-              textTransform: 'uppercase',
-              fontFamily: 'ui-monospace, monospace',
-              marginBottom: '1.25rem',
+              marginBottom: '1.5rem',
             }}
           >
             <span
               style={{
-                width: 7,
-                height: 7,
-                borderRadius: '50%',
-                background: '#3AAC6E',
-                boxShadow: '0 0 12px rgba(58,172,110,.7)',
-                display: 'inline-block',
-                flexShrink: 0,
+                fontFamily: 'ui-monospace, monospace',
+                fontSize: '.85rem',
+                fontWeight: 700,
+                color: '#3AAC6E',
               }}
-            />
-            Hoe het werkt
+            >
+              (02)
+            </span>
+            <span
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: '.78rem',
+                fontWeight: 700,
+                color: 'rgba(255,255,255,.6)',
+                letterSpacing: '.04em',
+              }}
+            >
+              Zo werkt het
+            </span>
           </div>
           <h2
             style={{
               fontFamily: 'var(--font-serif)',
-              fontWeight: 500,
-              fontSize: 'clamp(2rem, 4.5vw, 3.6rem)',
-              lineHeight: 1.06,
+              fontWeight: 700,
+              fontSize: 'clamp(2.4rem, 6vw, 5rem)',
+              lineHeight: 1,
               letterSpacing: '-.04em',
-              color: '#F4ECDB',
+              color: '#fff',
               margin: '0 0 1rem',
             }}
           >
             Drie stappen.{' '}
-            <em style={{ fontStyle: 'italic', color: 'rgba(58,172,110,.9)' }}>
-              Één duidelijk antwoord.
-            </em>
+            <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#3AAC6E' }}>
+              Eén antwoord.
+            </span>
           </h2>
           <p
             style={{
               fontFamily: 'var(--font-sans)',
-              fontSize: '1rem',
-              color: 'rgba(244,236,219,.55)',
+              fontSize: '1.05rem',
+              color: 'rgba(255,255,255,.5)',
               lineHeight: 1.7,
-              margin: 0,
+              margin: '0 auto',
+              maxWidth: 460,
             }}
           >
             Geen app te installeren, geen technische kennis nodig.
           </p>
         </motion.div>
 
-        {/* Steps */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1.25rem',
-          }}
-          className="grid-responsive"
-        >
-          {steps.map((step, i) => {
-            const origins = [
-              { x: -40, y: 20 },
-              { x: 0, y: 50 },
-              { x: 40, y: 20 },
-            ]
-            const origin = origins[i] || { x: 0, y: 32 }
-            return (
+        {/* Proces met kronkellijn */}
+        <div style={{ position: 'relative' }}>
+          {/* Kronkelende verbindingslijn (desktop) */}
+          <svg
+            aria-hidden="true"
+            className="process-line"
+            viewBox="0 0 400 900"
+            preserveAspectRatio="none"
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 400,
+              height: '100%',
+              zIndex: 0,
+              pointerEvents: 'none',
+              overflow: 'visible',
+            }}
+          >
+            <motion.path
+              d="M200 0 C 60 140, 340 280, 200 440 C 60 600, 340 720, 200 900"
+              fill="none"
+              stroke="#3AAC6E"
+              strokeWidth="2"
+              strokeDasharray="6 8"
+              strokeLinecap="round"
+              opacity="0.55"
+              initial={reduced ? false : { pathLength: 0 }}
+              whileInView={{ pathLength: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 1.8, ease: 'easeInOut' }}
+            />
+          </svg>
+
+          {/* Stappen */}
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(2.5rem, 6vw, 5rem)' }}
+          >
+            {steps.map((step, i) => (
               <motion.div
                 key={step.num}
-                initial={reduced ? false : { opacity: 0, x: origin.x, y: origin.y, scale: 0.95 }}
-                whileInView={{ opacity: 1, x: 0, y: 0, scale: 1 }}
-                whileHover={reduced ? {} : { y: -6, scale: 1.02, transition: { duration: 0.2 } }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.7, delay: i * 0.15, ease: EASE }}
+                initial={reduced ? false : { opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
+                className="process-step"
                 style={{
-                  background: 'rgba(244,236,219,.04)',
-                  border: '1px solid rgba(244,236,219,.1)',
-                  borderRadius: 20,
-                  padding: 'clamp(1.5rem, 3vw, 2rem)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '1.25rem',
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: 'clamp(1.5rem, 5vw, 4rem)',
+                  alignItems: 'center',
                   position: 'relative',
-                  overflow: 'hidden',
-                  cursor: 'default',
+                  zIndex: 1,
                 }}
               >
-                {/* Subtiele achtergrond glow per kaart */}
-                <div
-                  aria-hidden="true"
-                  style={{
-                    position: 'absolute',
-                    top: -40,
-                    right: -40,
-                    width: 140,
-                    height: 140,
-                    background: 'radial-gradient(circle, rgba(30,80,180,.06) 0%, transparent 70%)',
-                    pointerEvents: 'none',
-                  }}
-                />
-
-                {/* Stap nummer + icoon */}
+                {/* Tekst aan de juiste kant */}
                 <div
                   style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'space-between',
+                    gridColumn: step.side === 'left' ? 1 : 2,
+                    gridRow: 1,
+                    textAlign: step.side === 'left' ? 'right' : 'left',
                   }}
+                  className="process-text"
                 >
                   <div
                     style={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: 14,
-                      background: 'rgba(30,80,180,.1)',
-                      border: '1px solid rgba(30,80,180,.2)',
-                      display: 'flex',
+                      display: 'inline-flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'rgba(100,160,255,.85)',
-                      flexShrink: 0,
+                      gap: 10,
+                      marginBottom: '.6rem',
+                      flexDirection: step.side === 'left' ? 'row-reverse' : 'row',
                     }}
                   >
-                    {step.icon}
+                    <span
+                      style={{
+                        width: 11,
+                        height: 11,
+                        borderRadius: '50%',
+                        background: '#3AAC6E',
+                        boxShadow: '0 0 16px rgba(58,172,110,.9)',
+                        flexShrink: 0,
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontFamily: 'ui-monospace, monospace',
+                        fontSize: '.95rem',
+                        fontWeight: 700,
+                        color: '#3AAC6E',
+                      }}
+                    >
+                      {step.num}.
+                    </span>
                   </div>
-                  <span
-                    style={{
-                      fontFamily: 'ui-monospace, monospace',
-                      fontSize: '.65rem',
-                      fontWeight: 700,
-                      color: 'rgba(244,236,219,.2)',
-                      letterSpacing: '.12em',
-                    }}
-                  >
-                    {step.num}
-                  </span>
-                </div>
-
-                {/* Tekst */}
-                <div style={{ flex: 1 }}>
                   <h3
                     style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontWeight: 700,
-                      fontSize: 'clamp(1.05rem, 1.8vw, 1.25rem)',
-                      color: '#F4ECDB',
+                      fontFamily: 'var(--font-serif)',
+                      fontWeight: 600,
+                      fontSize: 'clamp(1.3rem, 2.4vw, 1.9rem)',
+                      color: '#fff',
                       margin: '0 0 .6rem',
-                      lineHeight: 1.25,
-                      letterSpacing: '-.01em',
+                      letterSpacing: '-.02em',
+                      lineHeight: 1.15,
                     }}
                   >
                     {step.title}
@@ -302,46 +236,35 @@ export function HowItWorks() {
                   <p
                     style={{
                       fontFamily: 'var(--font-sans)',
-                      fontSize: '.92rem',
-                      color: 'rgba(244,236,219,.58)',
-                      lineHeight: 1.7,
+                      fontSize: '.95rem',
+                      color: 'rgba(255,255,255,.5)',
+                      lineHeight: 1.65,
                       margin: 0,
+                      marginLeft: step.side === 'left' ? 'auto' : 0,
+                      maxWidth: 360,
                     }}
                   >
                     {step.body}
                   </p>
                 </div>
-
-                {/* Stap label onderaan */}
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: '.72rem',
-                    fontWeight: 700,
-                    color: 'rgba(58,172,110,.7)',
-                    letterSpacing: '.06em',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  <span
-                    style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: '50%',
-                      background: '#3AAC6E',
-                      flexShrink: 0,
-                    }}
-                  />
-                  {step.tag}
-                </div>
               </motion.div>
-            )
-          })}
+            ))}
+          </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .process-line { display: none; }
+          .process-step { grid-template-columns: 1fr !important; }
+          .process-text {
+            grid-column: 1 !important;
+            text-align: left !important;
+          }
+          .process-text > div { flex-direction: row !important; }
+          .process-text p { margin-left: 0 !important; }
+        }
+      `}</style>
     </section>
   )
 }
