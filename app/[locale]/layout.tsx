@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     template: '%s — KloptHet',
   },
   description:
-    'Twijfelt u over een verdacht bericht, e-mail of link? Upload een screenshot en wij vertellen u in gewone taal of het te vertrouwen is. Europese AI, geen data bewaard.',
+    'Twijfelt u over een verdacht bericht, e-mail of link? Upload een screenshot en wij vertellen u in gewone taal of het te vertrouwen is. Volledig Europees, geen data bewaard.',
   keywords: [
     'WhatsApp fraude',
     'sms fraude',

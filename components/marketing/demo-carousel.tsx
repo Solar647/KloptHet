@@ -186,7 +186,7 @@ export function DemoCarousel() {
               lineHeight: 1.6,
             }}
           >
-            Echte voorbeelden. Klik op een kaart en zie hoe onze AI het ontleedt.
+            Echte voorbeelden. Klik op een kaart en zie hoe het bericht wordt gescreend.
           </p>
         </div>
 

@@ -7,8 +7,8 @@ const EASE = [0.16, 1, 0.3, 1] as const
 
 const points = [
   {
-    title: 'Europese AI',
-    body: 'Onze AI draait volledig in Europa. Uw gegevens verlaten de EU nooit.',
+    title: 'Veilig in Europa',
+    body: 'Alles draait volledig binnen Europa. Uw gegevens verlaten de EU nooit.',
   },
   {
     title: '5 seconden',

@@ -14,8 +14,8 @@ const steps = [
   },
   {
     num: '02',
-    title: 'Onze AI bekijkt het',
-    body: 'Onze Europese AI ontleedt de afzender, de toon, de links en bekende oplichterspatronen — precies zoals een ervaren expert dat zou doen, maar in seconden.',
+    title: 'Het wordt gescreend',
+    body: 'Uw bericht wordt direct getoetst aan duizenden bekende oplichtingspatronen, data en ervaringen — precies zoals een ervaren expert dat zou doen, maar in seconden.',
     side: 'right' as const,
   },
   {

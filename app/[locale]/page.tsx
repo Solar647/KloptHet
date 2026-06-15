@@ -30,7 +30,7 @@ export async function generateMetadata({
       ? 'KloptHet — Fraudechecker voor WhatsApp en sms'
       : 'KloptHet — Fraud Checker for WhatsApp and SMS',
     description: isNL
-      ? 'Twijfelt u over een verdacht WhatsApp- of sms-bericht? Upload een screenshot en wij vertellen u in gewone taal of het te vertrouwen is. Europese AI, geen data bewaard.'
+      ? 'Twijfelt u over een verdacht WhatsApp- of sms-bericht? Upload een screenshot en wij vertellen u in gewone taal of het te vertrouwen is. Volledig Europees, geen data bewaard.'
       : "Suspicious WhatsApp or SMS message? Upload a screenshot and we'll tell you in plain language whether you can trust it. European AI, no data stored.",
     alternates: {
       canonical: `${BASE_URL}/${locale}`,

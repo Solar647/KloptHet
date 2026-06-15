@@ -69,7 +69,7 @@ const items = [
   },
   {
     q: 'Wat als het toch een keer fout gaat?',
-    a: 'Onze AI is zeer nauwkeurig, maar niet onfeilbaar. Twijfelt u nog? Neem contact op via onze hulplijn en een medewerker kijkt persoonlijk mee.',
+    a: 'De analyse is zeer nauwkeurig, maar niet onfeilbaar. Twijfelt u nog? Neem contact op via onze hulplijn en een medewerker kijkt persoonlijk mee.',
   },
   {
     q: 'Kan ik het voor mijn ouders instellen?',
