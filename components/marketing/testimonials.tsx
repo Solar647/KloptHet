@@ -1,6 +1,6 @@
 'use client'
 
-import { Doodle } from './doodles'
+import { Doodle, BgLines } from './doodles'
 
 const reviews = [
   {
@@ -167,6 +167,8 @@ export function Testimonials() {
           zIndex: 0,
         }}
       />
+
+      <BgLines />
 
       {/* Doodles */}
       <Doodle

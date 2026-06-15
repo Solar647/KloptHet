@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { Doodle } from './doodles'
+import { Doodle, BgLines } from './doodles'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -37,6 +37,8 @@ export function Trusted() {
         overflow: 'hidden',
       }}
     >
+      <BgLines color="rgba(255,255,255,.06)" />
+
       {/* Doodles */}
       <Doodle
         type="star"

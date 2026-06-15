@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
-import { Doodle } from './doodles'
+import { Doodle, BgLines } from './doodles'
 
 const tiers = [
   {
@@ -80,6 +80,8 @@ export function Pricing() {
         overflow: 'hidden',
       }}
     >
+      <BgLines />
+
       {/* Doodles (donker, pen-op-papier) */}
       <Doodle
         type="crown"

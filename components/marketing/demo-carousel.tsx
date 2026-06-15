@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { ArrowRightIcon } from '@/components/shared/icons'
-import { Doodle } from './doodles'
+import { Doodle, BgLines } from './doodles'
 
 const examples = [
   {
@@ -109,6 +109,8 @@ export function DemoCarousel() {
         background: '#F1EDE4',
       }}
     >
+      <BgLines />
+
       {/* Doodles */}
       <Doodle
         type="lightning"

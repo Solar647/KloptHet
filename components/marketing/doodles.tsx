@@ -136,6 +136,32 @@ const viewBoxes: Record<DoodleType, string> = {
   refresh: '0 0 32 32',
 }
 
+// Lange horizontale lijnen over de volledige breedte — subtiele achtergrondstructuur
+export function BgLines({
+  color = 'rgba(26,26,24,.06)',
+  gap = 130,
+}: {
+  color?: string
+  gap?: number
+}) {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 0,
+        pointerEvents: 'none',
+        backgroundImage: `repeating-linear-gradient(to bottom, transparent, transparent ${gap - 1}px, ${color} ${gap - 1}px, ${color} ${gap}px)`,
+        maskImage:
+          'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
+        WebkitMaskImage:
+          'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
+      }}
+    />
+  )
+}
+
 export function Doodle({
   type,
   size = 40,
