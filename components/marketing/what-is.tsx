@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { Doodle, BgLines } from './doodles'
+import { Doodle } from './doodles'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -66,8 +66,20 @@ export function WhatIs() {
           zIndex: 0,
         }}
       />
-
-      <BgLines />
+      {/* Accent: één lange lijn over de breedte */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '34%',
+          left: 0,
+          right: 0,
+          height: 1,
+          background:
+            'linear-gradient(to right, transparent 0%, rgba(26,26,24,.16) 20%, rgba(26,26,24,.16) 80%, transparent 100%)',
+          zIndex: 0,
+        }}
+      />
 
       {/* Doodles */}
       <Doodle

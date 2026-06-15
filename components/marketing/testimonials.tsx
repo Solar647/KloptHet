@@ -1,6 +1,6 @@
 'use client'
 
-import { Doodle, BgLines } from './doodles'
+import { Doodle } from './doodles'
 
 const reviews = [
   {
@@ -167,8 +167,20 @@ export function Testimonials() {
           zIndex: 0,
         }}
       />
-
-      <BgLines />
+      {/* Accent: één lange lijn */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '14%',
+          left: 0,
+          right: 0,
+          height: 1,
+          background:
+            'linear-gradient(to right, transparent 0%, rgba(26,26,24,.14) 25%, rgba(26,26,24,.14) 75%, transparent 100%)',
+          zIndex: 0,
+        }}
+      />
 
       {/* Doodles */}
       <Doodle

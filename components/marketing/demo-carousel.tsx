@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { ArrowRightIcon } from '@/components/shared/icons'
-import { Doodle, BgLines } from './doodles'
+import { Doodle } from './doodles'
 
 const examples = [
   {
@@ -109,7 +109,23 @@ export function DemoCarousel() {
         background: '#F1EDE4',
       }}
     >
-      <BgLines />
+      {/* Accent: klein streepjes-cluster */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '20%',
+          left: '4%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 7,
+          zIndex: 0,
+        }}
+      >
+        <span style={{ width: 64, height: 2, background: 'rgba(26,26,24,.45)' }} />
+        <span style={{ width: 40, height: 2, background: 'rgba(26,26,24,.3)' }} />
+        <span style={{ width: 52, height: 2, background: 'rgba(26,26,24,.38)' }} />
+      </div>
 
       {/* Doodles */}
       <Doodle

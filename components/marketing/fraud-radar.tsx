@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion, useInView, animate } from 'framer-motion'
-import { Doodle, BgLines } from './doodles'
+import { Doodle } from './doodles'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -100,9 +100,6 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
             'linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%)',
         }}
       />
-
-      <BgLines />
-
       {/* Doodles */}
       <Doodle
         type="spark"

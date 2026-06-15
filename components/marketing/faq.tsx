@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Doodle, BgLines } from './doodles'
+import { Doodle } from './doodles'
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -117,9 +117,6 @@ function FAQContent() {
           zIndex: 0,
         }}
       />
-
-      <BgLines />
-
       {/* Doodles */}
       <Doodle
         type="spark"
