@@ -37,22 +37,6 @@ export function Hero() {
         <HeroSpline />
       </Suspense>
 
-      {/* Gradient fade naar de lichte sectie eronder */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '28%',
-          background:
-            'linear-gradient(to bottom, transparent 0%, rgba(10,16,30,0.6) 55%, #F1EDE4 100%)',
-          zIndex: 3,
-          pointerEvents: 'none',
-        }}
-      />
-
       {/* Content */}
       <motion.div
         style={{ y: textY, opacity: textOpacity, position: 'relative', zIndex: 5, width: '100%' }}

@@ -105,19 +105,19 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
       <Doodle
         type="spark"
         size={46}
-        color="rgba(58,172,110,.18)"
+        color="rgba(58,172,110,.42)"
         style={{ top: '22%', left: '8%' }}
       />
       <Doodle
         type="squiggle"
         size={64}
-        color="rgba(26,26,24,.08)"
+        color="rgba(26,26,24,.4)"
         style={{ bottom: '18%', right: '9%' }}
       />
       <Doodle
         type="star"
         size={34}
-        color="rgba(217,123,42,.2)"
+        color="rgba(217,123,42,.42)"
         style={{ top: '30%', right: '14%' }}
       />
 

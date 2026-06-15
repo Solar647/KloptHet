@@ -76,33 +76,33 @@ export function Pricing() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem)',
-        background: 'linear-gradient(to bottom, #0a0a0c 0%, #0a0a0c 86%, #F1EDE4 100%)',
+        background: '#F1EDE4',
         overflow: 'hidden',
       }}
     >
-      {/* Doodles */}
+      {/* Doodles (donker, pen-op-papier) */}
       <Doodle
         type="crown"
         size={42}
-        color="rgba(58,172,110,.2)"
+        color="rgba(58,172,110,.4)"
         style={{ top: '13%', left: '9%' }}
       />
       <Doodle
         type="diamond"
         size={40}
-        color="rgba(255,255,255,.08)"
+        color="rgba(26,26,24,.4)"
         style={{ top: '22%', right: '8%' }}
       />
       <Doodle
         type="heart"
         size={32}
-        color="rgba(255,255,255,.07)"
+        color="rgba(26,26,24,.35)"
         style={{ bottom: '14%', left: '6%' }}
       />
       <Doodle
         type="squiggle"
         size={60}
-        color="rgba(58,172,110,.12)"
+        color="rgba(58,172,110,.35)"
         style={{ bottom: '20%', right: '7%' }}
       />
 
@@ -132,7 +132,7 @@ export function Pricing() {
               fontFamily: 'var(--font-sans)',
               fontSize: '.78rem',
               fontWeight: 700,
-              color: 'rgba(255,255,255,.6)',
+              color: 'rgba(26,26,24,.6)',
               letterSpacing: '.04em',
             }}
           >
@@ -153,8 +153,7 @@ export function Pricing() {
               margin: 0,
               userSelect: 'none',
               whiteSpace: 'nowrap',
-              background:
-                'linear-gradient(180deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.05) 100%)',
+              background: 'linear-gradient(180deg, rgba(26,26,24,.2) 0%, rgba(26,26,24,.04) 100%)',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -169,7 +168,7 @@ export function Pricing() {
               fontStyle: 'italic',
               fontWeight: 500,
               fontSize: 'clamp(1.1rem, 2vw, 1.5rem)',
-              color: 'rgba(255,255,255,.6)',
+              color: 'rgba(26,26,24,.6)',
               position: 'absolute',
               bottom: 'clamp(-.5rem, 1vw, .5rem)',
               left: '50%',
@@ -196,11 +195,10 @@ export function Pricing() {
               display: 'inline-flex',
               padding: 5,
               borderRadius: 9999,
-              background: 'rgba(255,255,255,.05)',
-              border: '1px solid rgba(255,255,255,.1)',
+              background: 'rgba(26,26,24,.06)',
+              border: '1px solid rgba(26,26,24,.12)',
             }}
           >
-            {/* Schuivende indicator */}
             <span
               aria-hidden="true"
               style={{
@@ -210,7 +208,7 @@ export function Pricing() {
                 left: yearly ? '50%' : 5,
                 width: 'calc(50% - 5px)',
                 borderRadius: 9999,
-                background: '#fff',
+                background: '#1a1a18',
                 transition: 'left .3s cubic-bezier(.16,1,.3,1)',
               }}
             />
@@ -234,7 +232,7 @@ export function Pricing() {
                     fontFamily: 'var(--font-sans)',
                     fontSize: '.9rem',
                     fontWeight: 700,
-                    color: activeBtn ? '#0a0a0c' : 'rgba(255,255,255,.6)',
+                    color: activeBtn ? '#F1EDE4' : 'rgba(26,26,24,.6)',
                     transition: 'color .25s',
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -246,7 +244,7 @@ export function Pricing() {
                   {value && (
                     <span
                       style={{
-                        background: activeBtn ? 'rgba(58,172,110,.2)' : 'rgba(58,172,110,.18)',
+                        background: 'rgba(58,172,110,.2)',
                         color: '#1f7a4d',
                         fontSize: '.65rem',
                         fontWeight: 800,
@@ -263,7 +261,7 @@ export function Pricing() {
           </div>
         </div>
 
-        {/* Kaarten */}
+        {/* Kaarten — donker glas op licht */}
         <div
           className="pricing-grid"
           style={{
@@ -290,17 +288,19 @@ export function Pricing() {
                   padding: '2rem 1.75rem',
                   display: 'flex',
                   flexDirection: 'column',
-                  background: isHi ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.025)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
+                  background: isHi
+                    ? 'linear-gradient(165deg, #1c2a22 0%, #121214 70%)'
+                    : 'linear-gradient(165deg, #1a1a1d 0%, #131316 100%)',
                   border: isHi
-                    ? '1px solid rgba(255,255,255,.22)'
-                    : '1px solid rgba(255,255,255,.09)',
+                    ? '1.5px solid rgba(58,172,110,.6)'
+                    : '1px solid rgba(255,255,255,.08)',
                   overflow: 'hidden',
-                  boxShadow: isHi ? '0 30px 70px -20px rgba(0,0,0,.7)' : 'none',
+                  boxShadow: isHi
+                    ? '0 30px 70px -24px rgba(58,172,110,.4), inset 0 1px 0 rgba(255,255,255,.08)'
+                    : '0 22px 50px -24px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06)',
                 }}
               >
-                {/* Zachte lichtgloed achter de kaart */}
+                {/* Gloed in de kaart */}
                 <div
                   aria-hidden="true"
                   style={{
@@ -308,11 +308,11 @@ export function Pricing() {
                     top: '-30%',
                     left: '20%',
                     width: '70%',
-                    height: '60%',
+                    height: '55%',
                     background: isHi
-                      ? 'radial-gradient(ellipse, rgba(255,255,255,.18) 0%, transparent 65%)'
-                      : 'radial-gradient(ellipse, rgba(255,255,255,.08) 0%, transparent 65%)',
-                    filter: 'blur(30px)',
+                      ? 'radial-gradient(ellipse, rgba(58,172,110,.3) 0%, transparent 65%)'
+                      : 'radial-gradient(ellipse, rgba(120,140,200,.12) 0%, transparent 65%)',
+                    filter: 'blur(35px)',
                     pointerEvents: 'none',
                   }}
                 />
@@ -416,7 +416,7 @@ export function Pricing() {
                       flexDirection: 'column',
                       gap: '.75rem',
                       flex: 1,
-                      borderTop: '1px solid rgba(255,255,255,.08)',
+                      borderTop: '1px solid rgba(255,255,255,.1)',
                       paddingTop: '1.5rem',
                     }}
                   >
@@ -426,7 +426,7 @@ export function Pricing() {
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontSize: '.88rem',
-                          color: 'rgba(255,255,255,.78)',
+                          color: 'rgba(255,255,255,.8)',
                           display: 'flex',
                           gap: 10,
                           alignItems: 'flex-start',
@@ -437,7 +437,7 @@ export function Pricing() {
                             width: 18,
                             height: 18,
                             borderRadius: '50%',
-                            background: 'rgba(58,172,110,.15)',
+                            background: 'rgba(58,172,110,.2)',
                             color: '#3AAC6E',
                             display: 'inline-flex',
                             alignItems: 'center',
@@ -460,8 +460,8 @@ export function Pricing() {
                         : `/${locale}/registreren`
                     }
                     style={{
-                      background: isHi ? '#fff' : 'rgba(255,255,255,.06)',
-                      color: isHi ? '#0a0a0c' : '#fff',
+                      background: isHi ? '#3AAC6E' : 'rgba(255,255,255,.08)',
+                      color: isHi ? '#07190F' : '#fff',
                       border: isHi ? 'none' : '1px solid rgba(255,255,255,.16)',
                       padding: '.95rem 1rem',
                       borderRadius: 9999,
@@ -501,8 +501,8 @@ export function Pricing() {
             gap: '1rem',
             marginTop: '2rem',
             padding: '1.25rem 1.5rem',
-            background: 'rgba(255,255,255,.03)',
-            border: '1px solid rgba(255,255,255,.09)',
+            background: 'rgba(26,26,24,.04)',
+            border: '1px solid rgba(26,26,24,.1)',
             borderRadius: 14,
           }}
         >
@@ -515,7 +515,7 @@ export function Pricing() {
                 gap: 10,
                 fontFamily: 'var(--font-sans)',
                 fontSize: '.85rem',
-                color: 'rgba(255,255,255,.72)',
+                color: 'rgba(26,26,24,.72)',
               }}
             >
               <span

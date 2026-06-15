@@ -113,16 +113,11 @@ export function DemoCarousel() {
       <Doodle
         type="lightning"
         size={36}
-        color="rgba(58,172,110,.18)"
+        color="rgba(58,172,110,.42)"
         style={{ top: '9%', right: '10%' }}
       />
-      <Doodle
-        type="waves"
-        size={40}
-        color="rgba(26,26,24,.08)"
-        style={{ top: '15%', left: '7%' }}
-      />
-      <Doodle type="star" size={28} color="rgba(26,26,24,.07)" style={{ top: '6%', left: '24%' }} />
+      <Doodle type="waves" size={40} color="rgba(26,26,24,.4)" style={{ top: '15%', left: '7%' }} />
+      <Doodle type="star" size={28} color="rgba(26,26,24,.38)" style={{ top: '6%', left: '24%' }} />
 
       <div style={{ maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         {/* Header */}
@@ -529,14 +524,14 @@ export function DemoCarousel() {
         >
           <defs>
             <linearGradient id="waveA" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#2a2b30" />
-              <stop offset="50%" stopColor="#141416" />
-              <stop offset="100%" stopColor="#0a0a0c" />
+              <stop offset="0%" stopColor="#e1dcd0" />
+              <stop offset="50%" stopColor="#ebe7dd" />
+              <stop offset="100%" stopColor="#F1EDE4" />
             </linearGradient>
             <linearGradient id="waveB" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#0c0c0e" />
-              <stop offset="45%" stopColor="#1e1f23" />
-              <stop offset="100%" stopColor="#0c0c0e" />
+              <stop offset="0%" stopColor="#e8e3d8" />
+              <stop offset="45%" stopColor="#d6d0c3" />
+              <stop offset="100%" stopColor="#e8e3d8" />
             </linearGradient>
           </defs>
           <path
@@ -560,7 +555,7 @@ export function DemoCarousel() {
           <path
             d="M0 150 C 240 50, 420 250, 720 140 C 1000 40, 1200 230, 1440 120"
             fill="none"
-            stroke="rgba(255,255,255,.12)"
+            stroke="rgba(26,26,24,.14)"
             strokeWidth="1"
           />
         </svg>

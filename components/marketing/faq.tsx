@@ -122,19 +122,19 @@ function FAQContent() {
       <Doodle
         type="spark"
         size={34}
-        color="rgba(58,172,110,.18)"
+        color="rgba(58,172,110,.42)"
         style={{ top: '16%', left: '11%' }}
       />
       <Doodle
         type="refresh"
         size={32}
-        color="rgba(26,26,24,.08)"
+        color="rgba(26,26,24,.4)"
         style={{ bottom: '16%', right: '10%' }}
       />
       <Doodle
         type="waves"
         size={38}
-        color="rgba(26,26,24,.07)"
+        color="rgba(26,26,24,.38)"
         style={{ top: '40%', right: '8%' }}
       />
 

@@ -71,25 +71,25 @@ export function WhatIs() {
       <Doodle
         type="star"
         size={34}
-        color="rgba(58,172,110,.22)"
+        color="rgba(58,172,110,.45)"
         style={{ top: '11%', left: '7%' }}
       />
       <Doodle
         type="spark"
         size={40}
-        color="rgba(26,26,24,.08)"
+        color="rgba(26,26,24,.4)"
         style={{ top: '16%', right: '6%' }}
       />
       <Doodle
         type="heart"
         size={30}
-        color="rgba(58,172,110,.16)"
+        color="rgba(58,172,110,.4)"
         style={{ bottom: '16%', right: '5%' }}
       />
       <Doodle
         type="lightning"
         size={34}
-        color="rgba(26,26,24,.08)"
+        color="rgba(26,26,24,.4)"
         style={{ bottom: '12%', left: '6%' }}
       />
 

@@ -60,20 +60,20 @@ export function HowItWorks() {
       <Doodle
         type="zigzag"
         size={42}
-        color="rgba(58,172,110,.18)"
+        color="rgba(58,172,110,.42)"
         style={{ top: '15%', right: '11%' }}
       />
-      <Doodle type="note" size={32} color="rgba(26,26,24,.08)" style={{ top: '46%', left: '6%' }} />
+      <Doodle type="note" size={32} color="rgba(26,26,24,.4)" style={{ top: '46%', left: '6%' }} />
       <Doodle
         type="spiral"
         size={46}
-        color="rgba(26,26,24,.07)"
+        color="rgba(26,26,24,.38)"
         style={{ bottom: '12%', right: '9%' }}
       />
       <Doodle
         type="spark"
         size={30}
-        color="rgba(58,172,110,.16)"
+        color="rgba(58,172,110,.4)"
         style={{ bottom: '30%', left: '9%' }}
       />
 

@@ -172,13 +172,13 @@ export function Testimonials() {
       <Doodle
         type="heart"
         size={32}
-        color="rgba(58,172,110,.2)"
+        color="rgba(58,172,110,.42)"
         style={{ top: '14%', left: '10%' }}
       />
       <Doodle
         type="star"
         size={28}
-        color="rgba(26,26,24,.08)"
+        color="rgba(26,26,24,.4)"
         style={{ top: '10%', right: '12%' }}
       />
 
