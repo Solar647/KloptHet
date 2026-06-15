@@ -32,7 +32,7 @@ export function WhatIs() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem)',
-        background: '#F7F5F0',
+        background: '#F1EDE4',
         overflow: 'hidden',
       }}
     >
@@ -47,6 +47,21 @@ export function WhatIs() {
           height: 500,
           background: 'radial-gradient(ellipse, rgba(30,80,180,.08) 0%, transparent 65%)',
           filter: 'blur(80px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      {/* Subtiel donker diepte-accent */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '-8%',
+          left: '-5%',
+          width: 520,
+          height: 460,
+          background: 'radial-gradient(ellipse, rgba(26,26,24,.06) 0%, transparent 62%)',
+          filter: 'blur(70px)',
           pointerEvents: 'none',
           zIndex: 0,
         }}

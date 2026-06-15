@@ -106,7 +106,7 @@ export function DemoCarousel() {
         padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem) 0',
         position: 'relative',
         overflow: 'hidden',
-        background: '#F7F5F0',
+        background: '#F1EDE4',
       }}
     >
       {/* Doodles */}
@@ -531,7 +531,7 @@ export function DemoCarousel() {
             <linearGradient id="waveA" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="#e7e3da" />
               <stop offset="50%" stopColor="#eeebe3" />
-              <stop offset="100%" stopColor="#F7F5F0" />
+              <stop offset="100%" stopColor="#F1EDE4" />
             </linearGradient>
             <linearGradient id="waveB" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#ece8e0" />

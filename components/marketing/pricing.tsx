@@ -76,7 +76,7 @@ export function Pricing() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem)',
-        background: '#F7F5F0',
+        background: '#F1EDE4',
         overflow: 'hidden',
       }}
     >
@@ -104,6 +104,24 @@ export function Pricing() {
         size={60}
         color="rgba(58,172,110,.12)"
         style={{ bottom: '20%', right: '7%' }}
+      />
+
+      {/* Diepte-accenten achter de kaarten */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '38%',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '70%',
+          height: '55%',
+          background:
+            'radial-gradient(ellipse at 30% 30%, rgba(58,172,110,.12) 0%, transparent 55%), radial-gradient(ellipse at 75% 70%, rgba(26,26,24,.07) 0%, transparent 55%)',
+          filter: 'blur(50px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
       />
 
       <div style={{ maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 2 }}>
@@ -233,7 +251,7 @@ export function Pricing() {
                     fontFamily: 'var(--font-sans)',
                     fontSize: '.9rem',
                     fontWeight: 700,
-                    color: activeBtn ? '#F7F5F0' : 'rgba(26,26,24,.6)',
+                    color: activeBtn ? '#F1EDE4' : 'rgba(26,26,24,.6)',
                     transition: 'color .25s',
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -289,12 +307,14 @@ export function Pricing() {
                   padding: '2rem 1.75rem',
                   display: 'flex',
                   flexDirection: 'column',
-                  background: '#ffffff',
-                  border: isHi ? '1.5px solid #3AAC6E' : '1px solid rgba(26,26,24,.1)',
+                  background: isHi ? 'rgba(255,255,255,.72)' : 'rgba(255,255,255,.55)',
+                  backdropFilter: 'blur(18px)',
+                  WebkitBackdropFilter: 'blur(18px)',
+                  border: isHi ? '1.5px solid #3AAC6E' : '1px solid rgba(255,255,255,.7)',
                   overflow: 'hidden',
                   boxShadow: isHi
-                    ? '0 30px 70px -24px rgba(58,172,110,.35)'
-                    : '0 12px 32px -16px rgba(0,0,0,.15)',
+                    ? '0 30px 70px -24px rgba(58,172,110,.35), inset 0 1px 0 rgba(255,255,255,.6)'
+                    : '0 16px 40px -20px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.6)',
                 }}
               >
                 {/* Zachte lichtgloed achter de kaart */}

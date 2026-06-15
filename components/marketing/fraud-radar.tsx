@@ -63,11 +63,11 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
-        background: '#F7F5F0',
+        background: '#F1EDE4',
         overflow: 'hidden',
       }}
     >
-      {/* Overgang vanaf hero */}
+      {/* Vloeiende overgang van donkere hero naar lichte sectie */}
       <div
         aria-hidden="true"
         style={{
@@ -75,8 +75,8 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
           top: 0,
           left: 0,
           right: 0,
-          height: 120,
-          background: 'linear-gradient(to bottom, #060A16 0%, transparent 100%)',
+          height: 130,
+          background: 'linear-gradient(to bottom, #0a1226 0%, #243049 20%, #F1EDE4 72%)',
           pointerEvents: 'none',
           zIndex: 1,
         }}

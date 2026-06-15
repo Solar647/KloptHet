@@ -97,7 +97,7 @@ function FAQContent() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
-        background: '#F7F5F0',
+        background: '#F1EDE4',
         overflow: 'hidden',
       }}
     >

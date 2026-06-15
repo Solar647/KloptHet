@@ -120,7 +120,7 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
       <Nav />
-      <main id="main">
+      <main id="main" style={{ background: '#F1EDE4' }}>
         <Hero />
         <FraudRadar stats={stats} />
         <Reveal>

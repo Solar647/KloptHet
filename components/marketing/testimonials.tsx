@@ -131,7 +131,7 @@ export function Testimonials() {
     <section
       style={{
         padding: 'clamp(4rem, 8vw, 7rem) 0',
-        background: '#F7F5F0',
+        background: '#F1EDE4',
         overflow: 'hidden',
         position: 'relative',
       }}
@@ -145,7 +145,7 @@ export function Testimonials() {
           left: 0,
           right: 0,
           height: 140,
-          background: 'linear-gradient(to bottom, #F7F5F0 0%, transparent 100%)',
+          background: 'linear-gradient(to bottom, #F1EDE4 0%, transparent 100%)',
           zIndex: 0,
           pointerEvents: 'none',
         }}
@@ -253,7 +253,7 @@ export function Testimonials() {
             top: 0,
             bottom: 0,
             width: 120,
-            background: 'linear-gradient(90deg, #F7F5F0 0%, transparent 100%)',
+            background: 'linear-gradient(90deg, #F1EDE4 0%, transparent 100%)',
             zIndex: 2,
             pointerEvents: 'none',
           }}
@@ -266,7 +266,7 @@ export function Testimonials() {
             top: 0,
             bottom: 0,
             width: 120,
-            background: 'linear-gradient(270deg, #F7F5F0 0%, transparent 100%)',
+            background: 'linear-gradient(270deg, #F1EDE4 0%, transparent 100%)',
             zIndex: 2,
             pointerEvents: 'none',
           }}
