@@ -75,11 +75,63 @@ export function Pricing() {
       id="abonnementen"
       style={{
         position: 'relative',
-        padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem)',
+        padding: 'clamp(7rem, 13vw, 11rem) clamp(1.5rem, 3vw, 3rem) clamp(5rem, 10vw, 9rem)',
         background: '#F1EDE4',
         overflow: 'hidden',
       }}
     >
+      {/* Omgekeerde wave bovenaan — hangt naar beneden (vervolg op de demo-wave) */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: '50%',
+          transform: 'translateX(-50%) scaleY(-1)',
+          width: '100vw',
+          height: 'clamp(110px, 16vw, 220px)',
+          overflow: 'hidden',
+          zIndex: 0,
+          pointerEvents: 'none',
+        }}
+      >
+        <svg
+          viewBox="0 0 1440 300"
+          preserveAspectRatio="none"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+        >
+          <defs>
+            <linearGradient id="pWaveA" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#2a2b30" />
+              <stop offset="50%" stopColor="#141416" />
+              <stop offset="100%" stopColor="#0a0a0c" />
+            </linearGradient>
+            <linearGradient id="pWaveB" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stopColor="#0c0c0e" />
+              <stop offset="45%" stopColor="#1e1f23" />
+              <stop offset="100%" stopColor="#0c0c0e" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M0 150 C 240 50, 420 250, 720 140 C 1000 40, 1200 230, 1440 120 L1440 300 L0 300 Z"
+            fill="url(#pWaveA)"
+            opacity="0.9"
+          />
+          <path
+            d="M0 210 C 260 130, 560 270, 880 190 C 1140 126, 1320 260, 1440 200 L1440 300 L0 300 Z"
+            fill="url(#pWaveB)"
+          />
+          <path
+            d="M0 150 C 240 50, 420 250, 720 140 C 1000 40, 1200 230, 1440 120"
+            fill="none"
+            stroke="rgba(58,172,110,.5)"
+            strokeWidth="2"
+            strokeDasharray="2 9"
+            strokeLinecap="round"
+          />
+        </svg>
+      </div>
+
       {/* Doodles (donker, pen-op-papier) */}
       <Doodle
         type="crown"
