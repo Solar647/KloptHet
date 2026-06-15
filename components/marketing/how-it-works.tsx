@@ -45,6 +45,23 @@ export function HowItWorks() {
         overflow: 'hidden',
       }}
     >
+      {/* Heel subtiel grid */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+          backgroundImage:
+            'linear-gradient(rgba(26,26,24,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(26,26,24,.05) 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
+          maskImage: 'radial-gradient(ellipse 78% 70% at 50% 45%, black 25%, transparent 82%)',
+          WebkitMaskImage:
+            'radial-gradient(ellipse 78% 70% at 50% 45%, black 25%, transparent 82%)',
+        }}
+      />
+
       {/* Subtiele groene gloed */}
       <div
         aria-hidden="true"
