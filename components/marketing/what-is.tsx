@@ -66,18 +66,17 @@ export function WhatIs() {
           zIndex: 0,
         }}
       />
-      {/* Accent: één lange lijn over de breedte */}
+      {/* Dikkere scheidingslijn tussen fraude-radar en deze sectie */}
       <div
         aria-hidden="true"
         style={{
           position: 'absolute',
-          top: '34%',
+          top: 0,
           left: 0,
           right: 0,
-          height: 1,
-          background:
-            'linear-gradient(to right, transparent 0%, rgba(26,26,24,.16) 20%, rgba(26,26,24,.16) 80%, transparent 100%)',
-          zIndex: 0,
+          height: 3,
+          background: 'rgba(26,26,24,.55)',
+          zIndex: 1,
         }}
       />
 
