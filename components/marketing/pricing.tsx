@@ -132,6 +132,24 @@ export function Pricing() {
         </svg>
       </div>
 
+      {/* Heel subtiel grid — vanaf de wave naar beneden */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 0,
+          pointerEvents: 'none',
+          backgroundImage:
+            'linear-gradient(rgba(26,26,24,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(26,26,24,.05) 1px, transparent 1px)',
+          backgroundSize: '64px 64px',
+          maskImage:
+            'linear-gradient(to bottom, transparent 4%, black 16%, black 80%, transparent 100%)',
+          WebkitMaskImage:
+            'linear-gradient(to bottom, transparent 4%, black 16%, black 80%, transparent 100%)',
+        }}
+      />
+
       {/* Doodles (donker, pen-op-papier) */}
       <Doodle
         type="crown"
