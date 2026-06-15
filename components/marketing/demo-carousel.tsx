@@ -109,6 +109,36 @@ export function DemoCarousel() {
         background: '#F1EDE4',
       }}
     >
+      {/* Zachte lichtwasingen voor diepte */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '-5%',
+          left: '-5%',
+          width: 700,
+          height: 600,
+          background: 'radial-gradient(ellipse, rgba(58,172,110,.1) 0%, transparent 62%)',
+          filter: 'blur(90px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '25%',
+          right: '-8%',
+          width: 640,
+          height: 560,
+          background: 'radial-gradient(ellipse, rgba(30,80,180,.08) 0%, transparent 62%)',
+          filter: 'blur(90px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+
       {/* Accent: klein streepjes-cluster */}
       <div
         aria-hidden="true"

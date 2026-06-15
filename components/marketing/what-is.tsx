@@ -45,8 +45,23 @@ export function WhatIs() {
           right: '0%',
           width: 600,
           height: 500,
-          background: 'radial-gradient(ellipse, rgba(30,80,180,.08) 0%, transparent 65%)',
+          background: 'radial-gradient(ellipse, rgba(30,80,180,.12) 0%, transparent 65%)',
           filter: 'blur(80px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      {/* Zachte groene wash */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: '20%',
+          left: '-6%',
+          width: 600,
+          height: 520,
+          background: 'radial-gradient(ellipse, rgba(58,172,110,.1) 0%, transparent 62%)',
+          filter: 'blur(85px)',
           pointerEvents: 'none',
           zIndex: 0,
         }}
