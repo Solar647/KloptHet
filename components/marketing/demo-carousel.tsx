@@ -542,14 +542,14 @@ export function DemoCarousel() {
         >
           <defs>
             <linearGradient id="waveA" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#e1dcd0" />
-              <stop offset="50%" stopColor="#ebe7dd" />
-              <stop offset="100%" stopColor="#F1EDE4" />
+              <stop offset="0%" stopColor="#2a2b30" />
+              <stop offset="50%" stopColor="#141416" />
+              <stop offset="100%" stopColor="#0a0a0c" />
             </linearGradient>
             <linearGradient id="waveB" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#e8e3d8" />
-              <stop offset="45%" stopColor="#d6d0c3" />
-              <stop offset="100%" stopColor="#e8e3d8" />
+              <stop offset="0%" stopColor="#0c0c0e" />
+              <stop offset="45%" stopColor="#1e1f23" />
+              <stop offset="100%" stopColor="#0c0c0e" />
             </linearGradient>
           </defs>
           <path
@@ -573,7 +573,7 @@ export function DemoCarousel() {
           <path
             d="M0 150 C 240 50, 420 250, 720 140 C 1000 40, 1200 230, 1440 120"
             fill="none"
-            stroke="rgba(26,26,24,.14)"
+            stroke="rgba(255,255,255,.12)"
             strokeWidth="1"
           />
         </svg>
