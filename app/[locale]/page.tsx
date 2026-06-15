@@ -8,6 +8,7 @@ import { HowItWorks } from '@/components/marketing/how-it-works'
 import { DemoCarousel } from '@/components/marketing/demo-carousel'
 import { Pricing } from '@/components/marketing/pricing'
 import { Testimonials } from '@/components/marketing/testimonials'
+import { Trusted } from '@/components/marketing/trusted'
 import { FAQ } from '@/components/marketing/faq'
 import { Reveal } from '@/components/shared/reveal'
 import { createClient } from '@/lib/supabase/server'
@@ -137,6 +138,9 @@ export default async function HomePage() {
         </Reveal>
         <Reveal delay={50}>
           <Testimonials />
+        </Reveal>
+        <Reveal delay={50}>
+          <Trusted />
         </Reveal>
         <Reveal delay={50}>
           <FAQ />

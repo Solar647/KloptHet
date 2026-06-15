@@ -5,7 +5,13 @@ import { Doodle } from './doodles'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
-const steps = [
+const steps: {
+  num: string
+  title: string
+  body: string
+  side: 'left' | 'right'
+  photo?: string
+}[] = [
   {
     num: '01',
     title: 'Upload een screenshot',
@@ -176,9 +182,9 @@ export function HowItWorks() {
             </defs>
             <path
               d="M500 6
-                 C 330 110, 330 240, 500 340
-                 C 670 440, 670 560, 500 660
-                 C 330 760, 330 890, 500 994"
+                 C 440 110, 440 240, 500 340
+                 C 560 440, 560 560, 500 660
+                 C 440 760, 440 890, 500 994"
               fill="none"
               stroke="url(#lineGrad)"
               strokeWidth="2.5"
@@ -224,27 +230,11 @@ export function HowItWorks() {
               gap: 'clamp(3rem, 9vw, 8rem)',
             }}
           >
-            {steps.map((step) => (
-              <motion.div
-                key={step.num}
-                initial={reduced ? false : { opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
-                className="process-step"
-                style={{
-                  position: 'relative',
-                  zIndex: 1,
-                  display: 'flex',
-                  justifyContent: step.side === 'left' ? 'flex-start' : 'flex-end',
-                }}
-              >
+            {steps.map((step) => {
+              const textCol = (
                 <div
                   className="process-text"
-                  style={{
-                    maxWidth: 380,
-                    textAlign: step.side === 'left' ? 'left' : 'right',
-                  }}
+                  style={{ textAlign: step.side === 'left' ? 'left' : 'right' }}
                 >
                   <div
                     style={{
@@ -297,13 +287,100 @@ export function HowItWorks() {
                       lineHeight: 1.7,
                       margin: 0,
                       marginLeft: step.side === 'left' ? 0 : 'auto',
+                      maxWidth: 380,
                     }}
                   >
                     {step.body}
                   </p>
                 </div>
-              </motion.div>
-            ))}
+              )
+
+              const photoCol = (
+                <div
+                  className="process-photo"
+                  style={{
+                    aspectRatio: '4 / 3',
+                    borderRadius: 18,
+                    overflow: 'hidden',
+                    border: '1px solid rgba(26,26,24,.12)',
+                    boxShadow: '0 24px 60px -28px rgba(0,0,0,.35)',
+                    background: 'linear-gradient(155deg, #e9e4d8 0%, #d6d0c2 100%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 10,
+                    color: 'rgba(26,26,24,.32)',
+                  }}
+                >
+                  {step.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={step.photo}
+                      alt=""
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <>
+                      <svg
+                        width="34"
+                        height="34"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3Z" />
+                        <circle cx="12" cy="13" r="3.5" />
+                      </svg>
+                      <span
+                        style={{
+                          fontFamily: 'var(--font-sans)',
+                          fontSize: '.78rem',
+                          fontWeight: 600,
+                        }}
+                      >
+                        Foto volgt
+                      </span>
+                    </>
+                  )}
+                </div>
+              )
+
+              return (
+                <motion.div
+                  key={step.num}
+                  initial={reduced ? false : { opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.7, delay: 0.1, ease: EASE }}
+                  className="process-step"
+                  style={{
+                    position: 'relative',
+                    zIndex: 1,
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: 'clamp(2rem, 6vw, 4.5rem)',
+                    alignItems: 'center',
+                  }}
+                >
+                  {step.side === 'left' ? (
+                    <>
+                      {textCol}
+                      {photoCol}
+                    </>
+                  ) : (
+                    <>
+                      {photoCol}
+                      {textCol}
+                    </>
+                  )}
+                </motion.div>
+              )
+            })}
           </div>
 
           {/* Ruimte zodat de lijn netjes onder stap 03 kan eindigen */}
@@ -364,10 +441,11 @@ export function HowItWorks() {
         }
         @media (max-width: 768px) {
           .process-line { display: none; }
-          .process-step { justify-content: flex-start !important; }
+          .process-step { grid-template-columns: 1fr !important; gap: 1.25rem !important; }
+          .process-photo { order: -1; }
           .process-text { text-align: left !important; }
           .process-text > div { flex-direction: row !important; }
-          .process-text p { margin-left: 0 !important; }
+          .process-text p { margin-left: 0 !important; max-width: none !important; }
         }
       `}</style>
     </section>
