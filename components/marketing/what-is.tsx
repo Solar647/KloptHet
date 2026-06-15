@@ -74,9 +74,25 @@ export function WhatIs() {
           top: 0,
           left: 0,
           right: 0,
-          height: 3,
-          background: 'rgba(26,26,24,.55)',
+          height: 5,
+          background: 'linear-gradient(to bottom, rgba(26,26,24,.7) 0%, rgba(26,26,24,.32) 100%)',
           zIndex: 1,
+        }}
+      />
+      {/* Groen accent-segment op de lijn */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: 120,
+          height: 5,
+          background: '#3AAC6E',
+          boxShadow: '0 0 16px rgba(58,172,110,.7)',
+          borderRadius: '0 0 3px 3px',
+          zIndex: 2,
         }}
       />
 
