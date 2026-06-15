@@ -106,7 +106,7 @@ export function DemoCarousel() {
         padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem) 0',
         position: 'relative',
         overflow: 'hidden',
-        background: '#0a0a0c',
+        background: '#F7F5F0',
       }}
     >
       {/* Doodles */}
@@ -119,15 +119,10 @@ export function DemoCarousel() {
       <Doodle
         type="waves"
         size={40}
-        color="rgba(255,255,255,.08)"
+        color="rgba(26,26,24,.08)"
         style={{ top: '15%', left: '7%' }}
       />
-      <Doodle
-        type="star"
-        size={28}
-        color="rgba(255,255,255,.07)"
-        style={{ top: '6%', left: '24%' }}
-      />
+      <Doodle type="star" size={28} color="rgba(26,26,24,.07)" style={{ top: '6%', left: '24%' }} />
 
       <div style={{ maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         {/* Header */}
@@ -156,7 +151,7 @@ export function DemoCarousel() {
                 fontFamily: 'var(--font-sans)',
                 fontSize: '.78rem',
                 fontWeight: 700,
-                color: 'rgba(255,255,255,.6)',
+                color: 'rgba(26,26,24,.6)',
                 letterSpacing: '.04em',
               }}
             >
@@ -170,7 +165,7 @@ export function DemoCarousel() {
               fontSize: 'clamp(2.4rem, 6vw, 5rem)',
               lineHeight: 1,
               letterSpacing: '-.04em',
-              color: '#fff',
+              color: '#1a1a18',
               margin: '0 0 1rem',
             }}
           >
@@ -180,7 +175,7 @@ export function DemoCarousel() {
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '1.05rem',
-              color: 'rgba(255,255,255,.5)',
+              color: 'rgba(26,26,24,.5)',
               maxWidth: 460,
               margin: '0 auto',
               lineHeight: 1.6,
@@ -204,10 +199,11 @@ export function DemoCarousel() {
                 style={{
                   cursor: 'pointer',
                   borderRadius: 18,
-                  border: `1px solid ${isActive ? 'rgba(255,255,255,.12)' : 'rgba(255,255,255,.07)'}`,
+                  border: `1px solid ${isActive ? 'rgba(26,26,24,.12)' : 'rgba(26,26,24,.08)'}`,
                   background: isActive
-                    ? 'linear-gradient(160deg, #19191c 0%, #0e0e10 70%)'
-                    : 'linear-gradient(160deg, #141416 0%, #0d0d0f 100%)',
+                    ? '#ffffff'
+                    : 'linear-gradient(160deg, #efece4 0%, #e9e5dc 100%)',
+                  boxShadow: isActive ? '0 24px 60px -24px rgba(0,0,0,.25)' : 'none',
                   position: 'relative',
                   overflow: 'hidden',
                   transition: 'flex .6s cubic-bezier(.16,1,.3,1), border-color .4s, background .4s',
@@ -250,7 +246,7 @@ export function DemoCarousel() {
                         fontFamily: 'ui-monospace, monospace',
                         fontSize: '.72rem',
                         fontWeight: 700,
-                        color: 'rgba(255,255,255,.25)',
+                        color: 'rgba(26,26,24,.25)',
                         flexShrink: 0,
                       }}
                     >
@@ -296,7 +292,7 @@ export function DemoCarousel() {
                             fontFamily: 'var(--font-sans)',
                             fontWeight: 700,
                             fontSize: '.92rem',
-                            color: '#fff',
+                            color: '#1a1a18',
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
@@ -308,7 +304,7 @@ export function DemoCarousel() {
                           style={{
                             fontFamily: 'var(--font-sans)',
                             fontSize: '.72rem',
-                            color: 'rgba(255,255,255,.4)',
+                            color: 'rgba(26,26,24,.4)',
                           }}
                         >
                           {ex.fromLabel}
@@ -319,7 +315,7 @@ export function DemoCarousel() {
                           fontFamily: 'ui-monospace, monospace',
                           fontSize: '.72rem',
                           fontWeight: 700,
-                          color: 'rgba(255,255,255,.25)',
+                          color: 'rgba(26,26,24,.25)',
                         }}
                       >
                         0{i + 1}
@@ -329,13 +325,13 @@ export function DemoCarousel() {
                     {/* Bericht */}
                     <div
                       style={{
-                        background: 'rgba(255,255,255,.04)',
-                        border: '1px solid rgba(255,255,255,.07)',
+                        background: 'rgba(26,26,24,.04)',
+                        border: '1px solid rgba(26,26,24,.07)',
                         borderRadius: '4px 16px 16px 16px',
                         padding: '.9rem 1.1rem',
                         fontFamily: 'var(--font-sans)',
                         fontSize: '.9rem',
-                        color: 'rgba(255,255,255,.85)',
+                        color: 'rgba(26,26,24,.85)',
                         lineHeight: 1.65,
                         marginBottom: '1.5rem',
                       }}
@@ -368,7 +364,7 @@ export function DemoCarousel() {
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontSize: '.8rem',
-                          color: 'rgba(255,255,255,.3)',
+                          color: 'rgba(26,26,24,.3)',
                         }}
                       >
                         /10
@@ -393,7 +389,7 @@ export function DemoCarousel() {
                       style={{
                         height: 4,
                         borderRadius: 9999,
-                        background: 'rgba(255,255,255,.07)',
+                        background: 'rgba(26,26,24,.07)',
                         overflow: 'hidden',
                         marginBottom: '1.25rem',
                       }}
@@ -415,7 +411,7 @@ export function DemoCarousel() {
                       style={{
                         fontFamily: 'var(--font-sans)',
                         fontSize: '.86rem',
-                        color: 'rgba(255,255,255,.6)',
+                        color: 'rgba(26,26,24,.6)',
                         lineHeight: 1.65,
                         margin: '0 0 1.25rem',
                       }}
@@ -453,7 +449,7 @@ export function DemoCarousel() {
                               style={{
                                 fontFamily: 'var(--font-sans)',
                                 fontSize: '.8rem',
-                                color: 'rgba(255,255,255,.78)',
+                                color: 'rgba(26,26,24,.78)',
                                 lineHeight: 1.4,
                               }}
                             >
@@ -506,7 +502,7 @@ export function DemoCarousel() {
               marginTop: '.75rem',
               fontFamily: 'var(--font-sans)',
               fontSize: '.78rem',
-              color: 'rgba(255,255,255,.3)',
+              color: 'rgba(26,26,24,.3)',
             }}
           >
             Gratis account aanmaken · Eerste controle gratis
@@ -514,7 +510,7 @@ export function DemoCarousel() {
         </div>
       </div>
 
-      {/* Donkere wave onderaan — volledige breedte, van rand tot rand */}
+      {/* Zachte wave onderaan — volledige breedte, van rand tot rand */}
       <div
         aria-hidden="true"
         style={{
@@ -533,14 +529,14 @@ export function DemoCarousel() {
         >
           <defs>
             <linearGradient id="waveA" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#2a2b30" />
-              <stop offset="50%" stopColor="#141416" />
-              <stop offset="100%" stopColor="#0a0a0c" />
+              <stop offset="0%" stopColor="#e7e3da" />
+              <stop offset="50%" stopColor="#eeebe3" />
+              <stop offset="100%" stopColor="#F7F5F0" />
             </linearGradient>
             <linearGradient id="waveB" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="#0c0c0e" />
-              <stop offset="45%" stopColor="#1e1f23" />
-              <stop offset="100%" stopColor="#0c0c0e" />
+              <stop offset="0%" stopColor="#ece8e0" />
+              <stop offset="45%" stopColor="#ddd8cd" />
+              <stop offset="100%" stopColor="#ece8e0" />
             </linearGradient>
           </defs>
           <path
@@ -564,7 +560,7 @@ export function DemoCarousel() {
           <path
             d="M0 150 C 240 50, 420 250, 720 140 C 1000 40, 1200 230, 1440 120"
             fill="none"
-            stroke="rgba(255,255,255,.1)"
+            stroke="rgba(26,26,24,.12)"
             strokeWidth="1"
           />
         </svg>
@@ -592,7 +588,7 @@ export function DemoCarousel() {
           font-family: var(--font-sans);
           font-weight: 700;
           font-size: .92rem;
-          color: rgba(255,255,255,.7);
+          color: rgba(26,26,24,.7);
           letter-spacing: .02em;
           white-space: nowrap;
         }

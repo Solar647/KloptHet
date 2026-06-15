@@ -35,7 +35,7 @@ export function HowItWorks() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem)',
-        background: '#0a0a0c',
+        background: '#F7F5F0',
         overflow: 'hidden',
       }}
     >
@@ -63,16 +63,11 @@ export function HowItWorks() {
         color="rgba(58,172,110,.18)"
         style={{ top: '15%', right: '11%' }}
       />
-      <Doodle
-        type="note"
-        size={32}
-        color="rgba(255,255,255,.08)"
-        style={{ top: '46%', left: '6%' }}
-      />
+      <Doodle type="note" size={32} color="rgba(26,26,24,.08)" style={{ top: '46%', left: '6%' }} />
       <Doodle
         type="spiral"
         size={46}
-        color="rgba(255,255,255,.07)"
+        color="rgba(26,26,24,.07)"
         style={{ bottom: '12%', right: '9%' }}
       />
       <Doodle
@@ -115,7 +110,7 @@ export function HowItWorks() {
                 fontFamily: 'var(--font-sans)',
                 fontSize: '.78rem',
                 fontWeight: 700,
-                color: 'rgba(255,255,255,.6)',
+                color: 'rgba(26,26,24,.6)',
                 letterSpacing: '.04em',
               }}
             >
@@ -129,7 +124,7 @@ export function HowItWorks() {
               fontSize: 'clamp(2.4rem, 6vw, 5rem)',
               lineHeight: 1,
               letterSpacing: '-.04em',
-              color: '#fff',
+              color: '#1a1a18',
               margin: '0 0 1rem',
             }}
           >
@@ -142,7 +137,7 @@ export function HowItWorks() {
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: '1.05rem',
-              color: 'rgba(255,255,255,.5)',
+              color: 'rgba(26,26,24,.5)',
               lineHeight: 1.7,
               margin: '0 auto',
               maxWidth: 480,
@@ -286,7 +281,7 @@ export function HowItWorks() {
                       fontFamily: 'var(--font-serif)',
                       fontWeight: 600,
                       fontSize: 'clamp(1.4rem, 2.6vw, 2.1rem)',
-                      color: '#fff',
+                      color: '#1a1a18',
                       margin: '0 0 .7rem',
                       letterSpacing: '-.02em',
                       lineHeight: 1.12,
@@ -298,7 +293,7 @@ export function HowItWorks() {
                     style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '.98rem',
-                      color: 'rgba(255,255,255,.55)',
+                      color: 'rgba(26,26,24,.55)',
                       lineHeight: 1.7,
                       margin: 0,
                       marginLeft: step.side === 'left' ? 0 : 'auto',

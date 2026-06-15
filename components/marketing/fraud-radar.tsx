@@ -63,7 +63,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
-        background: '#0a0a0c',
+        background: '#F7F5F0',
         overflow: 'hidden',
       }}
     >
@@ -105,7 +105,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
         style={{
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,.1) 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle, rgba(26,26,24,.1) 1px, transparent 1px)',
           backgroundSize: '38px 38px',
           zIndex: 0,
           pointerEvents: 'none',
@@ -126,7 +126,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
       <Doodle
         type="squiggle"
         size={64}
-        color="rgba(255,255,255,.08)"
+        color="rgba(26,26,24,.08)"
         style={{ bottom: '18%', right: '9%' }}
       />
       <Doodle
@@ -154,7 +154,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
           padding: 0 clamp(1rem, 4vw, 3.25rem);
         }
         .radar-stat + .radar-stat {
-          border-left: 1px solid rgba(255,255,255,.1);
+          border-left: 1px solid rgba(26,26,24,.1);
         }
         @media (max-width: 640px) {
           .radar-stat { padding: 0 clamp(.5rem, 3vw, 1rem); }
@@ -216,7 +216,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
             fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
             lineHeight: 1.05,
             letterSpacing: '-.04em',
-            color: '#fff',
+            color: '#1a1a18',
             margin: '0 auto 1rem',
             maxWidth: 760,
           }}
@@ -234,7 +234,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: '1.15rem',
-            color: 'rgba(255,255,255,.55)',
+            color: 'rgba(26,26,24,.55)',
             lineHeight: 1.7,
             margin: '0 auto clamp(3rem, 6vw, 4.5rem)',
             maxWidth: 560,
@@ -272,7 +272,7 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
                   fontFamily: 'var(--font-sans)',
                   fontSize: '.8rem',
                   fontWeight: 600,
-                  color: 'rgba(255,255,255,.42)',
+                  color: 'rgba(26,26,24,.42)',
                   lineHeight: 1.4,
                   letterSpacing: '.1em',
                   textTransform: 'uppercase',

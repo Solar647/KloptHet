@@ -32,7 +32,7 @@ export function WhatIs() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem)',
-        background: '#0a0a0c',
+        background: '#F7F5F0',
         overflow: 'hidden',
       }}
     >
@@ -62,7 +62,7 @@ export function WhatIs() {
       <Doodle
         type="spark"
         size={40}
-        color="rgba(255,255,255,.08)"
+        color="rgba(26,26,24,.08)"
         style={{ top: '16%', right: '6%' }}
       />
       <Doodle
@@ -74,7 +74,7 @@ export function WhatIs() {
       <Doodle
         type="lightning"
         size={34}
-        color="rgba(255,255,255,.08)"
+        color="rgba(26,26,24,.08)"
         style={{ bottom: '12%', left: '6%' }}
       />
 
@@ -108,7 +108,7 @@ export function WhatIs() {
               fontFamily: 'var(--font-sans)',
               fontSize: '.78rem',
               fontWeight: 700,
-              color: 'rgba(255,255,255,.6)',
+              color: 'rgba(26,26,24,.6)',
               letterSpacing: '.04em',
             }}
           >
@@ -128,7 +128,7 @@ export function WhatIs() {
             fontSize: 'clamp(2.8rem, 8vw, 6.5rem)',
             lineHeight: 0.98,
             letterSpacing: '-.045em',
-            color: '#fff',
+            color: '#1a1a18',
             textAlign: 'center',
             margin: '0 0 1rem',
           }}
@@ -149,7 +149,7 @@ export function WhatIs() {
             fontStyle: 'italic',
             fontWeight: 500,
             fontSize: 'clamp(1.1rem, 2vw, 1.6rem)',
-            color: 'rgba(255,255,255,.55)',
+            color: 'rgba(26,26,24,.55)',
             textAlign: 'center',
             margin: '0 auto clamp(3rem, 6vw, 5rem)',
             maxWidth: 560,
@@ -183,7 +183,7 @@ export function WhatIs() {
                 aspectRatio: '4 / 3',
                 borderRadius: 20,
                 overflow: 'hidden',
-                border: '1px solid rgba(255,255,255,.12)',
+                border: '1px solid rgba(26,26,24,.12)',
                 boxShadow: '0 24px 60px -20px rgba(0,0,0,.6)',
               }}
             >
@@ -208,7 +208,7 @@ export function WhatIs() {
                   position: 'absolute',
                   inset: 0,
                   background:
-                    'linear-gradient(115deg, transparent 35%, rgba(255,255,255,.08) 50%, transparent 62%)',
+                    'linear-gradient(115deg, transparent 35%, rgba(255,255,255,.1) 50%, transparent 62%)',
                   pointerEvents: 'none',
                 }}
               />
@@ -229,7 +229,7 @@ export function WhatIs() {
                 textShadow: '0 2px 20px rgba(0,0,0,.8)',
               }}
             >
-              Veiligheid hoort <span style={{ color: '#3AAC6E' }}>voor iedereen</span> toegankelijk
+              Veiligheid hoort <span style={{ color: '#5fe0a0' }}>voor iedereen</span> toegankelijk
               te zijn.
             </div>
           </motion.div>
@@ -245,7 +245,7 @@ export function WhatIs() {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '1.05rem',
-                color: 'rgba(255,255,255,.7)',
+                color: 'rgba(26,26,24,.7)',
                 lineHeight: 1.75,
                 margin: '0 0 1.25rem',
               }}
@@ -257,7 +257,7 @@ export function WhatIs() {
               style={{
                 fontFamily: 'var(--font-sans)',
                 fontSize: '1.05rem',
-                color: 'rgba(255,255,255,.45)',
+                color: 'rgba(26,26,24,.45)',
                 lineHeight: 1.75,
                 margin: '0 0 2rem',
               }}
@@ -272,7 +272,7 @@ export function WhatIs() {
                 display: 'grid',
                 gridTemplateColumns: '1fr 1fr',
                 gap: '1.5rem 2rem',
-                borderTop: '1px solid rgba(255,255,255,.1)',
+                borderTop: '1px solid rgba(26,26,24,.1)',
                 paddingTop: '2rem',
               }}
             >
@@ -296,7 +296,7 @@ export function WhatIs() {
                         fontFamily: 'var(--font-sans)',
                         fontWeight: 700,
                         fontSize: '.92rem',
-                        color: '#fff',
+                        color: '#1a1a18',
                         marginBottom: '.3rem',
                       }}
                     >
@@ -306,7 +306,7 @@ export function WhatIs() {
                       style={{
                         fontFamily: 'var(--font-sans)',
                         fontSize: '.8rem',
-                        color: 'rgba(255,255,255,.45)',
+                        color: 'rgba(26,26,24,.45)',
                         lineHeight: 1.55,
                         margin: 0,
                       }}
