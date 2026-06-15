@@ -37,7 +37,7 @@ export function Hero() {
         <HeroSpline />
       </Suspense>
 
-      {/* Gradient fade naar volgende sectie */}
+      {/* Gradient fade naar de lichte sectie eronder */}
       <div
         aria-hidden="true"
         style={{
@@ -45,8 +45,9 @@ export function Hero() {
           bottom: 0,
           left: 0,
           right: 0,
-          height: '20%',
-          background: 'linear-gradient(to bottom, transparent 0%, rgba(6,12,26,0.85) 100%)',
+          height: '28%',
+          background:
+            'linear-gradient(to bottom, transparent 0%, rgba(10,16,30,0.6) 55%, #F1EDE4 100%)',
           zIndex: 3,
           pointerEvents: 'none',
         }}

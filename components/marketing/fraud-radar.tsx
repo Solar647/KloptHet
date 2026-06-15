@@ -67,21 +67,6 @@ export function FraudRadar({ stats }: { stats: Stats | null }) {
         overflow: 'hidden',
       }}
     >
-      {/* Vloeiende overgang van donkere hero naar lichte sectie */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 130,
-          background: 'linear-gradient(to bottom, #0a1226 0%, #243049 20%, #F1EDE4 72%)',
-          pointerEvents: 'none',
-          zIndex: 1,
-        }}
-      />
-
       {/* Subtiele rode/oranje gloed — "alert" gevoel, niet schreeuwerig */}
       <div
         aria-hidden="true"

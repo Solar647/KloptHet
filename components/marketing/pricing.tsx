@@ -76,7 +76,7 @@ export function Pricing() {
       style={{
         position: 'relative',
         padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem)',
-        background: '#F1EDE4',
+        background: 'linear-gradient(to bottom, #0a0a0c 0%, #0a0a0c 86%, #F1EDE4 100%)',
         overflow: 'hidden',
       }}
     >
@@ -90,13 +90,13 @@ export function Pricing() {
       <Doodle
         type="diamond"
         size={40}
-        color="rgba(26,26,24,.08)"
+        color="rgba(255,255,255,.08)"
         style={{ top: '22%', right: '8%' }}
       />
       <Doodle
         type="heart"
         size={32}
-        color="rgba(26,26,24,.07)"
+        color="rgba(255,255,255,.07)"
         style={{ bottom: '14%', left: '6%' }}
       />
       <Doodle
@@ -104,24 +104,6 @@ export function Pricing() {
         size={60}
         color="rgba(58,172,110,.12)"
         style={{ bottom: '20%', right: '7%' }}
-      />
-
-      {/* Diepte-accenten achter de kaarten */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: '38%',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '70%',
-          height: '55%',
-          background:
-            'radial-gradient(ellipse at 30% 30%, rgba(58,172,110,.12) 0%, transparent 55%), radial-gradient(ellipse at 75% 70%, rgba(26,26,24,.07) 0%, transparent 55%)',
-          filter: 'blur(50px)',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}
       />
 
       <div style={{ maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 2 }}>
@@ -150,7 +132,7 @@ export function Pricing() {
               fontFamily: 'var(--font-sans)',
               fontSize: '.78rem',
               fontWeight: 700,
-              color: 'rgba(26,26,24,.6)',
+              color: 'rgba(255,255,255,.6)',
               letterSpacing: '.04em',
             }}
           >
@@ -171,7 +153,8 @@ export function Pricing() {
               margin: 0,
               userSelect: 'none',
               whiteSpace: 'nowrap',
-              background: 'linear-gradient(180deg, rgba(26,26,24,.22) 0%, rgba(26,26,24,.05) 100%)',
+              background:
+                'linear-gradient(180deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.05) 100%)',
               WebkitBackgroundClip: 'text',
               backgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -186,7 +169,7 @@ export function Pricing() {
               fontStyle: 'italic',
               fontWeight: 500,
               fontSize: 'clamp(1.1rem, 2vw, 1.5rem)',
-              color: 'rgba(26,26,24,.6)',
+              color: 'rgba(255,255,255,.6)',
               position: 'absolute',
               bottom: 'clamp(-.5rem, 1vw, .5rem)',
               left: '50%',
@@ -213,8 +196,8 @@ export function Pricing() {
               display: 'inline-flex',
               padding: 5,
               borderRadius: 9999,
-              background: 'rgba(26,26,24,.05)',
-              border: '1px solid rgba(26,26,24,.1)',
+              background: 'rgba(255,255,255,.05)',
+              border: '1px solid rgba(255,255,255,.1)',
             }}
           >
             {/* Schuivende indicator */}
@@ -227,7 +210,7 @@ export function Pricing() {
                 left: yearly ? '50%' : 5,
                 width: 'calc(50% - 5px)',
                 borderRadius: 9999,
-                background: '#1a1a18',
+                background: '#fff',
                 transition: 'left .3s cubic-bezier(.16,1,.3,1)',
               }}
             />
@@ -251,7 +234,7 @@ export function Pricing() {
                     fontFamily: 'var(--font-sans)',
                     fontSize: '.9rem',
                     fontWeight: 700,
-                    color: activeBtn ? '#F1EDE4' : 'rgba(26,26,24,.6)',
+                    color: activeBtn ? '#0a0a0c' : 'rgba(255,255,255,.6)',
                     transition: 'color .25s',
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -307,14 +290,14 @@ export function Pricing() {
                   padding: '2rem 1.75rem',
                   display: 'flex',
                   flexDirection: 'column',
-                  background: isHi ? 'rgba(255,255,255,.72)' : 'rgba(255,255,255,.55)',
-                  backdropFilter: 'blur(18px)',
-                  WebkitBackdropFilter: 'blur(18px)',
-                  border: isHi ? '1.5px solid #3AAC6E' : '1px solid rgba(255,255,255,.7)',
+                  background: isHi ? 'rgba(255,255,255,.06)' : 'rgba(255,255,255,.025)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: isHi
+                    ? '1px solid rgba(255,255,255,.22)'
+                    : '1px solid rgba(255,255,255,.09)',
                   overflow: 'hidden',
-                  boxShadow: isHi
-                    ? '0 30px 70px -24px rgba(58,172,110,.35), inset 0 1px 0 rgba(255,255,255,.6)'
-                    : '0 16px 40px -20px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.6)',
+                  boxShadow: isHi ? '0 30px 70px -20px rgba(0,0,0,.7)' : 'none',
                 }}
               >
                 {/* Zachte lichtgloed achter de kaart */}
@@ -327,8 +310,8 @@ export function Pricing() {
                     width: '70%',
                     height: '60%',
                     background: isHi
-                      ? 'radial-gradient(ellipse, rgba(58,172,110,.12) 0%, transparent 65%)'
-                      : 'radial-gradient(ellipse, rgba(58,172,110,.05) 0%, transparent 65%)',
+                      ? 'radial-gradient(ellipse, rgba(255,255,255,.18) 0%, transparent 65%)'
+                      : 'radial-gradient(ellipse, rgba(255,255,255,.08) 0%, transparent 65%)',
                     filter: 'blur(30px)',
                     pointerEvents: 'none',
                   }}
@@ -376,7 +359,7 @@ export function Pricing() {
                       fontFamily: 'var(--font-sans)',
                       fontSize: '.85rem',
                       fontWeight: 600,
-                      color: 'rgba(26,26,24,.6)',
+                      color: 'rgba(255,255,255,.6)',
                       marginBottom: '.5rem',
                     }}
                   >
@@ -398,7 +381,7 @@ export function Pricing() {
                         fontSize: '3rem',
                         lineHeight: 1,
                         letterSpacing: '-.03em',
-                        color: '#1a1a18',
+                        color: '#fff',
                       }}
                     >
                       €{price}
@@ -407,7 +390,7 @@ export function Pricing() {
                       style={{
                         fontFamily: 'var(--font-sans)',
                         fontSize: '.8rem',
-                        color: 'rgba(26,26,24,.4)',
+                        color: 'rgba(255,255,255,.4)',
                       }}
                     >
                       /{period}
@@ -417,7 +400,7 @@ export function Pricing() {
                     style={{
                       fontFamily: 'var(--font-sans)',
                       fontSize: '.82rem',
-                      color: 'rgba(26,26,24,.4)',
+                      color: 'rgba(255,255,255,.4)',
                       marginBottom: '1.75rem',
                     }}
                   >
@@ -433,7 +416,7 @@ export function Pricing() {
                       flexDirection: 'column',
                       gap: '.75rem',
                       flex: 1,
-                      borderTop: '1px solid rgba(26,26,24,.08)',
+                      borderTop: '1px solid rgba(255,255,255,.08)',
                       paddingTop: '1.5rem',
                     }}
                   >
@@ -443,7 +426,7 @@ export function Pricing() {
                         style={{
                           fontFamily: 'var(--font-sans)',
                           fontSize: '.88rem',
-                          color: 'rgba(26,26,24,.78)',
+                          color: 'rgba(255,255,255,.78)',
                           display: 'flex',
                           gap: 10,
                           alignItems: 'flex-start',
@@ -477,9 +460,9 @@ export function Pricing() {
                         : `/${locale}/registreren`
                     }
                     style={{
-                      background: isHi ? '#3AAC6E' : 'transparent',
-                      color: isHi ? '#fff' : '#1a1a18',
-                      border: isHi ? 'none' : '1px solid rgba(26,26,24,.2)',
+                      background: isHi ? '#fff' : 'rgba(255,255,255,.06)',
+                      color: isHi ? '#0a0a0c' : '#fff',
+                      border: isHi ? 'none' : '1px solid rgba(255,255,255,.16)',
                       padding: '.95rem 1rem',
                       borderRadius: 9999,
                       fontSize: '.9rem',
@@ -518,8 +501,8 @@ export function Pricing() {
             gap: '1rem',
             marginTop: '2rem',
             padding: '1.25rem 1.5rem',
-            background: 'rgba(26,26,24,.03)',
-            border: '1px solid rgba(26,26,24,.09)',
+            background: 'rgba(255,255,255,.03)',
+            border: '1px solid rgba(255,255,255,.09)',
             borderRadius: 14,
           }}
         >
@@ -532,7 +515,7 @@ export function Pricing() {
                 gap: 10,
                 fontFamily: 'var(--font-sans)',
                 fontSize: '.85rem',
-                color: 'rgba(26,26,24,.72)',
+                color: 'rgba(255,255,255,.72)',
               }}
             >
               <span
