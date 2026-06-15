@@ -11,9 +11,9 @@ export function Footer() {
     {
       title: 'Product',
       links: [
-        { label: 'Hoe het werkt', href: `/${locale}/#hoe-het-werkt` },
-        { label: 'Voor wie', href: `/${locale}/#voor-wie` },
-        { label: 'Abonnementen', href: `/${locale}/#abonnementen` },
+        { label: 'Hoe het werkt', href: `/${locale}?from=logo#hoe-het-werkt` },
+        { label: 'Voor wie', href: `/${locale}/voor-wie` },
+        { label: 'Abonnementen', href: `/${locale}?from=logo#abonnementen` },
         { label: 'Voorbeelden', href: `/${locale}/voorbeelden` },
       ],
     },

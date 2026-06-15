@@ -75,9 +75,9 @@ export function Nav() {
     : (user?.email?.charAt(0).toUpperCase() ?? '?')
 
   const links = [
-    { label: t('howItWorks'), href: `/${locale}/#hoe-het-werkt` },
+    { label: t('howItWorks'), href: `/${locale}?from=logo#hoe-het-werkt` },
     { label: t('forWho'), href: `/${locale}/voor-wie` },
-    { label: t('pricing'), href: `/${locale}/#abonnementen` },
+    { label: t('pricing'), href: `/${locale}?from=logo#abonnementen` },
   ]
 
   return (
