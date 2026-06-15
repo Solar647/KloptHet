@@ -80,6 +80,18 @@ export function Nav() {
     { label: t('pricing'), href: `/${locale}?from=logo#abonnementen` },
   ]
 
+  // Als de sectie al op de huidige pagina staat: soepel scrollen i.p.v. navigeren
+  const handleAnchorClick = (e: React.MouseEvent, href: string) => {
+    const hash = href.includes('#') ? href.split('#')[1] : null
+    if (!hash) return
+    const el = document.getElementById(hash)
+    if (el) {
+      e.preventDefault()
+      el.scrollIntoView({ behavior: 'smooth' })
+      window.history.replaceState(null, '', `#${hash}`)
+    }
+  }
+
   return (
     <nav
       aria-label="Hoofdnavigatie"
@@ -140,6 +152,7 @@ export function Nav() {
             <li key={href}>
               <Link
                 href={href}
+                onClick={(e) => handleAnchorClick(e, href)}
                 style={{
                   textDecoration: 'none',
                   color: 'rgba(244,236,219,.65)',
@@ -432,7 +445,10 @@ export function Nav() {
               <Link
                 key={href}
                 href={href}
-                onClick={() => setMenuOpen(false)}
+                onClick={(e) => {
+                  handleAnchorClick(e, href)
+                  setMenuOpen(false)
+                }}
                 style={{
                   color: 'rgba(244,236,219,.8)',
                   textDecoration: 'none',
