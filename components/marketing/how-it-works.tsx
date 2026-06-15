@@ -55,7 +55,21 @@ export function HowItWorks() {
           transform: 'translateX(-50%)',
           width: 800,
           height: 700,
-          background: 'radial-gradient(ellipse, rgba(31,122,77,.07) 0%, transparent 65%)',
+          background: 'radial-gradient(ellipse, rgba(31,122,77,.1) 0%, transparent 65%)',
+          filter: 'blur(90px)',
+          pointerEvents: 'none',
+          zIndex: 0,
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          bottom: '8%',
+          right: '-6%',
+          width: 620,
+          height: 540,
+          background: 'radial-gradient(ellipse, rgba(30,80,180,.08) 0%, transparent 62%)',
           filter: 'blur(90px)',
           pointerEvents: 'none',
           zIndex: 0,
@@ -366,6 +380,27 @@ export function HowItWorks() {
                     alignItems: 'center',
                   }}
                 >
+                  {/* Groot ghost-nummer als achtergrond-watermerk */}
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      top: '50%',
+                      [step.side === 'left' ? 'right' : 'left']: '2%',
+                      transform: 'translateY(-50%)',
+                      fontFamily: 'var(--font-serif)',
+                      fontWeight: 700,
+                      fontSize: 'clamp(7rem, 16vw, 15rem)',
+                      lineHeight: 1,
+                      color: 'rgba(26,26,24,.045)',
+                      zIndex: 0,
+                      pointerEvents: 'none',
+                      userSelect: 'none',
+                    }}
+                  >
+                    {step.num}
+                  </span>
+
                   {step.side === 'left' ? (
                     <>
                       {textCol}
