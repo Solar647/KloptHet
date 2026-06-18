@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Doodle } from './doodles'
+import { Doodle, PillLabel } from './doodles'
 
 const faqSchema = {
   '@context': 'https://schema.org',
@@ -139,32 +139,8 @@ function FAQContent() {
 
       <div style={{ maxWidth: 880, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 10,
-              fontSize: '.72rem',
-              fontWeight: 700,
-              color: 'rgba(26,26,24,.6)',
-              letterSpacing: '.22em',
-              textTransform: 'uppercase',
-              marginBottom: '1rem',
-              fontFamily: 'ui-monospace, monospace',
-            }}
-          >
-            <span
-              style={{
-                width: 7,
-                height: 7,
-                borderRadius: '50%',
-                background: '#3AAC6E',
-                boxShadow: '0 0 12px rgba(58,172,110,.7)',
-                display: 'inline-block',
-                flexShrink: 0,
-              }}
-            />
-            Veelgestelde vragen
+          <div style={{ marginBottom: '1.25rem' }}>
+            <PillLabel>Veelgestelde vragen</PillLabel>
           </div>
           <h2
             style={{

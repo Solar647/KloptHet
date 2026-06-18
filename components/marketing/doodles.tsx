@@ -162,6 +162,40 @@ export function BgLines({
   )
 }
 
+// Pill-label tag (Kinetic-stijl) — kleine afgeronde tag met groene stip
+export function PillLabel({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 8,
+        padding: '.42rem .9rem',
+        borderRadius: 9999,
+        border: `1px solid ${dark ? 'rgba(255,255,255,.2)' : 'rgba(26,26,24,.18)'}`,
+        background: dark ? 'rgba(255,255,255,.05)' : 'rgba(26,26,24,.03)',
+        fontFamily: 'var(--font-sans)',
+        fontSize: '.72rem',
+        fontWeight: 600,
+        letterSpacing: '.02em',
+        color: dark ? 'rgba(255,255,255,.8)' : 'rgba(26,26,24,.7)',
+        whiteSpace: 'nowrap',
+      }}
+    >
+      <span
+        style={{
+          width: 6,
+          height: 6,
+          borderRadius: '50%',
+          background: '#3AAC6E',
+          flexShrink: 0,
+        }}
+      />
+      {children}
+    </span>
+  )
+}
+
 export function Doodle({
   type,
   size = 40,

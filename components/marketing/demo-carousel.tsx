@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { ArrowRightIcon } from '@/components/shared/icons'
-import { Doodle } from './doodles'
+import { Doodle, PillLabel } from './doodles'
 
 const examples = [
   {
@@ -170,36 +170,8 @@ export function DemoCarousel() {
       <div style={{ maxWidth: 1180, margin: '0 auto', position: 'relative', zIndex: 1 }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 'clamp(2.5rem, 5vw, 4rem)' }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 10,
-              marginBottom: '1.5rem',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'ui-monospace, monospace',
-                fontSize: '.85rem',
-                fontWeight: 700,
-                color: '#3AAC6E',
-              }}
-            >
-              (03)
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.78rem',
-                fontWeight: 700,
-                color: 'rgba(26,26,24,.6)',
-                letterSpacing: '.04em',
-              }}
-            >
-              Live demo
-            </span>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            <PillLabel>Live demo</PillLabel>
           </div>
           <h2
             style={{

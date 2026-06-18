@@ -1,6 +1,6 @@
 'use client'
 
-import { Doodle } from './doodles'
+import { Doodle, PillLabel } from './doodles'
 
 const reviews = [
   {
@@ -206,24 +206,8 @@ export function Testimonials() {
           zIndex: 1,
         }}
       >
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 8,
-            fontSize: '.72rem',
-            fontWeight: 700,
-            color: 'rgba(26,26,24,.4)',
-            letterSpacing: '.2em',
-            textTransform: 'uppercase',
-            fontFamily: 'ui-monospace, monospace',
-            marginBottom: '1rem',
-          }}
-        >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="#D97B2A" aria-hidden="true">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-          </svg>
-          Wat gebruikers zeggen
+        <div style={{ marginBottom: '1.25rem' }}>
+          <PillLabel>Wat gebruikers zeggen</PillLabel>
         </div>
         <h2
           style={{

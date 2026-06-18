@@ -1,7 +1,7 @@
 'use client'
 
 import { motion, useReducedMotion } from 'framer-motion'
-import { Doodle } from './doodles'
+import { Doodle, PillLabel } from './doodles'
 
 const EASE = [0.16, 1, 0.3, 1] as const
 
@@ -122,36 +122,8 @@ export function HowItWorks() {
           transition={{ duration: 0.7, ease: EASE }}
           style={{ textAlign: 'center', marginBottom: 'clamp(2.5rem, 5vw, 4rem)' }}
         >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 10,
-              marginBottom: '1.5rem',
-            }}
-          >
-            <span
-              style={{
-                fontFamily: 'ui-monospace, monospace',
-                fontSize: '.85rem',
-                fontWeight: 700,
-                color: '#3AAC6E',
-              }}
-            >
-              (02)
-            </span>
-            <span
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '.78rem',
-                fontWeight: 700,
-                color: 'rgba(26,26,24,.6)',
-                letterSpacing: '.04em',
-              }}
-            >
-              Zo werkt het
-            </span>
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            <PillLabel>Zo werkt het</PillLabel>
           </div>
           <h2
             style={{
