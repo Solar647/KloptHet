@@ -130,7 +130,7 @@ export function Testimonials() {
   return (
     <section
       style={{
-        padding: 'clamp(4rem, 8vw, 7rem) 0',
+        padding: 'clamp(6rem, 11vw, 10rem) 0',
         background: '#F1EDE4',
         overflow: 'hidden',
         position: 'relative',
@@ -212,15 +212,16 @@ export function Testimonials() {
         <h2
           style={{
             fontFamily: 'var(--font-serif)',
-            fontWeight: 500,
-            fontSize: 'clamp(1.8rem, 4vw, 3rem)',
-            lineHeight: 1.08,
+            fontWeight: 700,
+            fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
+            lineHeight: 1,
             letterSpacing: '-.04em',
             color: '#1a1a18',
-            margin: '0 0 .75rem',
+            margin: '0 0 1rem',
           }}
         >
-          Het hielp ons echt.
+          Het hielp ons{' '}
+          <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#3AAC6E' }}>echt.</span>
         </h2>
         <p
           style={{

@@ -103,7 +103,7 @@ export function DemoCarousel() {
     <section
       id="demo"
       style={{
-        padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem) 0',
+        padding: 'clamp(6rem, 11vw, 10rem) clamp(1.5rem, 3vw, 3rem) 0',
         position: 'relative',
         overflow: 'hidden',
         background: '#F1EDE4',

@@ -40,7 +40,7 @@ export function HowItWorks() {
       id="hoe-het-werkt"
       style={{
         position: 'relative',
-        padding: 'clamp(5rem, 10vw, 9rem) clamp(1.5rem, 3vw, 3rem)',
+        padding: 'clamp(6rem, 11vw, 10rem) clamp(1.5rem, 3vw, 3rem)',
         background: '#F1EDE4',
         overflow: 'hidden',
       }}

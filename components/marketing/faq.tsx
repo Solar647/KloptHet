@@ -96,7 +96,7 @@ function FAQContent() {
     <section
       style={{
         position: 'relative',
-        padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
+        padding: 'clamp(6rem, 11vw, 10rem) clamp(1.5rem, 3vw, 3rem)',
         background: '#F1EDE4',
         overflow: 'hidden',
       }}
@@ -145,15 +145,16 @@ function FAQContent() {
           <h2
             style={{
               fontFamily: 'var(--font-serif)',
-              fontWeight: 500,
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
-              lineHeight: 1.1,
-              letterSpacing: '-.03em',
+              fontWeight: 700,
+              fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
+              lineHeight: 1,
+              letterSpacing: '-.04em',
               color: '#1a1a18',
               margin: 0,
             }}
           >
-            Vragen? <em style={{ fontStyle: 'italic', color: 'rgba(58,172,110,.9)' }}>Logisch.</em>
+            Vragen?{' '}
+            <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#3AAC6E' }}>Logisch.</span>
           </h2>
         </div>
 

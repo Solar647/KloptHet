@@ -32,7 +32,7 @@ export function Trusted() {
     <section
       style={{
         position: 'relative',
-        padding: 'clamp(5rem, 9vw, 8rem) clamp(1.5rem, 3vw, 3rem)',
+        padding: 'clamp(6rem, 11vw, 10rem) clamp(1.5rem, 3vw, 3rem)',
         background: '#0d0d0f',
         overflow: 'hidden',
       }}
